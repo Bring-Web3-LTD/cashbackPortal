@@ -1,0 +1,13 @@
+.container,
+.header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.header {
+    background: black;
+    color: white;
+    width: 100vw;
+    padding: 40px 0;
+}
