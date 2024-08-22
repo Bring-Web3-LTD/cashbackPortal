@@ -1,9 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
+:root {
+  --bg: #09132C;
+  --header-bg: #192749;
+  --title-color: #fff;
+  --subtitle-color: #FFFFFFBF;
+  --header-btn-color: #88AAFA;
+  --rewards-bg: #263C72;
+  --reward-type-color: #fff;
+  --reward-usd-amount-color: #88AAFA;
+  --reward-claim-color: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --reward-pending-color: #C7D7FF;
+  --rewards-btn: #fff;
+  --rewards-btn-color: transparent;
+  --rewards-btn-border-w: 0;
+  --rewards-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --retailer-card-bg: #192749;
+  --retailer-card-border-w: 0;
+  --retailer-card-border-color: transparent;
+  --retailer-card-flag-color: #131D36;
+  --retailer-card-flag-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --retailer-card-flag-radius: 12px;
+  --retailer-card-name-color: #FFF;
+  --retailer-card-amount-color: #E16BFF;
+  --retailer-card-amount-bg: #09132C;
+}
+
 * {
   font-family: "Rubik", sans-serif;
 }
 
 body {
+  background: var(--bg);
   margin: 0;
+  overflow-x: hidden;
+}
+
+.gradient_text {
+  background-clip: text;
+  color: transparent;
 }

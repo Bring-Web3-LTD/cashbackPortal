@@ -1,0 +1,64 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 16px;
+    width: 836px;
+    height: 96px;
+    background: var(--rewards-bg);
+    border-radius: 24px;
+    margin-top: -48px;
+}
+
+.reward_details {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    user-select: none;
+}
+
+.amount {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-right: 8px;
+
+}
+
+.amount_claim {
+    background: var(--reward-claim-color);
+    background-clip: text;
+    color: transparent;
+}
+
+.amount_pending {
+    background: var(--reward-pending-color);
+    background-clip: text;
+    color: transparent;
+}
+
+.reward_type {
+    color: var(--reward-type-color);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.usd_amount {
+    color: var(--reward-usd-amount-color);
+    font-size: 12px;
+    font-size: 500;
+}
+
+.btn {
+    background: var(--rewards-btn-bg);
+    color: var(--rewards-btn);
+    border-width: var(--rewards-btn-border-w);
+    border-style: solid;
+    border-color: var(--rewards-btn-color);
+    border-radius: 12px;
+    height: 40px;
+    width: 128px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}

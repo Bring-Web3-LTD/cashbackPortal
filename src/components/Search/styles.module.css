@@ -1,0 +1,10 @@
+.search {
+    position: relative;
+}
+
+.msg {
+    position: absolute;
+    top: 10px;
+    left: 56px;
+    color: hsl(0, 0%, 50%);
+}
