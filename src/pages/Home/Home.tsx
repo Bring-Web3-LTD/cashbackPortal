@@ -13,12 +13,16 @@ const Home = () => {
             <Header />
             <main className={styles.main}>
                 <Rewards />
-                <Search
-                    options={[{ label: 'adidas', value: 'adidas' }]}
-                    value={search}
-                    onChangeFn={(s) => console.log(s)}
-                />
+                <div className={styles.search_section}>
+                    <Search
+                        options={[{ label: 'adidas', value: 'adidas' }, { label: 'Daniel', value: 'Daniel' }]}
+                        value={search}
+                        onChangeFn={(item) => setSearch(item)}
+                    />
+                    <div className={styles.deals_amount}>Showing 528 deals</div>
+                </div>
                 <CardsList />
+                <div className={styles.load}>Loading</div>
             </main>
         </div>
     )

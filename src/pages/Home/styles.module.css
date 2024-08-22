@@ -8,4 +8,26 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    gap: 24px;
+}
+
+.search_section {
+    margin-top: 18px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deals_amount {
+    font-size: var(--deals-amount-f-s);
+    font-weight: var(--deals-amount-f-w);
+    color: var(--deals-amount-f-c);
+}
+
+.load {
+    height: 40px;
+    font-size: var(--loading-msg-f-s);
+    font-weight: var(--loading-msg-f-w);
+    color: var(--loading-msg-f-c);
 }

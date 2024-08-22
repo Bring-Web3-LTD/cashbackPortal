@@ -31,9 +31,9 @@
 }
 
 .cashback_rate {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--retailer-card-amount-color);
+    font-size: var(--retailer-card-amount-f-s);
+    font-weight: var(--retailer-card-amount-f-w);
+    color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
     padding: 6px 8px;
     border-radius: 50px;

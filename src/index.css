@@ -3,16 +3,37 @@
 :root {
   --bg: #09132C;
   --header-bg: #192749;
-  --title-color: #fff;
-  --subtitle-color: #FFFFFFBF;
-  --header-btn-color: #88AAFA;
+
+  --title-f-s: 30px;
+  --title-f-w: 700;
+  --title-f-c: #fff;
+
+  --subtitle-f-s: 20px;
+  --subtitle-f-w: 500;
+  --subtitle-f-c: #FFFFFFBF;
+
+  --header-btn-f-s: 14px;
+  --header-btn-f-w: 500;
+  --header-btn-f-c: #88AAFA;
+
   --rewards-bg: #263C72;
-  --reward-type-color: #fff;
-  --reward-usd-amount-color: #88AAFA;
-  --reward-claim-color: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
-  --reward-pending-color: #C7D7FF;
-  --rewards-btn: #fff;
-  --rewards-btn-color: transparent;
+
+  --reward-type-f-s: 14px;
+  --reward-type-f-w: 700;
+  --reward-type-f-c: #fff;
+
+  --reward-usd-amount-f-s: 12px;
+  --reward-usd-amount-f-w: 500;
+  --reward-usd-amount-f-c: #88AAFA;
+  --reward-claim-pending-f-s: 36px;
+  --reward-claim-pending-f-w: 700;
+  --reward-claim-f-c: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --reward-pending-f-c: #C7D7FF;
+
+  --rewards-btn-f-s: 14px;
+  --rewards-btn-f-w: 500;
+  --rewards-btn-f-c: #fff;
+  --rewards-btn-border-c: transparent;
   --rewards-btn-border-w: 0;
   --rewards-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
   --retailer-card-bg: #192749;
@@ -22,8 +43,16 @@
   --retailer-card-flag-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
   --retailer-card-flag-radius: 12px;
   --retailer-card-name-color: #FFF;
-  --retailer-card-amount-color: #E16BFF;
+  --retailer-card-amount-f-s: 11px;
+  --retailer-card-amount-f-c: #E16BFF;
+  --retailer-card-amount-f-w: 600;
   --retailer-card-amount-bg: #09132C;
+  --deals-amount-f-s: 18px;
+  --deals-amount-f-w: 700;
+  --deals-amount-f-c: #fff;
+  --loading-msg-f-s: 12px;
+  --loading-msg-f-w: 500;
+  --loading-msg-f-c: #fff;
 }
 
 * {

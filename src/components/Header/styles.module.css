@@ -10,23 +10,23 @@
 }
 
 .title {
-    color: var(--title-color);
-    font-size: 30px;
-    font-weight: 700;
+    color: var(--title-f-c);
+    font-size: var(--title-f-s);
+    font-weight: var(--title-f-w);
     margin: 0;
 }
 
 .subtitle {
-    color: var(--subtitle-color);
-    font-size: 20px;
-    font-weight: 500;
+    font-size: var(--subtitle-f-s);
+    font-weight: var(--subtitle-f-w);
+    color: var(--subtitle-f-c);
     margin: 0;
 }
 
 .btn {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--header-btn-color);
+    font-size: var(--header-btn-f-s);
+    font-weight: var(--header-btn-f-w);
+    color: var(--header-btn-f-c);
     border-width: 2px;
     border-style: dashed;
     border-color: var(--header-btn-color);

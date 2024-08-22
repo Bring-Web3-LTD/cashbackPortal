@@ -20,7 +20,7 @@ import Select, {
 interface Props {
     options: ReactSelectOptionType[]
     value: ReactSelectOptionType | null
-    onChangeFn: (value: ReactSelectOptionType | null) => void
+    onChangeFn: (value: ReactSelectOptionType) => void
 }
 
 interface ReactSelectOptionType {
@@ -35,7 +35,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         borderRadius: "10px",
         alignContent: "center",
         "&:hover": { border: "1px solid white" },
-        backgroundColor: "#071317",
+        backgroundColor: "var(--bg)",
         color: "rgba(255, 255, 255)",
         width: "438px",
         height: "40px",
@@ -136,7 +136,7 @@ const CustomControl = (props: ControlProps<ReactSelectOptionType>) => (
         <img
             height={20}
             width={20}
-            src="/static/icons/cashback/magnifying-glass.svg"
+            src="/icons/magnifying-glass.svg"
             alt="magnifying-glass-icon"
         />
         {props.children}
@@ -233,7 +233,11 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     }
 
     return (
-        <div className={styles.search}>
+        <div
+            onClick={() => {
+                setIsFocused(true)
+            }}
+            className={styles.search}>
             <Select
                 instanceId={id}
                 placeholder="Brand, product, destination..."
@@ -251,7 +255,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 onChange={handleChange}
                 onInputChange={handleInputChange}
                 value={value}
-                onFocus={() => setIsFocused(true)}
+                // onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             />
             {msg.length ? (

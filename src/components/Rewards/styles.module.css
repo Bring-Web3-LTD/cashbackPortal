@@ -18,47 +18,47 @@
 }
 
 .amount {
-    font-size: 36px;
-    font-weight: 700;
+    font-size: var(--reward-claim-pending-f-s);
+    font-weight: var(--reward-claim-pending-f-w);
     letter-spacing: -1px;
     margin-right: 8px;
 
 }
 
 .amount_claim {
-    background: var(--reward-claim-color);
+    background: var(--reward-claim-f-c);
     background-clip: text;
     color: transparent;
 }
 
 .amount_pending {
-    background: var(--reward-pending-color);
+    background: var(--reward-pending-f-c);
     background-clip: text;
     color: transparent;
 }
 
 .reward_type {
-    color: var(--reward-type-color);
-    font-size: 14px;
-    font-weight: 700;
+    font-size: var(--reward-f-s);
+    font-weight: var(--reward-f-w);
+    color: var(--reward-type-f-c);
 }
 
 .usd_amount {
-    color: var(--reward-usd-amount-color);
-    font-size: 12px;
-    font-size: 500;
+    font-size: var(--reward-usd-amount-f-s);
+    font-weight: var(--reward-usd-amount-f-w);
+    color: var(--reward-usd-amount-f-c);
 }
 
 .btn {
     background: var(--rewards-btn-bg);
-    color: var(--rewards-btn);
+    color: var(--rewards-btn-f-c);
     border-width: var(--rewards-btn-border-w);
     border-style: solid;
-    border-color: var(--rewards-btn-color);
+    border-color: var(--rewards-btn-border-c);
     border-radius: 12px;
     height: 40px;
     width: 128px;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: var(--rewards-btn-f-s);
+    font-weight: var(--rewards-btn-f-w);
     cursor: pointer;
 }
