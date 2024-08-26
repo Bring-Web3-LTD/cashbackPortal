@@ -9,10 +9,22 @@ interface Body {
     pageSize?: number
 }
 
-const fetchRetailers = async (body: Body) => {
+interface Response {
+    generalTermsUrl: string
+    items: Retailer[]
+    nextPageNumber: number | null
+    prevPageNumber: number | null
+    retailerIconBasePath: string
+    retailerTermsBasePath: string
+    totalItems: number
+    iconQueryParam: string
+}
+
+const fetchRetailers = async (body: Body): Promise<Response> => {
     const res = await fetch(`${API_URL}retailers`, {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, platform: 'yoroi' }),
+        mode: "cors",
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",

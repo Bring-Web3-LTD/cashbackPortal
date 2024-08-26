@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -12,11 +12,13 @@
   "dependencies": {
     "@tanstack/react-query": "^5.52.0",
     "@uidotdev/usehooks": "^2.4.1",
+    "framer-motion": "^11.3.30",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "8.0.6",
     "react-router-dom": "^6.26.1",
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "react-swipeable": "^7.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

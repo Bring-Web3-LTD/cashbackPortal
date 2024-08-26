@@ -7,22 +7,22 @@ interface Body {
     search?: string
 }
 
-interface ActivateResponse {
+interface Response {
     url: string
     cashbackInfoUrl: string | null
 }
 
-const activate = async (body: Body) => {
+const activate = async (body: Body): Promise<Response> => {
     const res = await fetch(`${API_URL}activate`, {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, platform: 'yoroi' }),
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",
         },
     })
     const data = await res.json()
-    return data as ActivateResponse
+    return data
 }
 
 export default activate

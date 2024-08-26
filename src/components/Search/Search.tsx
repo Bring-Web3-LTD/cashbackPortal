@@ -1,6 +1,6 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, useId, useState } from "react"
+import { Fragment, MouseEvent, useId, useState } from "react"
 // import { useAccount } from "wagmi"
 
 // components
@@ -23,22 +23,17 @@ interface Props {
     onChangeFn: (value: ReactSelectOptionType) => void
 }
 
-interface ReactSelectOptionType {
-    label: string
-    value: string
-}
-
 const customStyles: StylesConfig<ReactSelectOptionType> = {
     control: (base) => ({
         ...base,
-        border: "1px solid white",
-        borderRadius: "10px",
+        border: "1px solid #FFFFFFBF",
+        borderRadius: "25px",
         alignContent: "center",
         "&:hover": { border: "1px solid white" },
         backgroundColor: "var(--bg)",
         color: "rgba(255, 255, 255)",
         width: "438px",
-        height: "40px",
+        height: "48px",
         padding: "4px 8px 4px 12px",
         fontSize: "16px",
         cursor: "text",
@@ -232,11 +227,15 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
         }
     }
 
+    const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+        const target = e.target as HTMLElement
+        if (target.id.includes("option")) return;
+        setIsFocused(true)
+    }
+
     return (
         <div
-            onClick={() => {
-                setIsFocused(true)
-            }}
+            onClick={e => handleClick(e)}
             className={styles.search}>
             <Select
                 instanceId={id}
@@ -255,7 +254,6 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 onChange={handleChange}
                 onInputChange={handleInputChange}
                 value={value}
-                // onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             />
             {msg.length ? (

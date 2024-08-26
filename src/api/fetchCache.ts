@@ -9,7 +9,7 @@ const fetchCache = async (body: Body) => {
     body.type = "aggregated"
     const res = await fetch(`${API_URL}cache`, {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, platform: 'yoroi' }),
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",

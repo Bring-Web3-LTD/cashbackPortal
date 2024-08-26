@@ -1,9 +1,24 @@
 import { API_URL, API_KEY } from "../config"
 
-const getFilters = async (country?: string) => {
-    const devCheck = country ? `?country=${country.toUpperCase()}` : ""
+interface Response {
+    categories: {
+        items: [
+            {
+                id: number
+                name: string
+                // iconSvg: string
+            },
+        ]
+    }
+    searchTerms: {
+        items: string[]
+    }
+}
 
-    const res = await fetch(`${API_URL}categories-search${devCheck}`, {
+const getFilters = async (country?: string): Promise<Response> => {
+    const devCheck = country ? `&country=${country.toUpperCase()}` : ""
+
+    const res = await fetch(`${API_URL}categories-search?platform=yoroi${devCheck}`, {
         method: "GET",
         headers: {
             "x-api-key": API_KEY,

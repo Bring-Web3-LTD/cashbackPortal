@@ -1,11 +1,32 @@
 import styles from './styles.module.css'
 import RetailerCard from '../RetailerCard/RetailerCard'
 
-const CardsList = () => {
+interface Metadata {
+    iconQueryParam: string
+    generalTermsUrl: string
+    retailerIconBasePath: string
+    retailerTermsBasePath: string
+}
+
+interface Props {
+    retailers: Retailer[]
+    metadata: Metadata | undefined
+}
+
+const CardsList = ({ retailers, metadata }: Props) => {
+
+    if (!metadata) {
+        return <></>
+    }
     return (
         <div className={styles.container}>
-            {Array(25).fill(0).map((_, index) =>
-                <RetailerCard key={index} />
+            {retailers.map(retailer =>
+                <RetailerCard
+                    key={retailer.id}
+                    {...retailer}
+                    {...metadata}
+                    iconPath={`${metadata.retailerIconBasePath}${retailer.iconPath}${metadata.iconQueryParam}`}
+                />
             )}
         </div>
     )

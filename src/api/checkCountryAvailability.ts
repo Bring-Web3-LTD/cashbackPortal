@@ -1,9 +1,9 @@
 import { API_KEY, API_URL } from "../config"
 
 const checkCountryAvailability = async (country?: string) => {
-    const devCheck = country ? `?country=${country.toUpperCase()}` : ""
+    const devCheck = country ? `&country=${country.toUpperCase()}` : ""
 
-    const result = await fetch(`${API_URL}check-availability${devCheck}`, {
+    const result = await fetch(`${API_URL}check-availability?platform=yoroi${devCheck}`, {
         method: "GET",
         headers: {
             "x-api-key": API_KEY,
