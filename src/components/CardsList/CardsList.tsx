@@ -1,5 +1,6 @@
 import styles from './styles.module.css'
 import RetailerCard from '../RetailerCard/RetailerCard'
+import RetailerCardSkeleton from '../RetailerCard/RetailerCardSkeleton'
 
 interface Metadata {
     iconQueryParam: string
@@ -11,12 +12,19 @@ interface Metadata {
 interface Props {
     retailers: Retailer[]
     metadata: Metadata | undefined
+    loading: boolean
 }
 
-const CardsList = ({ retailers, metadata }: Props) => {
+const CardsList = ({ retailers, metadata, loading }: Props) => {
 
-    if (!metadata) {
-        return <></>
+    if (loading || !metadata) {
+        return (
+            <div className={styles.container}>
+                {Array.from({ length: 25 }, (_, i) => (
+                    <RetailerCardSkeleton key={i} />
+                ))}
+            </div>
+        )
     }
     return (
         <div className={styles.container}>
