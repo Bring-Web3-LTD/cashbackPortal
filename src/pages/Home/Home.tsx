@@ -29,9 +29,9 @@ const Home = () => {
     const {
         data: retailers,
         fetchNextPage,
-        isFetching,
+        // isFetching,
         isFetchingNextPage,
-        isLoading: isLoadingRetailers,
+        // isLoading: isLoadingRetailers,
     } = useInfiniteQuery({
         queryKey: ["retailers", category, search],
         queryFn: async ({ pageParam }) => {
