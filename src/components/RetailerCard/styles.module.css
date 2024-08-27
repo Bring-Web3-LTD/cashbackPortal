@@ -1,0 +1,72 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 138px;
+    height: 118px;
+    padding: 17.659px 43.211px 17.522px 42.56px;
+    background: var(--retailer-card-bg);
+    border-width: var(--retailer-card-border-w);
+    border-style: solid;
+    border-color: var(--retailer-card-border-color);
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.logo_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #E16BFF;
+    border-radius: 50%;
+}
+
+.logo {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+}
+
+.fallback_img {
+    color: black;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.retailer_name {
+    color: var(--retailer-card-name-color);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.cashback_rate {
+    font-size: var(--retailer-card-amount-f-s);
+    font-weight: var(--retailer-card-amount-f-w);
+    color: var(--retailer-card-amount-f-c);
+    background: var(--retailer-card-amount-bg);
+    padding: 6px 8px;
+    border-radius: 50px;
+    white-space: nowrap;
+}
+
+.flag {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 23px;
+    height: 12px;
+    font-size: var(--retailer-card-flag-f-s);
+    font-weight: var(--retailer-card-flag-f-w);
+    line-height: 12px;
+    vertical-align: middle;
+    padding: 5px 12px 5px 15px;
+    color: var(--retailer-card-flag-f-c);
+    background: var(--retailer-card-flag-bg);
+    border-top-left-radius: var(--retailer-card-flag-radius);
+    border-bottom-left-radius: var(--retailer-card-flag-radius);
+}

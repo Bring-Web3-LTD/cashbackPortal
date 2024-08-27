@@ -1,0 +1,88 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 34px;
+    /* width: 836px; */
+    margin-top: -48px;
+}
+
+.subcontainer {
+    border-radius: 12px;
+    height: 89px;
+    width: 570px;
+    background: var(--rewards-bg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 16px;
+}
+
+.reward_details {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    user-select: none;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+}
+
+.amount {
+    font-size: var(--amount-claim-pending-f-s);
+    font-weight: var(--amount-claim-pending-f-w);
+    letter-spacing: -1px;
+    margin-right: 8px;
+    line-height: 40px;
+
+}
+
+.amount_claim {
+    background: var(--amount-claim-f-c);
+    background-clip: text;
+    color: transparent;
+}
+
+.amount_pending {
+    background: var(--amount-pending-f-c);
+    background-clip: text;
+    color: transparent;
+}
+
+.reward_type {
+    font-size: var(--reward-type-f-s);
+    font-weight: var(--reward-type-f-w);
+    color: var(--reward-type-f-c);
+}
+
+.usd_amount {
+    font-size: var(--reward-usd-amount-f-s);
+    font-weight: var(--reward-usd-amount-f-w);
+    color: var(--reward-usd-amount-f-c);
+}
+
+.btn {
+    border-style: solid;
+    border-radius: var(--rewards-btn-radius);
+    height: 46px;
+    width: 160px;
+    font-size: var(--rewards-btn-f-s);
+    font-weight: var(--rewards-btn-f-w);
+    cursor: pointer;
+}
+
+.claim_btn {
+    background: var(--claim-btn-bg);
+    color: var(--claim-btn-f-c);
+    border-width: var(--claim-btn-border-w);
+    border-color: var(--claim-btn-border-c);
+}
+
+.pending_btn {
+    background: var(--pending-btn-bg);
+    color: var(--pending-btn-f-c);
+    border-width: var(--pending-btn-border-w);
+    border-color: var(--pending-btn-border-c);
+}

@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.search_section {
+    margin-top: 18px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deals_amount {
+    font-size: var(--deals-amount-f-s);
+    font-weight: var(--deals-amount-f-w);
+    color: var(--deals-amount-f-c);
+}
+
+.load {
+    height: 40px;
+    font-size: var(--loading-msg-f-s);
+    font-weight: var(--loading-msg-f-w);
+    color: var(--loading-msg-f-c);
+}
+
+.search_container {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.filter {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    height: 46px;
+    font-size: var(--filter-btn-f-s);
+    font-weight: var(--filter-btn-f-w);
+    color: var(--filter-btn-f-c);
+    background: var(--filter-btn-bg);
+    border-width: var(--filter-btn-border-w);
+    border-style: solid;
+    border-color: var(--filter-btn-border-c);
+    border-radius: 10px;
+    padding: 16px 12px 16px 15px;
+    cursor: pointer;
+}
