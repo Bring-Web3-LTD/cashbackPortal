@@ -71,6 +71,35 @@
     border-bottom-left-radius: var(--retailer-card-flag-radius);
 }
 
+.popup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 80%;
+}
+
+.details {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.start_btn {
+    width: 100%;
+    background: var(--claim-btn-bg);
+    color: var(--claim-btn-f-c);
+    font-weight: 600;
+    height: 48px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+}
+
+.consent_txt {
+    color: #fff;
+    font-size: 12px;
+}
+
 .skeleton,
 .skeleton_logo,
 .skeleton_retailer_name,

@@ -1,6 +1,42 @@
 import styles from './styles.module.css'
+import { useLoaderData } from 'react-router-dom'
+import fetchCache from '../../api/fetchCache'
+import { useQuery } from '@tanstack/react-query'
 
 const Rewards = () => {
+    const { walletAddress, platform } = useLoaderData() as LoaderData
+
+    const { data: balance } = useQuery({
+        queryFn: () => fetchCache({ walletAddress, platform }),
+        queryKey: ["balance", walletAddress],
+        enabled: !!walletAddress,
+    })
+
+    // const eligibleTokenAmount =
+    //     balance?.data?.eligible[0]?.tokenAmount?.toLocaleString(undefined, {
+    //         maximumFractionDigits: 2,
+    //     }) || "0"
+    // const eligibleTotalEstimatedUsd =
+    //     balance?.data?.eligible[0]?.totalEstimatedUsd?.toLocaleString(undefined, {
+    //         style: "currency",
+    //         currency: "USD",
+    //     }) || "0"
+    // const pendingTokenAmount =
+    //     balance?.data?.totalPendings[0]?.tokenAmount?.toLocaleString(undefined, {
+    //         maximumFractionDigits: 2,
+    //     }) || "0"
+    // const pendingTotalEstimatedUsd =
+    //     balance?.data?.totalPendings[0]?.totalEstimatedUsd?.toLocaleString(
+    //         undefined,
+    //         {
+    //             style: "currency",
+    //             currency: "USD",
+    //         },
+    //     ) || "0"
+    // const minimumClaimThreshold =
+    //     balance?.data?.eligible[0]?.minimumClaimThreshold
+
+    console.log(balance);
 
     return (
         <div className={styles.container}>

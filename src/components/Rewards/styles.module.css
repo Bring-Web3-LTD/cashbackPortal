@@ -86,3 +86,9 @@
     border-width: var(--pending-btn-border-w);
     border-color: var(--pending-btn-border-c);
 }
+
+@media screen and (max-width:1190px) {
+    .container {
+        flex-direction: column;
+    }
+}

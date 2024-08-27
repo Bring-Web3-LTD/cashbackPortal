@@ -7,6 +7,7 @@ interface Body {
     category?: number
     page?: number
     pageSize?: number
+    platform: string
 }
 
 interface Response {
@@ -23,7 +24,7 @@ interface Response {
 const fetchRetailers = async (body: Body): Promise<Response> => {
     const res = await fetch(`${API_URL}retailers`, {
         method: "POST",
-        body: JSON.stringify({ ...body, platform: 'yoroi', country: 'us' }),
+        body: JSON.stringify(body),
         mode: "cors",
         headers: {
             "x-api-key": API_KEY,

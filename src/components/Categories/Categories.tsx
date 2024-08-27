@@ -59,6 +59,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
             >
                 {categories.map(cat => (
                     <button
+                        onClick={() => onClickFn(cat)}
                         key={cat.id}
                         className={`${styles.category} ${cat === category ? styles.selected : ''}`}
                     >

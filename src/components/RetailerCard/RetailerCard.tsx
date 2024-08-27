@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import formatCashback from '../../utils/formatCashback'
 import { useState } from 'react'
+import Popup from '../Popup/Popup'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -34,31 +35,70 @@ const RetailerCard = ({
     // searchTerm,
 }: Props) => {
     const [fallbackImg, setFallbackImg] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
     const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
     const isBig = isBigCashback(cashbackSymbol, maxCashback)
 
     return (
-        <div className={styles.card}>
-            {isBig ? <div className={styles.flag}>{cashback}</div> : null}
+        <>
             <div
-                className={styles.logo_container}
-                style={{ backgroundColor: backgroundColor || 'white' }}
+                className={styles.card}
+                onClick={() => setIsOpen(true)}
             >
-                {fallbackImg ?
-                    <div className={styles.fallback_img}>{fallbackImg}</div>
-                    :
-                    <img
-                        className={styles.logo}
-                        loading='eager'
-                        src={iconPath}
-                        alt={`${name} logo`}
-                        onError={() => setFallbackImg(name)}
-                    />
-                }
+                {isBig ? <div className={styles.flag}>{cashback}</div> : null}
+                <div
+                    className={styles.logo_container}
+                    style={{ backgroundColor: backgroundColor || 'white' }}
+                >
+                    {fallbackImg ?
+                        <div className={styles.fallback_img}>{fallbackImg}</div>
+                        :
+                        <img
+                            className={styles.logo}
+                            loading='eager'
+                            src={iconPath}
+                            alt={`${name} logo`}
+                            onError={() => setFallbackImg(name)}
+                        />
+                    }
+                </div>
+                <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
+                <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
             </div>
-            <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
-            <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
-        </div>
+            <Popup
+                open={isOpen}
+                closeFn={() => setIsOpen(false)}
+            >
+                <div className={styles.popup}>
+                    <div
+                        className={styles.logo_container}
+                        style={{ backgroundColor: backgroundColor || 'white' }}
+                    >
+                        {fallbackImg ?
+                            <div className={styles.fallback_img}>{fallbackImg}</div>
+                            :
+                            <img
+                                className={styles.logo}
+                                loading='eager'
+                                src={iconPath}
+                                alt={`${name} logo`}
+                                onError={() => setFallbackImg(name)}
+                            />
+                        }
+                    </div>
+                    <div className={styles.details}>
+                        <div>Shop at {name}</div>
+                        <div className={styles.cashback_rate}>
+                            Up to {cashback} cashback
+                        </div>
+                    </div>
+                    <button className={styles.start_btn}>Start shopping</button>
+                    <div className={styles.consent_txt}>
+                        By clicking Start Shopping, I accept the terms above.
+                    </div>
+                </div>
+            </Popup>
+        </>
     )
 }
 

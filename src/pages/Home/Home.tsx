@@ -8,23 +8,32 @@ import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+import { useLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
+import checkCountryAvailability from '../../api/checkCountryAvailability'
 
 const Home = () => {
+    const { platform } = useLoaderData() as LoaderData
+    const [searchParams] = useSearchParams();
+    const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
     const paginationRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
 
+    const { data: isAvailable } = useQuery({
+        queryKey: ['is-available'],
+        queryFn: () => checkCountryAvailability({ country, platform })
+    })
+
     const { data: categoriesSearch } = useQuery({
-        queryFn: () => getFilters(),
+        queryFn: () => getFilters({ country, platform }),
         queryKey: ["categories-search"],
-        // enabled: !!isAvailable?.isAvailable,
     })
 
     const {
@@ -40,9 +49,10 @@ const Home = () => {
                 type: "all",
                 pageSize: 25,
                 page: typeof pageParam === "number" ? pageParam : undefined,
+                platform
             }
-            //   if (queryParams.country)
-            //     options.country = queryParams.country.toUpperCase()
+
+            if (country) options.country = country
             if (category?.id) options.category = category.id
             if (search?.value) options.search = search.value
             return await fetchRetailers(options)
@@ -50,7 +60,6 @@ const Home = () => {
         getNextPageParam: (lastPage) => {
             return lastPage.nextPageNumber
         },
-        // enabled: !!isAvailable?.isAvailable,
         initialPageParam: 0,
     })
 
@@ -62,8 +71,6 @@ const Home = () => {
 
     const scrollToTop = () => {
         if (scrollRef.current) {
-            console.log('here');
-
             scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
@@ -94,6 +101,16 @@ const Home = () => {
             value: term,
             label: term,
         })) ?? []
+
+    if (isAvailable === false) {
+        return (
+            <div className={styles.not_available_container}>
+                <h1 className={styles.not_available}>
+                    This service is not available in your country for now.
+                </h1>
+            </div>
+        )
+    }
 
     return (
         <div className={styles.container}>
@@ -130,7 +147,7 @@ const Home = () => {
                         }</div>
                     </div>
                     <Categories
-                        categories={categories}
+                        categories={[...categories, { id: -1, name: 'Something' }, { id: 41, name: 'Something' }]}
                         category={category}
                         onClickFn={(cat) => changeCategory(cat)}
                     />

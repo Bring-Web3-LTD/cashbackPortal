@@ -5,6 +5,7 @@ interface Body {
     walletAddress: string
     tokenSymbol: string
     search?: string
+    platform: string
 }
 
 interface Response {
@@ -15,7 +16,7 @@ interface Response {
 const activate = async (body: Body): Promise<Response> => {
     const res = await fetch(`${API_URL}activate`, {
         method: "POST",
-        body: JSON.stringify({ ...body, platform: 'yoroi' }),
+        body: JSON.stringify(body),
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",
