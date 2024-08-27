@@ -77,7 +77,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     }),
     menu: (base) => ({
         ...base,
-        backgroundColor: "#071317",
+        backgroundColor: "#192749",
         color: "rgba(255, 255, 255, 0.60)",
         border: "1.5px solid rgba(255, 255, 255, 0.3)",
         borderRadius: "10px",
@@ -89,7 +89,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         backgroundColor: state.isFocused
             ? "rgba(255, 255, 255, 0.3)"
             : state.isSelected
-                ? "#071317"
+                ? "#192749"
                 : base.backgroundColor,
         "&:active": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
         color: "white",

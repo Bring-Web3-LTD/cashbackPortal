@@ -70,3 +70,28 @@
     border-top-left-radius: var(--retailer-card-flag-radius);
     border-bottom-left-radius: var(--retailer-card-flag-radius);
 }
+
+.skeleton,
+.skeleton_logo,
+.skeleton_retailer_name,
+.skeleton_cashback_rate {
+    background: var(--retailer-card-amount-bg);
+}
+
+.skeleton_logo {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+}
+
+.skeleton_retailer_name {
+    width: 55px;
+    height: 19px;
+    border-radius: 20px;
+}
+
+.skeleton_cashback_rate {
+    width: 117px;
+    height: 25px;
+    border-radius: 20px;
+}

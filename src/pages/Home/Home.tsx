@@ -17,7 +17,8 @@ import getFilters from '../../api/getFilters'
 const Home = () => {
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
-    const paginationRef = useRef(null)
+    const paginationRef = useRef<HTMLDivElement>(null)
+    const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch } = useQuery({
@@ -29,9 +30,9 @@ const Home = () => {
     const {
         data: retailers,
         fetchNextPage,
-        // isFetching,
+        isFetching,
         isFetchingNextPage,
-        // isLoading: isLoadingRetailers,
+        isLoading: isLoadingRetailers,
     } = useInfiniteQuery({
         queryKey: ["retailers", category, search],
         queryFn: async ({ pageParam }) => {
@@ -59,17 +60,28 @@ const Home = () => {
         }
     }, [isVisible])
 
+    const scrollToTop = () => {
+        if (scrollRef.current) {
+            console.log('here');
+
+            scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
     const changeSearch = (searchTerm: ReactSelectOptionType) => {
+        scrollToTop()
         setSearch(searchTerm)
         setCategory(null)
     }
 
     const changeCategory = (cat: Category) => {
+        scrollToTop()
         setCategory(cat)
         setSearch(null)
     }
 
     const resetFilters = () => {
+        scrollToTop()
         setCategory(null)
         setSearch(null)
     }
@@ -86,46 +98,52 @@ const Home = () => {
     return (
         <div className={styles.container}>
             <Header />
-            <main className={styles.main}>
+            <main ref={scrollRef} className={styles.main}>
                 <Rewards />
-                <div className={styles.search_section}>
-                    <div className={styles.search_container}>
-                        <Search
-                            options={searchTerms}
-                            value={search}
-                            onChangeFn={(item) => changeSearch(item)}
-                        />
-                        <AnimatePresence>
-                            {search?.value || category?.name ?
-                                <motion.button
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className={styles.filter}
-                                    onClick={resetFilters}
-                                >
-                                    <span>{search?.value || category?.name}</span>
-                                    <img src="/icons/x-mark.svg" alt="x-icon" />
-                                </motion.button>
-                                : null}
-                        </AnimatePresence>
+                <div className={styles.filters_section}>
+                    <div className={styles.search_section}>
+                        <div className={styles.search_container}>
+                            <Search
+                                options={searchTerms}
+                                value={search}
+                                onChangeFn={(item) => changeSearch(item)}
+                            />
+                            <AnimatePresence>
+                                {search?.value || category?.name ?
+                                    <motion.button
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        className={styles.filter}
+                                        onClick={resetFilters}
+                                    >
+                                        <span>{search?.value || category?.name}</span>
+                                        <img src="/icons/x-mark.svg" alt="x-icon" />
+                                    </motion.button>
+                                    : null}
+                            </AnimatePresence>
+                        </div>
+                        <div className={styles.deals_amount}>{
+                            isLoadingRetailers ? "Searching for deals..." :
+                                `Showing ${retailersMetadata?.totalItems} deals`
+                        }</div>
                     </div>
-                    <div className={styles.deals_amount}>Showing 528 deals</div>
+                    <Categories
+                        categories={categories}
+                        category={category}
+                        onClickFn={(cat) => changeCategory(cat)}
+                    />
                 </div>
-                <Categories
-                    categories={categories}
-                    category={category}
-                    onClickFn={(cat) => changeCategory(cat)}
-                />
                 <CardsList
+                    loading={isFetching && !retailersList.length}
                     retailers={retailersList}
                     metadata={retailersMetadata}
                 />
                 <div
                     className={styles.load}
                     ref={paginationRef}
-                >Loading</div>
+                >{isFetchingNextPage ? "Loading..." : ''}</div>
             </main>
         </div>
     )

@@ -11,6 +11,17 @@
     gap: 24px;
 }
 
+.filters_section {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: var(--bg);
+}
+
 .search_section {
     margin-top: 18px;
     width: 100%;
