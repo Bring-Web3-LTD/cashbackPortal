@@ -23,7 +23,7 @@ interface Response {
 const fetchRetailers = async (body: Body): Promise<Response> => {
     const res = await fetch(`${API_URL}retailers`, {
         method: "POST",
-        body: JSON.stringify({ ...body, platform: 'yoroi' }),
+        body: JSON.stringify({ ...body, platform: 'yoroi', country: 'us' }),
         mode: "cors",
         headers: {
             "x-api-key": API_KEY,

@@ -99,7 +99,8 @@
 body {
   background: var(--bg);
   margin: 0;
-  overflow-x: hidden;
+  /* For always having scrollbar */
+  min-height: calc(100vh + 1px);
 }
 
 .gradient_text {
