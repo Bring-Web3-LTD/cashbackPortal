@@ -1,68 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --bg: #09132C;
+  --header-bg: #09132C;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --title-f-s: 30px;
+  --title-f-w: 700;
+  --title-f-c: #fff;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --subtitle-f-s: 20px;
+  --subtitle-f-w: 500;
+  --subtitle-f-c: #FFFFFFBF;
+
+  --header-btn-bg: transparent;
+  --header-btn-f-s: 14px;
+  --header-btn-f-w: 500;
+  --header-btn-f-c: #88AAFA;
+  --header-btn-border-w: 2px;
+  --header-btn-border-c: #88AAFA;
+
+  --rewards-bg: #263C72;
+
+  --reward-type-f-s: 18px;
+  --reward-type-f-w: 700;
+  --reward-type-f-c: #fff;
+
+  --reward-usd-amount-f-s: 12px;
+  --reward-usd-amount-f-w: 500;
+  --reward-usd-amount-f-c: #88AAFA;
+
+  --amount-claim-pending-f-s: 40px;
+  --amount-claim-pending-f-w: 700;
+
+  --amount-claim-f-c: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+
+  --amount-pending-f-c: #C7D7FF;
+
+  --rewards-btn-f-s: 16px;
+  --rewards-btn-f-w: 600;
+  --rewards-btn-radius: 8px;
+
+  --claim-btn-f-c: #09132C;
+  --claim-btn-border-c: transparent;
+  --claim-btn-border-w: 0;
+  --claim-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+
+  --pending-btn-f-c: #88AAFA;
+  --pending-btn-border-c: #88AAFA;
+  --pending-btn-border-w: 2px;
+  --pending-btn-bg: transparent;
+
+  --retailer-card-bg: #192749;
+  --retailer-card-border-w: 0;
+  --retailer-card-border-color: transparent;
+
+  --retailer-card-flag-f-s: 13px;
+  --retailer-card-flag-f-w: 600;
+  --retailer-card-flag-f-c: #fff;
+  --retailer-card-flag-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --retailer-card-flag-radius: 12px;
+
+  --retailer-card-name-color: #FFF;
+
+  --retailer-card-amount-f-s: 11px;
+  --retailer-card-amount-f-c: #E16BFF;
+  --retailer-card-amount-f-w: 600;
+  --retailer-card-amount-bg: #09132C;
+
+  --deals-amount-f-s: 18px;
+  --deals-amount-f-w: 700;
+  --deals-amount-f-c: #fff;
+
+  --loading-msg-f-s: 12px;
+  --loading-msg-f-w: 500;
+  --loading-msg-f-c: #fff;
+
+  --filter-btn-f-s: 14px;
+  --filter-btn-f-w: 500;
+  --filter-btn-f-c: #E7E7E7;
+  --filter-btn-bg: #9BAFB226;
+  --filter-btn-border-w: 0;
+  --filter-btn-border-c: transparent;
+
+  --category-btn-bg: none;
+  --category-btn-f-s: 14px;
+  --category-btn-f-w: 400;
+  --category-btn-f-c: #C7D7FF;
+  --category-btn-f-border-w: 1px;
+  --category-btn-f-border-c: #C7D7FF80;
+  --category-btn-clicked-bg: #C7D7FF;
+  --category-btn-clicked-f-c: #09132C;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  font-family: "Rubik", sans-serif;
 }
 
 body {
+  background: var(--bg);
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.gradient_text {
+  background-clip: text;
+  color: transparent;
 }
