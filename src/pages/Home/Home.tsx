@@ -147,7 +147,7 @@ const Home = () => {
                         }</div>
                     </div>
                     <Categories
-                        categories={[...categories, { id: -1, name: 'Something' }, { id: 41, name: 'Something' }]}
+                        categories={categories}
                         category={category}
                         onClickFn={(cat) => changeCategory(cat)}
                     />
@@ -156,6 +156,7 @@ const Home = () => {
                     loading={isFetching && !retailersList.length}
                     retailers={retailersList}
                     metadata={retailersMetadata}
+                    search={search}
                 />
                 <div
                     className={styles.load}

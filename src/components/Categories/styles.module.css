@@ -42,8 +42,9 @@
 
 .arrow {
     background: none;
-    border: 1px solid #fff;
+    border: none;
     border-radius: 12px;
+    outline: none;
     color: #fff;
     cursor: pointer;
     font-size: 30px;
@@ -56,4 +57,16 @@
 
 .arrow_left {
     box-shadow: 8px 0px 20px 20px var(--bg);
+}
+
+@media screen and (max-width: 1190px) {
+    .container {
+        width: 931px;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .container {
+        width: 695px;
+    }
 }

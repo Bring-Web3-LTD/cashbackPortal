@@ -37,9 +37,9 @@ const Popup = ({ children, open, closeFn }: Props) => {
             {open && (
                 <div className={styles.overlay} onClick={handleOverlayClick}>
                     <motion.div
-                        initial={{ opacity: 0, y: 200, scale: 0.7 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 200, scale: 0.7 }}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2, ease: 'easeInOut' }}
                         className={styles.popup}
                     >

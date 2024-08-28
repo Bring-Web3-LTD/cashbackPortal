@@ -25,6 +25,7 @@ interface Category {
 interface LoaderData {
     walletAddress: string
     platform: string
+    cryptoSymbols: string[]
 }
 
 
