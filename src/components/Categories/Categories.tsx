@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import useWindowSize from '../../utils/hooks/useWindowSize';
 
 interface Props {
     categories: Category[];
@@ -8,8 +9,25 @@ interface Props {
     onClickFn: (category: Category) => void;
 }
 
+const sizes = [
+    [1190, 10],
+    [990, 8],
+    [300, 6]
+]
+
 const Categories = ({ categories, category, onClickFn }: Props) => {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const [maxCategories, setMaxCategories] = useState(10)
+    const view = useWindowSize()
+
+    useEffect(() => {
+        for (const item of sizes) {
+            if (view.width >= item[0]) {
+                setMaxCategories(item[1])
+                break
+            }
+        }
+    }, [view.width])
 
     const scrollLeft = (): void => {
         if (scrollRef.current) {
@@ -28,7 +46,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         onSwipedRight: () => scrollLeft(),
     });
 
-    if (categories.length <= 10) {
+    if (categories.length <= maxCategories) {
         return (
             <div className={styles.container}>
                 {categories.map(cat => (
@@ -59,6 +77,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
             >
                 {categories.map(cat => (
                     <button
+                        onClick={() => onClickFn(cat)}
                         key={cat.id}
                         className={`${styles.category} ${cat === category ? styles.selected : ''}`}
                     >

@@ -71,6 +71,69 @@
     border-bottom-left-radius: var(--retailer-card-flag-radius);
 }
 
+.popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 80%;
+}
+
+.full {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.details {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.markdown {
+    color: #88AAFA;
+    background: #263C72;
+    border-radius: 12px;
+    height: 325px;
+    font-size: 14px;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.markdown p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.markdown p strong,
+.markdown h3 {
+    color: #fff;
+}
+
+.start_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--claim-btn-bg);
+    color: var(--claim-btn-f-c);
+    font-weight: 600;
+    height: 48px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.consent_txt {
+    color: #fff;
+    font-size: 12px;
+}
+
 .skeleton,
 .skeleton_logo,
 .skeleton_retailer_name,

@@ -1,5 +1,10 @@
 import { API_URL, API_KEY } from "../config"
 
+interface Options {
+    country?: string
+    platform: string
+}
+
 interface Response {
     categories: {
         items: [
@@ -15,10 +20,10 @@ interface Response {
     }
 }
 
-const getFilters = async (country?: string): Promise<Response> => {
+const getFilters = async ({ country, platform }: Options): Promise<Response> => {
     const devCheck = country ? `&country=${country.toUpperCase()}` : ""
 
-    const res = await fetch(`${API_URL}categories-search?platform=yoroi${devCheck}`, {
+    const res = await fetch(`${API_URL}categories-search?platform=${platform}${devCheck}`, {
         method: "GET",
         headers: {
             "x-api-key": API_KEY,

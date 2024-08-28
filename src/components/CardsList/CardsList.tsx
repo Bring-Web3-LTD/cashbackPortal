@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import RetailerCard from '../RetailerCard/RetailerCard'
 import RetailerCardSkeleton from '../RetailerCard/RetailerCardSkeleton'
+import { useEffect, useState } from 'react'
 
 interface Metadata {
     iconQueryParam: string
@@ -13,9 +14,19 @@ interface Props {
     retailers: Retailer[]
     metadata: Metadata | undefined
     loading: boolean
+    search: ReactSelectOptionType | null
 }
 
-const CardsList = ({ retailers, metadata, loading }: Props) => {
+const CardsList = ({ retailers, metadata, loading, search }: Props) => {
+    const [generalTerms, setGeneralTerms] = useState('')
+
+    useEffect(() => {
+        if (!metadata?.generalTermsUrl || generalTerms.length) return
+
+        fetch(metadata.generalTermsUrl)
+            .then(res => res.text())
+            .then(data => setGeneralTerms(data))
+    }, [metadata?.generalTermsUrl])
 
     if (loading || !metadata) {
         return (
@@ -26,6 +37,7 @@ const CardsList = ({ retailers, metadata, loading }: Props) => {
             </div>
         )
     }
+
     return (
         <div className={styles.container}>
             {retailers.map(retailer =>
@@ -33,6 +45,9 @@ const CardsList = ({ retailers, metadata, loading }: Props) => {
                     key={retailer.id}
                     {...retailer}
                     {...metadata}
+                    search={search}
+                    generalTerms={generalTerms}
+                    termsUrl={`${metadata.retailerTermsBasePath}${retailer.termsPath}`}
                     iconPath={`${metadata.retailerIconBasePath}${retailer.iconPath}${metadata.iconQueryParam}`}
                 />
             )}
