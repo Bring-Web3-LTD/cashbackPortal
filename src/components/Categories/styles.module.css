@@ -35,9 +35,15 @@
     transition: .2s;
 }
 
+.category:hover {
+    color: var(--category-btn-clicked-f-c);
+    background: var(--category-btn-clicked-bg);
+}
+
 .selected {
     color: var(--category-btn-clicked-f-c);
     background: var(--category-btn-clicked-bg);
+    font-weight: var(--category-btn-clicked-f-w);
 }
 
 .arrow {

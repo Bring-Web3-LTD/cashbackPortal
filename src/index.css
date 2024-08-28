@@ -16,7 +16,7 @@
   --header-btn-f-s: 14px;
   --header-btn-f-w: 500;
   --header-btn-f-c: #88AAFA;
-  --header-btn-border-w: 2px;
+  --header-btn-border-w: 1px;
   --header-btn-border-c: #88AAFA;
 
   --rewards-bg: #263C72;
@@ -90,6 +90,7 @@
   --category-btn-f-border-c: #C7D7FF80;
   --category-btn-clicked-bg: #C7D7FF;
   --category-btn-clicked-f-c: #09132C;
+  --category-btn-clicked-f-w: 600;
 }
 
 * {

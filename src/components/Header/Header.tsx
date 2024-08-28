@@ -16,8 +16,8 @@ const Header = () => {
                 open={isOpen}
                 closeFn={() => setIsOpen(false)}
             >
-                <div style={{ color: 'white', maxWidth: '400px', marginTop: '30px', padding: '0 40px' }}>
-                    <h2>How it works</h2>
+                <div style={{ color: 'white', maxWidth: '400px' }}>
+                    <h2 style={{ marginTop: '0' }}>How it works</h2>
                     <p>
                         Search for your favorite items and brands, browse through
                         various categories, or explore our top brands to find exactly

@@ -129,10 +129,16 @@ const RetailerCard = ({
                             </div>
                         </div>
                     </div>
-                    <Markdown className={styles.markdown}>
-                        {`${terms}${generalTerms}`}
-                    </Markdown>
-                    {redirectLink ?
+                    {terms ?
+                        <Markdown className={styles.markdown}>
+                            {`${terms}${generalTerms}`}
+                        </Markdown>
+                        :
+                        <div className={`${styles.markdown} ${styles.center}`}>
+                            Loading...
+                        </div>
+                    }
+                    {redirectLink && terms ?
                         <a
                             className={styles.start_btn}
                             onClick={() => setPopupStatus('close')}
