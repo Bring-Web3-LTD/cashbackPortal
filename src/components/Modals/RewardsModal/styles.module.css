@@ -1,0 +1,87 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.claim_amount {
+    width: 100%;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    background: var(--amount-claim-f-c);
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 20px;
+}
+
+.details {
+    --padding: 16px;
+    width: calc(100% - var(--padding) * 2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #263C72;
+    padding: var(--padding);
+    border-radius: 12px;
+}
+
+.wallet_address_title {
+    color: white;
+    margin-left: 4px;
+    margin-bottom: 20px;
+}
+
+.wallet_address {
+    background: white;
+    word-wrap: break-word;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.disclaimer {
+    color: #88AAFA;
+    font-size: 14px;
+}
+
+.modal_img {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    width: 22px;
+    height: 20px;
+}
+
+.sml_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    text-wrap: nowrap;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sign_btn {
+    width: 100%;
+    background: var(--claim-btn-bg);
+    color: var(--claim-btn-f-c);
+    border-width: var(--claim-btn-border-w);
+    border-color: var(--claim-btn-border-c);
+    height: 48px;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.disabled {
+    background: gray;
+}

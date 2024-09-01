@@ -213,7 +213,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                         e.label.includes(" ") &&
                         !e.label.toLowerCase().startsWith(input)
                     ) {
-                        let words = e.label.toLowerCase().split(/\s+/)
+                        const words = e.label.toLowerCase().split(/\s+/)
                         if (words.some((word: string) => word.startsWith(input))) {
                             notFirstWordMatches.push(e)
                         }

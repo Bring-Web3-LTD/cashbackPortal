@@ -1,14 +1,15 @@
 import styles from './styles.module.css'
 import fetchCache from '../../api/fetchCache'
 
-import { useLoaderData } from 'react-router-dom'
+import { useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import Popup from '../Popup/Popup'
+import RewardsModal from '../Modals/RewardsModal/RewardsModal'
 import { useState } from 'react'
 
 const Rewards = () => {
-    const { walletAddress, platform } = useLoaderData() as LoaderData
-    const [popupStatus, setPopupStatus] = useState('close')
+    const navigate = useNavigate()
+    const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
+    const [modalState, setModalState] = useState('close')
 
     const { data: balance } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform }),
@@ -40,7 +41,7 @@ const Rewards = () => {
                 currency: "USD",
             },
         ) || "0"
-    const currentCryptoSymbol = balance?.data?.totalPendings[0]?.tokenSymbol
+    const currentCryptoSymbol = balance?.data?.totalPendings[0]?.tokenSymbol || ''
     // const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold
 
     return (
@@ -56,7 +57,7 @@ const Rewards = () => {
                 </div>
                 <button
                     className={`${styles.btn} ${styles.claim_btn}`}
-                    onClick={() => setPopupStatus('open')}
+                    onClick={() => setModalState('open')}
                 >
                     Claim cashback
                 </button>
@@ -70,33 +71,19 @@ const Rewards = () => {
                         <div className={styles.usd_amount}>Total value: {pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
-                <button className={`${styles.btn} ${styles.pending_btn}`}>View rewards</button>
+                <button
+                    className={`${styles.btn} ${styles.pending_btn}`}
+                    onClick={() => navigate('/history')}
+                >
+                    View rewards
+                </button>
             </div>
-            <Popup
-                open={popupStatus !== 'close'}
-                closeFn={() => setPopupStatus('close')}
-            >
-                <div className={styles.popup}>
-                    <div className={styles.title}>Claim to your wallet</div>
-                    <div className={styles.claim_amount}>{eligibleTokenAmount} {currentCryptoSymbol}</div>
-                    <div className={styles.details}>
-                        <div className={styles.wallet_address_title}>Wallet address</div>
-                        <div className={styles.wallet_address}>{walletAddress}</div>
-                        <p className={styles.disclaimer}>
-                            By proceeding you acknowledge that we are not liable for any token loss during this onboarding process
-                        </p>
-                    </div>
-                    <img
-                        src="icons/claim.svg"
-                        className={styles.popup_img}
-                        alt="claim icon"
-                    />
-                    <div className={styles.sml_text}>Click "Sign now" and sign the message received on your wallet</div>
-                    <button className={styles.sign_btn}>
-                        Sign now
-                    </button>
-                </div>
-            </Popup>
+            <RewardsModal
+                open={modalState !== 'close'}
+                closeFn={() => setModalState('close')}
+                eligibleTokenAmount={eligibleTokenAmount}
+                currentCryptoSymbol={currentCryptoSymbol}
+            />
         </div>
     )
 }

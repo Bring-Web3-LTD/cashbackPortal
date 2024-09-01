@@ -1,4 +1,4 @@
-import { API_URL, API_KEY } from "../config"
+import { API_URL_PLATFORMS, API_KEY } from "../config"
 
 interface Body {
     walletAddress: string | undefined
@@ -20,7 +20,7 @@ interface Response {
 
 const fetchCache = async (body: Body): Promise<Response> => {
     body.type = "aggregated"
-    const res = await fetch(`${API_URL}cache`, {
+    const res = await fetch(`${API_URL_PLATFORMS}cache`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {

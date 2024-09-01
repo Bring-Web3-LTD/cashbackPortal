@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import Popup from '../Popup/Popup'
+import Modal from '../Modal/Modal'
 import { useState } from 'react'
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
                 className={styles.btn}
                 onClick={() => setIsOpen(true)}
             >How it works</button>
-            <Popup
+            <Modal
                 open={isOpen}
                 closeFn={() => setIsOpen(false)}
             >
@@ -44,7 +44,7 @@ const Header = () => {
                         highly rewarding.
                     </p>
                 </div>
-            </Popup>
+            </Modal>
         </div>
     )
 }

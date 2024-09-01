@@ -1,4 +1,4 @@
-import { API_KEY, API_URL } from "../config"
+import { API_KEY, API_URL_PLATFORMS } from "../config"
 
 interface Options {
     country?: string
@@ -8,7 +8,7 @@ interface Options {
 const checkCountryAvailability = async ({ country, platform }: Options): Promise<boolean> => {
     const devCheck = country ? `&country=${country.toUpperCase()}` : ""
 
-    const result = await fetch(`${API_URL}check-availability?platform=${platform}${devCheck}`, {
+    const result = await fetch(`${API_URL_PLATFORMS}check-availability?platform=${platform}${devCheck}`, {
         method: "GET",
         headers: {
             "x-api-key": API_KEY,

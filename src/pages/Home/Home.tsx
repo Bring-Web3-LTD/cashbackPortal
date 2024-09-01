@@ -8,7 +8,7 @@ import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-import { useLoaderData, useSearchParams } from 'react-router-dom'
+import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
@@ -17,7 +17,7 @@ import getFilters from '../../api/getFilters'
 import checkCountryAvailability from '../../api/checkCountryAvailability'
 
 const Home = () => {
-    const { platform } = useLoaderData() as LoaderData
+    const { platform } = useRouteLoaderData('root') as LoaderData
     const [searchParams] = useSearchParams();
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)

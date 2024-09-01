@@ -33,6 +33,7 @@
     cursor: pointer;
     border-radius: 30px;
     transition: .2s;
+    user-select: none;
 }
 
 .category:hover {
