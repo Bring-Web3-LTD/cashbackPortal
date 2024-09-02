@@ -51,8 +51,8 @@ const Rewards = () => {
                     <img className={styles.icon} src="/icons/gift.svg" alt="gift icon" />
                     <div className={`${styles.amount} ${styles.amount_claim}`}>{eligibleTokenAmount}</div>
                     <div>
-                        <div className={styles.reward_type}>Ready to claim</div>
-                        <div className={styles.usd_amount}>Total value: {eligibleTotalEstimatedUsd}</div>
+                        <div className={`${styles.rewards_text} ${styles.claim_text}`}>Ready to claim</div>
+                        <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>Total value: {eligibleTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button
@@ -67,8 +67,8 @@ const Rewards = () => {
                     <img className={styles.icon} src="/icons/coins.svg" alt="coins icon" />
                     <div className={`${styles.amount} ${styles.amount_pending}`}>{pendingTokenAmount}</div>
                     <div>
-                        <div className={styles.reward_type}>Pending rewards</div>
-                        <div className={styles.usd_amount}>Total value: {pendingTotalEstimatedUsd}</div>
+                        <div className={`${styles.rewards_text} ${styles.pending_text}`}>Pending rewards</div>
+                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Total value: {pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button

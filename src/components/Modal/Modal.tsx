@@ -2,6 +2,7 @@ import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
 
+
 interface Props {
     children: ReactNode
     open: boolean
@@ -24,13 +25,18 @@ const Modal = ({ children, open, closeFn }: Props) => {
         };
 
         if (open) {
+            document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
+        } else {
+            document.body.classList.remove('no_scroll');
         }
 
         return () => {
+            document.body.classList.remove('no_scroll');
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [open, closeFn]);
+
 
     return (
         <AnimatePresence>

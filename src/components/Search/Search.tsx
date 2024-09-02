@@ -24,18 +24,28 @@ interface Props {
 }
 
 const customStyles: StylesConfig<ReactSelectOptionType> = {
-    control: (base) => ({
+    control: (base, state) => ({
         ...base,
-        border: "1px solid #FFFFFFBF",
-        borderRadius: "25px",
+        border: "var(--search-border-w) solid var(--search-border-c)",
+        borderBottom: state.menuIsOpen ? "none" : "1px solid var(--search-border-c)",
+        borderRadius: "var(--search-radius)",
+        borderBottomLeftRadius: state.menuIsOpen ? 0 : "var(--search-radius)",
+        borderBottomRightRadius: state.menuIsOpen ? 0 : "var(--search-radius)",
         alignContent: "center",
-        "&:hover": { border: "1px solid white" },
-        backgroundColor: "var(--bg)",
-        color: "rgba(255, 255, 255)",
+        "&:hover": {
+            border: state.menuIsOpen ?
+                "var(--search-border-w) solid var(--search-border-c)" :
+                "var(--search-border-w) solid white",
+            borderBottom: state.menuIsOpen ?
+                "none" :
+                "var(--search-border-w) solid var(--search-border-c)",
+        },
+        backgroundColor: "var(--search-bg)",
         width: "438px",
         height: "48px",
         padding: "4px 8px 4px 12px",
-        fontSize: "16px",
+        fontSize: "var(--search-f-s)",
+        fontWeight: "var(--search-f-w)",
         cursor: "text",
         boxShadow: "none",
         outline: "none !important",
@@ -51,13 +61,13 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         ...base,
         paddingTop: 0,
         paddingBottom: 0,
-        "&:first-of-type": {
-            borderTopLeftRadius: "10px",
-            borderTopRightRadius: "10px",
-        },
+        // "&:first-of-type": {
+        //     borderTopLeftRadius: "10px",
+        //     borderTopRightRadius: "10px",
+        // },
         "&:last-child": {
-            borderBottomLeftRadius: "10px",
-            borderBottomRightRadius: "10px",
+            borderBottomLeftRadius: "var(--search-radius)",
+            borderBottomRightRadius: "var(--search-radius)",
         },
         "::-webkit-scrollbar": {
             width: "10px",
@@ -77,31 +87,35 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     }),
     menu: (base) => ({
         ...base,
-        backgroundColor: "#192749",
-        color: "rgba(255, 255, 255, 0.60)",
-        border: "1.5px solid rgba(255, 255, 255, 0.3)",
-        borderRadius: "10px",
-        fontSize: "16px",
+        marginTop: 0,
+        backgroundColor: "var(--search-bg)",
+        border: "var(--search-border-w) solid var(--search-border-c)",
+        borderTop: "none",
+        borderBottomLeftRadius: "var(--search-radius)",
+        borderBottomRightRadius: "var(--search-radius)",
+        fontSize: "var(--search-f-s)",
         zIndex: 10,
     }),
     option: (base, state) => ({
         ...base,
+        fontWeight: "var(--search-f-w)",
         backgroundColor: state.isFocused
-            ? "rgba(255, 255, 255, 0.3)"
+            ? "var(--search-option-hover-bg)"
             : state.isSelected
-                ? "#192749"
+                ? "var(--search-bg)"
                 : base.backgroundColor,
-        "&:active": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
-        color: "white",
+        "&:active": { backgroundColor: "var(--search-option-hover-bg)" },
+        color: "var(--search-option-f-c)",
+        paddingLeft: '40px',
     }),
     input: (base) => ({
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
-        color: "white",
+        color: "var(--search-f-c)",
     }),
-    singleValue: (base) => ({
+    placeholder: (base) => ({
         ...base,
-        color: "white",
+        color: 'var(--search-placeholder-f-c)'
     }),
 }
 

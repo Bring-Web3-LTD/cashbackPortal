@@ -6,9 +6,9 @@
 }
 
 .title {
-    color: white;
-    font-weight: 700;
-    font-size: 20px;
+    font-size: var(--modal-title-f-s);
+    font-weight: var(--modal-title-f-w);
+    color: var(--modal-title-f-c);
     margin-bottom: 20px;
     width: 100%;
 }
@@ -18,7 +18,7 @@
     font-size: 40px;
     font-weight: 700;
     letter-spacing: -1px;
-    background: var(--amount-claim-f-c);
+    background: var(--claim-amount-f-c);
     background-clip: text;
     color: transparent;
     margin-bottom: 20px;
@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #263C72;
+    background: #09132C;
     padding: var(--padding);
     border-radius: 12px;
 }
@@ -49,8 +49,9 @@
 }
 
 .disclaimer {
-    color: #88AAFA;
+    color: rgba(255, 255, 255, 0.60);
     font-size: 14px;
+    margin-left: 12px;
 }
 
 .modal_img {
@@ -71,14 +72,14 @@
 
 .sign_btn {
     width: 100%;
-    background: var(--claim-btn-bg);
-    color: var(--claim-btn-f-c);
-    border-width: var(--claim-btn-border-w);
-    border-color: var(--claim-btn-border-c);
+    background: var(--primary-btn-bg);
+    font-size: var(--primary-btn-f-s);
+    font-weight: var(--primary-btn-f-w);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
     height: 48px;
-    font-weight: 700;
-    font-size: 16px;
-    border-radius: 12px;
     cursor: pointer;
 }
 

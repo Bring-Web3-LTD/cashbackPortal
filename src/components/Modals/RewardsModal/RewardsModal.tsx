@@ -14,14 +14,14 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     currentCryptoSymbol: string
 }
 
-enum STEPS {
-    SIGN_MESSAGE = 'sign_message'
-}
+// enum STEPS {
+//     SIGN_MESSAGE = 'sign_message'
+// }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
     const { platform, walletAddress } = useRouteLoaderData('root') as LoaderData
 
-    const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
+    // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
     const [loading, setLoading] = useState(false)
     const [countDown, setCountDown] = useState(false)
 

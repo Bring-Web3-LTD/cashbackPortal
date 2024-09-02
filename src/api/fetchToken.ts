@@ -26,7 +26,7 @@ const fetchToken = async (body: Body): Promise<Response> => {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...body, platform: 'yoroi' })
+        body: JSON.stringify({ ...body })
     })
     const data = await res.json()
     return data

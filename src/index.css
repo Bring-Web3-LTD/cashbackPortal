@@ -21,29 +21,34 @@
 
   --rewards-bg: #263C72;
 
-  --reward-type-f-s: 18px;
-  --reward-type-f-w: 700;
-  --reward-type-f-c: #fff;
+  --rewards-text-f-s: 18px;
+  --rewards-text-f-w: 700;
+  --claim-text-f-c: #fff;
+  --pending-text-f-c: #fff;
 
-  --reward-usd-amount-f-s: 12px;
-  --reward-usd-amount-f-w: 500;
-  --reward-usd-amount-f-c: #88AAFA;
+  --rewards-usd-f-s: 12px;
+  --rewards-usd-f-w: 500;
+  --claim-usd-f-c: #88AAFA;
+  --pending-usd-f-c: #88AAFA;
 
-  --amount-claim-pending-f-s: 40px;
-  --amount-claim-pending-f-w: 700;
+  --rewards-amount-f-s: 40px;
+  --rewards-amount-f-w: 700;
 
-  --amount-claim-f-c: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --claim-amount-f-c: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
 
-  --amount-pending-f-c: #C7D7FF;
+  --pending-amount-f-c: #C7D7FF;
 
   --rewards-btn-f-s: 16px;
   --rewards-btn-f-w: 600;
   --rewards-btn-radius: 8px;
 
-  --claim-btn-f-c: #09132C;
-  --claim-btn-border-c: transparent;
-  --claim-btn-border-w: 0;
-  --claim-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
+  --primary-btn-f-s: 16px;
+  --primary-btn-f-w: 700;
+  --primary-btn-f-c: #09132C;
+  --primary-btn-radius: 10px;
+  --primary-btn-border-w: 0;
+  --primary-btn-border-c: transparent;
+  --primary-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
 
   --pending-btn-f-c: #88AAFA;
   --pending-btn-border-c: #88AAFA;
@@ -91,6 +96,32 @@
   --category-btn-clicked-bg: #C7D7FF;
   --category-btn-clicked-f-c: #09132C;
   --category-btn-clicked-f-w: 600;
+
+  --modal-bg: #192749;
+  --modal-border-w: 0;
+  --modal-border-c: transparent;
+  --modal-radius: 12px;
+  --modal-title-f-s: 20px;
+  --modal-title-f-w: 700;
+  --modal-title-f-c: white;
+  --modal-paragraph-f-s: 14px;
+  --modal-paragraph-f-w: 400;
+  --modal-paragraph-f-c: white;
+
+  --scrollbar-bg: #fff;
+  --scrollbar-w: 14px;
+
+  --search-bg: #09132C;
+  --search-f-s: 16px;
+  --search-f-w: 400;
+  --search-f-c: white;
+  --search-option-f-c: white;
+  --search-option-hover-bg: rgba(255, 255, 255, 0.3);
+  --search-radius: 25px;
+  --search-border-w: 1px;
+  --search-border-c: #FFFFFFBF;
+  --search-placeholder-f-c: #A6A8AE;
+  --search-scrollbar-bg: white;
 }
 
 * {
@@ -98,13 +129,30 @@
 }
 
 body {
-  background: var(--bg);
   margin: 0;
+  background: var(--bg);
   /* For always having scrollbar */
   min-height: calc(100vh + 1px);
+}
+
+body::-webkit-scrollbar {
+  background: var(--bg);
+  width: var(--scrollbar-w);
+}
+
+body::-webkit-scrollbar-thumb {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: var(--scrollbar-bg);
 }
 
 .gradient_text {
   background-clip: text;
   color: transparent;
+}
+
+.no_scroll {
+  overflow: hidden;
+  margin-right: var(--scrollbar-w);
 }

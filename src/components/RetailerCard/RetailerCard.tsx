@@ -1,10 +1,9 @@
 import styles from './styles.module.css'
 import { useEffect, useState } from 'react'
-import Markdown from 'react-markdown'
 import formatCashback from '../../utils/formatCashback'
-import Modal from '../Modal/Modal'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
+import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -100,7 +99,18 @@ const RetailerCard = ({
                 <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
                 <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
             </div>
-            <Modal
+            <RetailerCardModal
+                open={modalState !== 'close'}
+                closeFn={() => setModalState('close')}
+                backgroundColor={backgroundColor}
+                iconPath={iconPath}
+                name={name}
+                cashback={cashback}
+                terms={terms}
+                generalTerms={generalTerms}
+                redirectLink={redirectLink}
+            />
+            {/* <Modal
                 open={modalState !== 'close'}
                 closeFn={() => setModalState('close')}
             >
@@ -159,7 +169,7 @@ const RetailerCard = ({
                         By clicking Start Shopping, I accept the terms above.
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
         </>
     )
 }
