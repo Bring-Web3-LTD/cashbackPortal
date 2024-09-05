@@ -11,6 +11,8 @@
     color: var(--modal-title-f-c);
     margin-bottom: 20px;
     width: 100%;
+    letter-spacing: -1px;
+    line-height: 24px;
 }
 
 .claim_amount {
@@ -30,27 +32,40 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #09132C;
+    background: var(--modal-claim-details-bg);
     padding: var(--padding);
-    border-radius: 12px;
+    border-width: var(--modal-claim-details-border-w);
+    border-style: solid;
+    border-color: var(--modal-claim-details-border-c);
+    border-radius: var(--modal-claim-details-radius);
 }
 
 .wallet_address_title {
-    color: white;
+    color: var(--modal-claim-address-title-f-c);
+    font-size: var(--modal-claim-address-title-f-s);
+    font-weight: var(--modal-claim-address-title-f-w);
+    margin-top: 4px;
     margin-left: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 
 .wallet_address {
-    background: white;
+    background: var(--modal-claim-address-bg);
+    font-size: var(--modal-claim-address-f-s);
+    font-weight: var(--modal-claim-address-f-w);
+    color: var(--modal-claim-address-f-c);
+    border-width: var(--modal-claim-address-border-w);
+    border-style: solid;
+    border-color: var(--modal-claim-address-border-c);
     word-wrap: break-word;
     padding: 16px;
-    border-radius: 12px;
+    border-radius: var(--modal-claim-address-radius);
 }
 
 .disclaimer {
-    color: rgba(255, 255, 255, 0.60);
-    font-size: 14px;
+    font-size: var(--modal-claim-disclaimer-f-s);
+    font-weight: var(--modal-claim-disclaimer-f-w);
+    color: var(--modal-claim-disclaimer-f-c);
     margin-left: 12px;
 }
 
@@ -62,9 +77,9 @@
 }
 
 .sml_text {
-    font-size: 14px;
-    font-weight: 700;
-    color: white;
+    font-size: var(--modal-claim-tooltip-f-s);
+    font-weight: var(--modal-claim-tooltip-f-w);
+    color: var(--modal-claim-tooltip-f-c);
     text-wrap: nowrap;
     text-align: center;
     margin-bottom: 10px;

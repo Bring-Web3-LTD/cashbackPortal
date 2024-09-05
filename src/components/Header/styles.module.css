@@ -38,4 +38,5 @@
     background: var(--header-btn-bg);
     margin-top: 8px;
     cursor: pointer;
+    outline: none;
 }

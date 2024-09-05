@@ -42,9 +42,11 @@
 }
 
 .retailer_name {
-    color: var(--retailer-card-name-color);
-    font-weight: 500;
+    font-size: var(--retailer-card-name-f-s);
+    font-weight: var(--retailer-card-name-f-w);
+    color: var(--retailer-card-name-f-c);
     white-space: nowrap;
+    line-height: 20.8px;
 }
 
 .cashback_rate {

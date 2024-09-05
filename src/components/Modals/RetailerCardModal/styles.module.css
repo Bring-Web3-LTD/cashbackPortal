@@ -22,14 +22,17 @@
 
 .markdown {
     --padding: 16px;
-    color: #88AAFA;
-    background: #263C72;
-    border-radius: 12px;
+    color: var(--modal-deal-markdown-f-c);
+    background: var(--modal-deal-markdown-bg);
+    border-radius: var(--modal-deal-markdown-radius);
+    border-width: var(--modal-deal-markdown-border-w);
+    border-style: solid;
+    border-color: var(--modal-deal-markdown-border-c);
     height: calc(325px - var(--padding) * 2);
     width: calc(100% - var(--padding) * 2);
     padding: var(--padding);
     overflow-y: auto;
-    font-size: 14px;
+    font-size: var(--modal-deal-markdown-f-s);
 }
 
 .markdown::-webkit-scrollbar {
@@ -51,8 +54,9 @@
 
 .markdown p strong,
 .markdown h3 {
-    font-size: 14px;
-    color: #fff;
+    font-size: var(--modal-deal-markdown-f-s);
+    font-weight: var(--modal-deal-markdown-bold-f-w);
+    color: var(--modal-deal-markdown-bold-f-c);
 }
 
 .center {
@@ -80,8 +84,9 @@
 }
 
 .consent_txt {
-    color: #fff;
-    font-size: 12px;
+    font-size: var(--modal-deal-consent-f-s);
+    font-weight: var(--modal-deal-consent-f-w);
+    color: var(--modal-deal-consent-f-c);
 }
 
 .logo_container {
@@ -97,8 +102,9 @@
 }
 
 .retailer_name {
-    color: var(--retailer-card-name-color);
-    font-weight: 500;
+    color: var(--modal-deal-name-f-s);
+    font-weight: var(--modal-deal-name-f-w);
+    color: var(--modal-deal-name-f-c);
     white-space: nowrap;
 }
 

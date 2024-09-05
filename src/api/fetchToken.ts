@@ -5,17 +5,13 @@ interface Body {
 }
 
 interface Response {
-    categories: {
-        items: [
-            {
-                id: number
-                name: string
-                // iconSvg: string
-            },
-        ]
-    }
-    searchTerms: {
-        items: string[]
+    status: number
+    info: {
+        isCountryAvailable: boolean
+        platform: string
+        cryptoSymbols: string[]
+        walletAddres: string
+        userId: string | undefined
     }
 }
 

@@ -8,6 +8,8 @@
     font-weight: var(--modal-title-f-w);
     color: var(--modal-title-f-c);
     margin: 0;
+    letter-spacing: -1px;
+    line-height: 24px;
 }
 
 .p {

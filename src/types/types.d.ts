@@ -26,6 +26,7 @@ interface LoaderData {
     walletAddress: string
     platform: string
     cryptoSymbols: string[]
+    isCountryAvailable: boolean
 }
 
 

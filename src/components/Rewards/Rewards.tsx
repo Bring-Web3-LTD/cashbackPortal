@@ -17,6 +17,8 @@ const Rewards = () => {
         enabled: !!walletAddress,
     })
 
+    const eligibleTokenNumber = balance?.data?.totalPendings[0]?.tokenAmount || -1
+
     const eligibleTokenAmount =
         balance?.data?.eligible[0]?.tokenAmount?.toLocaleString(undefined, {
             maximumFractionDigits: 2,
@@ -42,7 +44,9 @@ const Rewards = () => {
             },
         ) || "0"
     const currentCryptoSymbol = balance?.data?.totalPendings[0]?.tokenSymbol || ''
-    // const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold
+    const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
+
+    console.log(minimumClaimThreshold);
 
     return (
         <div className={styles.container}>
@@ -58,6 +62,7 @@ const Rewards = () => {
                 <button
                     className={`${styles.btn} ${styles.claim_btn}`}
                     onClick={() => setModalState('open')}
+                    disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold}
                 >
                     Claim cashback
                 </button>

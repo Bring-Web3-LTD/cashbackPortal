@@ -1,4 +1,4 @@
-import { API_URL_PLATFORMS, API_KEY } from "../../config"
+import { API_URL_platformNameS, API_KEY } from "../../config"
 
 interface Body {
     walletAddress: string
@@ -7,11 +7,11 @@ interface Body {
     tokenAmount: number
     signature: string
     message: string
-    platform: string
+    platformName: string
 }
 
 const claimSubmit = async (body: Body) => {
-    const res = await fetch(`${API_URL_PLATFORMS}claim-submit`, {
+    const res = await fetch(`${API_URL_platformNameS}claim-submit`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
