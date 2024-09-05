@@ -13,7 +13,7 @@ const rootLoader = async () => {
     // if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
     // return res.info
     return {
-        walletAddress: '011e8784d9b47de988206dce537b0cc210671cc5ac3483bb887769c13fba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
+        walletAddress: '011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
         platform: 'yoroi',
         cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
         isCountryAvailable: true,
