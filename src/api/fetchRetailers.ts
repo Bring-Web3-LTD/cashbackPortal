@@ -1,4 +1,4 @@
-import { API_KEY, API_URL } from "../config"
+import { API_KEY, API_URL_PLATFORMS } from "../config"
 
 interface Body {
     type: string
@@ -22,7 +22,7 @@ interface Response {
 }
 
 const fetchRetailers = async (body: Body): Promise<Response> => {
-    const res = await fetch(`${API_URL}retailers`, {
+    const res = await fetch(`${API_URL_PLATFORMS}retailers`, {
         method: "POST",
         body: JSON.stringify(body),
         mode: "cors",

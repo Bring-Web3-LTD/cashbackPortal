@@ -1,18 +1,43 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home/Home";
+import { createBrowserRouter } from 'react-router-dom';
+import Layout from './layout/Layout';
+import Home from './pages/Home/Home';
+import History from './pages/History/History';
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+// import fetchToken from './api/fetchToken';
+
+const rootLoader = async () => {
+    // const params = new URLSearchParams(document.location.search)
+    // const token = params.get('token')
+    // if (!token) throw Error('There was an error while loading the page')
+    // const res = await fetchToken({ token });
+    // if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
+    // return res.info
+    return {
+        walletAddress: '011e8784d9b47de988206dce537b0cc210671cc5ac3483bb887769c13fba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
+        platform: 'yoroi',
+        cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
+        isCountryAvailable: true,
+    }
+}
 
 const router = createBrowserRouter([
     {
+        id: "root",
         path: "/",
-        element: <Home />,
-        errorElement: <div>Error</div>,
-        loader: () => ({
-            walletAddress: '011e8784d9b47de988206dce537b0cc210671cc5ac3483bb887769c13fba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
-            platform: 'yoroi',
-            cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
-            isCountryAvailable: true,
-        }),
-    }
-])
+        element: <Layout />,
+        errorElement: <ErrorMessage />,
+        loader: rootLoader,
+        children: [
+            {
+                index: true,
+                element: <Home />,
+            },
+            {
+                path: 'history',
+                element: <History />,
+            },
+        ],
+    },
+]);
 
-export default router
+export default router;

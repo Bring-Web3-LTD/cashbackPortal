@@ -1,10 +1,9 @@
 import styles from './styles.module.css'
 import { useEffect, useState } from 'react'
-import Markdown from 'react-markdown'
 import formatCashback from '../../utils/formatCashback'
-import Popup from '../Popup/Popup'
-import { useLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
+import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -36,10 +35,10 @@ const RetailerCard = ({
     generalTerms,
     search,
 }: Props) => {
-    const { walletAddress, platform, cryptoSymbols } = useLoaderData() as LoaderData
+    const { walletAddress, platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
-    const [popupStatus, setPopupStatus] = useState('close')
+    const [modalState, setModalState] = useState('close')
     const [terms, setTerms] = useState('')
 
     const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
@@ -59,26 +58,26 @@ const RetailerCard = ({
 
         const res = await activate(body)
         setRedirectLink(res.url)
-        setPopupStatus('open')
+        setModalState('open')
     }
 
     useEffect(() => {
-        if (popupStatus === 'loading') {
+        if (modalState === 'loading') {
             activateDeal()
         }
 
-        if (!termsUrl || terms.length || popupStatus === 'close') return
+        if (!termsUrl || terms.length || modalState === 'close') return
 
         fetch(termsUrl)
             .then(res => res.text())
             .then(data => setTerms(data))
-    }, [popupStatus])
+    }, [modalState])
 
     return (
         <>
             <div
                 className={styles.card}
-                onClick={() => setPopupStatus('loading')}
+                onClick={() => setModalState('loading')}
             >
                 {isBig ? <div className={styles.flag}>{cashback}</div> : null}
                 <div
@@ -100,11 +99,22 @@ const RetailerCard = ({
                 <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
                 <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
             </div>
-            <Popup
-                open={popupStatus !== 'close'}
-                closeFn={() => setPopupStatus('close')}
+            <RetailerCardModal
+                open={modalState !== 'close'}
+                closeFn={() => setModalState('close')}
+                backgroundColor={backgroundColor}
+                iconPath={iconPath}
+                name={name}
+                cashback={cashback}
+                terms={terms}
+                generalTerms={generalTerms}
+                redirectLink={redirectLink}
+            />
+            {/* <Modal
+                open={modalState !== 'close'}
+                closeFn={() => setModalState('close')}
             >
-                <div className={styles.popup}>
+                <div className={styles.modal}>
                     <div className={styles.full}>
                         <div
                             className={styles.logo_container}
@@ -129,13 +139,19 @@ const RetailerCard = ({
                             </div>
                         </div>
                     </div>
-                    <Markdown className={styles.markdown}>
-                        {`${terms}${generalTerms}`}
-                    </Markdown>
-                    {redirectLink ?
+                    {terms ?
+                        <Markdown className={styles.markdown}>
+                            {`${terms}${generalTerms}`}
+                        </Markdown>
+                        :
+                        <div className={`${styles.markdown} ${styles.center}`}>
+                            Loading...
+                        </div>
+                    }
+                    {redirectLink && terms ?
                         <a
                             className={styles.start_btn}
-                            onClick={() => setPopupStatus('close')}
+                            onClick={() => setModalState('close')}
                             href={redirectLink}
                             target='_blank'
                         >
@@ -153,7 +169,7 @@ const RetailerCard = ({
                         By clicking Start Shopping, I accept the terms above.
                     </div>
                 </div>
-            </Popup>
+            </Modal> */}
         </>
     )
 }

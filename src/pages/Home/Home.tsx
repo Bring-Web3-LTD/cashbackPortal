@@ -8,16 +8,15 @@ import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-import { useLoaderData, useSearchParams } from 'react-router-dom'
+import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
-import checkCountryAvailability from '../../api/checkCountryAvailability'
 
 const Home = () => {
-    const { platform } = useLoaderData() as LoaderData
+    const { platform, isCountryAvailable } = useRouteLoaderData('root') as LoaderData
     const [searchParams] = useSearchParams();
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
@@ -25,11 +24,6 @@ const Home = () => {
     const paginationRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
-
-    const { data: isAvailable } = useQuery({
-        queryKey: ['is-available'],
-        queryFn: () => checkCountryAvailability({ country, platform })
-    })
 
     const { data: categoriesSearch } = useQuery({
         queryFn: () => getFilters({ country, platform }),
@@ -102,7 +96,7 @@ const Home = () => {
             label: term,
         })) ?? []
 
-    if (isAvailable === false) {
+    if (isCountryAvailable === false) {
         return (
             <div className={styles.not_available_container}>
                 <h1 className={styles.not_available}>

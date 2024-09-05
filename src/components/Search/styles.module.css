@@ -6,5 +6,8 @@
     position: absolute;
     top: 15px;
     left: 58px;
+    font-size: var(--search-f-s);
+    font-weight: var(--search-f-w);
+    color: var(--search-placeholder-f-c);
     color: hsl(0, 0%, 50%);
 }

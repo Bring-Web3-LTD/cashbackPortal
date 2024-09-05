@@ -46,6 +46,16 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         onSwipedRight: () => scrollLeft(),
     });
 
+    if (!categories.length) {
+        return (
+            <div className={styles.container}>
+                {Array(maxCategories).fill(0).map((_, index) => (
+                    <button className={`${styles.category} ${styles.skeleton}`} key={index}></button>
+                ))}
+            </div>
+        )
+    }
+
     if (categories.length <= maxCategories) {
         return (
             <div className={styles.container}>

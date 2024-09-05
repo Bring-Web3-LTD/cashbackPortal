@@ -24,8 +24,8 @@
     color: var(--category-btn-f-c);
     width: 108px;
     height: 38px;
-    padding: 6px 16px;
     white-space: nowrap;
+    text-align: center;
     border-width: var(--category-btn-f-border-w);
     border-style: solid;
     border-color: var(--category-btn-f-border-c);
@@ -33,11 +33,18 @@
     cursor: pointer;
     border-radius: 30px;
     transition: .2s;
+    user-select: none;
+}
+
+.category:hover {
+    color: var(--category-btn-clicked-f-c);
+    background: var(--category-btn-clicked-bg);
 }
 
 .selected {
     color: var(--category-btn-clicked-f-c);
     background: var(--category-btn-clicked-bg);
+    font-weight: var(--category-btn-clicked-f-w);
 }
 
 .arrow {
@@ -57,6 +64,11 @@
 
 .arrow_left {
     box-shadow: 8px 0px 20px 20px var(--bg);
+}
+
+.skeleton {
+    background: var(--retailer-card-bg);
+    border: none;
 }
 
 @media screen and (max-width: 1190px) {

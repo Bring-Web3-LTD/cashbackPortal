@@ -7,24 +7,29 @@
     z-index: 10;
 }
 
-.popup {
+.modal {
+    --padding: 32px;
     position: relative;
-    height: calc(621px - 22px);
-    width: 512px;
+    max-height: calc(621px - var(--padding) * 2);
+    width: calc(512px - var(--padding) * 2);
     display: flex;
     justify-content: center;
-    padding-top: 22px;
-    background: var(--retailer-card-bg);
-    border-radius: 12px;
+    padding: var(--padding);
+    background: var(--modal-bg);
+    border-width: var(--modal-border-w);
+    border-style: solid;
+    border-color: var(--modal-border-c);
+    border-radius: var(--modal-radius);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     user-select: none;
     -webkit-user-select: none;
 }
 
 .close_btn {
+    --corner: 22px;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: var(--corner);
+    right: var(--corner);
     z-index: 11;
     cursor: pointer;
     background: transparent;

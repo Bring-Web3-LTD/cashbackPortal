@@ -2,13 +2,14 @@ import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
 
+
 interface Props {
     children: ReactNode
     open: boolean
     closeFn: () => void
 }
 
-const Popup = ({ children, open, closeFn }: Props) => {
+const Modal = ({ children, open, closeFn }: Props) => {
 
     const handleOverlayClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
@@ -24,13 +25,18 @@ const Popup = ({ children, open, closeFn }: Props) => {
         };
 
         if (open) {
+            document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
+        } else {
+            document.body.classList.remove('no_scroll');
         }
 
         return () => {
+            document.body.classList.remove('no_scroll');
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [open, closeFn]);
+
 
     return (
         <AnimatePresence>
@@ -41,7 +47,7 @@ const Popup = ({ children, open, closeFn }: Props) => {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2, ease: 'easeInOut' }}
-                        className={styles.popup}
+                        className={styles.modal}
                     >
                         <button
                             className={styles.close_btn}
@@ -62,4 +68,4 @@ const Popup = ({ children, open, closeFn }: Props) => {
     )
 }
 
-export default Popup
+export default Modal
