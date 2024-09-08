@@ -1,25 +1,24 @@
 .container {
     position: relative;
     overflow: hidden;
-    color: white;
+    font-size: var(--modal-claim-countdown-f-s);
+    font-weight: var(--modal-claim-countdown-f-w);
+    color: var(--modal-claim-countdown-f-c);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 48px;
-    border-radius: 12px;
-    /* border-color: linear-gradient(#E16BFF 0%, #FB3B80 100%); */
-    border-image: linear-gradient(to right, #E16BFF 0%, #FB3B80 100%) 1;
-    border-width: 1px;
+    height: calc(48px - var(--modal-claim-countdown-border-w) * 2);
+    border-radius: var(--modal-claim-countdown-radius);
+    border-color: var(--modal-claim-countdown-border-c);
+    border-width: var(--modal-claim-countdown-border-w);
     border-style: solid;
-    /* padding: 4px; */
-    font-weight: 600;
     z-index: 0;
 }
 
 .progress_bar {
     position: absolute;
-    background: rgba(9, 19, 44, 0.60);
+    background: var(--modal-claim-countdown-progress-c);
     height: 48px;
     left: 0;
     z-index: -1;

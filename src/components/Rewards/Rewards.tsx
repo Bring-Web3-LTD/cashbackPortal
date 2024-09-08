@@ -46,13 +46,13 @@ const Rewards = () => {
     const currentCryptoSymbol = balance?.data?.totalPendings[0]?.tokenSymbol || ''
     const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
 
-    console.log(minimumClaimThreshold);
-
     return (
         <div className={styles.container}>
             <div className={styles.subcontainer}>
                 <div className={styles.reward_details}>
-                    <img className={styles.icon} src="/icons/gift.svg" alt="gift icon" />
+                    <div className={`${styles.icon_container} ${styles.claim_icon}`}>
+                        <img className={styles.icon} src={`/icons/${platform.toUpperCase()}/gift.svg`} alt="gift icon" />
+                    </div>
                     <div className={`${styles.amount} ${styles.amount_claim}`}>{eligibleTokenAmount}</div>
                     <div>
                         <div className={`${styles.rewards_text} ${styles.claim_text}`}>Ready to claim</div>
@@ -69,7 +69,9 @@ const Rewards = () => {
             </div>
             <div className={styles.subcontainer}>
                 <div className={styles.reward_details}>
-                    <img className={styles.icon} src="/icons/coins.svg" alt="coins icon" />
+                    <div className={`${styles.icon_container} ${styles.pending_icon}`}>
+                        <img className={styles.icon} src={`/icons/${platform.toUpperCase()}/coins.svg`} alt="coins icon" />
+                    </div>
                     <div className={`${styles.amount} ${styles.amount_pending}`}>{pendingTokenAmount}</div>
                     <div>
                         <div className={`${styles.rewards_text} ${styles.pending_text}`}>Pending rewards</div>

@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 // hooks
 import { Fragment, MouseEvent, useId, useState } from "react"
+import { useRouteLoaderData } from 'react-router-dom'
 // import { useAccount } from "wagmi"
 
 // components
@@ -33,9 +34,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         borderBottomRightRadius: state.menuIsOpen ? 0 : "var(--search-radius)",
         alignContent: "center",
         "&:hover": {
-            border: state.menuIsOpen ?
-                "var(--search-border-w) solid var(--search-border-c)" :
-                "var(--search-border-w) solid white",
+            border: "var(--search-border-w) solid var(--search-border-c)",
             borderBottom: state.menuIsOpen ?
                 "none" :
                 "var(--search-border-w) solid var(--search-border-c)",
@@ -140,17 +139,20 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
     )
 }
 
-const CustomControl = (props: ControlProps<ReactSelectOptionType>) => (
-    <components.Control {...props}>
-        <img
-            height={20}
-            width={20}
-            src="/icons/magnifying-glass.svg"
-            alt="magnifying-glass-icon"
-        />
-        {props.children}
-    </components.Control>
-)
+const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
+    const { platform } = useRouteLoaderData('root') as LoaderData
+    return (
+        <components.Control {...props}>
+            <img
+                height={20}
+                width={20}
+                src={`/icons/${platform.toUpperCase()}/magnifying-glass.svg`}
+                alt="magnifying-glass-icon"
+            />
+            {props.children}
+        </components.Control>
+    )
+}
 
 const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const id = useId()
@@ -188,7 +190,9 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     }
 
     const handleInputChange = (inputValue: string) => {
+        // eslint-disable-next-line no-unsafe-optional-chaining
         if (!inputValue || (inputValue?.trim()).length < 2) {
+            // eslint-disable-next-line no-unsafe-optional-chaining
             if ((inputValue?.trim()).length == 1) {
                 setMsg("Keep typing...")
             } else if (msg.length) {
@@ -243,6 +247,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
 
     const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         const target = e.target as HTMLElement
+
         if (target.id.includes("option")) return;
         setIsFocused(true)
     }

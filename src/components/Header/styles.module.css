@@ -39,4 +39,12 @@
     margin-top: 8px;
     cursor: pointer;
     outline: none;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: var(--pending-btn-hover-bg);
+    color: var(--pending-btn-hover-f-c);
+    border-width: var(--pending-btn-hover-border-w);
+    border-color: var(--pending-btn-hover-border-c);
 }

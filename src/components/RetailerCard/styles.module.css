@@ -14,6 +14,11 @@
     border-radius: 9px;
     cursor: pointer;
     user-select: none;
+    transition: .2s;
+}
+
+.card:hover {
+    border-color: var(--retailer-card--hover-border-color);
 }
 
 .logo_container {
@@ -21,9 +26,9 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    border-width: 2px;
+    border-width: var(--retailer-card-img-border-w);
     border-style: solid;
-    border-color: #E16BFF;
+    border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
     margin-bottom: 6px;
 }

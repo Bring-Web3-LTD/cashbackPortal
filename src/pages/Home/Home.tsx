@@ -61,7 +61,7 @@ const Home = () => {
         if (!isFetchingNextPage && isVisible) {
             fetchNextPage()
         }
-    }, [isVisible])
+    }, [isVisible, fetchNextPage, isFetchingNextPage])
 
     const scrollToTop = () => {
         if (scrollRef.current) {
@@ -130,7 +130,7 @@ const Home = () => {
                                         onClick={resetFilters}
                                     >
                                         <span>{search?.value || category?.name}</span>
-                                        <img src="/icons/x-mark.svg" alt="x-icon" />
+                                        <img src={`/icons/${platform.toUpperCase()}/x-mark-filter.svg`} alt="x-icon" />
                                     </motion.button>
                                     : null}
                             </AnimatePresence>

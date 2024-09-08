@@ -26,7 +26,7 @@
 }
 
 .close_btn {
-    --corner: 22px;
+    --corner: 32px;
     position: absolute;
     top: var(--corner);
     right: var(--corner);

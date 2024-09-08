@@ -31,7 +31,7 @@
     border-color: var(--category-btn-f-border-c);
     background: var(--category-btn-bg);
     cursor: pointer;
-    border-radius: 30px;
+    border-radius: var(--category-btn-radius);
     transition: .2s;
     user-select: none;
 }

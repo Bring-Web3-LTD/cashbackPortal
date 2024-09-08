@@ -24,9 +24,32 @@
     user-select: none;
 }
 
-.icon {
+.icon_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
     width: 40px;
     height: 40px;
+}
+
+.claim_icon {
+    background: var(--claim-img-bg);
+    border-radius: var(--claim-img-radius);
+    border-width: var(--claim-img-border-w);
+    border-color: var(--claim-img-border-c);
+}
+
+.pending_icon {
+    background: var(--pending-img-bg);
+    border-radius: var(--pending-img-radius);
+    border-width: var(--pending-img-border-w);
+    border-color: var(--pending-img-border-c);
+}
+
+.icon {
+    width: var(--rewards-img-size);
+    height: var(--rewards-img-size);
 }
 
 .amount {
@@ -86,6 +109,7 @@
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
     cursor: pointer;
+    transition: .2s;
 }
 
 .claim_btn {
@@ -95,11 +119,26 @@
     border-color: var(--primary-btn-border-c);
 }
 
+.claim_btn:hover {
+    background: var(--primary-btn-hover-bg);
+}
+
+.claim_btn:disabled {
+    background: var(--primary-btn-disabled-bg);
+}
+
 .pending_btn {
     background: var(--pending-btn-bg);
     color: var(--pending-btn-f-c);
     border-width: var(--pending-btn-border-w);
     border-color: var(--pending-btn-border-c);
+}
+
+.pending_btn:hover {
+    background: var(--pending-btn-hover-bg);
+    color: var(--pending-btn-hover-f-c);
+    border-width: var(--pending-btn-hover-border-w);
+    border-color: var(--pending-btn-hover-border-c);
 }
 
 @media screen and (max-width:1190px) {

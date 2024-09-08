@@ -24,6 +24,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
     // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
     const [loading, setLoading] = useState(false)
     const [countDown, setCountDown] = useState(false)
+    const [iconFallback, setIconFallback] = useState(false)
 
     useEffect(() => {
         // Define the message handler
@@ -63,6 +64,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
 
         message({ messageToSign })
         setCountDown(true)
+        window.parent.postMessage({ from: 'bringweb3', messageToSign }, '*')
     }
 
     return (
@@ -80,11 +82,19 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                         By proceeding you acknowledge that we are not liable for any token loss during this onboarding process
                     </p>
                 </div>
-                <img
-                    src="icons/claim.svg"
-                    className={styles.modal_img}
-                    alt="claim icon"
-                />
+                <div className={styles.modal_img_container}>
+                    {
+                        iconFallback ?
+                            null
+                            :
+                            <img
+                                src={`icons/${platform.toUpperCase()}/claim.svg`}
+                                className={styles.modal_img}
+                                alt="claim icon"
+                                onError={() => setIconFallback(true)}
+                            />
+                    }
+                </div>
                 <div className={styles.sml_text}>Click "Sign now" and sign the message received on your wallet</div>
                 {countDown ?
                     <CountDown

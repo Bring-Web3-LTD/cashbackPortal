@@ -17,10 +17,10 @@
 
 .claim_amount {
     width: 100%;
-    font-size: 40px;
-    font-weight: 700;
+    font-size: var(--modal-claim-amount-f-s);
+    font-weight: var(--modal-claim-amount-f-w);
     letter-spacing: -1px;
-    background: var(--claim-amount-f-c);
+    background: var(--modal-claim-amount-f-c);
     background-clip: text;
     color: transparent;
     margin-bottom: 20px;
@@ -69,9 +69,13 @@
     margin-left: 12px;
 }
 
-.modal_img {
+.modal_img_container {
     margin-top: 20px;
+    height: 20px;
     margin-bottom: 5px;
+}
+
+.modal_img {
     width: 22px;
     height: 20px;
 }
@@ -96,8 +100,13 @@
     border-radius: var(--primary-btn-radius);
     height: 48px;
     cursor: pointer;
+    transition: .2s;
+}
+
+.sign_btn:hover {
+    background: var(--primary-btn-hover-bg);
 }
 
 .disabled {
-    background: gray;
+    background: var(--primary-btn-disabled-bg);
 }

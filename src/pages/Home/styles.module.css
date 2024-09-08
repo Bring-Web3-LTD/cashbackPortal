@@ -62,9 +62,14 @@
     border-width: var(--filter-btn-border-w);
     border-style: solid;
     border-color: var(--filter-btn-border-c);
-    border-radius: 10px;
+    border-radius: var(--filter-btn-radius);
     padding: 16px 12px 16px 15px;
     cursor: pointer;
+    transition: .2s;
+}
+
+.filter:hover {
+    background: var(--filter-btn-hover-bg);
 }
 
 .not_available_container {
