@@ -23,7 +23,7 @@ const CountDown = ({ isRunning, setIsRunning }: Props): JSX.Element => {
         }
 
         return () => clearInterval(intervalId)
-    }, [isRunning, seconds])
+    }, [isRunning, seconds, setIsRunning])
 
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60)

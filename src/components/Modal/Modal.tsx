@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouteLoaderData } from 'react-router-dom'
 
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const Modal = ({ children, open, closeFn }: Props) => {
-
+    const { platform } = useRouteLoaderData('root') as LoaderData
     const handleOverlayClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
             closeFn();
@@ -56,7 +57,7 @@ const Modal = ({ children, open, closeFn }: Props) => {
                             <img
                                 width={20}
                                 height={20}
-                                src="icons/x-mark.svg"
+                                src={`icons/${platform.toUpperCase()}/x-mark.svg`}
                                 alt="x-mark"
                             />
                         </button>

@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+/* Rubik */
+/* @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap'); */
+/* Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
   --bg: #09132C;
@@ -43,9 +46,9 @@
   --rewards-btn-radius: 8px;
 
   --primary-btn-f-s: 16px;
-  --primary-btn-f-w: 700;
+  --primary-btn-f-w: 500;
   --primary-btn-f-c: #09132C;
-  --primary-btn-radius: 10px;
+  --primary-btn-radius: 8px;
   --primary-btn-border-w: 0;
   --primary-btn-border-c: transparent;
   --primary-btn-bg: linear-gradient(137deg, #E16BFF 0.62%, #FB3B80 96.06%);
@@ -102,9 +105,9 @@
   --modal-bg: #192749;
   --modal-border-w: 0;
   --modal-border-c: transparent;
-  --modal-radius: 12px;
+  --modal-radius: 24px;
   --modal-title-f-s: 20px;
-  --modal-title-f-w: 700;
+  --modal-title-f-w: 600;
   --modal-title-f-c: white;
   --modal-paragraph-f-s: 14px;
   --modal-paragraph-f-w: 400;
@@ -134,6 +137,18 @@
   --modal-deal-name-f-s: 20px;
   --modal-deal-name-f-w: 700;
   --modal-deal-name-f-c: #fff;
+  --modal-deal-markdown-bg: #263C72;
+  --modal-deal-markdown-border-w: 0;
+  --modal-deal-markdown-border-c: transparent;
+  --modal-deal-markdown-radius: 12px;
+  --modal-deal-markdown-f-s: 14px;
+  --modal-deal-markdown-f-w: 500;
+  --modal-deal-markdown-f-c: #88AAFA;
+  --modal-deal-markdown-bold-f-w: 500;
+  --modal-deal-markdown-bold-f-c: #fff;
+  --modal-deal-consent-f-s: 12px;
+  --modal-deal-consent-f-w: 400;
+  --modal-deal-consent-f-c: #fff;
 
   --scrollbar-bg: #fff;
   --scrollbar-w: 14px;
@@ -152,7 +167,8 @@
 }
 
 * {
-  font-family: "Rubik", sans-serif;
+  /* font-family: "Rubik", sans-serif; */
+  font-family: "Poppins", sans-serif;
 }
 
 body {

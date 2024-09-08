@@ -81,6 +81,15 @@
     border-radius: var(--primary-btn-radius);
     text-decoration: none;
     cursor: pointer;
+    transition: .2s;
+}
+
+.start_btn:hover {
+    background: var(--primary-btn-hover-bg);
+}
+
+.start_btn:disabled {
+    background: var(--primary-btn-disabled-bg);
 }
 
 .consent_txt {
@@ -94,9 +103,9 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    border-width: 2px;
+    border-width: var(--retailer-card-img-border-w);
     border-style: solid;
-    border-color: #E16BFF;
+    border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
     margin-bottom: 6px;
 }

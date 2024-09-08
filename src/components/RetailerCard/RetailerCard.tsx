@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
@@ -44,7 +44,7 @@ const RetailerCard = ({
     const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
     const isBig = isBigCashback(cashbackSymbol, maxCashback)
 
-    const activateDeal = async () => {
+    const activateDeal = useCallback(async () => {
         if (!walletAddress) return
 
         const body: Parameters<typeof activate>[0] = {
@@ -59,7 +59,7 @@ const RetailerCard = ({
         const res = await activate(body)
         setRedirectLink(res.url)
         setModalState('open')
-    }
+    }, [cryptoSymbols, id, platform, search?.value, walletAddress])
 
     useEffect(() => {
         if (modalState === 'loading') {
@@ -71,7 +71,7 @@ const RetailerCard = ({
         fetch(termsUrl)
             .then(res => res.text())
             .then(data => setTerms(data))
-    }, [modalState])
+    }, [activateDeal, modalState, terms.length, termsUrl])
 
     return (
         <>
