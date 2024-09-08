@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import styles from './styles.module.css'
 import { useRouteLoaderData } from "react-router-dom"
 import { useState } from "react"
@@ -10,10 +11,6 @@ import { Link } from 'react-router-dom'
 interface HistoryObj {
     [key: string]: any
 }
-// interface HistoryProps {
-//     history: Movements | null
-//     retailerIconBasePath: string
-// }
 
 const daysLeft = (date: string): number => {
     const targetDate: Date = new Date(date)
@@ -145,9 +142,9 @@ const History = (): JSX.Element => {
                     <div className={styles.inner}>
                         <div className={styles.img}>
                             <img
-                                width={32}
-                                height={32}
-                                src="icons/gift.svg"
+                                width={22}
+                                height={22}
+                                src={`icons/${platform.toUpperCase()}/gift.svg`}
                                 alt="gift-icon"
                             />
                         </div>
@@ -212,12 +209,12 @@ const History = (): JSX.Element => {
             <>
                 <div className={styles.node_container}>
                     <div className={styles.inner}>
-                        <div style={{ background: `${deal.retailerBackgroundColor || 'white'}`, borderRadius: '50%', width: '62px', height: '62px' }}>
+                        <div style={{ background: `${deal.retailerBackgroundColor || 'white'}`, borderRadius: '50%', width: '40px', height: '40px' }}>
                             <img
                                 className={styles.retailer_img}
                                 src={`${balance?.retailerIconBasePath}${deal.retailerIconPath}`}
-                                width={62}
-                                height={62}
+                                width={40}
+                                height={40}
                             // retailerName={deal.retailerName}
                             />
                         </div>

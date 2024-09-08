@@ -26,7 +26,7 @@ const CardsList = ({ retailers, metadata, loading, search }: Props) => {
         fetch(metadata.generalTermsUrl)
             .then(res => res.text())
             .then(data => setGeneralTerms(data))
-    }, [metadata?.generalTermsUrl])
+    }, [generalTerms.length, metadata?.generalTermsUrl])
 
     if (loading || !metadata) {
         return (
