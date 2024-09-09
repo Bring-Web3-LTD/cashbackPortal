@@ -63,6 +63,7 @@
   --primary-btn-border-c: transparent;
   --primary-btn-bg: #4B6DDE;
   --primary-btn-hover-bg: #3154CB;
+  --primary-btn-pressed-bg: #1737A3;
   --primary-btn-disabled-bg: #C4CFF5;
 
   --pending-btn-f-c: #4B6DDE;
@@ -75,7 +76,10 @@
   --pending-btn-hover-border-w: 2px;
   --pending-btn-hover-bg: #E4E8F7;
 
-
+  --pending-btn-pressed-f-c: #3154CB;
+  --pending-btn-pressed-border-c: #3154CB;
+  --pending-btn-pressed-border-w: 2px;
+  --pending-btn-pressed-bg: #C4CFF5;
 
   --retailer-card-bg: #fff;
   --retailer-card-border-w: 1px;
@@ -121,12 +125,15 @@
   --category-btn-f-s: 14px;
   --category-btn-f-w: 400;
   --category-btn-f-c: #4B6DDE;
-  --category-btn-f-border-w: 1px;
-  --category-btn-f-border-c: #A0B3F2;
+  --category-btn-border-w: 1px;
+  --category-btn-border-c: #A0B3F2;
   --category-btn-radius: 8px;
-  --category-btn-clicked-bg: #4B6DDE;
-  --category-btn-clicked-f-c: #fff;
-  --category-btn-clicked-f-w: 400;
+  --category-btn-hover-bg: #4B6DDE;
+  --category-btn-hover-f-c: #fff;
+  --category-btn-hover-f-w: 400;
+  --category-btn-hover-border-w: 0;
+  --category-btn-hover-border-c: #A0B3F2;
+  --category-btn-hover-radius: 8px;
 
   --modal-bg: #fff;
   --modal-border-w: 0;

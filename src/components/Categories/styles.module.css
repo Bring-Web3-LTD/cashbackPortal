@@ -26,9 +26,9 @@
     height: 38px;
     white-space: nowrap;
     text-align: center;
-    border-width: var(--category-btn-f-border-w);
+    border-width: var(--category-btn-border-w);
     border-style: solid;
-    border-color: var(--category-btn-f-border-c);
+    border-color: var(--category-btn-border-c);
     background: var(--category-btn-bg);
     cursor: pointer;
     border-radius: var(--category-btn-radius);
@@ -37,14 +37,17 @@
 }
 
 .category:hover {
-    color: var(--category-btn-clicked-f-c);
-    background: var(--category-btn-clicked-bg);
+    color: var(--category-btn-hover-f-c);
+    border-width: var(--category-btn-hover-border-w);
+    background: var(--category-btn-hover-bg);
+    border-radius: var(--category-btn-hover-radius);
 }
 
 .selected {
-    color: var(--category-btn-clicked-f-c);
-    background: var(--category-btn-clicked-bg);
-    font-weight: var(--category-btn-clicked-f-w);
+    color: var(--category-btn-hover-f-c);
+    font-weight: var(--category-btn-hover-f-w);
+    border-width: var(--category-btn-hover-border-w);
+    background: var(--category-btn-hover-bg);
 }
 
 .arrow {

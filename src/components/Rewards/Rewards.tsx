@@ -5,9 +5,11 @@ import { useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import RewardsModal from '../Modals/RewardsModal/RewardsModal'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Rewards = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
     const [modalState, setModalState] = useState('close')
 
@@ -64,7 +66,7 @@ const Rewards = () => {
                     onClick={() => setModalState('open')}
                     disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold}
                 >
-                    Claim cashback
+                    {t('claimCashback')}
                 </button>
             </div>
             <div className={styles.subcontainer}>
@@ -82,7 +84,7 @@ const Rewards = () => {
                     className={`${styles.btn} ${styles.pending_btn}`}
                     onClick={() => navigate('/history')}
                 >
-                    View rewards
+                    {t('viewRewards')}
                 </button>
             </div>
             <RewardsModal

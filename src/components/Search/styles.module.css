@@ -4,7 +4,7 @@
 
 .msg {
     position: absolute;
-    top: 15px;
+    top: 16.5px;
     left: 58px;
     font-size: var(--search-f-s);
     font-weight: var(--search-f-w);

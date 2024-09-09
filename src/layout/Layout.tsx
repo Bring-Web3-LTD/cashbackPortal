@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
+import '../utils/i18n'
 
 const Layout = () => {
     const location = useLocation();
+
     return (
         <motion.div
             key={location.pathname}
