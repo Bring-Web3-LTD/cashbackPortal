@@ -1,15 +1,18 @@
 import styles from './styles.module.css';
 import Modal from "../../Modal/Modal";
 import { ComponentProps } from "react";
+import { useTranslation } from 'react-i18next';
 
 const ExplainModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 'children'>) => {
+    const { t } = useTranslation()
+
     return (
         <Modal
             open={open}
             closeFn={closeFn}
         >
             <div className={styles.modal_container}>
-                <h2 className={styles.modal_title}>How it works</h2>
+                <h2 className={styles.modal_title}>{t('howItWorks')}</h2>
                 <p className={styles.p}>
                     Search for your favorite items and brands, browse through
                     various categories, or explore our top brands to find exactly

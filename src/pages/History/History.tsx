@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styles from './styles.module.css'
-import { useRouteLoaderData } from "react-router-dom"
+import { useNavigate, useRouteLoaderData } from "react-router-dom"
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useQuery } from "@tanstack/react-query"
@@ -34,6 +34,7 @@ const formatDate = (date: string): string => {
 
 const History = (): JSX.Element => {
     const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
+    const navigate = useNavigate()
 
     const { data: balance } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform }),
@@ -309,7 +310,11 @@ const History = (): JSX.Element => {
         <div className={styles.container}>
             <Link
                 className={styles.back}
-                to='/'
+                to={'..'}
+                onClick={(e) => {
+                    e.preventDefault()
+                    navigate(-1)
+                }}
             >
                 Back
             </Link>

@@ -3,6 +3,7 @@ import Layout from './layout/Layout';
 import Home from './pages/Home/Home';
 import History from './pages/History/History';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import i18n from 'i18next';
 // import fetchToken from './api/fetchToken';
 
 const rootLoader = async () => {
@@ -12,6 +13,7 @@ const rootLoader = async () => {
     // const res = await fetchToken({ token });
     // if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
     // return res.info
+    i18n.setDefaultNamespace('YOROI')
     return {
         walletAddress: '011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
         platform: 'yoroi',

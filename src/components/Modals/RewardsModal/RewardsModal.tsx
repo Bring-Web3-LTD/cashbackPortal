@@ -8,6 +8,7 @@ import { useRouteLoaderData } from 'react-router-dom';
 // Functions
 import claimInitiate from '../../../api/claim/initiate';
 import message from '../../../utils/message';
+import { useTranslation } from 'react-i18next';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     eligibleTokenAmount: string
@@ -20,6 +21,7 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
     const { platform, walletAddress } = useRouteLoaderData('root') as LoaderData
+    const { t } = useTranslation()
 
     // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
     const [loading, setLoading] = useState(false)
@@ -73,7 +75,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             closeFn={closeFn}
         >
             <div className={styles.modal}>
-                <div className={styles.title}>Claim to your wallet</div>
+                <div className={styles.title}>{t('claimToYourWallet')}</div>
                 <div className={styles.claim_amount}>{eligibleTokenAmount} {currentCryptoSymbol}</div>
                 <div className={styles.details}>
                     <div className={styles.wallet_address_title}>Wallet address</div>

@@ -21,6 +21,10 @@
     border-color: var(--retailer-card--hover-border-color);
 }
 
+.card:active {
+    border-color: var(--retailer-card--hover-border-color);
+}
+
 .logo_container {
     display: flex;
     align-items: center;
