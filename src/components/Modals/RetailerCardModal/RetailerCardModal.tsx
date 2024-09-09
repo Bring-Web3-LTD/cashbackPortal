@@ -2,6 +2,7 @@ import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import Markdown from 'react-markdown'
 import { ComponentProps, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -26,6 +27,7 @@ const RetailerCardModal = ({
 }: Props) => {
 
     const [fallbackImg, setFallbackImg] = useState('')
+    const { t } = useTranslation()
 
     return (
         <Modal
@@ -73,14 +75,14 @@ const RetailerCardModal = ({
                         href={redirectLink}
                         target='_blank'
                     >
-                        Start shopping
+                        {t('startShopping')}
                     </a>
                     :
                     <button
                         className={styles.start_btn}
                         disabled={true}
                     >
-                        Loading
+                        {t('loadingBtn')}
                     </button>
                 }
                 <div className={styles.consent_txt}>

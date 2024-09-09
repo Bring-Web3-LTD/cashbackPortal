@@ -4,5 +4,9 @@
     "claimCashback": "Claim cashback",
     "viewRewards": "View Rewards",
     "howItWorks": "How It Works",
-    "searchPlaceholder": "Brand, product, destination..."
+    "searchPlaceholder": "Brand, product, destination...",
+    "signNow": "Sign Now",
+    "startShopping": "Start Shopping",
+    "loading": "Loading...",
+    "loadingBtn": "Loading"
 }
