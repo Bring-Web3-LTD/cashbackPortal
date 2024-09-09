@@ -109,7 +109,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                         disabled={loading}
                         onClick={signMessage}
                     >
-                        Sign now
+                        {t('signNow')}
                     </button>
                 }
             </div>

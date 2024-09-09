@@ -10,12 +10,14 @@ const Header = () => {
         <div className={styles.header}>
             {
                 t('title') ?
-                    <h1 className={styles.title}>
-                        {t('title')}
-                    </h1>
+                    <h1 className={styles.title}>{t('title')}</h1>
                     : null
             }
-            <h2 className={styles.subtitle}>{t('subtitle')}</h2>
+            {
+                t('subtitle') ?
+                    <h2 className={styles.subtitle}>{t('subtitle')}</h2>
+                    : null
+            }
             <button
                 className={styles.btn}
                 onClick={() => setIsOpen(true)}

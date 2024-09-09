@@ -5,5 +5,9 @@
     "viewRewards": "VIEW REWARDS",
     "howItWorks": "HOW IT WORKS",
     "searchPlaceholder": "Brand, product, destination...",
-    "claimToYourWallet": "CLAIM TO YOUR WALLET"
+    "claimToYourWallet": "CLAIM TO YOUR WALLET",
+    "signNow": "SIGN NOW",
+    "startShopping": "START SHOPPING",
+    "loading": "Loading...",
+    "loadingBtn": "LOADING..."
 }
