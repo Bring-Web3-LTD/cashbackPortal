@@ -50,6 +50,7 @@
 .markdown p {
     margin-top: 10px;
     margin-bottom: 10px;
+    line-height: 20px;
 }
 
 .markdown p strong,
@@ -90,6 +91,7 @@
 
 .start_btn:disabled {
     background: var(--primary-btn-disabled-bg);
+    color: var(--primary-btn-disabled-f-c);
 }
 
 .consent_txt {

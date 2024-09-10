@@ -64,7 +64,7 @@
     color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
     padding: 6px;
-    width: calc(138px - 12px);
+    width: 140px;
     border-radius: 50px;
     text-align: center;
     white-space: nowrap;

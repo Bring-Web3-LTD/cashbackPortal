@@ -49,3 +49,10 @@
     border-width: var(--pending-btn-hover-border-w);
     border-color: var(--pending-btn-hover-border-c);
 }
+
+.btn:active {
+    background: var(--pending-btn-pressed-bg);
+    color: var(--pending-btn-pressed-f-c);
+    border-width: var(--pending-btn-hover-pressed-w);
+    border-color: var(--pending-btn-hover-pressed-c);
+}

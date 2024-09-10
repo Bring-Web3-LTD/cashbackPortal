@@ -30,17 +30,23 @@ const Modal = ({ children, open, closeFn }: Props) => {
             }
         };
 
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data.action === 'CLOSE_POPUP') {
+                closePopup();
+            }
+        };
+
         if (open) {
-            window.parent.postMessage({ action: 'OPEN_POPUP' }, '*')
+            const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--modal-overlay-bg')
+            window.parent.postMessage({ action: 'OPEN_POPUP', bgColor }, '*')
             document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
-        } else {
-            document.body.classList.remove('no_scroll');
+            window.addEventListener('message', handleMessage);
         }
-
         return () => {
             document.body.classList.remove('no_scroll');
             document.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('message', handleMessage);
         };
     }, [open, closePopup]);
 

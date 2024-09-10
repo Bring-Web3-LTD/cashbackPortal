@@ -70,6 +70,7 @@
 
 .filter:hover {
     background: var(--filter-btn-hover-bg);
+    color: var(--filter-btn-hover-f-c);
 }
 
 .not_available_container {

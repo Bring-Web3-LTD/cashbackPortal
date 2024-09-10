@@ -5,8 +5,8 @@
   --bg: #fff;
   --header-bg: #fff;
 
-  --title-f-s: 30px;
-  --title-f-w: 700;
+  --title-f-s: 20px;
+  --title-f-w: 500;
   --title-f-c: black;
 
   --subtitle-f-s: 14px;
@@ -65,6 +65,7 @@
   --primary-btn-hover-bg: #3154CB;
   --primary-btn-pressed-bg: #1737A3;
   --primary-btn-disabled-bg: #C4CFF5;
+  --primary-btn-disabled-f-c: #fff;
 
   --pending-btn-f-c: #4B6DDE;
   --pending-btn-border-c: #4B6DDE;
@@ -101,7 +102,7 @@
 
   --retailer-card-amount-f-s: 12px;
   --retailer-card-amount-f-c: #242838;
-  --retailer-card-amount-f-w: 400;
+  --retailer-card-amount-f-w: 500;
   --retailer-card-amount-bg: #EAEDF2;
 
   --deals-amount-f-s: 16px;
@@ -117,6 +118,7 @@
   --filter-btn-f-c: #4B6DDE;
   --filter-btn-bg: #E4E8F7;
   --filter-btn-hover-bg: #C4CFF5;
+  --filter-btn-hover-f-c: #4B6DDE;
   --filter-btn-border-w: 0;
   --filter-btn-border-c: transparent;
   --filter-btn-radius: 8px;
@@ -136,6 +138,7 @@
   --category-btn-hover-radius: 8px;
 
   --modal-bg: #fff;
+  --modal-overlay-bg: #0000007a;
   --modal-border-w: 0;
   --modal-border-c: transparent;
   --modal-radius: 8px;
