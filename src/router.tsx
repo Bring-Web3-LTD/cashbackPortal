@@ -3,8 +3,8 @@ import Layout from './layout/Layout';
 import Home from './pages/Home/Home';
 import History from './pages/History/History';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
-import i18n from 'i18next';
-import fetchToken from './api/fetchToken';
+// import i18n from 'i18next';
+// import fetchToken from './api/fetchToken';
 
 const rootLoader = async () => {
     // const params = new URLSearchParams(document.location.search)
