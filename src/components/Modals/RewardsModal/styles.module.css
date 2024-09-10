@@ -9,7 +9,7 @@
     font-size: var(--modal-title-f-s);
     font-weight: var(--modal-title-f-w);
     color: var(--modal-title-f-c);
-    margin-bottom: 20px;
+    margin-bottom: 6px;
     width: 100%;
     line-height: 24px;
 }

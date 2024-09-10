@@ -49,21 +49,13 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         boxShadow: "none",
         outline: "none !important",
         "@media only screen and (max-width: 1280px)": {
-            // width: "358px",
             width: "342px",
-        },
-        // "@media only screen and (max-width: 768px)": {
-        //   width: "342px",
-        // },
+        }
     }),
     menuList: (base) => ({
         ...base,
         paddingTop: 0,
         paddingBottom: 0,
-        // "&:first-of-type": {
-        //     borderTopLeftRadius: "10px",
-        //     borderTopRightRadius: "10px",
-        // },
         "&:last-child": {
             borderBottomLeftRadius: "var(--search-radius)",
             borderBottomRightRadius: "var(--search-radius)",
@@ -75,21 +67,22 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             background: "transparent",
         },
         "::-webkit-scrollbar-thumb": {
-            background: "rgba(255, 255, 255, 0.40)",
+            background: "var(--search-scrollbar-bg)",
             backgroundClip: "padding-box",
             border: "4px solid rgba(7, 19, 23, 0)",
             borderRadius: "10px",
         },
-        "::-webkit-scrollbar-thumb:hover": {
-            background: "#555",
-        },
+        // "::-webkit-scrollbar-thumb:hover": {
+        //     background: "#555",
+        // },
     }),
     menu: (base) => ({
         ...base,
         marginTop: 0,
         backgroundColor: "var(--search-bg)",
         border: "var(--search-border-w) solid var(--search-border-c)",
-        borderTop: "none",
+        borderTop: "0",
+        boxShadow: 'none',
         borderBottomLeftRadius: "var(--search-radius)",
         borderBottomRightRadius: "var(--search-radius)",
         fontSize: "var(--search-f-s)",
@@ -105,6 +98,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
                 : base.backgroundColor,
         "&:active": { backgroundColor: "var(--search-option-hover-bg)" },
         color: "var(--search-option-f-c)",
+        cursor: "pointer",
         paddingLeft: '40px',
     }),
     input: (base) => ({

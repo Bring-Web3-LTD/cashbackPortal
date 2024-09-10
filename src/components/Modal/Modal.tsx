@@ -1,6 +1,5 @@
 import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
-import { motion, AnimatePresence } from 'framer-motion'
 import { useRouteLoaderData } from 'react-router-dom'
 
 
@@ -12,20 +11,27 @@ interface Props {
 
 const Modal = ({ children, open, closeFn }: Props) => {
     const { platform } = useRouteLoaderData('root') as LoaderData
+
+    const closePopup = useCallback(() => {
+        closeFn()
+        window.parent.postMessage({ action: 'CLOSE_POPUP' }, '*')
+    }, [closeFn])
+
     const handleOverlayClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
-            closeFn();
+            closePopup();
         }
-    }, [closeFn]);
+    }, [closePopup]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && open) {
-                closeFn();
+                closePopup();
             }
         };
 
         if (open) {
+            window.parent.postMessage({ action: 'OPEN_POPUP' }, '*')
             document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
         } else {
@@ -36,36 +42,30 @@ const Modal = ({ children, open, closeFn }: Props) => {
             document.body.classList.remove('no_scroll');
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [open, closeFn]);
+    }, [open, closePopup]);
 
+    if (!open) return null
 
     return (
-        <AnimatePresence>
-            {open && (
-                <div className={styles.overlay} onClick={handleOverlayClick}>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.2, ease: 'easeInOut' }}
-                        className={styles.modal}
-                    >
-                        <button
-                            className={styles.close_btn}
-                            onClick={closeFn}
-                        >
-                            <img
-                                width={20}
-                                height={20}
-                                src={`icons/${platform.toUpperCase()}/x-mark.svg`}
-                                alt="x-mark"
-                            />
-                        </button>
-                        {children}
-                    </motion.div>
-                </div>
-            )}
-        </AnimatePresence>
+        <div
+            className={styles.overlay}
+            onClick={handleOverlayClick}
+        >
+            <div className={styles.modal}>
+                <button
+                    className={styles.close_btn}
+                    onClick={closePopup}
+                >
+                    <img
+                        width={20}
+                        height={20}
+                        src={`icons/${platform.toUpperCase()}/x-mark.svg`}
+                        alt="x-mark"
+                    />
+                </button>
+                {children}
+            </div>
+        </div>
     )
 }
 
