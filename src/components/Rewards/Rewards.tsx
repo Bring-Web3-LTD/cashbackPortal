@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 const Rewards = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const [modalState, setModalState] = useState('close')
 
     const { data: balance } = useQuery({
@@ -53,7 +53,7 @@ const Rewards = () => {
             <div className={styles.subcontainer}>
                 <div className={styles.reward_details}>
                     <div className={`${styles.icon_container} ${styles.claim_icon}`}>
-                        <img className={styles.icon} src={`/icons/${platform.toUpperCase()}/gift.svg`} alt="gift icon" />
+                        <img className={styles.icon} src={`${iconsPath}/gift.svg`} alt="gift icon" />
                     </div>
                     <div className={`${styles.amount} ${styles.amount_claim}`}>{eligibleTokenAmount}</div>
                     <div>
@@ -72,7 +72,7 @@ const Rewards = () => {
             <div className={styles.subcontainer}>
                 <div className={styles.reward_details}>
                     <div className={`${styles.icon_container} ${styles.pending_icon}`}>
-                        <img className={styles.icon} src={`/icons/${platform.toUpperCase()}/coins.svg`} alt="coins icon" />
+                        <img className={styles.icon} src={`${iconsPath}/coins.svg`} alt="coins icon" />
                     </div>
                     <div className={`${styles.amount} ${styles.amount_pending}`}>{pendingTokenAmount}</div>
                     <div>

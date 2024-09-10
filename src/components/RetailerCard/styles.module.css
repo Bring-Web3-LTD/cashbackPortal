@@ -74,13 +74,14 @@
     position: absolute;
     top: 10px;
     right: 0;
-    width: 23px;
+    width: 50px;
     height: 12px;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
     line-height: 12px;
     vertical-align: middle;
-    padding: 5px 12px 5px 15px;
+    text-align: center;
+    padding: 5px 0;
     color: var(--retailer-card-flag-f-c);
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);

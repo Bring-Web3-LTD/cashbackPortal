@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Modal = ({ children, open, closeFn }: Props) => {
-    const { platform } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     const closePopup = useCallback(() => {
         closeFn()
@@ -65,7 +65,7 @@ const Modal = ({ children, open, closeFn }: Props) => {
                     <img
                         width={20}
                         height={20}
-                        src={`icons/${platform.toUpperCase()}/x-mark.svg`}
+                        src={`${iconsPath}/x-mark.svg`}
                         alt="x-mark"
                     />
                 </button>

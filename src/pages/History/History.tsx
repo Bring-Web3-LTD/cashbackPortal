@@ -33,7 +33,7 @@ const formatDate = (date: string): string => {
 }
 
 const History = (): JSX.Element => {
-    const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
     const { data: balance } = useQuery({
@@ -145,7 +145,7 @@ const History = (): JSX.Element => {
                             <img
                                 width={22}
                                 height={22}
-                                src={`icons/${platform.toUpperCase()}/gift.svg`}
+                                src={`${iconsPath}/gift.svg`}
                                 alt="gift-icon"
                             />
                         </div>
@@ -168,7 +168,7 @@ const History = (): JSX.Element => {
                         >
                             <img
                                 className={`${styles.img_container} ${activeHistory === -2 ? styles.rotate : ''}`}
-                                src={"icons/arrow-down.svg"}
+                                src={`${iconsPath}/arrow-down.svg`}
                                 alt="logo"
                             />
                         </button>
@@ -247,7 +247,7 @@ const History = (): JSX.Element => {
                         >
                             <img
                                 className={`${styles.img_container} ${activeHistory === id ? styles.rotate : ''}`}
-                                src={"icons/arrow-down.svg"}
+                                src={`${iconsPath}/arrow-down.svg`}
                                 alt="logo"
                             />
                         </button>

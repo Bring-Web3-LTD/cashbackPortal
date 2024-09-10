@@ -28,7 +28,7 @@
     border-width: var(--modal-deal-markdown-border-w);
     border-style: solid;
     border-color: var(--modal-deal-markdown-border-c);
-    height: calc(325px - var(--padding) * 2);
+    height: calc(300px - var(--padding) * 2);
     width: calc(100% - var(--padding) * 2);
     padding: var(--padding);
     overflow-y: auto;

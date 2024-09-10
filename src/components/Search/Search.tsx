@@ -134,13 +134,13 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
-    const { platform } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     return (
         <components.Control {...props}>
             <img
                 height={20}
                 width={20}
-                src={`/icons/${platform.toUpperCase()}/magnifying-glass.svg`}
+                src={`${iconsPath}/magnifying-glass.svg`}
                 alt="magnifying-glass-icon"
             />
             {props.children}

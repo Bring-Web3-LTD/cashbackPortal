@@ -2,6 +2,10 @@
   "name": "cashbackportal",
   "private": true,
   "version": "0.0.0",
+  "author": {
+    "name": "Daniel Kalfa",
+    "email": "danielk@bringweb3.io"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite --host",
