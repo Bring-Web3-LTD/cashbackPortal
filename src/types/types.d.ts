@@ -27,6 +27,7 @@ interface LoaderData {
     platform: string
     cryptoSymbols: string[]
     isCountryAvailable: boolean
+    iconsPath: string
 }
 
 

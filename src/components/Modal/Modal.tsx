@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Modal = ({ children, open, closeFn }: Props) => {
-    const { platform } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     const closePopup = useCallback(() => {
         closeFn()
@@ -30,17 +30,23 @@ const Modal = ({ children, open, closeFn }: Props) => {
             }
         };
 
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data.action === 'CLOSE_POPUP') {
+                closePopup();
+            }
+        };
+
         if (open) {
-            window.parent.postMessage({ action: 'OPEN_POPUP' }, '*')
+            const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--modal-overlay-bg')
+            window.parent.postMessage({ action: 'OPEN_POPUP', bgColor }, '*')
             document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
-        } else {
-            document.body.classList.remove('no_scroll');
+            window.addEventListener('message', handleMessage);
         }
-
         return () => {
             document.body.classList.remove('no_scroll');
             document.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('message', handleMessage);
         };
     }, [open, closePopup]);
 
@@ -59,7 +65,7 @@ const Modal = ({ children, open, closeFn }: Props) => {
                     <img
                         width={20}
                         height={20}
-                        src={`icons/${platform.toUpperCase()}/x-mark.svg`}
+                        src={`${iconsPath}/x-mark.svg`}
                         alt="x-mark"
                     />
                 </button>

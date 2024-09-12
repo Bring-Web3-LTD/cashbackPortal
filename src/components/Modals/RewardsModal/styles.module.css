@@ -108,4 +108,5 @@
 
 .disabled {
     background: var(--primary-btn-disabled-bg);
+    color: var(--primary-btn-disabled-f-c);
 }

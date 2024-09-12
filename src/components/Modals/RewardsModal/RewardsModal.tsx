@@ -20,7 +20,7 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 // }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
-    const { platform, walletAddress } = useRouteLoaderData('root') as LoaderData
+    const { platform, walletAddress, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
 
     // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
@@ -90,7 +90,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                             null
                             :
                             <img
-                                src={`icons/${platform.toUpperCase()}/claim.svg`}
+                                src={`${iconsPath}/claim.svg`}
                                 className={styles.modal_img}
                                 alt="claim icon"
                                 onError={() => setIconFallback(true)}

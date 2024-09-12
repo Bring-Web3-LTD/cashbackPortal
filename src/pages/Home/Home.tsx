@@ -16,7 +16,7 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 
 const Home = () => {
-    const { platform, isCountryAvailable } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, iconsPath } = useRouteLoaderData('root') as LoaderData
     const [searchParams] = useSearchParams();
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
@@ -41,7 +41,7 @@ const Home = () => {
         queryFn: async ({ pageParam }) => {
             const options: Parameters<typeof fetchRetailers>[0] = {
                 type: "all",
-                pageSize: 25,
+                pageSize: 40,
                 page: typeof pageParam === "number" ? pageParam : undefined,
                 platform
             }
@@ -130,7 +130,7 @@ const Home = () => {
                                         onClick={resetFilters}
                                     >
                                         <span>{search?.value || category?.name}</span>
-                                        <img src={`/icons/${platform.toUpperCase()}/x-mark-filter.svg`} alt="x-icon" />
+                                        <img src={`${iconsPath}/x-mark-filter.svg`} alt="x-icon" />
                                     </motion.button>
                                     : null}
                             </AnimatePresence>

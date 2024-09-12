@@ -33,7 +33,7 @@ const formatDate = (date: string): string => {
 }
 
 const History = (): JSX.Element => {
-    const { walletAddress, platform } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
     const { data: balance } = useQuery({
@@ -140,39 +140,39 @@ const History = (): JSX.Element => {
         return (
             <>
                 <div className={styles.node_container}>
-                    <div className={styles.inner}>
-                        <div className={styles.img}>
-                            <img
-                                width={22}
-                                height={22}
-                                src={`icons/${platform.toUpperCase()}/gift.svg`}
-                                alt="gift-icon"
-                            />
-                        </div>
-                        <div className={styles.primary}>
-                            Claimed
-                        </div>
+                    {/* <div className={styles.inner}> */}
+                    <div className={styles.img}>
+                        <img
+                            width={22}
+                            height={22}
+                            src={`${iconsPath}/gift.svg`}
+                            alt="gift-icon"
+                        />
                     </div>
-                    <div className={styles.inner}>
-                        <div className={styles.inner_col}>
-                            <div className={styles.primary}>
-                                {`${totalClaimsAmount} AURORA`}
-                            </div>
-                        </div>
-                        <button
-                            className={styles.btn}
-                            onClick={() => {
-                                setActiveHistory(activeHistory === -2 ? -1 : -2)
-                                // sendGA("claimed")
-                            }}
-                        >
-                            <img
-                                className={`${styles.img_container} ${activeHistory === -2 ? styles.rotate : ''}`}
-                                src={"icons/arrow-down.svg"}
-                                alt="logo"
-                            />
-                        </button>
+                    <div className={styles.primary}>
+                        {`${totalClaimsAmount} AURORA`}
                     </div>
+                    <div className={styles.primary}>
+                        Claimed
+                    </div>
+                    {/* </div> */}
+                    {/* <div className={styles.inner}> */}
+                    {/* <div className={styles.inner_col}> */}
+                    {/* </div> */}
+                    <button
+                        className={styles.btn}
+                        onClick={() => {
+                            setActiveHistory(activeHistory === -2 ? -1 : -2)
+                            // sendGA("claimed")
+                        }}
+                    >
+                        <img
+                            className={`${styles.img_container} ${activeHistory === -2 ? styles.rotate : ''}`}
+                            src={`${iconsPath}/arrow-down.svg`}
+                            alt="logo"
+                        />
+                    </button>
+                    {/* </div> */}
                 </div>
                 <AnimatePresence>
                     {activeHistory === -2 && (
@@ -226,32 +226,32 @@ const History = (): JSX.Element => {
                             {createStatus(deal.status, eligibleDate)}
                         </div>
                     </div>
-                    <div className={styles.inner}>
-                        <div className={styles.inner_col}>
-                            <div className={styles.name}>{`${deal.tokenAmount} ${deal.tokenSymbol}`}</div>
-                            <div className={styles.amount}>
-                                {deal.totalEstimatedUsd
-                                    ? `${(+deal.totalEstimatedUsd).toLocaleString(undefined, {
-                                        style: "currency",
-                                        currency: "USD",
-                                    })}`
-                                    : ""}
-                            </div>
-                        </div>
-                        <button
-                            className={styles.btn}
-                            onClick={() => {
-                                setActiveHistory(activeHistory === id ? -1 : id)
-                                // sendGA(deal.status)
-                            }}
-                        >
-                            <img
-                                className={`${styles.img_container} ${activeHistory === id ? styles.rotate : ''}`}
-                                src={"icons/arrow-down.svg"}
-                                alt="logo"
-                            />
-                        </button>
+                    {/* <div className={styles.inner}> */}
+                    {/* <div className={styles.inner_col}> */}
+                    <div className={styles.name}>{`${deal.tokenAmount} ${deal.tokenSymbol}`}</div>
+                    <div className={styles.amount}>
+                        {deal.totalEstimatedUsd
+                            ? `${(+deal.totalEstimatedUsd).toLocaleString(undefined, {
+                                style: "currency",
+                                currency: "USD",
+                            })}`
+                            : ""}
                     </div>
+                    {/* </div> */}
+                    <button
+                        className={styles.btn}
+                        onClick={() => {
+                            setActiveHistory(activeHistory === id ? -1 : id)
+                            // sendGA(deal.status)
+                        }}
+                    >
+                        <img
+                            className={`${styles.img_container} ${activeHistory === id ? styles.rotate : ''}`}
+                            src={`${iconsPath}/arrow-down.svg`}
+                            alt="logo"
+                        />
+                    </button>
+                    {/* </div> */}
                 </div>
                 <AnimatePresence>
                     {activeHistory === id && (
@@ -323,6 +323,20 @@ const History = (): JSX.Element => {
             </div>
             <div className={styles.main}>
                 <hr className={styles.hr} />
+                <div className={styles.header}>
+                    <div className={styles.primary}>
+                        Reward
+                    </div>
+                    <div className={styles.primary}>
+                        Amount in Token
+                    </div>
+                    <div className={styles.primary}>
+                        Status
+                    </div>
+                    <div className={styles.primary}>
+                        Details
+                    </div>
+                </div>
                 {createList()}
             </div>
         </div>
