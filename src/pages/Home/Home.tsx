@@ -41,7 +41,7 @@ const Home = () => {
         queryFn: async ({ pageParam }) => {
             const options: Parameters<typeof fetchRetailers>[0] = {
                 type: "all",
-                pageSize: 25,
+                pageSize: 40,
                 page: typeof pageParam === "number" ? pageParam : undefined,
                 platform
             }
