@@ -22,10 +22,16 @@
     padding-left: 50px;
     height: 45px;
     align-items: center;
-    grid-template-columns: 250px 398px 267px 102px;
+    grid-template-columns: 357px 398px 267px 102px;
     justify-items: start;
     width: calc(100% - 50px);
-    background: lightblue;
+    background: #4B6DDE;
+}
+
+.cell_header {
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
 }
 
 .main {
@@ -60,14 +66,25 @@
     flex-direction: column;
     gap: 12px;
     border-bottom: 1px solid black;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.subcontainer:hover {
+    background: lightblue;
+}
+
+.node_open {
+    background: lightblue;
 }
 
 .node_container {
     display: grid;
-    grid-template-columns: 250px 398px 267px 102px;
+    grid-template-columns: 357px 398px 267px 102px;
     padding-left: 50px;
     align-items: center;
     justify-items: start;
+    user-select: none;
 }
 
 .inner {
@@ -93,13 +110,13 @@
 }
 
 .primary {
-    font-weight: 700;
+    font-weight: 400;
     line-height: 20px;
     font-size: 16px;
 }
 
 .name {
-    font-weight: 700;
+    font-weight: 400;
     line-height: 20px;
     font-size: 16px;
     text-wrap: nowrap;
@@ -143,7 +160,7 @@
 .description {
     font-size: 14px;
     color: black;
-    padding-left: 64px;
+    padding-left: 105px;
 }
 
 .amount {

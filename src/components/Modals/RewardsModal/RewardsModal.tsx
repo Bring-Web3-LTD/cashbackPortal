@@ -9,6 +9,7 @@ import { useRouteLoaderData } from 'react-router-dom';
 import claimInitiate from '../../../api/claim/initiate';
 import message from '../../../utils/message';
 import { useTranslation } from 'react-i18next';
+import claimSubmit from '../../../api/claim/submit';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     eligibleTokenAmount: string
@@ -30,12 +31,26 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
 
     useEffect(() => {
         // Define the message handler
-        const handleMessage = (event: MessageEvent) => {
+        const handleMessage = async (event: MessageEvent) => {
             if (event.data.from !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
-            console.log('Received message:', event);
+            console.log('BRING! Received message:', event);
             // Handle the message data here
+            if (event.data.action === 'SIGNATURE') {
+                const res = await claimSubmit({
+                    walletAddress,
+                    targetWalletAddress: walletAddress,
+                    tokenSymbol: currentCryptoSymbol,
+                    tokenAmount: 13,
+                    signature: event.data.signature,
+                    key: event.data.key,
+                    message: event.data.message,
+                    platform
+                })
+                console.log({ submit: res });
+
+            }
         };
 
         // Set up the event listener
@@ -45,7 +60,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, []);
+    }, [currentCryptoSymbol, platform, walletAddress]);
 
     const signMessage = async () => {
         setLoading(true)
@@ -54,7 +69,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             walletAddress,
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
-            tokenAmount: 5,
+            tokenAmount: 13,
         })
 
         const messageToSign = res?.messageToSign
@@ -66,7 +81,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
 
         message({ messageToSign })
         setCountDown(true)
-        window.parent.postMessage({ from: 'bringweb3', messageToSign }, '*')
+        window.parent.postMessage({ from: 'bringweb3', messageToSign, action: 'SIGN_MESSAGE' }, '*')
     }
 
     return (

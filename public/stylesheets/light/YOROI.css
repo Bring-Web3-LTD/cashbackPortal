@@ -137,6 +137,7 @@
   --category-btn-hover-border-c: #A0B3F2;
   --category-btn-hover-radius: 8px;
 
+  --modal-offset-top: -112px;
   --modal-bg: #fff;
   --modal-overlay-bg: #0000007a;
   --modal-border-w: 0;
@@ -211,6 +212,35 @@
   --search-border-c: #A7AFC0;
   --search-placeholder-f-c: #6B7384;
   --search-scrollbar-bg: #c8ccce;
+
+  --history-title-f-s: 30px;
+  --history-title-f-w: 400;
+  --history-title-f-c: black;
+
+  --history-back-f-s: 14px;
+  --history-back-f-w: 500;
+  --history-back-f-c: black;
+  --history-back-x-location: 64px;
+
+  --history-table-header-bg: lightgray;
+  --history-table-header-border-c: transparent;
+  --history-table-header-border-w: 0;
+  --history-table-header-radius: 0;
+
+  --history-table-header-f-s: 14px;
+  --history-table-header-f-w: 400;
+  --history-table-header-f-c: black;
+
+  --history-table-row-border-w: 1px;
+  --history-table-row-border-c: black;
+
+  --history-table-row-hover-bg: lightblue;
+  --history-claimed-icon-bg: black;
+  --history-details-btn-bg: black;
+  --history-purchase-name-f-s: 15px;
+  --history-purchase-name-f-w: 500;
+  --history-purchase-name-f-c: black;
+
 }
 
 * {

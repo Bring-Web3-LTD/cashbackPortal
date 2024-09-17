@@ -100,6 +100,9 @@
 }
 
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-style: solid;
     border-radius: var(--rewards-btn-radius);
     height: 46px;

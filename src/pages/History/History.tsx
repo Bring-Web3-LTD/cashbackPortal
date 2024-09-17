@@ -118,7 +118,7 @@ const History = (): JSX.Element => {
             case "pending":
                 return (
                     <div className={styles.status}>
-                        Available in {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
+                        In {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
                     </div>
                 )
             case "canceled":
@@ -130,7 +130,7 @@ const History = (): JSX.Element => {
             default:
                 return (
                     <div className={styles.status}>
-                        Available in {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
+                        In {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
                     </div>
                 )
         }
@@ -139,15 +139,20 @@ const History = (): JSX.Element => {
     const createClaimNode = (): JSX.Element => {
         return (
             <>
-                <div className={styles.node_container}>
-                    {/* <div className={styles.inner}> */}
-                    <div className={styles.img}>
-                        <img
-                            width={22}
-                            height={22}
-                            src={`${iconsPath}/gift.svg`}
-                            alt="gift-icon"
-                        />
+                <div
+                    className={styles.node_container}
+                    onClick={() => setActiveHistory(activeHistory === -2 ? -1 : -2)}
+                >
+                    <div className={styles.inner}>
+                        <div className={styles.img}>
+                            <img
+                                width={22}
+                                height={22}
+                                src={`${iconsPath}/gift.svg`}
+                                alt="gift-icon"
+                            />
+                        </div>
+                        <div className={styles.primary}>Total claims</div>
                     </div>
                     <div className={styles.primary}>
                         {`${totalClaimsAmount} AURORA`}
@@ -155,7 +160,6 @@ const History = (): JSX.Element => {
                     <div className={styles.primary}>
                         Claimed
                     </div>
-                    {/* </div> */}
                     {/* <div className={styles.inner}> */}
                     {/* <div className={styles.inner_col}> */}
                     {/* </div> */}
@@ -208,7 +212,10 @@ const History = (): JSX.Element => {
 
         return (
             <>
-                <div className={styles.node_container}>
+                <div
+                    className={styles.node_container}
+                    onClick={() => setActiveHistory(activeHistory === id ? -1 : id)}
+                >
                     <div className={styles.inner}>
                         <div style={{ background: `${deal.retailerBackgroundColor || 'white'}`, borderRadius: '50%', width: '40px', height: '40px' }}>
                             <img
@@ -219,23 +226,22 @@ const History = (): JSX.Element => {
                             // retailerName={deal.retailerName}
                             />
                         </div>
-                        <div>
-                            <div className={styles.name}>
-                                {deal.retailerName}
-                            </div>
-                            {createStatus(deal.status, eligibleDate)}
+                        <div className={styles.name}>
+                            {deal.retailerName}
                         </div>
                     </div>
-                    {/* <div className={styles.inner}> */}
-                    {/* <div className={styles.inner_col}> */}
-                    <div className={styles.name}>{`${deal.tokenAmount} ${deal.tokenSymbol}`}</div>
+                    <div className={styles.name}>
+                        {
+                            `${deal.tokenAmount} ${deal.tokenSymbol} ${deal.totalEstimatedUsd
+                                ? `/ ${(+deal.totalEstimatedUsd).toLocaleString(undefined, {
+                                    style: "currency",
+                                    currency: "USD",
+                                })}`
+                                : ""}`
+                        }
+                    </div>
                     <div className={styles.amount}>
-                        {deal.totalEstimatedUsd
-                            ? `${(+deal.totalEstimatedUsd).toLocaleString(undefined, {
-                                style: "currency",
-                                currency: "USD",
-                            })}`
-                            : ""}
+                        {createStatus(deal.status, eligibleDate)}
                     </div>
                     {/* </div> */}
                     <button
@@ -324,16 +330,16 @@ const History = (): JSX.Element => {
             <div className={styles.main}>
                 <hr className={styles.hr} />
                 <div className={styles.header}>
-                    <div className={styles.primary}>
-                        Reward
+                    <div className={styles.cell_header}>
+                        Purchase
                     </div>
-                    <div className={styles.primary}>
-                        Amount in Token
+                    <div className={styles.cell_header}>
+                        Amount
                     </div>
-                    <div className={styles.primary}>
+                    <div className={styles.cell_header}>
                         Status
                     </div>
-                    <div className={styles.primary}>
+                    <div className={styles.cell_header}>
                         Details
                     </div>
                 </div>
