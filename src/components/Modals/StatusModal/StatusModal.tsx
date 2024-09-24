@@ -3,6 +3,7 @@ import { ComponentProps } from 'react'
 import Modal from '../../Modal/Modal'
 import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../../utils/message'
+import { useTranslation } from 'react-i18next'
 
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
@@ -13,10 +14,11 @@ interface StatusProps { closeFn: () => void }
 
 const Success = ({ closeFn }: StatusProps) => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { t } = useTranslation()
     return (
         <div className={styles.card}>
             <img src={`${iconsPath}/success.svg`} alt="icon" />
-            <div className={styles.title}>
+            <div className={`${styles.title} ${styles.title_success}`}>
                 Success
             </div>
             <div className={styles.msg}>
@@ -25,7 +27,7 @@ const Success = ({ closeFn }: StatusProps) => {
             <button
                 onClick={() => closeFn()}
                 className={styles.btn}
-            >Done</button>
+            >{t('doneBtn')}</button>
         </div>
     )
 }
@@ -33,10 +35,12 @@ const Success = ({ closeFn }: StatusProps) => {
 
 const Failure = ({ closeFn }: StatusProps) => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { t } = useTranslation()
+
     return (
         <div className={styles.card}>
             <img src={`${iconsPath}/error.svg`} alt="icon" />
-            <div className={styles.title}>
+            <div className={`${styles.title} ${styles.title_error}`}>
                 Error
             </div>
             <div className={styles.msg}>
@@ -45,7 +49,7 @@ const Failure = ({ closeFn }: StatusProps) => {
             <button
                 onClick={() => closeFn()}
                 className={styles.btn}
-            >Done</button>
+            >{t('doneBtn')}</button>
         </div>
     )
 }

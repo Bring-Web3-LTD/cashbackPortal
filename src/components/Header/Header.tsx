@@ -1,10 +1,8 @@
 import styles from './styles.module.css'
-import ExplainModal from '../Modals/ExplainModal/ExplainModal'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
-    const [isOpen, setIsOpen] = useState(false)
     const { t } = useTranslation()
     return (
         <div className={styles.header}>
@@ -18,14 +16,12 @@ const Header = () => {
                     <h2 className={styles.subtitle}>{t('subtitle')}</h2>
                     : null
             }
-            <button
+            <Link
+                to={'/faq'}
                 className={styles.btn}
-                onClick={() => setIsOpen(true)}
-            >{t('howItWorks')}</button>
-            <ExplainModal
-                open={isOpen}
-                closeFn={() => setIsOpen(false)}
-            />
+            >
+                {t('frequentlyAskedQuestion')}
+            </Link>
         </div>
     )
 }

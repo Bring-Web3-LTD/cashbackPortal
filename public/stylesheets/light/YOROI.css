@@ -198,6 +198,31 @@
   --modal-deal-consent-f-w: 400;
   --modal-deal-consent-f-c: #242838;
 
+  --modal-status-title-f-s: 30px;
+  --modal-status-title-f-w: 500;
+  --modal-status-title-success-f-c: #08C29D;
+  --modal-status-title-failure-f-c: #FF1351;
+
+  --modal-status-msg-f-s: 16px;
+  --modal-status-msg-f-w: 400px;
+  --modal-status-msg-f-c: #242838;
+
+  --modal-status-btn-bg: #4B6DDE;
+  --modal-status-btn-f-s: 16px;
+  --modal-status-btn-f-w: 500;
+  --modal-status-btn-f-c: #FFF;
+  --modal-status-btn-border-w: 0;
+  --modal-status-btn-border-c: transparent;
+  --modal-status-btn-radius: 8px;
+
+  --modal-status-btn-hover-bg: #3154CB;
+  --modal-status-btn-hover-f-s: 16px;
+  --modal-status-btn-hover-f-w: 500;
+  --modal-status-btn-hover-f-c: #FFF;
+  --modal-status-btn-hover-border-w: 0;
+  --modal-status-btn-hover-border-c: transparent;
+  --modal-status-btn-hover-radius: 8px;
+
   --scrollbar-bg: #c8ccce;
   --scrollbar-w: 14px;
 
