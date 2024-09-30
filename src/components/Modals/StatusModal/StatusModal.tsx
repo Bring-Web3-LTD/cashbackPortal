@@ -4,13 +4,42 @@ import Modal from '../../Modal/Modal'
 import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
-
+import { Oval } from 'react-loader-spinner'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
-    status: 'success' | "failure"
+    status: 'success' | "failure" | 'loading'
 }
 
 interface StatusProps { closeFn: () => void }
+
+const Loading = () => {
+    const { t } = useTranslation()
+
+    return (
+        <div className={styles.card}>
+            <Oval
+                height={40}
+                width={40}
+                color="#4B6DDE"
+                secondaryColor="#4B6DDE50"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel='oval-loading'
+            />
+            <div className={styles.title}>
+                Processing
+            </div>
+            <div className={styles.msg}>
+                We are processing your request<br />it could take a few seconds.
+            </div>
+            <button
+                disabled
+                className={styles.btn}
+            >{t('doneBtn')}</button>
+        </div>
+    )
+}
 
 const Success = ({ closeFn }: StatusProps) => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
@@ -60,17 +89,19 @@ const StatusModal = ({ open, closeFn, status }: Props) => {
             open={open}
             closeFn={closeFn}
         >
-            {status === 'failure' ?
-                <Failure closeFn={() => {
-                    closeFn()
-                    message({ action: 'CLOSE_POPUP' })
-                }} />
-                : status === 'success' ?
-                    <Success closeFn={() => {
-                        closeFn()
+            {status === 'loading' ?
+                <Loading />
+                : status === 'failure' ?
+                    <Failure closeFn={() => {
                         message({ action: 'CLOSE_POPUP' })
+                        closeFn()
                     }} />
-                    : null
+                    : status === 'success' ?
+                        <Success closeFn={() => {
+                            message({ action: 'CLOSE_POPUP' })
+                            closeFn()
+                        }} />
+                        : null
             }
         </Modal>
     )

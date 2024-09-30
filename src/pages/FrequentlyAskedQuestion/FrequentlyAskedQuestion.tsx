@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './styles.module.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const faq = [
@@ -39,11 +39,12 @@ const faq = [
 
 const FrequentlyAskedQuestion = () => {
   const navigate = useNavigate()
+  const { iconsPath } = useRouteLoaderData('root') as LoaderData
   const [currentIndex, setCurrentIndex] = useState(-1)
 
   return (
     <div className={styles.container}>
-      <h1>
+      <h1 className={styles.title}>
         FAQ
       </h1>
       <div className={styles.faq_container}>
@@ -63,7 +64,7 @@ const FrequentlyAskedQuestion = () => {
                 <button
                   className={`${styles.details_btn} ${currentIndex === i ? styles.rotate : ''}`}
                 >
-                  <img src="/icons/light/YOROI/arrow-down.svg" alt="arrow-down" />
+                  <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
                 </button>
               </div>
               <AnimatePresence>
@@ -96,6 +97,7 @@ const FrequentlyAskedQuestion = () => {
           navigate(-1)
         }}
       >
+        <img src={`${iconsPath}/arrow-left.svg`} alt="" />
         Back
       </Link>
     </div>

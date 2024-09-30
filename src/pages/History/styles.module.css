@@ -14,7 +14,10 @@
 }
 
 .back_btn {
-    position: absolute;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     top: 32px;
     left: var(--history-back-x-location);
     text-decoration: none;
@@ -132,4 +135,23 @@
 .amount {
     display: flex;
     gap: 20px;
+    font-size: var(--history-amount-f-s);
+    font-weight: var(--history-amount-f-w);
+    color: var(--history-amount-f-c);
+}
+
+.status {
+    font-size: var(--history-status-f-s);
+    font-weight: var(--history-status-f-w);
+    color: var(--history-status-f-c);
+}
+
+.canceled {
+    color: var(--history-status-canceled-f-c);
+}
+
+.description {
+    font-size: var(--history-description-f-s);
+    font-weight: var(--history-description-f-w);
+    color: var(--history-description-f-c);
 }

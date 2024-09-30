@@ -40,6 +40,8 @@ const rootLoader = async () => {
     const platform = res.info.platform?.toUpperCase() || 'default'
     loadStylesheet(theme, platform)
     i18n.setDefaultNamespace(platform)
+    console.log({ theme });
+
     return {
         ...res.info,
         iconsPath: `icons/${theme}/${platform}`,

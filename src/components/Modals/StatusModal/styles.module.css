@@ -55,3 +55,13 @@
     border-color: var(--modal-status-btn-hover-border-c);
     border-radius: var(--modal-status-btn-hover-radius);
 }
+
+.btn:disabled {
+    background: var(--modal-status-btn-disabled-bg);
+    font-size: var(--modal-status-btn-disabled-f-s);
+    font-weight: var(--modal-status-btn-disabled-f-w);
+    color: var(--modal-status-btn-disabled-f-c);
+    border-width: var(--modal-status-btn-disabled-border-w);
+    border-color: var(--modal-status-btn-disabled-border-c);
+    border-radius: var(--modal-status-btn-disabled-radius);
+}

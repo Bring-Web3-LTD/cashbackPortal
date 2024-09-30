@@ -32,6 +32,7 @@ interface ClaimsRes {
 }
 
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+    const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
         <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : styles.collapsible_hover}`}>
@@ -64,11 +65,11 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                         <span>{tokenAmount}</span>
                     }
                 </div>
-                <div className={styles.status}>{status}</div>
+                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
                 <button
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
                 >
-                    <img src="/icons/light/YOROI/arrow-down.svg" alt="arrow-down" />
+                    <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
                 </button>
             </div>
             <AnimatePresence>
@@ -161,6 +162,7 @@ const History = () => {
                     navigate(-1)
                 }}
             >
+                <img src={`${iconsPath}/arrow-left.svg`} alt="" />
                 Back
             </Link>
             <h1 className={styles.title}>Transaction History</h1>

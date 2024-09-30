@@ -22,7 +22,7 @@
 
   --rewards-bg: linear-gradient(312deg, #C6F7ED 0%, #E4E8F7 70.58%);
 
-  --rewards-img-size: 24px;
+  --rewards-img-size: 20px;
 
   --claim-img-bg: #4B6DDE;
   --claim-img-border-w: 0;
@@ -44,7 +44,7 @@
   --claim-usd-f-c: black;
   --pending-usd-f-c: black;
 
-  --rewards-amount-f-s: 40px;
+  --rewards-amount-f-s: 35px;
   --rewards-amount-f-w: 500;
 
   --claim-amount-f-c: black;
@@ -223,6 +223,14 @@
   --modal-status-btn-hover-border-c: transparent;
   --modal-status-btn-hover-radius: 8px;
 
+  --modal-status-btn-disabled-bg: var(--primary-btn-disabled-bg);
+  --modal-status-btn-disabled-f-s: 16px;
+  --modal-status-btn-disabled-f-w: 500;
+  --modal-status-btn-disabled-f-c: var(--primary-btn-disabled-f-c);
+  --modal-status-btn-disabled-border-w: 0;
+  --modal-status-btn-disabled-border-c: transparent;
+  --modal-status-btn-disabled-radius: 8px;
+
   --scrollbar-bg: #c8ccce;
   --scrollbar-w: 14px;
 
@@ -238,34 +246,46 @@
   --search-placeholder-f-c: #6B7384;
   --search-scrollbar-bg: #c8ccce;
 
-  --history-title-f-s: 30px;
-  --history-title-f-w: 400;
-  --history-title-f-c: black;
+  --history-title-f-s: 20px;
+  --history-title-f-w: 500;
+  --history-title-f-c: #242838;
 
   --history-back-f-s: 14px;
   --history-back-f-w: 500;
-  --history-back-f-c: black;
+  --history-back-f-c: #242838;
   --history-back-x-location: 64px;
 
-  --history-table-header-bg: lightgray;
+  --history-table-header-bg: #fff;
   --history-table-header-border-c: transparent;
   --history-table-header-border-w: 0;
   --history-table-header-radius: 0;
 
   --history-table-header-f-s: 14px;
   --history-table-header-f-w: 400;
-  --history-table-header-f-c: black;
+  --history-table-header-f-c: #6B7384;
 
   --history-table-row-border-w: 1px;
-  --history-table-row-border-c: black;
+  --history-table-row-border-c: #DCE0E9;
 
-  --history-table-row-hover-bg: lightblue;
-  --history-claimed-icon-bg: black;
-  --history-details-btn-bg: black;
-  --history-purchase-name-f-s: 15px;
+  --history-table-row-hover-bg: #EAEDF2;
+  --history-claimed-icon-bg: #4B6DDE;
+  --history-details-btn-bg: #DCE0E9;
+  --history-purchase-name-f-s: 16px;
   --history-purchase-name-f-w: 500;
-  --history-purchase-name-f-c: black;
+  --history-purchase-name-f-c: #242838;
 
+  --history-amount-f-s: 16px;
+  --history-amount-f-w: 400;
+  --history-amount-f-c: #242838;
+
+  --history-status-f-s: 16px;
+  --history-status-f-w: 400;
+  --history-status-f-c: #08C29D;
+  --history-status-canceled-f-c: #FF1351;
+
+  --history-description-f-s: 16px;
+  --history-description-f-w: 400;
+  --history-description-f-c: #242838;
 }
 
 * {

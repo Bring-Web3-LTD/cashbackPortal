@@ -1,4 +1,5 @@
 .container {
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,8 +11,19 @@
     max-width: 1167px;
 }
 
+.title {
+    font-size: var(--history-title-f-s);
+    font-weight: var(--history-title-f-w);
+    color: var(--history-title-f-c);
+    margin: 0;
+    margin-bottom: 65px;
+}
+
 .back_btn {
-    position: absolute;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     top: 32px;
     left: var(--history-back-x-location);
     text-decoration: none;
@@ -21,6 +33,7 @@
 }
 
 .collapsible {
+    color: var(--history-purchase-name-f-c);
     border-bottom-width: var(--history-table-row-border-w);
     border-bottom-style: solid;
     border-bottom-color: var(--history-table-row-border-c);
@@ -78,4 +91,5 @@
     padding: 0;
     font-size: 16px;
     cursor: pointer;
+    color: var(--history-purchase-name-f-c);
 }
