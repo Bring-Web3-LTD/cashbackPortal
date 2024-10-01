@@ -7,7 +7,13 @@ const faq = [
   {
     question: 'I didn’t get my reward',
     answer: [
-      "After you make a purchase, the reward should appear in the pending rewards section after 48 hours, if you don't see it please "
+      `We're sorry that you're experiencing a challenge with your rewards.`,
+      `Please check if any of the following issues`,
+      `The most probable reasons for not seeing your rewards are -`,
+      `1. You paid for your purchase less than 48 hours ago (it could take time for your reward to appear).`,
+      `2. The wallet you were logged to, at the time of the purchase, was different from the current wallet you're logged to.`,
+      `3. You didn’t meet the retailer’s cashback eligibility terms`,
+      `If you feel that none of the above applies to your case, click here to be transferred to our support partner, Bring. `
     ],
     link: 'Click here.',
   },
@@ -32,8 +38,22 @@ const faq = [
     ],
   },
   {
-    question: 'What is Bring?',
-    answer: ['Bring is a digital wallet that allows you to earn cashback on your purchases.'],
+    question: 'When can I claim pending rewards?',
+    answer: [
+      'The locking time varies between the different retailers, you can check the status on your history page.'
+    ],
+  },
+  {
+    question: 'Why can’t I claim my rewards?',
+    answer: [
+      'There is a minimum amount to claim, you can see the exact amount in the “Claim cashback” section.'
+    ],
+  },
+  {
+    question: 'I have multiple addresses in my wallet, how do I know to which one the cashback will go into?',
+    answer: [
+      'The cashback rewards are collected automatically into the wallet you were logged into while making the purchase. In case you don’t see your reward, please check your other addresses within the wallet.'
+    ],
   }
 ]
 
