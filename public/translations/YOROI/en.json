@@ -1,13 +1,14 @@
 {
-    "title": "Crypto Cashback",
-    "subtitle": "Receive ADA tokens when shopping online",
+    "title": "ADA Cashback",
+    "subtitle": "Shop online with any card. Get cashback in ADA.",
     "claimCashback": "CLAIM CASHBACK",
     "viewRewards": "VIEW REWARDS",
-    "howItWorks": "HOW IT WORKS",
+    "frequentlyAskedQuestion": "FAQ",
     "searchPlaceholder": "Brand, product, destination...",
     "claimToYourWallet": "CLAIM TO YOUR WALLET",
     "signNow": "SIGN NOW",
     "startShopping": "START SHOPPING",
     "loading": "Loading...",
-    "loadingBtn": "LOADING..."
+    "loadingBtn": "LOADING...",
+    "doneBtn": "DONE"
 }

@@ -6,6 +6,7 @@ interface Body {
     tokenSymbol: string
     tokenAmount: number
     signature: string
+    key?: string
     message: string
     platform: string
 }

@@ -91,8 +91,8 @@
     --retailer-card-img-border-w: 1px;
 
     --retailer-card-flag-f-s: 12px;
-    --retailer-card-flag-f-w: 500;
-    --retailer-card-flag-f-c: #fff;
+    --retailer-card-flag-f-w: 700;
+    --retailer-card-flag-f-c: #0B0B0F;
     --retailer-card-flag-bg: #08C29D;
     --retailer-card-flag-radius: 4px;
 
@@ -212,6 +212,47 @@
     --search-border-c: #A7AFC0;
     --search-placeholder-f-c: #7C85A3;
     --search-scrollbar-bg: #c8ccce;
+
+    --history-title-f-s: 20px;
+    --history-title-f-w: 500;
+    --history-title-f-c: #E1E6F5;
+
+    --history-back-f-s: 14px;
+    --history-back-f-w: 500;
+    --history-back-f-c: #E1E6F5;
+    --history-back-x-location: 64px;
+
+    --history-table-header-bg: #15171F;
+    --history-table-header-border-c: transparent;
+    --history-table-header-border-w: 0;
+    --history-table-header-radius: 0;
+
+    --history-table-header-f-s: 14px;
+    --history-table-header-f-w: 400;
+    --history-table-header-f-c: #7C85A3;
+
+    --history-table-row-border-w: 1px;
+    --history-table-row-border-c: #3E4457;
+
+    --history-table-row-hover-bg: #3E4457;
+    --history-claimed-icon-bg: #4B6DDE;
+    --history-details-btn-bg: #3E4457;
+    --history-purchase-name-f-s: 16px;
+    --history-purchase-name-f-w: 500;
+    --history-purchase-name-f-c: #E1E6F5;
+
+    --history-amount-f-s: 16px;
+    --history-amount-f-w: 400;
+    --history-amount-f-c: #E1E6F5;
+
+    --history-status-f-s: 16px;
+    --history-status-f-w: 400;
+    --history-status-f-c: #66F2D6;
+    --history-status-canceled-f-c: #FF7196;
+
+    --history-description-f-s: 16px;
+    --history-description-f-w: 400;
+    --history-description-f-c: #E1E6F5;
 }
 
 * {

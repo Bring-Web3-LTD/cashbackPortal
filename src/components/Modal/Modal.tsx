@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
 import { useRouteLoaderData } from 'react-router-dom'
+import message from '../../utils/message'
 
 
 interface Props {
@@ -14,7 +15,7 @@ const Modal = ({ children, open, closeFn }: Props) => {
 
     const closePopup = useCallback(() => {
         closeFn()
-        window.parent.postMessage({ action: 'CLOSE_POPUP' }, '*')
+        message({ action: 'CLOSE_POPUP' })
     }, [closeFn])
 
     const handleOverlayClick = useCallback((e: MouseEvent<HTMLDivElement>) => {

@@ -51,7 +51,7 @@ interface HistoryItem {
 interface Claim {
     action: string
     date: string
-    tokenAmount: string
+    tokenAmount: number
     tokenSymbol: string
     type?: "claim"
 }

@@ -1,346 +1,191 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import styles from './styles.module.css'
-import { useNavigate, useRouteLoaderData } from "react-router-dom"
-import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { useQuery } from "@tanstack/react-query"
-import fetchCache from "../../api/fetchCache"
-import { Link } from 'react-router-dom'
-// import { sendGaEventBring } from "@/utils/bringWeb3/services/googleAnalytics"
+import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import fetchCache from '../../api/fetchCache'
+import { formatCurrency, formatDate, formatStatus } from './helpers'
 
-interface HistoryObj {
-    [key: string]: any
+interface History {
+    status: string
+    tokenAmount: string;
+    imgSrc: string
+    description: string[][];
+    totalEstimatedUsd?: string
+    imgBg?: string
+    retailerName?: string
 }
 
-const daysLeft = (date: string): number => {
-    const targetDate: Date = new Date(date)
-
-    const currentDate: Date = new Date()
-
-    const timeDifference: number = targetDate.getTime() - currentDate.getTime()
-
-    return Math.max(1, Math.ceil(timeDifference / (1000 * 60 * 60 * 24)))
+interface RowProps extends History {
+    isActive: boolean
+    toggleFn: () => void
 }
 
-const formatDate = (date: string): string => {
-    const format = new Date(date)
-
-    return format.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    })
+interface ClaimToken {
+    tokenAmount: number
+    description: string[][]
+    tokenSymbol: string
 }
 
-const History = (): JSX.Element => {
+interface ClaimsRes {
+    [key: string]: ClaimToken
+}
+
+const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+    const { iconsPath } = useRouteLoaderData('root') as LoaderData
+
+    return (
+        <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : styles.collapsible_hover}`}>
+            <div
+                className={styles.details_container}
+                onClick={toggleFn}
+            >
+                <div className={styles.name_container}>
+                    <div
+                        className={styles.img_container}
+                        style={status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
+                    >
+                        <img
+                            style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
+                            className={styles.img}
+                            src={imgSrc}
+                            alt="logo"
+                        />
+                    </div>
+                    <span className={styles.purchase_name}>{retailerName || 'Total claims'}</span>
+                </div>
+                <div className={styles.amount}>
+                    {totalEstimatedUsd ?
+                        <>
+                            <span>{tokenAmount}</span>
+                            <span>/</span>
+                            <span>{totalEstimatedUsd}</span>
+                        </>
+                        :
+                        <span>{tokenAmount}</span>
+                    }
+                </div>
+                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
+                <button
+                    className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
+                >
+                    <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
+                </button>
+            </div>
+            <AnimatePresence>
+                {isActive && <motion.div
+                    className={styles.description_container}
+                    initial={{ height: 0, opacity: 0, minHeight: 0 }}
+                    animate={{ height: 'auto', opacity: 1, minHeight: '40px' }}
+                    exit={{ height: 0, opacity: 0, minHeight: 0 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    <div>
+                        {description.map((item, index) => (
+                            <div
+                                key={`description-${index}`}
+                                className={styles.description}
+                            >
+                                {
+                                    item[0] || item[1] ?
+                                        <>
+                                            <b>{item[0]}</b> - {item[1]}
+                                        </>
+                                        : null
+                                }
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>}
+            </AnimatePresence>
+        </div >
+    )
+}
+
+const History = () => {
+    const [activeRow, setActiveRow] = useState(-1)
+
     const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
-    const { data: balance } = useQuery({
+    const { data } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform }),
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })
 
-    const [activeHistory, setActiveHistory] = useState(-1)
-    // const { address: walletAddress } = useAccount()
+    const balance = data?.data
 
-    // const sendGA = (status: string) => {
-    // sendGaEventBring({
-    //     name: "history_expand",
-    //     parameters: {
-    //         walletAddress,
-    //         platform: "AURORA",
-    //         category: "user_action",
-    //         action: "click",
-    //         details: status,
-    //     },
-    // })
-    // }
-    let totalClaimsAmount: number | string =
-        balance?.data.movements?.claims.reduce((total, item) => {
-            return total + +item.tokenAmount
-        }, 0) || 0
+    const createClaims = (claims: Claim[] | undefined): History[] => {
+        if (!claims) return []
+        const res: ClaimsRes = {}
 
-    totalClaimsAmount = totalClaimsAmount.toLocaleString(undefined, {
-        minimumFractionDigits: totalClaimsAmount ? 2 : 0,
-        maximumFractionDigits: 2,
-    })
+        claims.map(claim => {
+            const { tokenSymbol, tokenAmount, date } = claim
+            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
+            res[tokenSymbol].description.push([formatDate(date), `${tokenAmount} ${tokenSymbol}`])
+            res[tokenSymbol].tokenAmount += tokenAmount
+        })
 
-    const createDescription = (item: HistoryObj, retailerName: string) => {
-        if (item.description) {
-            return (
-                <div>
-                    <b>{formatDate(item.date)} -</b> {item.description}
-                </div>
-            )
-        }
+        const arr = Object.keys(res).map(key => ({
+            ...res[key]
+            , tokenAmount: `${res[key].tokenAmount} ${key}`,
+            imgSrc: `${iconsPath}/gift.svg`,
+            tokenSymbol: key,
+            status: formatStatus('claimed'),
+        }))
 
-        switch (item.action) {
-            case "PURCHASE_POSTED":
-                return (
-                    <div>
-                        <b>{formatDate(item.date)} -</b>{" "}
-                        {item.tokenAmount + " " + item.tokenSymbol} rewards for purchasing
-                        at <i>{retailerName}</i>.<br />
-                        <b>Status:</b> Pending for the end of the return period.
-                    </div>
-                )
-            case "PURCHASE_APPROVED":
-                return (
-                    <div>
-                        <span className={styles.date}>{formatDate(item.date)} -</span>{" "}
-                        {item.tokenAmount + " " + item.tokenSymbol} eligible rewards for
-                        purchasing at {retailerName}.<br />
-                    </div>
-                )
-            case "PURCHASE_CORRECTED":
-                return (
-                    <div>
-                        <b>{formatDate(item.date)} -</b>{" "}
-                        {item.tokenAmount + " " + item.tokenSymbol} — purchase corrected.{" "}
-                        {item.correctionReason ? item.correctionReason : ""}
-                        <br />
-                    </div>
-                )
-        }
-        return <></>
+        return arr
     }
 
-    const createStatus = (status: string, eligibleDate: number): JSX.Element => {
-        switch (status) {
-            case "completed":
-                return (
-                    <div className={styles.status}>
-                        Completed
-                    </div>
-                )
-            case "pending":
-                return (
-                    <div className={styles.status}>
-                        Available in {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
-                    </div>
-                )
-            case "canceled":
-                return (
-                    <div className={`${styles.status} ${styles.canceled}`}>
-                        Canceled
-                    </div>
-                )
-            default:
-                return (
-                    <div className={styles.status}>
-                        Available in {eligibleDate} {eligibleDate > 1 ? "days" : "day"}
-                    </div>
-                )
-        }
+    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): History[] => {
+        if (!deals || !retailerIconBasePath) return []
+        return deals.map(deal => ({
+            tokenAmount: `${deal.tokenAmount} ${deal.tokenName}`,
+            totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
+            status: formatStatus(deal.status, deal.eligibleDate),
+            retailerName: deal.retailerName,
+            imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
+            imgBg: deal.retailerBackgroundColor,
+            description: [['']]
+        }))
     }
-
-    const createClaimNode = (): JSX.Element => {
-        return (
-            <>
-                <div className={styles.node_container}>
-                    {/* <div className={styles.inner}> */}
-                    <div className={styles.img}>
-                        <img
-                            width={22}
-                            height={22}
-                            src={`${iconsPath}/gift.svg`}
-                            alt="gift-icon"
-                        />
-                    </div>
-                    <div className={styles.primary}>
-                        {`${totalClaimsAmount} AURORA`}
-                    </div>
-                    <div className={styles.primary}>
-                        Claimed
-                    </div>
-                    {/* </div> */}
-                    {/* <div className={styles.inner}> */}
-                    {/* <div className={styles.inner_col}> */}
-                    {/* </div> */}
-                    <button
-                        className={styles.btn}
-                        onClick={() => {
-                            setActiveHistory(activeHistory === -2 ? -1 : -2)
-                            // sendGA("claimed")
-                        }}
-                    >
-                        <img
-                            className={`${styles.img_container} ${activeHistory === -2 ? styles.rotate : ''}`}
-                            src={`${iconsPath}/arrow-down.svg`}
-                            alt="logo"
-                        />
-                    </button>
-                    {/* </div> */}
-                </div>
-                <AnimatePresence>
-                    {activeHistory === -2 && (
-                        <motion.div
-                            key="content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.1 }}
-                            className={styles.collapsible}
-                        >
-                            {balance?.data.movements?.claims.map((item, index) => (
-                                <div
-                                    key={`history-claim-${index}`}
-                                    className={styles.description}
-                                >
-                                    <div>
-                                        <b>{formatDate(item.date)} -</b>{" "}
-                                        {`${(+item.tokenAmount).toLocaleString()} ${item.tokenSymbol
-                                            }`}
-                                    </div>
-                                </div>
-                            ))}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </>
-        )
-    }
-
-    const createDealNode = (deal: Deal, id: number): JSX.Element => {
-        const eligibleDate = daysLeft(deal.eligibleDate)
-
-        return (
-            <>
-                <div className={styles.node_container}>
-                    <div className={styles.inner}>
-                        <div style={{ background: `${deal.retailerBackgroundColor || 'white'}`, borderRadius: '50%', width: '40px', height: '40px' }}>
-                            <img
-                                className={styles.retailer_img}
-                                src={`${balance?.retailerIconBasePath}${deal.retailerIconPath}`}
-                                width={40}
-                                height={40}
-                            // retailerName={deal.retailerName}
-                            />
-                        </div>
-                        <div>
-                            <div className={styles.name}>
-                                {deal.retailerName}
-                            </div>
-                            {createStatus(deal.status, eligibleDate)}
-                        </div>
-                    </div>
-                    {/* <div className={styles.inner}> */}
-                    {/* <div className={styles.inner_col}> */}
-                    <div className={styles.name}>{`${deal.tokenAmount} ${deal.tokenSymbol}`}</div>
-                    <div className={styles.amount}>
-                        {deal.totalEstimatedUsd
-                            ? `${(+deal.totalEstimatedUsd).toLocaleString(undefined, {
-                                style: "currency",
-                                currency: "USD",
-                            })}`
-                            : ""}
-                    </div>
-                    {/* </div> */}
-                    <button
-                        className={styles.btn}
-                        onClick={() => {
-                            setActiveHistory(activeHistory === id ? -1 : id)
-                            // sendGA(deal.status)
-                        }}
-                    >
-                        <img
-                            className={`${styles.img_container} ${activeHistory === id ? styles.rotate : ''}`}
-                            src={`${iconsPath}/arrow-down.svg`}
-                            alt="logo"
-                        />
-                    </button>
-                    {/* </div> */}
-                </div>
-                <AnimatePresence>
-                    {activeHistory === id && (
-                        <motion.div
-                            key="content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.1 }}
-                            className={styles.collapsible}
-                        >
-                            {(deal.history as any).toReversed().map((item: any, index: any) => (
-                                <div
-                                    key={`history-${id}-${index}`}
-                                    className={styles.description}
-                                >
-                                    {createDescription(item, deal.retailerName)}
-                                </div>
-                            ))}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </>
-        )
-    }
-
-    const createList = (): JSX.Element => {
-        if (!balance?.data.movements?.deals.length && !balance?.data.movements?.claims.length) {
-            return (
-                <div className={styles.empty}>
-                    There is no transaction data yet
-                </div>
-            )
-        }
-
-        return (
-            <>
-                {balance.data.movements?.claims.length ? (
-                    <div className={styles.subcontainer}>
-                        {createClaimNode()}
-                    </div>
-                ) : null}
-                {balance.data.movements?.deals.map((item, i) => (
-                    <div
-                        className={styles.subcontainer}
-                        key={`history-${i}`}
-                    >
-                        {createDealNode(item, i)}
-                    </div>
-                ))}
-            </>
-        )
-    }
+    const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
 
     return (
         <div className={styles.container}>
             <Link
-                className={styles.back}
-                to={'..'}
-                onClick={(e) => {
+                className={styles.back_btn}
+                to='..'
+                onClick={e => {
                     e.preventDefault()
                     navigate(-1)
                 }}
             >
+                <img src={`${iconsPath}/arrow-left.svg`} alt="" />
                 Back
             </Link>
-            <div className={styles.title}>
-                Transaction history
-            </div>
-            <div className={styles.main}>
-                <hr className={styles.hr} />
-                <div className={styles.header}>
-                    <div className={styles.primary}>
-                        Reward
-                    </div>
-                    <div className={styles.primary}>
-                        Amount in Token
-                    </div>
-                    <div className={styles.primary}>
-                        Status
-                    </div>
-                    <div className={styles.primary}>
-                        Details
-                    </div>
+            <h1 className={styles.title}>Transaction History</h1>
+            <div className={styles.table}>
+                <div className={styles.table_header}>
+                    <span className={styles.table_header_cell}>Purchase</span>
+                    <span className={styles.table_header_cell}>Amount</span>
+                    <span className={styles.table_header_cell}>Status</span>
+                    <span className={styles.table_header_cell}>Details</span>
                 </div>
-                {createList()}
+                {
+                    history.map((item, i) =>
+                        <Row
+                            key={`history-${i}`}
+                            isActive={activeRow === i}
+                            toggleFn={() => setActiveRow(activeRow === i ? -1 : i)}
+                            {...item}
+                        />
+                    )
+                }
             </div>
         </div>
     )
 }
 
-export default History;
+export default History

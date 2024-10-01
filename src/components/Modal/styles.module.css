@@ -10,6 +10,7 @@
 
 .modal {
     --padding: 32px;
+    margin-top: var(--modal-offset-top);
     position: relative;
     max-height: calc(621px - var(--padding) * 2);
     width: calc(512px - var(--padding) * 2);
@@ -28,8 +29,8 @@
 .close_btn {
     --corner: 32px;
     position: absolute;
-    top: var(--corner);
-    right: var(--corner);
+    top: 19px;
+    right: 19px;
     z-index: 11;
     cursor: pointer;
     background: transparent;

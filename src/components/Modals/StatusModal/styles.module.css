@@ -1,0 +1,67 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 42px;
+    margin-bottom: 95px;
+}
+
+.title {
+    margin-top: 14px;
+    font-size: var(--modal-status-title-f-s);
+    font-weight: var(--modal-status-title-f-w);
+    line-height: 40px;
+}
+
+.title_success {
+    color: var(--modal-status-title-success-f-c);
+}
+
+.title_error {
+    color: var(--modal-status-title-failure-f-c);
+}
+
+.msg {
+    text-align: center;
+    margin-top: 18px;
+    margin-bottom: 50px;
+    line-height: 22px;
+    font-size: var(--modal-status-msg-f-s);
+    font-weight: var(--modal-status-msg-f-w);
+    color: var(--modal-status-msg-f-c);
+}
+
+.btn {
+    width: 160px;
+    height: 46px;
+    color: var(--modal-status-btn-f-c);
+    border-radius: var(--modal-status-btn-radius);
+    border-width: var(--modal-status-btn-border-w);
+    border-style: solid;
+    border-color: var(--modal-status-btn-border-c);
+    font-size: var(--modal-status-btn-f-s);
+    font-weight: var(--modal-status-btn-f-w);
+    background: var(--modal-status-btn-bg);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: var(--modal-status-btn-hover-bg);
+    font-size: var(--modal-status-btn-hover-f-s);
+    font-weight: var(--modal-status-btn-hover-f-w);
+    color: var(--modal-status-btn-hover-f-c);
+    border-width: var(--modal-status-btn-hover-border-w);
+    border-color: var(--modal-status-btn-hover-border-c);
+    border-radius: var(--modal-status-btn-hover-radius);
+}
+
+.btn:disabled {
+    background: var(--modal-status-btn-disabled-bg);
+    font-size: var(--modal-status-btn-disabled-f-s);
+    font-weight: var(--modal-status-btn-disabled-f-w);
+    color: var(--modal-status-btn-disabled-f-c);
+    border-width: var(--modal-status-btn-disabled-border-w);
+    border-color: var(--modal-status-btn-disabled-border-c);
+    border-radius: var(--modal-status-btn-disabled-radius);
+}
