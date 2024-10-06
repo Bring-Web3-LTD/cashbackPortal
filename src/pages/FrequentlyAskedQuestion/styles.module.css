@@ -41,13 +41,13 @@
     transition: .2s;
 }
 
-.collapsible_hover:hover {
+.collapsible:hover {
     border-bottom: none;
     background: var(--history-table-row-hover-bg);
 }
 
 .collapsible_open {
-    background: var(--history-table-row-hover-bg);
+    background: var(--history-table-row-active-bg);
 }
 
 .question_container {
@@ -81,7 +81,8 @@
 }
 
 .p {
-    max-width: 80%;
+    max-width: 70%;
+    line-height: 24px;
 }
 
 .link_btn {

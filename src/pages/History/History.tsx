@@ -35,7 +35,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
-        <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : styles.collapsible_hover}`}>
+        <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
                 className={styles.details_container}
                 onClick={toggleFn}
