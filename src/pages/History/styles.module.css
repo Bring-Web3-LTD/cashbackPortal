@@ -61,13 +61,13 @@
     min-height: 62px;
 }
 
-.collapsible_hover:hover {
+.collapsible:hover {
     border-bottom: none;
     background: var(--history-table-row-hover-bg);
 }
 
 .collapsible_open {
-    background: var(--history-table-row-hover-bg);
+    background: var(--history-table-row-active-bg);
 }
 
 .details_container {
