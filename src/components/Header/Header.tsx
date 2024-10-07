@@ -1,11 +1,27 @@
 import styles from './styles.module.css'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
+    const { t } = useTranslation()
     return (
         <div className={styles.header}>
-            <h1 className={styles.title}>Crypto Cashback</h1>
-            <h2 className={styles.subtitle}>Receive ADA tokens when shopping online!</h2>
-            <button className={styles.btn}>How it works</button>
+            {
+                t('title') ?
+                    <h1 className={styles.title}>{t('title')}</h1>
+                    : null
+            }
+            {
+                t('subtitle') ?
+                    <h2 className={styles.subtitle}>{t('subtitle')}</h2>
+                    : null
+            }
+            <Link
+                to={'/faq'}
+                className={styles.btn}
+            >
+                {t('frequentlyAskedQuestion')}
+            </Link>
         </div>
     )
 }

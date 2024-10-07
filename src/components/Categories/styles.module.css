@@ -1,5 +1,5 @@
 .container {
-    width: 100%;
+    width: 1176px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,14 +11,11 @@
     overflow-x: scroll;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .categories::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, and Opera */
 }
 
 .category {
@@ -27,26 +24,37 @@
     color: var(--category-btn-f-c);
     width: 108px;
     height: 38px;
-    padding: 6px 16px;
     white-space: nowrap;
-    border-width: var(--category-btn-f-border-w);
+    text-align: center;
+    border-width: var(--category-btn-border-w);
     border-style: solid;
-    border-color: var(--category-btn-f-border-c);
+    border-color: var(--category-btn-border-c);
     background: var(--category-btn-bg);
     cursor: pointer;
-    border-radius: 30px;
+    border-radius: var(--category-btn-radius);
     transition: .2s;
+    user-select: none;
+}
+
+.category:hover {
+    color: var(--category-btn-hover-f-c);
+    border-width: var(--category-btn-hover-border-w);
+    background: var(--category-btn-hover-bg);
+    border-radius: var(--category-btn-hover-radius);
 }
 
 .selected {
-    color: var(--category-btn-clicked-f-c);
-    background: var(--category-btn-clicked-bg);
+    color: var(--category-btn-hover-f-c);
+    font-weight: var(--category-btn-hover-f-w);
+    border-width: var(--category-btn-hover-border-w);
+    background: var(--category-btn-hover-bg);
 }
 
 .arrow {
     background: none;
-    border: 1px solid #fff;
+    border: none;
     border-radius: 12px;
+    outline: none;
     color: #fff;
     cursor: pointer;
     font-size: 30px;
@@ -59,4 +67,21 @@
 
 .arrow_left {
     box-shadow: 8px 0px 20px 20px var(--bg);
+}
+
+.skeleton {
+    background: var(--retailer-card-bg);
+    border: none;
+}
+
+@media screen and (max-width: 1190px) {
+    .container {
+        width: 931px;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .container {
+        width: 695px;
+    }
 }

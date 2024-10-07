@@ -1,0 +1,18 @@
+.modal_container {
+    max-width: 400px;
+    color: white;
+}
+
+.modal_title {
+    font-size: var(--modal-title-f-s);
+    font-weight: var(--modal-title-f-w);
+    color: var(--modal-title-f-c);
+    margin: 0;
+    line-height: 24px;
+}
+
+.p {
+    font-size: var(--modal-paragraph-f-s);
+    font-weight: var(--modal-paragraph-f-w);
+    color: var(--modal-paragraph-f-c);
+}

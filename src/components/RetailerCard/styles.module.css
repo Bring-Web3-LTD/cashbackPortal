@@ -3,16 +3,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     width: 138px;
     height: 118px;
-    padding: 17.659px 43.211px 17.522px 42.56px;
+    padding: 17.659px 43.211px 19px 42.56px;
     background: var(--retailer-card-bg);
     border-width: var(--retailer-card-border-w);
     border-style: solid;
     border-color: var(--retailer-card-border-color);
     border-radius: 9px;
     cursor: pointer;
+    user-select: none;
+    transition: .2s;
+}
+
+.card:hover {
+    border-color: var(--retailer-card--hover-border-color);
+}
+
+.card:active {
+    border-color: var(--retailer-card--hover-border-color);
 }
 
 .logo_container {
@@ -20,13 +30,15 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    border-width: 2px;
+    border-width: var(--retailer-card-img-border-w);
     border-style: solid;
-    border-color: #E16BFF;
+    border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
+    margin-bottom: 6px;
 }
 
 .logo {
+    object-fit: contain;
     width: 58px;
     height: 58px;
     border-radius: 50%;
@@ -39,9 +51,11 @@
 }
 
 .retailer_name {
-    color: var(--retailer-card-name-color);
-    font-weight: 500;
+    font-size: var(--retailer-card-name-f-s);
+    font-weight: var(--retailer-card-name-f-w);
+    color: var(--retailer-card-name-f-c);
     white-space: nowrap;
+    line-height: 20.8px;
 }
 
 .cashback_rate {
@@ -49,8 +63,10 @@
     font-weight: var(--retailer-card-amount-f-w);
     color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
-    padding: 6px 8px;
+    padding: 6px;
+    width: 140px;
     border-radius: 50px;
+    text-align: center;
     white-space: nowrap;
 }
 
@@ -58,13 +74,14 @@
     position: absolute;
     top: 10px;
     right: 0;
-    width: 23px;
+    width: 50px;
     height: 12px;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
     line-height: 12px;
     vertical-align: middle;
-    padding: 5px 12px 5px 15px;
+    text-align: center;
+    padding: 5px 0;
     color: var(--retailer-card-flag-f-c);
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);

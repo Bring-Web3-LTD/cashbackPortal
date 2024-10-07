@@ -1,10 +1,11 @@
-import { API_KEY, API_URL } from "../config"
+import { API_KEY, API_URL_PLATFORMS } from "../config"
 
 interface Body {
     itemId: string
     walletAddress: string
     tokenSymbol: string
     search?: string
+    platform: string
 }
 
 interface Response {
@@ -13,9 +14,9 @@ interface Response {
 }
 
 const activate = async (body: Body): Promise<Response> => {
-    const res = await fetch(`${API_URL}activate`, {
+    const res = await fetch(`${API_URL_PLATFORMS}activate`, {
         method: "POST",
-        body: JSON.stringify({ ...body, platform: 'yoroi' }),
+        body: JSON.stringify(body),
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",

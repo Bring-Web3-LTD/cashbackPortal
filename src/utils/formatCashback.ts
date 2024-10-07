@@ -20,7 +20,7 @@ const formatCashback = (amount: number, symbol: string, currency: string) => {
             maximumFractionDigits: 2
         })
 
-    } catch (error) {
+    } catch {
         return `${symbol}${amount}`
     }
 }

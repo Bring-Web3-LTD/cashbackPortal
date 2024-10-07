@@ -1,0 +1,145 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.full {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.details {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.markdown {
+    --padding: 16px;
+    color: var(--modal-deal-markdown-f-c);
+    background: var(--modal-deal-markdown-bg);
+    border-radius: var(--modal-deal-markdown-radius);
+    border-width: var(--modal-deal-markdown-border-w);
+    border-style: solid;
+    border-color: var(--modal-deal-markdown-border-c);
+    height: calc(300px - var(--padding) * 2);
+    width: calc(100% - var(--padding) * 2);
+    padding: var(--padding);
+    overflow-y: auto;
+    font-size: var(--modal-deal-markdown-f-s);
+}
+
+.markdown::-webkit-scrollbar {
+    background: transparent;
+    width: 14px;
+}
+
+.markdown::-webkit-scrollbar-thumb {
+    border: 6px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: var(--scrollbar-bg);
+}
+
+.markdown p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 20px;
+}
+
+.markdown p strong,
+.markdown h3 {
+    font-size: var(--modal-deal-markdown-f-s);
+    font-weight: var(--modal-deal-markdown-bold-f-w);
+    color: var(--modal-deal-markdown-bold-f-c);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--primary-btn-bg);
+    font-size: var(--primary-btn-f-s);
+    font-weight: var(--primary-btn-f-w);
+    color: var(--primary-btn-f-c);
+    height: 48px;
+    border-width: var(--primary-btn-border-w);
+    border-style: solid;
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.start_btn:hover {
+    background: var(--primary-btn-hover-bg);
+}
+
+.start_btn:disabled {
+    background: var(--primary-btn-disabled-bg);
+    color: var(--primary-btn-disabled-f-c);
+}
+
+.consent_txt {
+    font-size: var(--modal-deal-consent-f-s);
+    font-weight: var(--modal-deal-consent-f-w);
+    color: var(--modal-deal-consent-f-c);
+}
+
+.logo_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-width: var(--retailer-card-img-border-w);
+    border-style: solid;
+    border-color: var(--retailer-card-img-border-c);
+    border-radius: 50%;
+    margin-bottom: 6px;
+}
+
+.retailer_name {
+    color: var(--modal-deal-name-f-s);
+    font-weight: var(--modal-deal-name-f-w);
+    color: var(--modal-deal-name-f-c);
+    white-space: nowrap;
+}
+
+.cashback_rate {
+    font-size: var(--retailer-card-amount-f-s);
+    font-weight: var(--retailer-card-amount-f-w);
+    color: var(--retailer-card-amount-f-c);
+    background: var(--retailer-card-amount-bg);
+    padding: 6px;
+    width: calc(138px - 12px);
+    border-radius: 50px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.logo {
+    object-fit: contain;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+}
+
+.fallback_img {
+    color: black;
+    font-size: 10px;
+    font-weight: 900;
+}

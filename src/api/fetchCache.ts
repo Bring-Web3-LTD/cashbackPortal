@@ -1,15 +1,28 @@
-import { API_URL, API_KEY } from "../config"
+import { API_URL_PLATFORMS, API_KEY } from "../config"
 
 interface Body {
-    walletAddress: `0x${string}` | undefined
+    walletAddress: string | undefined
     type?: "default" | "aggregated"
+    platform: string
 }
 
-const fetchCache = async (body: Body) => {
+interface Data {
+    eligible: Token[]
+    totalPendings: Token[]
+    movements: Movements
+}
+
+interface Response {
+    tokenIconBasePath: string
+    retailerIconBasePath: string
+    data: Data
+}
+
+const fetchCache = async (body: Body): Promise<Response> => {
     body.type = "aggregated"
-    const res = await fetch(`${API_URL}cache`, {
+    const res = await fetch(`${API_URL_PLATFORMS}cache`, {
         method: "POST",
-        body: JSON.stringify({ ...body, platform: 'yoroi' }),
+        body: JSON.stringify(body),
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",

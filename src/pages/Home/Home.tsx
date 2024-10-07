@@ -8,6 +8,7 @@ import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
@@ -15,6 +16,9 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 
 const Home = () => {
+    const { platform, isCountryAvailable, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const [searchParams] = useSearchParams();
+    const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
     const paginationRef = useRef<HTMLDivElement>(null)
@@ -22,9 +26,8 @@ const Home = () => {
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch } = useQuery({
-        queryFn: () => getFilters(),
+        queryFn: () => getFilters({ country, platform }),
         queryKey: ["categories-search"],
-        // enabled: !!isAvailable?.isAvailable,
     })
 
     const {
@@ -38,11 +41,12 @@ const Home = () => {
         queryFn: async ({ pageParam }) => {
             const options: Parameters<typeof fetchRetailers>[0] = {
                 type: "all",
-                pageSize: 25,
+                pageSize: 40,
                 page: typeof pageParam === "number" ? pageParam : undefined,
+                platform
             }
-            //   if (queryParams.country)
-            //     options.country = queryParams.country.toUpperCase()
+
+            if (country) options.country = country
             if (category?.id) options.category = category.id
             if (search?.value) options.search = search.value
             return await fetchRetailers(options)
@@ -50,7 +54,6 @@ const Home = () => {
         getNextPageParam: (lastPage) => {
             return lastPage.nextPageNumber
         },
-        // enabled: !!isAvailable?.isAvailable,
         initialPageParam: 0,
     })
 
@@ -58,12 +61,10 @@ const Home = () => {
         if (!isFetchingNextPage && isVisible) {
             fetchNextPage()
         }
-    }, [isVisible])
+    }, [isVisible, fetchNextPage, isFetchingNextPage])
 
     const scrollToTop = () => {
         if (scrollRef.current) {
-            console.log('here');
-
             scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
@@ -95,6 +96,16 @@ const Home = () => {
             label: term,
         })) ?? []
 
+    if (isCountryAvailable === false) {
+        return (
+            <div className={styles.not_available_container}>
+                <h1 className={styles.not_available}>
+                    This service is not available in your country for now.
+                </h1>
+            </div>
+        )
+    }
+
     return (
         <div className={styles.container}>
             <Header />
@@ -119,7 +130,7 @@ const Home = () => {
                                         onClick={resetFilters}
                                     >
                                         <span>{search?.value || category?.name}</span>
-                                        <img src="/icons/x-mark.svg" alt="x-icon" />
+                                        <img src={`${iconsPath}/x-mark-filter.svg`} alt="x-icon" />
                                     </motion.button>
                                     : null}
                             </AnimatePresence>
@@ -139,6 +150,7 @@ const Home = () => {
                     loading={isFetching && !retailersList.length}
                     retailers={retailersList}
                     metadata={retailersMetadata}
+                    search={search}
                 />
                 <div
                     className={styles.load}

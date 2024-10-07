@@ -3,81 +3,145 @@
     justify-content: space-around;
     align-items: center;
     gap: 34px;
-    /* width: 836px; */
-    margin-top: -48px;
 }
 
 .subcontainer {
+    --padding: 16px;
     border-radius: 12px;
-    height: 89px;
-    width: 570px;
+    height: 98px;
+    width: calc(570px - (var(--padding) * 2));
     background: var(--rewards-bg);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 16px;
     align-items: center;
-    gap: 16px;
+    gap: var(--padding);
 }
 
 .reward_details {
     display: flex;
     gap: 8px;
-    align-items: center;
+    align-items: flex-start;
     user-select: none;
 }
 
+.reward_details_subcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.icon_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    width: 35px;
+    height: 35px;
+}
+
+.claim_icon {
+    background: var(--claim-img-bg);
+    border-radius: var(--claim-img-radius);
+    border-width: var(--claim-img-border-w);
+    border-color: var(--claim-img-border-c);
+}
+
+.pending_icon {
+    background: var(--pending-img-bg);
+    border-radius: var(--pending-img-radius);
+    border-width: var(--pending-img-border-w);
+    border-color: var(--pending-img-border-c);
+}
+
 .icon {
-    width: 40px;
-    height: 40px;
+    width: var(--rewards-img-size);
+    height: var(--rewards-img-size);
 }
 
 .amount {
-    font-size: var(--amount-claim-pending-f-s);
-    font-weight: var(--amount-claim-pending-f-w);
+    font-size: var(--rewards-amount-f-s);
+    font-weight: var(--rewards-amount-f-w);
     letter-spacing: -1px;
     margin-right: 8px;
-    line-height: 40px;
-
+    line-height: 35px;
+    text-wrap: nowrap;
 }
 
 .amount_claim {
-    background: var(--amount-claim-f-c);
+    background: var(--claim-amount-f-c);
     background-clip: text;
     color: transparent;
 }
 
 .amount_pending {
-    background: var(--amount-pending-f-c);
+    background: var(--pending-amount-f-c);
     background-clip: text;
     color: transparent;
 }
 
-.reward_type {
-    font-size: var(--reward-type-f-s);
-    font-weight: var(--reward-type-f-w);
-    color: var(--reward-type-f-c);
+.rewards_text {
+    font-size: var(--rewards-text-f-s);
+    font-weight: var(--rewards-text-f-w);
+    line-height: 24px;
 }
 
-.usd_amount {
-    font-size: var(--reward-usd-amount-f-s);
-    font-weight: var(--reward-usd-amount-f-w);
-    color: var(--reward-usd-amount-f-c);
+.claim_text {
+    color: var(--claim-text-f-c);
+}
+
+.pending_text {
+    color: var(--pending-text-f-c);
+}
+
+.rewards_usd {
+    font-size: var(--rewards-usd-f-s);
+    font-weight: var(--rewards-usd-f-w);
+    line-height: 16px;
+}
+
+.claim_usd {
+    color: var(--claim-usd-f-c);
+}
+
+.pending_usd {
+    color: var(--pending-usd-f-c);
 }
 
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-style: solid;
     border-radius: var(--rewards-btn-radius);
     height: 46px;
-    width: 160px;
+    width: 172px;
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
     cursor: pointer;
+    padding: 0;
+    transition: .2s;
 }
 
 .claim_btn {
-    background: var(--claim-btn-bg);
-    color: var(--claim-btn-f-c);
-    border-width: var(--claim-btn-border-w);
-    border-color: var(--claim-btn-border-c);
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-color: var(--primary-btn-border-c);
+}
+
+.claim_btn:hover {
+    background: var(--primary-btn-hover-bg);
+}
+
+.claim_btn:active {
+    background: var(--primary-btn-pressed-bg);
+}
+
+.claim_btn:disabled {
+    background: var(--primary-btn-disabled-bg);
+    color: var(--primary-btn-disabled-f-c);
 }
 
 .pending_btn {
@@ -85,4 +149,24 @@
     color: var(--pending-btn-f-c);
     border-width: var(--pending-btn-border-w);
     border-color: var(--pending-btn-border-c);
+}
+
+.pending_btn:hover {
+    background: var(--pending-btn-hover-bg);
+    color: var(--pending-btn-hover-f-c);
+    border-width: var(--pending-btn-hover-border-w);
+    border-color: var(--pending-btn-hover-border-c);
+}
+
+.pending_btn:active {
+    background: var(--pending-btn-pressed-bg);
+    color: var(--pending-btn-pressed-f-c);
+    border-width: var(--pending-btn-hover-pressed-w);
+    border-color: var(--pending-btn-hover-pressed-c);
+}
+
+@media screen and (max-width:1190px) {
+    .container {
+        flex-direction: column;
+    }
 }

@@ -6,8 +6,9 @@
     background: var(--header-bg);
     width: 100vw;
     max-width: 100%;
-    height: 208px;
-    padding-top: 66px;
+    /* height: 208px; */
+    margin-top: 20px;
+    margin-bottom: 54px;
 }
 
 .title {
@@ -25,15 +26,36 @@
 }
 
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 29px;
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
     color: var(--header-btn-f-c);
     border-width: var(--header-btn-border-w);
-    border-style: dashed;
+    border-style: solid;
     border-color: var(--header-btn-border-c);
-    border-radius: 50px;
-    padding: 6px 10px;
+    border-radius: 10px;
     background: var(--header-btn-bg);
     margin-top: 8px;
     cursor: pointer;
+    outline: none;
+    transition: .2s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--pending-btn-hover-bg);
+    color: var(--pending-btn-hover-f-c);
+    border-width: var(--pending-btn-hover-border-w);
+    border-color: var(--pending-btn-hover-border-c);
+}
+
+.btn:active {
+    background: var(--pending-btn-pressed-bg);
+    color: var(--pending-btn-pressed-f-c);
+    border-width: var(--pending-btn-hover-pressed-w);
+    border-color: var(--pending-btn-hover-pressed-c);
 }

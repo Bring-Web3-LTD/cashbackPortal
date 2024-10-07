@@ -1,0 +1,112 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-size: var(--modal-title-f-s);
+    font-weight: var(--modal-title-f-w);
+    color: var(--modal-title-f-c);
+    margin-bottom: 6px;
+    width: 100%;
+    line-height: 24px;
+}
+
+.claim_amount {
+    width: 100%;
+    font-size: var(--modal-claim-amount-f-s);
+    font-weight: var(--modal-claim-amount-f-w);
+    letter-spacing: -1px;
+    background: var(--modal-claim-amount-f-c);
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 20px;
+}
+
+.details {
+    --padding: 16px;
+    width: calc(100% - var(--padding) * 2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--modal-claim-details-bg);
+    padding: var(--padding);
+    border-width: var(--modal-claim-details-border-w);
+    border-style: solid;
+    border-color: var(--modal-claim-details-border-c);
+    border-radius: var(--modal-claim-details-radius);
+}
+
+.wallet_address_title {
+    color: var(--modal-claim-address-title-f-c);
+    font-size: var(--modal-claim-address-title-f-s);
+    font-weight: var(--modal-claim-address-title-f-w);
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-bottom: 8px;
+}
+
+.wallet_address {
+    background: var(--modal-claim-address-bg);
+    font-size: var(--modal-claim-address-f-s);
+    font-weight: var(--modal-claim-address-f-w);
+    color: var(--modal-claim-address-f-c);
+    border-width: var(--modal-claim-address-border-w);
+    border-style: solid;
+    border-color: var(--modal-claim-address-border-c);
+    word-wrap: break-word;
+    padding: 16px;
+    border-radius: var(--modal-claim-address-radius);
+}
+
+.disclaimer {
+    font-size: var(--modal-claim-disclaimer-f-s);
+    font-weight: var(--modal-claim-disclaimer-f-w);
+    color: var(--modal-claim-disclaimer-f-c);
+    margin-left: 12px;
+}
+
+.modal_img_container {
+    margin-top: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.modal_img {
+    width: 22px;
+    height: 20px;
+}
+
+.sml_text {
+    font-size: var(--modal-claim-tooltip-f-s);
+    font-weight: var(--modal-claim-tooltip-f-w);
+    color: var(--modal-claim-tooltip-f-c);
+    text-wrap: nowrap;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sign_btn {
+    width: 100%;
+    background: var(--primary-btn-bg);
+    font-size: var(--primary-btn-f-s);
+    font-weight: var(--primary-btn-f-w);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    height: 48px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.sign_btn:hover {
+    background: var(--primary-btn-hover-bg);
+}
+
+.disabled {
+    background: var(--primary-btn-disabled-bg);
+    color: var(--primary-btn-disabled-f-c);
+}
