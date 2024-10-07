@@ -3,6 +3,7 @@ import Modal from '../../Modal/Modal'
 import Markdown from 'react-markdown'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import message from '../../../utils/message'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -29,10 +30,15 @@ const RetailerCardModal = ({
     const [fallbackImg, setFallbackImg] = useState('')
     const { t } = useTranslation()
 
+    const onClose = () => {
+        message({ action: 'CLOSE_POPUP' })
+        closeFn()
+    }
+
     return (
         <Modal
             open={open}
-            closeFn={closeFn}
+            closeFn={onClose}
         >
             <div className={styles.modal}>
                 <div className={styles.full}>
@@ -71,7 +77,7 @@ const RetailerCardModal = ({
                 {redirectLink && terms ?
                     <a
                         className={styles.start_btn}
-                        onClick={closeFn}
+                        onClick={onClose}
                         href={redirectLink}
                         target='_blank'
                     >
