@@ -15,7 +15,7 @@ const Modal = ({ children, open, closeFn }: Props) => {
 
     const closePopup = useCallback(() => {
         closeFn()
-        message({ action: 'CLOSE_POPUP' })
+        message({ action: 'POPUP_CLOSED' })
     }, [closeFn])
 
     const handleOverlayClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
@@ -34,12 +34,13 @@ const Modal = ({ children, open, closeFn }: Props) => {
         const handleMessage = (event: MessageEvent) => {
             if (event.data.action === 'CLOSE_POPUP') {
                 closePopup();
+                message({ action: 'POPUP_CLOSED' })
             }
         };
 
         if (open) {
-            const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--modal-overlay-bg')
-            window.parent.postMessage({ action: 'OPEN_POPUP', bgColor }, '*')
+            const overlayBgColor = getComputedStyle(document.documentElement).getPropertyValue('--modal-overlay-bg')
+            message({ action: 'POPUP_OPENED', overlayBgColor })
             document.body.classList.add('no_scroll');
             document.addEventListener('keydown', handleKeyDown);
             window.addEventListener('message', handleMessage);

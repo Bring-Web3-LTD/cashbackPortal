@@ -18,7 +18,8 @@ const loadStylesheet = (theme: string, platform: string) => {
     // Dynamically load the main CSS file
     const cssLink = document.createElement('link');
     cssLink.rel = 'stylesheet';
-    cssLink.href = `./stylesheets/${theme}/${platform}.css`; // Specify the path to your main CSS file
+
+    cssLink.href = `./${platform}/stylesheets/${theme}.css`; // Specify the path to your main CSS file
     document.head.appendChild(cssLink);
 }
 
@@ -31,20 +32,19 @@ const rootLoader = async () => {
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         return {
             ...dev,
-            iconsPath: `icons/${theme}/${dev.platform.toUpperCase()}`,
+            iconsPath: `${dev.platform.toUpperCase()}/icons/${theme}`,
         }
     }
     if (!token) throw Error('There was an error while loading the page')
     const res = await fetchToken({ token });
     if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
-    const platform = res.info.platform?.toUpperCase() || 'default'
+    const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
     loadStylesheet(theme, platform)
     i18n.setDefaultNamespace(platform)
-    console.log({ theme });
 
     return {
         ...res.info,
-        iconsPath: `icons/${theme}/${platform}`,
+        iconsPath: `${platform}/icons/${theme}`,
     }
 }
 
