@@ -37,3 +37,9 @@
     border: none;
     outline: none;
 }
+
+@media screen and (max-width: 768px) {
+    .modal {
+        width: calc(345px - var(--padding) * 2);
+    }
+}

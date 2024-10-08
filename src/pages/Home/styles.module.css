@@ -85,3 +85,18 @@
 .not_available {
     color: var(--title-f-c);
 }
+
+@media screen and (max-width: 768px) {
+    .search_section {
+        flex-direction: column-reverse;
+    }
+
+    .search_container {
+        flex-direction: column;
+    }
+
+    .filter {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

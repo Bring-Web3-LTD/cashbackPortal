@@ -61,13 +61,13 @@
     z-index: 1;
 }
 
-.arrow_right {
+/* .arrow_right {
     box-shadow: -8px 0px 20px 20px var(--bg);
 }
 
 .arrow_left {
     box-shadow: 8px 0px 20px 20px var(--bg);
-}
+} */
 
 .skeleton {
     background: var(--retailer-card-bg);
@@ -83,5 +83,15 @@
 @media screen and (max-width: 990px) {
     .container {
         width: 695px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 367px;
+    }
+
+    .arrow {
+        display: none;
     }
 }

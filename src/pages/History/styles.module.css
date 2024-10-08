@@ -155,3 +155,10 @@
     font-weight: var(--history-description-f-w);
     color: var(--history-description-f-c);
 }
+
+.empty_history {
+    margin-top: 16px;
+    font-size: var(--history-empty-f-s);
+    font-weight: var(--history-empty-f-w);
+    color: var(--history-empty-f-c);
+}

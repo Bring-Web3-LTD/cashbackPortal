@@ -8,7 +8,7 @@ import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
 
 const dev = {
-    walletAddress: '011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
+    walletAddress: '-011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
     platform: 'yoroi',
     cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
     isCountryAvailable: true,
