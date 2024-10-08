@@ -32,7 +32,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
     useEffect(() => {
         // Define the message handler
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.from !== 'bringweb3' || event.origin === window.location.origin) {
+            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
             console.log('BRING! Received message:', event);
@@ -79,9 +79,9 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             return
         }
 
-        message({ messageToSign })
+        // message({ messageToSign })
         setCountDown(true)
-        window.parent.postMessage({ from: 'bringweb3', messageToSign, action: 'SIGN_MESSAGE' }, '*')
+        message({ messageToSign, action: 'SIGN_MESSAGE' })
     }
 
     return (

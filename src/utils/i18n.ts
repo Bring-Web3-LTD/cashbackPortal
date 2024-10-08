@@ -12,7 +12,7 @@ i18n
         ns: ['YOROI', 'default'],
         defaultNS: 'default',
         backend: {
-            loadPath: '/translations/{{ns}}/{{lng}}.json',
+            loadPath: '/{{ns}}/translations/{{lng}}.json',
         },
         // detection: {
         //     order: ['querystring', 'navigator'],
