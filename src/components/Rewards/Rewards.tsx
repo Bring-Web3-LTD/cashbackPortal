@@ -35,7 +35,7 @@ const Rewards = () => {
     useEffect(() => {
         // Define the message handler
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.from !== 'bringweb3' || event.origin === window.location.origin) {
+            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
             // Handle the message data here
@@ -60,7 +60,7 @@ const Rewards = () => {
                     setClaimStatus('failure')
                 }
                 setLoading(false)
-            } else if (event.data.action === 'ABORT') {
+            } else if (event.data.action === 'ABORT_SIGN_MESSAGE') {
                 setLoading(false)
             }
         };
@@ -92,7 +92,7 @@ const Rewards = () => {
             return
         }
 
-        message({ message: messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE' })
+        message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
     }
 
     const eligibleTokenAmount =

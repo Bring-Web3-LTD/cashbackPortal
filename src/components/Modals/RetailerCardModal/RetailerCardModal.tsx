@@ -31,7 +31,7 @@ const RetailerCardModal = ({
     const { t } = useTranslation()
 
     const onClose = () => {
-        message({ action: 'CLOSE_POPUP' })
+        message({ action: 'POPUP_CLOSED' })
         closeFn()
     }
 

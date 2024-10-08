@@ -93,12 +93,12 @@ const StatusModal = ({ open, closeFn, status }: Props) => {
                 <Loading />
                 : status === 'failure' ?
                     <Failure closeFn={() => {
-                        message({ action: 'CLOSE_POPUP' })
+                        message({ action: 'POPUP_CLOSED' })
                         closeFn()
                     }} />
                     : status === 'success' ?
                         <Success closeFn={() => {
-                            message({ action: 'CLOSE_POPUP' })
+                            message({ action: 'POPUP_CLOSED' })
                             closeFn()
                         }} />
                         : null
