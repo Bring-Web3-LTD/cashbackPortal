@@ -9,8 +9,8 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'en',
-        ns: ['YOROI', 'default'],
-        defaultNS: 'default',
+        ns: ['YOROI', 'DEFAULT'],
+        defaultNS: 'DEFAULT',
         backend: {
             loadPath: '/{{ns}}/translations/{{lng}}.json',
         },
