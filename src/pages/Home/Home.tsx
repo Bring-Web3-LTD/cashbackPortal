@@ -64,27 +64,26 @@ const Home = () => {
     }, [isVisible, fetchNextPage, isFetchingNextPage])
 
     const scrollToTop = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        if (!scrollRef?.current) return
+        scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     const changeSearch = (searchTerm: ReactSelectOptionType) => {
-        scrollToTop()
         setSearch(searchTerm)
         setCategory(null)
+        scrollToTop()
     }
 
     const changeCategory = (cat: Category) => {
-        scrollToTop()
         setCategory(cat)
         setSearch(null)
+        scrollToTop()
     }
 
     const resetFilters = () => {
-        scrollToTop()
         setCategory(null)
         setSearch(null)
+        scrollToTop()
     }
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []

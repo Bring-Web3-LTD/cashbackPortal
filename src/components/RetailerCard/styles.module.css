@@ -112,3 +112,10 @@
     height: 25px;
     border-radius: 20px;
 }
+
+@media screen and (max-width: 768px) {
+    .card {
+        width: 152px;
+        padding: 17.659px 9.441px 15.522px 8.559px;
+    }
+}

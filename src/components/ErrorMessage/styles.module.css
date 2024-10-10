@@ -7,8 +7,8 @@
 }
 
 .message {
-    color: white;
-    font-size: 40px;
-    font-weight: 600;
+    color: var(--title-f-c);
+    font-size: var(--title-f-s);
+    font-weight: var(--title-f-w);
     text-align: center;
 }

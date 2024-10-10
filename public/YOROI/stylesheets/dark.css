@@ -254,32 +254,12 @@
     --history-description-f-s: 16px;
     --history-description-f-w: 400;
     --history-description-f-c: #E1E6F5;
+
+    --history-empty-f-s: 18px;
+    --history-empty-f-w: 500;
+    --history-empty-f-c: #E1E6F5;
 }
 
 * {
     font-family: "Rubik", sans-serif;
-}
-
-body {
-    margin: 0;
-    background: var(--bg);
-    /* For always having scrollbar */
-    min-height: calc(100vh + 1px);
-}
-
-body::-webkit-scrollbar {
-    background: var(--bg);
-    width: var(--scrollbar-w);
-}
-
-body::-webkit-scrollbar-thumb {
-    border: 4px solid rgba(0, 0, 0, 0);
-    background-clip: padding-box;
-    border-radius: 9999px;
-    background-color: var(--scrollbar-bg);
-}
-
-.no_scroll {
-    overflow: hidden;
-    margin-right: var(--scrollbar-w);
 }
