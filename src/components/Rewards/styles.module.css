@@ -170,3 +170,9 @@
         flex-direction: column;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .subcontainer {
+        width: calc(352px - (var(--padding) * 2));
+    }
+}

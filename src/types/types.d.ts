@@ -78,3 +78,13 @@ interface Movements {
     claims: Claim[]
     deals: Deal[]
 }
+
+interface GoogleAnalyticsContextType {
+    sendGaEvent: (name: EventName, event: GAEvent) => void;
+    sendPageViewEvent: (path: string) => void;
+}
+
+interface Link {
+    href: string,
+    link: string
+}

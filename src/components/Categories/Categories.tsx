@@ -12,7 +12,7 @@ interface Props {
 const sizes = [
     [1190, 10],
     [990, 8],
-    [300, 6]
+    [300, 3]
 ]
 
 const Categories = ({ categories, category, onClickFn }: Props) => {

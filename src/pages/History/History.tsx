@@ -163,10 +163,12 @@ const History = () => {
                 }}
             >
                 <img src={`${iconsPath}/arrow-left.svg`} alt="" />
-                Back
+                <span className={styles.back_btn_text}>
+                    Back
+                </span>
             </Link>
             <h1 className={styles.title}>Transaction History</h1>
-            <div className={styles.table}>
+            {balance?.movements.claims.length || balance?.movements.deals.length ? <div className={styles.table}>
                 <div className={styles.table_header}>
                     <span className={styles.table_header_cell}>Purchase</span>
                     <span className={styles.table_header_cell}>Amount</span>
@@ -184,6 +186,12 @@ const History = () => {
                     )
                 }
             </div>
+                :
+                <>
+                    <img src={`${iconsPath}/no-history.svg`} alt="" />
+                    <div className={styles.empty_history}>No transaction history yet</div>
+                </>
+            }
         </div>
     )
 }
