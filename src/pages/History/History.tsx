@@ -163,7 +163,9 @@ const History = () => {
                 }}
             >
                 <img src={`${iconsPath}/arrow-left.svg`} alt="" />
-                Back
+                <span className={styles.back_btn_text}>
+                    Back
+                </span>
             </Link>
             <h1 className={styles.title}>Transaction History</h1>
             {balance?.movements.claims.length || balance?.movements.deals.length ? <div className={styles.table}>

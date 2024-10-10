@@ -6,9 +6,10 @@ import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyA
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
+import { DEV_MODE } from './config';
 
 const dev = {
-    walletAddress: '-011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
+    walletAddress: '011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
     platform: 'yoroi',
     cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
     isCountryAvailable: true,
@@ -27,7 +28,7 @@ const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
     const theme = params.get('theme')?.toLowerCase() || 'dark'
-    if (import.meta.env.VITE_ENV === 'development') {
+    if (DEV_MODE) {
         loadStylesheet(theme, dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         return {

@@ -61,11 +61,6 @@
     min-height: 62px;
 }
 
-.collapsible:hover {
-    border-bottom: none;
-    background: var(--history-table-row-hover-bg);
-}
-
 .collapsible_open {
     background: var(--history-table-row-active-bg);
 }
@@ -161,4 +156,48 @@
     font-size: var(--history-empty-f-s);
     font-weight: var(--history-empty-f-w);
     color: var(--history-empty-f-c);
+}
+
+@media (hover: hover) {
+    .collapsible:hover {
+        border-bottom: none;
+        background: var(--history-table-row-hover-bg);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top: 40px;
+    }
+
+    .table {
+        width: 343px;
+    }
+
+    .table_header {
+        display: none;
+    }
+
+    .collapsible_open {
+        background: var(--history-table-row-bg);
+    }
+
+    .collapsible {
+        margin-bottom: 18px;
+        border-bottom: none;
+    }
+
+    .title {
+        margin-bottom: 31px;
+    }
+
+    .back_btn {
+        position: absolute;
+        top: 40px;
+        left: calc(50vw - 171px);
+    }
+
+    .back_btn_text {
+        display: none;
+    }
 }
