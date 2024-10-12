@@ -14,6 +14,7 @@ import Select, {
     NoticeProps,
     SingleValueProps,
 } from "react-select"
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
 // functions
 // import { sendGaEventBring } from "@/utils/bringWeb3/services/googleAnalytics"
@@ -155,7 +156,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
     const [msg, setMsg] = useState("")
-    //   const { address } = useAccount()
+    const { sendGaEvent } = useGoogleAnalytics()
 
     const handleChange = (
         item:
@@ -166,18 +167,11 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
         if (!item || Array.isArray(item)) return
         const { value } = item as ReactSelectOptionType
 
-        // const parameters: BringGAEvent = {
-        //   platform: "AURORA",
-        //   category: "user_action",
-        //   action: "select",
-        //   details: value,
-        // }
-        // if (address) parameters.walletAddress = address
-
-        // sendGaEventBring({
-        //   name: "search_select",
-        //   parameters,
-        // })
+        sendGaEvent("search_select", {
+            category: "user_action",
+            action: "select",
+            details: value,
+        })
 
         onChangeFn({ value, label: value })
         setIsFocused(false)
@@ -201,20 +195,13 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             if (msg.length) setMsg("")
             if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
 
-            //   if (input.length === 3) {
-            //     const parameters: BringGAEvent = {
-            //       platform: "AURORA",
-            //       category: "user_action",
-            //       action: "input",
-            //       details: input,
-            //     }
-            //     if (address) parameters.walletAddress = address
-
-            //     sendGaEventBring({
-            //       name: "search_input",
-            //       parameters,
-            //     })
-            //   }
+            if (input.length === 3) {
+                sendGaEvent("search_input", {
+                    category: "user_action",
+                    action: "input",
+                    details: input,
+                })
+            }
             let filtered: ReactSelectOptionType[] = []
             const notFirstWordMatches: ReactSelectOptionType[] = []
             if (options?.length) {
