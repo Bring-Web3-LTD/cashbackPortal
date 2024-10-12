@@ -51,6 +51,9 @@ export const GoogleAnalyticsProvider: FC<{ measurementId: string; children: Reac
     }, []);
 
     const sendPageViewEvent = (): void => {
+        if (window.origin.includes('localhost')) {
+            return
+        }
         if (!ReactGA.isInitialized) {
             console.warn('BRING: Google Analytics is not initialized');
             return
@@ -64,6 +67,9 @@ export const GoogleAnalyticsProvider: FC<{ measurementId: string; children: Reac
     };
 
     const sendGaEvent = (name: EventName, event: GAEvent): void => {
+        if (window.origin.includes('localhost')) {
+            return
+        }
         if (!ReactGA.isInitialized) {
             console.warn('BRING: Google Analytics is not initialized');
             return

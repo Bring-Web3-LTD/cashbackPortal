@@ -195,8 +195,9 @@ const History = () => {
                                         action: 'click',
                                         details: item.retailerName || 'Total claims',
                                     })
+                                } else {
+                                    setActiveRow(-1)
                                 }
-                                setActiveRow(-1)
                             }}
                             {...item}
                         />
