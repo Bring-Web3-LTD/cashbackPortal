@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
 import { formatCurrency, formatDate, formatStatus } from './helpers'
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
 interface History {
     status: string
@@ -104,6 +105,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
 
 const History = () => {
     const [activeRow, setActiveRow] = useState(-1)
+    const { sendGaEvent } = useGoogleAnalytics()
 
     const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
@@ -159,6 +161,11 @@ const History = () => {
                 to='..'
                 onClick={e => {
                     e.preventDefault()
+                    sendGaEvent('topbar_back', {
+                        category: 'user_action',
+                        action: 'click',
+                        details: 'to: /'
+                    })
                     navigate(-1)
                 }}
             >
@@ -180,7 +187,17 @@ const History = () => {
                         <Row
                             key={`history-${i}`}
                             isActive={activeRow === i}
-                            toggleFn={() => setActiveRow(activeRow === i ? -1 : i)}
+                            toggleFn={() => {
+                                if (activeRow !== i) {
+                                    setActiveRow(i)
+                                    sendGaEvent('history_expand', {
+                                        category: 'user_action',
+                                        action: 'click',
+                                        details: item.retailerName || 'Total claims',
+                                    })
+                                }
+                                setActiveRow(-1)
+                            }}
                             {...item}
                         />
                     )

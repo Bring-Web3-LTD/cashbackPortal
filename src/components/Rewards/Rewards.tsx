@@ -10,10 +10,12 @@ import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
 import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
 const Rewards = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
     const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
@@ -40,6 +42,11 @@ const Rewards = () => {
             }
             // Handle the message data here
             if (event.data.action === 'SIGNATURE') {
+                sendGaEvent('claim_submit', {
+                    category: 'user_action',
+                    details: claimAmount,
+                    process: 'submit'
+                })
                 setModalState('open')
                 const body: Parameters<typeof claimSubmit>[0] = {
                     walletAddress,
@@ -54,10 +61,20 @@ const Rewards = () => {
                 const res = await claimSubmit(body)
 
                 if (res.status === 202) {
-                    queryClient.invalidateQueries({ queryKey: ["balance", walletAddress] })
                     setClaimStatus('success')
+                    sendGaEvent('claim_accepted', {
+                        category: 'system',
+                        action: 'request',
+                        details: claimAmount,
+                    })
+                    queryClient.invalidateQueries({ queryKey: ["balance", walletAddress] })
                 } else {
                     setClaimStatus('failure')
+                    sendGaEvent('claim_failed', {
+                        category: 'system',
+                        action: 'request',
+                        details: `${claimAmount}, ${res}`,
+                    })
                 }
                 setLoading(false)
             } else if (event.data.action === 'ABORT_SIGN_MESSAGE') {
@@ -72,17 +89,25 @@ const Rewards = () => {
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, walletAddress]);
+    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendGaEvent, walletAddress]);
 
     // Get the message to sign from the API and post a message to parent page a request to sign the message
     const signMessage = async () => {
         setLoading(true)
+
         const res = await claimInitiate({
             platform,
             walletAddress,
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
             tokenAmount: claimAmount,
+        })
+
+        sendGaEvent('claim_open', {
+            category: 'user_action',
+            action: 'click',
+            details: claimAmount,
+            process: 'initiate'
         })
 
         const messageToSign = res?.messageToSign

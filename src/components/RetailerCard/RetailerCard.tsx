@@ -4,6 +4,7 @@ import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -36,6 +37,7 @@ const RetailerCard = ({
     search,
 }: Props) => {
     const { walletAddress, platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
     const [modalState, setModalState] = useState('close')
@@ -77,7 +79,15 @@ const RetailerCard = ({
         <>
             <div
                 className={styles.card}
-                onClick={() => setModalState('loading')}
+                onClick={() => {
+                    setModalState('loading')
+                    sendGaEvent('retailer_open', {
+                        category: 'user_action',
+                        action: 'click',
+                        details: name,
+                        process: 'activate'
+                    })
+                }}
             >
                 {isBig ? <div className={styles.flag}>{cashback}</div> : null}
                 <div
@@ -101,7 +111,14 @@ const RetailerCard = ({
             </div>
             <RetailerCardModal
                 open={modalState !== 'close'}
-                closeFn={() => setModalState('close')}
+                closeFn={() => {
+                    setModalState('close')
+                    sendGaEvent('popup_close', {
+                        category: 'user_action',
+                        action: 'click',
+                        details: 'Retailer',
+                    })
+                }}
                 backgroundColor={backgroundColor}
                 iconPath={iconPath}
                 name={name}
@@ -110,66 +127,6 @@ const RetailerCard = ({
                 generalTerms={generalTerms}
                 redirectLink={redirectLink}
             />
-            {/* <Modal
-                open={modalState !== 'close'}
-                closeFn={() => setModalState('close')}
-            >
-                <div className={styles.modal}>
-                    <div className={styles.full}>
-                        <div
-                            className={styles.logo_container}
-                            style={{ backgroundColor: backgroundColor || 'white' }}
-                        >
-                            {fallbackImg ?
-                                <div className={styles.fallback_img}>{fallbackImg}</div>
-                                :
-                                <img
-                                    className={styles.logo}
-                                    loading='eager'
-                                    src={iconPath}
-                                    alt={`${name} logo`}
-                                    onError={() => setFallbackImg(name)}
-                                />
-                            }
-                        </div>
-                        <div className={styles.details}>
-                            <div className={styles.retailer_name}>Shop at {name}</div>
-                            <div className={styles.cashback_rate}>
-                                Up to {cashback} cashback
-                            </div>
-                        </div>
-                    </div>
-                    {terms ?
-                        <Markdown className={styles.markdown}>
-                            {`${terms}${generalTerms}`}
-                        </Markdown>
-                        :
-                        <div className={`${styles.markdown} ${styles.center}`}>
-                            Loading...
-                        </div>
-                    }
-                    {redirectLink && terms ?
-                        <a
-                            className={styles.start_btn}
-                            onClick={() => setModalState('close')}
-                            href={redirectLink}
-                            target='_blank'
-                        >
-                            Start shopping
-                        </a>
-                        :
-                        <button
-                            className={styles.start_btn}
-                            disabled={true}
-                        >
-                            Loading
-                        </button>
-                    }
-                    <div className={styles.consent_txt}>
-                        By clicking Start Shopping, I accept the terms above.
-                    </div>
-                </div>
-            </Modal> */}
         </>
     )
 }

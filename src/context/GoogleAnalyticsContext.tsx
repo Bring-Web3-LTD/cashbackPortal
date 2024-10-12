@@ -1,7 +1,20 @@
 import { FC, createContext, useEffect, ReactNode } from 'react';
 import ReactGA from 'react-ga4';
 
-type EventName = 'retailer_shop' | 'popup_close' | 'opt_out' | 'retailer_activation'
+type EventName =
+    | "retailer_open"
+    | "retailer_shop"
+    | "rewards_open"
+    | "popup_close"
+    | "clear_selection"
+    | "search_input"
+    | "search_select"
+    | "history_expand"
+    | "category_select"
+    | "claim_open"
+    | "claim_submit"
+    | "claim_accepted"
+    | "claim_failed"
 
 interface GAEvent {
     category: "user_action" | "system";

@@ -14,9 +14,11 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
 const Home = () => {
     const { platform, isCountryAvailable, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { sendGaEvent } = useGoogleAnalytics()
     const [searchParams] = useSearchParams();
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
@@ -78,12 +80,22 @@ const Home = () => {
         setCategory(cat)
         setSearch(null)
         scrollToTop()
+        sendGaEvent('category_select', {
+            category: 'user_action',
+            action: 'click',
+            details: category?.name
+        })
     }
 
     const resetFilters = () => {
         setCategory(null)
         setSearch(null)
         scrollToTop()
+        sendGaEvent("clear_selection", {
+            category: "user_action",
+            action: "click",
+            details: search?.value ?? category?.name,
+        })
     }
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
