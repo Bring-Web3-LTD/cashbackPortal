@@ -4,6 +4,7 @@ import Markdown from 'react-markdown'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
+import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -27,6 +28,7 @@ const RetailerCardModal = ({
     redirectLink
 }: Props) => {
 
+    const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const { t } = useTranslation()
 
@@ -77,7 +79,14 @@ const RetailerCardModal = ({
                 {redirectLink && terms ?
                     <a
                         className={styles.start_btn}
-                        onClick={onClose}
+                        onClick={() => {
+                            onClose()
+                            sendGaEvent('retailer_shop', {
+                                category: 'user_action',
+                                action: 'click',
+                                details: name,
+                            })
+                        }}
                         href={redirectLink}
                         target='_blank'
                     >
