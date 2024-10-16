@@ -86,5 +86,5 @@ interface GoogleAnalyticsContextType {
 
 interface Link {
     href: string,
-    link: string
+    linkText: string
 }
