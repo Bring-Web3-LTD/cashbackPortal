@@ -19,9 +19,9 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
     links.forEach((link, linkIndex) => {
       result = result.flatMap((part) => {
         if (typeof part === 'string') {
-          const splitPart = part.split(new RegExp(`(${link.link})`, 'i'));
+          const splitPart = part.split(new RegExp(`(${link.linkText})`, 'i'));
           return splitPart.map((subPart, subIndex) => {
-            if (subPart.toLowerCase() === link.link.toLowerCase()) {
+            if (subPart.toLowerCase() === link.linkText.toLowerCase()) {
               return (
                 <a
                   key={`${linkIndex}-${subIndex}`}

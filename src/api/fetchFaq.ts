@@ -7,7 +7,7 @@ interface Body {
 
 interface Link {
     href: string,
-    link: string
+    linkText: string
 }
 
 interface Faq {
