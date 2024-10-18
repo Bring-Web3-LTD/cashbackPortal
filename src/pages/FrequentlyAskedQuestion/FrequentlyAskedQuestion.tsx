@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import fetchFaq from '../../api/fetchFaq'
 import { useQuery } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useTranslation } from 'react-i18next'
 
 interface AnswerParserProps {
   answer: string[];
@@ -60,6 +61,7 @@ const FrequentlyAskedQuestion = () => {
   const navigate = useNavigate()
   const { iconsPath, walletAddress, platform } = useRouteLoaderData('root') as LoaderData
   const { sendGaEvent } = useGoogleAnalytics()
+  const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(-1)
 
   const { data } = useQuery({
@@ -125,7 +127,7 @@ const FrequentlyAskedQuestion = () => {
       >
         <img src={`${iconsPath}/arrow-left.svg`} alt="arrow" />
         <span className={styles.back_btn_text}>
-          Back
+          {t('back')}
         </span>
       </Link>
     </div>

@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
 import { formatCurrency, formatDate, formatStatus } from './helpers'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useTranslation } from 'react-i18next'
 
 interface History {
     status: string
@@ -106,6 +107,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
 const History = () => {
     const [activeRow, setActiveRow] = useState(-1)
     const { sendGaEvent } = useGoogleAnalytics()
+    const { t } = useTranslation()
 
     const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
@@ -171,10 +173,10 @@ const History = () => {
             >
                 <img src={`${iconsPath}/arrow-left.svg`} alt="" />
                 <span className={styles.back_btn_text}>
-                    Back
+                    {t('back')}
                 </span>
             </Link>
-            <h1 className={styles.title}>Transaction History</h1>
+            <h1 className={styles.title}>{t('historyTitle')}</h1>
             {balance?.movements.claims.length || balance?.movements.deals.length ? <div className={styles.table}>
                 <div className={styles.table_header}>
                     <span className={styles.table_header_cell}>Purchase</span>
@@ -206,8 +208,8 @@ const History = () => {
             </div>
                 :
                 <>
-                    <img src={`${iconsPath}/no-history.svg`} alt="" />
-                    <div className={styles.empty_history}>No transaction history yet</div>
+                    <img src={`${iconsPath}/no-history.svg`} alt="history" />
+                    <div className={styles.empty_history}>{t('emptyHistory')}</div>
                 </>
             }
         </div>

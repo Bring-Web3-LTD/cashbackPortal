@@ -10,5 +10,8 @@
     "startShopping": "START SHOPPING",
     "loading": "Loading...",
     "loadingBtn": "LOADING...",
-    "doneBtn": "DONE"
+    "doneBtn": "DONE",
+    "back": "BACK",
+    "historyTitle": "Cashback history",
+    "emptyHistory": "No cashback history yet"
 }

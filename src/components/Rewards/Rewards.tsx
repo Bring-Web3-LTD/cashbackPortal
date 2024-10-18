@@ -122,7 +122,8 @@ const Rewards = () => {
 
     const eligibleTokenAmount =
         (balance?.data?.eligible[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
-            minimumFractionDigits: balance?.data?.eligible[0]?.tokenAmount ? 0 : 2,
+            minimumFractionDigits: 0,
+            // minimumFractionDigits: balance?.data?.eligible[0]?.tokenAmount ? 0 : 2,
             maximumFractionDigits: 2,
         })
 
@@ -134,7 +135,8 @@ const Rewards = () => {
 
     const pendingTokenAmount =
         (balance?.data?.totalPendings[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
-            minimumFractionDigits: balance?.data?.totalPendings[0]?.tokenAmount ? 0 : 2,
+            minimumFractionDigits: 0,
+            // minimumFractionDigits: balance?.data?.totalPendings[0]?.tokenAmount ? 0 : 2,
             maximumFractionDigits: 2,
         })
 

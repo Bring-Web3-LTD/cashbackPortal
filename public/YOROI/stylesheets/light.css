@@ -182,8 +182,8 @@
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #4B6DDE;
 
-    --modal-deal-name-f-s: 20px;
-    --modal-deal-name-f-w: 700;
+    --modal-deal-name-f-s: 16px;
+    --modal-deal-name-f-w: 500;
     --modal-deal-name-f-c: #242838;
     --modal-deal-markdown-bg: #fff;
     --modal-deal-markdown-border-w: 1px;
@@ -291,6 +291,14 @@
     --history-empty-f-s: 18px;
     --history-empty-f-w: 500;
     --history-empty-f-c: #242838;
+
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 500;
+    --faq-question-f-c: #242838;
+
+    --faq-answer-f-s: 16px;
+    --faq-answer-f-w: 400;
+    --faq-answer-f-c: #242838;
 }
 
 * {
