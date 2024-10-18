@@ -10,5 +10,8 @@
     "loading": "Loading...",
     "loadingBtn": "Loading",
     "claimToYourWallet": "Claim to your wallet",
-    "doneBtn": "Done"
+    "doneBtn": "Done",
+    "back": "Back",
+    "historyTitle": "Transaction history",
+    "emptyHistory": "No transaction history yet"
 }

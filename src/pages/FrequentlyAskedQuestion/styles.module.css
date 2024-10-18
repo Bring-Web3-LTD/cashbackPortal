@@ -52,6 +52,12 @@
     justify-content: space-between;
 }
 
+.question {
+    font-size: var(--faq-question-f-s);
+    font-weight: var(--faq-question-f-w);
+    color: var(--faq-question-f-c);
+}
+
 .answer_container {
     overflow: hidden;
 }
@@ -77,6 +83,9 @@
 
 .p,
 .pre {
+    font-size: var(--faq-answer-f-s);
+    font-weight: var(--faq-answer-f-w);
+    color: var(--faq-answer-f-c);
     line-height: 24px;
 }
 
