@@ -37,11 +37,11 @@
 
 .markdown::-webkit-scrollbar {
     background: transparent;
-    width: 14px;
+    width: var(--scrollbar-w);
 }
 
 .markdown::-webkit-scrollbar-thumb {
-    border: 6px solid rgba(0, 0, 0, 0);
+    border: 4px solid rgba(0, 0, 0, 0);
     background-clip: padding-box;
     border-radius: 9999px;
     background-color: var(--scrollbar-bg);
@@ -125,7 +125,7 @@
     color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
     padding: 6px;
-    width: calc(138px - 12px);
+    width: 140px;
     border-radius: 50px;
     text-align: center;
     white-space: nowrap;

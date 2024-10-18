@@ -254,6 +254,14 @@
     --history-description-f-s: 16px;
     --history-description-f-w: 400;
     --history-description-f-c: #E1E6F5;
+
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 500;
+    --faq-question-f-c: #E1E6F5;
+
+    --faq-answer-f-s: 16px;
+    --faq-answer-f-w: 400;
+    --faq-answer-f-c: #E1E6F5;
 }
 
 * {
