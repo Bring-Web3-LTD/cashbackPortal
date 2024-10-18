@@ -4,7 +4,7 @@
     "claimCashback": "CLAIM CASHBACK",
     "viewRewards": "VIEW REWARDS",
     "frequentlyAskedQuestion": "FAQ",
-    "searchPlaceholder": "Brand, product, destination...",
+    "searchPlaceholder": "Search by brand, product, destination",
     "claimToYourWallet": "CLAIM TO YOUR WALLET",
     "signNow": "SIGN NOW",
     "startShopping": "START SHOPPING",
@@ -13,5 +13,5 @@
     "doneBtn": "DONE",
     "back": "BACK",
     "historyTitle": "Cashback history",
-    "emptyHistory": "No cashback history yet"
+    "emptyHistory": "No cashback history"
 }
