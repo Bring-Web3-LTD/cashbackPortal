@@ -15,6 +15,7 @@ import Select, {
     SingleValueProps,
 } from "react-select"
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useTranslation } from 'react-i18next'
 
 // functions
 // import { sendGaEventBring } from "@/utils/bringWeb3/services/googleAnalytics"
@@ -157,6 +158,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [isFocused, setIsFocused] = useState(false)
     const [msg, setMsg] = useState("")
     const { sendGaEvent } = useGoogleAnalytics()
+    const { t } = useTranslation()
 
     const handleChange = (
         item:
@@ -239,7 +241,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             className={styles.search}>
             <Select
                 instanceId={id}
-                placeholder="Brand, product, destination..."
+                placeholder={t('searchPlaceholder')}
                 styles={customStyles}
                 components={{
                     DropdownIndicator: () => null,
