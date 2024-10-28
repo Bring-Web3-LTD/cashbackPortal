@@ -48,12 +48,12 @@ export const formatStatus = (status: string, eligibleDate?: string) => {
 
 interface Item {
     date: string
-    description: string
     action: string
     tokenAmount: number
     tokenSymbol: string
-    correctionReason: string
-    retailerName: string
+    correctionReason?: string
+    description?: string
+    retailerName?: string
 }
 
 export const createDescription = (item: Item) => {
@@ -64,14 +64,15 @@ export const createDescription = (item: Item) => {
     switch (item.action) {
         case "PURCHASE_POSTED":
             return [formatDate(item.date),
-            `${item.tokenAmount + " " + item.tokenSymbol} rewards for purchasing
-                        at ${item.retailerName}.Status: Pending for the end of the return period.`]
+            `${item.tokenAmount + " " + item.tokenSymbol} rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}. Status: Pending for the end of the return period.`]
         case "PURCHASE_APPROVED":
-            return [formatDate(item.date), `${item.tokenAmount + " " + item.tokenSymbol} eligible rewards for purchasing at { retailerName }.`]
+            return [formatDate(item.date), `${item.tokenAmount + " " + item.tokenSymbol} eligible rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}.`]
         case "PURCHASE_CORRECTED":
             return (
                 [formatDate(item.date),
                 `${item.tokenAmount + " " + item.tokenSymbol} — purchase corrected. ${item.correctionReason ? item.correctionReason : ""}`]
             )
+        default:
+            return ['']
     }
 }
