@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
-import { formatCurrency, formatDate, formatStatus } from './helpers'
+import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 
@@ -151,7 +151,7 @@ const History = () => {
             retailerName: deal.retailerName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,
-            description: [['']]
+            description: deal.history?.map(history => createDescription(history)) || [['']]
         }))
     }
     const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
