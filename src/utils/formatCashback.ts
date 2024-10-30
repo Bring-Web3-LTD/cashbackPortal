@@ -1,3 +1,5 @@
+import { currencyFormat } from "../config";
+
 const formatCashback = (amount: number, symbol: string, currency: string) => {
     try {
         if (amount === 39) {
@@ -11,6 +13,14 @@ const formatCashback = (amount: number, symbol: string, currency: string) => {
                 style: 'percent',
                 maximumFractionDigits: 2
             })
+        } else if (currencyFormat === 'code') {
+            return amount.toLocaleString(undefined, {
+                style: 'currency',
+                currencyDisplay: 'code',
+                currency: currency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }).split(/\s/).reverse().join(' ')
         }
 
         return amount.toLocaleString(undefined, {
