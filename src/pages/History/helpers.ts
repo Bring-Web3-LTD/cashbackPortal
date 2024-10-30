@@ -1,6 +1,17 @@
+import { currencyFormat } from "../../config"
+
 export const formatCurrency = (amount: number | undefined) => {
     if (!amount) return undefined
-    return amount.toLocaleString(undefined, {
+
+    if (currencyFormat === 'code') {
+        return amount.toLocaleString(undefined, {
+            style: "currency",
+            currency: "USD",
+            currencyDisplay: "code",
+        }).split(/\s/).reverse().join(' ')
+    }
+
+    return amount.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
     })
