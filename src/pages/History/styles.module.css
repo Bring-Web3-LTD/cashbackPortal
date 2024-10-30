@@ -149,6 +149,7 @@
     font-size: var(--history-description-f-s);
     font-weight: var(--history-description-f-w);
     color: var(--history-description-f-c);
+    margin-bottom: 8px;
 }
 
 .empty_history {

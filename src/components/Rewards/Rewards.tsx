@@ -11,6 +11,7 @@ import { Oval } from 'react-loader-spinner'
 import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { formatCurrency } from '../../pages/History/helpers'
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -127,11 +128,11 @@ const Rewards = () => {
             maximumFractionDigits: 2,
         })
 
-    const eligibleTotalEstimatedUsd =
-        (balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0).toLocaleString(undefined, {
-            style: "currency",
-            currency: "USD",
-        })
+    const eligibleTotalEstimatedUsd = formatCurrency(balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0)
+    // (balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0).toLocaleString(undefined, {
+    //     style: "currency",
+    //     currency: "USD",
+    // })
 
     const pendingTokenAmount =
         (balance?.data?.totalPendings[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
@@ -140,11 +141,7 @@ const Rewards = () => {
             maximumFractionDigits: 2,
         })
 
-    const pendingTotalEstimatedUsd =
-        (balance?.data?.totalPendings[0]?.totalEstimatedUsd ?? 0).toLocaleString(undefined, {
-            style: "currency",
-            currency: "USD",
-        })
+    const pendingTotalEstimatedUsd = formatCurrency(balance?.data?.totalPendings[0]?.totalEstimatedUsd ?? 0)
 
     return (
         <div className={styles.container}>

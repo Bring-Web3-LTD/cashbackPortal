@@ -60,6 +60,10 @@
     color: var(--modal-deal-markdown-bold-f-c);
 }
 
+.markdown h3 {
+    margin-top: 2px;
+}
+
 .center {
     display: flex;
     justify-content: center;

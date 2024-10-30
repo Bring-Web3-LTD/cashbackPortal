@@ -9,7 +9,7 @@ import fetchToken from './api/fetchToken';
 import { DEV_MODE } from './config';
 
 const dev = {
-    walletAddress: '011a9ba84fdd64a517c313a1cf353cafdb1eea77411639a9c23218dfb9ba257f40c080f1509fceeefad6871d16f765496bf22d188f6c9af303',
+    walletAddress: 'addr1qydfh2z0m4j2297rzwsu7dfu4ld3a6nhgytrn2wzxgvdlwd6y4l5psyq79gflnhwlttgw8gk7aj5j6lj95vg7my67vpsdcvu4l',
     platform: 'yoroi',
     cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
     isCountryAvailable: true,
@@ -27,7 +27,7 @@ const loadStylesheet = (theme: string, platform: string) => {
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
-    const theme = params.get('theme')?.toLowerCase() || 'dark'
+    const theme = params.get('theme')?.toLowerCase() || 'light'
     if (DEV_MODE) {
         loadStylesheet(theme, dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
