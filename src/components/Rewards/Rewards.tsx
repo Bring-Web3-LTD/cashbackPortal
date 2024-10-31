@@ -19,7 +19,7 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const [modalState, setModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
@@ -155,9 +155,11 @@ const Rewards = () => {
                         />
                     </div>
                     <div className={styles.reward_details_subcontainer}>
-                        <div className={`${styles.amount} ${styles.amount_claim}`}>{`${eligibleTokenAmount} ${currentCryptoSymbol}`}</div>
+                        <div className={`${styles.amount} ${styles.amount_claim}`}>
+                            {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                        </div>
                         <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                            {+eligibleTokenAmount < minimumClaimThreshold ?
+                            {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
                                 `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
                                 :
                                 `Current value: ${eligibleTotalEstimatedUsd}`
@@ -193,7 +195,9 @@ const Rewards = () => {
                         <img className={styles.icon} src={`${iconsPath}/coins.svg`} alt="coins icon" />
                     </div>
                     <div className={styles.reward_details_subcontainer}>
-                        <div className={`${styles.amount} ${styles.amount_pending}`}>{`${pendingTokenAmount} ${currentCryptoSymbol}`}</div>
+                        <div className={`${styles.amount} ${styles.amount_pending}`}>
+                            {balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                        </div>
 
                         <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: {pendingTotalEstimatedUsd}</div>
                     </div>
