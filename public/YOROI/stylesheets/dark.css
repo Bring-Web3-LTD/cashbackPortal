@@ -220,6 +220,11 @@
     --history-back-f-s: 14px;
     --history-back-f-w: 500;
     --history-back-f-c: #E1E6F5;
+
+    --history-back-hover-f-s: 14px;
+    --history-back-hover-f-w: 500;
+    --history-back-hover-f-c: #ffffff;
+
     --history-back-x-location: 64px;
 
     --history-table-header-bg: #15171F;
@@ -254,6 +259,7 @@
     --history-description-f-s: 16px;
     --history-description-f-w: 400;
     --history-description-f-c: #E1E6F5;
+    --history-description-bold-f-w: 600;
 
     --history-empty-f-s: 18px;
     --history-empty-f-w: 500;
