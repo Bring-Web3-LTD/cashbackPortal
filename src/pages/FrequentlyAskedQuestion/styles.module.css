@@ -29,6 +29,7 @@
     font-size: var(--history-back-f-s);
     font-weight: var(--history-back-f-w);
     color: var(--history-back-f-c);
+    transition: .2s;
 }
 
 .collapsible {
@@ -105,8 +106,14 @@
 
 @media (hover: hover) {
     .collapsible:hover {
-        border-bottom: none;
+        border-color: transparent;
         background: var(--history-table-row-hover-bg);
+    }
+
+    .back_btn:hover {
+        font-size: var(--history-back-hover-f-s);
+        font-weight: var(--history-back-hover-f-w);
+        color: var(--history-back-hover-f-c);
     }
 }
 
