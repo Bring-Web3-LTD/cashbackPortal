@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    /* gap: 8px; */
 }
 
 .icon_container {
@@ -116,7 +116,7 @@
     border-style: solid;
     border-radius: var(--rewards-btn-radius);
     height: 46px;
-    width: 172px;
+    width: var(--rewards-btn-width, 172px);
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
     cursor: pointer;
