@@ -6,16 +6,15 @@
 }
 
 .subcontainer {
-    --padding: 16px;
+    --padding: 22px;
     border-radius: 12px;
     height: 98px;
     width: calc(570px - (var(--padding) * 2));
     background: var(--rewards-bg);
     display: flex;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 var(--padding);
     align-items: center;
-    gap: var(--padding);
 }
 
 .reward_details {
