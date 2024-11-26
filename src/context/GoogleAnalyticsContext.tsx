@@ -47,8 +47,7 @@ export const GoogleAnalyticsProvider: FC<{ measurementId: string; children: Reac
         });
 
         sendPageViewEvent();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [measurementId]);
 
     const sendPageViewEvent = (): void => {
         if (window.origin.includes('localhost')) {
