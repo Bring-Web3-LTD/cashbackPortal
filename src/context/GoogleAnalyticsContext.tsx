@@ -46,7 +46,7 @@ export const GoogleAnalyticsProvider: FC<{ measurementId: string; children: Reac
             }
         });
 
-        sendPageViewEvent();
+        // sendPageViewEvent();
     }, [measurementId]);
 
     const sendPageViewEvent = (): void => {
