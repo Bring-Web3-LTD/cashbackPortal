@@ -159,6 +159,6 @@
     }
 
     .markdown {
-        height: calc(180px - var(--padding) * 2);
+        height: calc(150px - var(--padding) * 2);
     }
 }

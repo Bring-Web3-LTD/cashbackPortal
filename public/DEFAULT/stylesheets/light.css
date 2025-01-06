@@ -39,12 +39,12 @@
     --claim-text-f-c: black;
     --pending-text-f-c: black;
 
-    --rewards-usd-f-s: 12px;
+    --rewards-usd-f-s: 13px;
     --rewards-usd-f-w: 400;
     --claim-usd-f-c: black;
     --pending-usd-f-c: black;
 
-    --rewards-amount-f-s: 20px;
+    --rewards-amount-f-s: 22px;
     --rewards-amount-f-w: 500;
 
     --claim-amount-f-c: black;
@@ -52,7 +52,7 @@
     --pending-amount-f-c: black;
 
     --rewards-btn-width: 200px;
-    --rewards-btn-f-s: 14px;
+    --rewards-btn-f-s: 16px;
     --rewards-btn-f-w: 500;
     --rewards-btn-radius: 8px;
 

@@ -37,7 +37,7 @@
     border-bottom-width: var(--history-table-row-border-w);
     border-bottom-style: solid;
     border-bottom-color: var(--history-table-row-border-c);
-    padding: 0 26px;
+    padding: 20px 26px;
     transition: .2s;
     word-wrap: break-word;
 }
@@ -132,7 +132,7 @@
 
     .collapsible {
         background: var(--history-table-row-hover-bg);
-        margin-bottom: 18px;
+        margin-bottom: 12px;
         border-bottom: none;
     }
 

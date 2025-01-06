@@ -161,7 +161,7 @@ const Rewards = () => {
                             </div>
                             :
                             <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                                Current value:<br className={styles.br} />{eligibleTotalEstimatedUsd}
+                                USD value: <br className={styles.br} />{eligibleTotalEstimatedUsd}
                             </div>
                         }
 
@@ -198,7 +198,7 @@ const Rewards = () => {
                             {balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
                         </div>
 
-                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value:<br className={styles.br} />{pendingTotalEstimatedUsd}</div>
+                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>USD value: <br className={styles.br} />{pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button

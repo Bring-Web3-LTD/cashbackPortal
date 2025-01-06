@@ -13,7 +13,7 @@ const Header = () => {
             }
             {
                 t('subtitle') ?
-                    <h2 className={styles.subtitle}>{t('subtitle')}</h2>
+                    <h2 className={styles.subtitle}>Shop online with any card. Get cashback in Crypto.</h2>
                     : null
             }
             <Link
