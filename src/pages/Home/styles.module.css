@@ -46,14 +46,14 @@
 .search_container {
     display: flex;
     align-items: flex-end;
-    gap: 16px;
+    gap: 10px;
 }
 
 .filter {
     display: flex;
     gap: 12px;
     align-items: center;
-    height: 46px;
+    height: 40px;
     font-size: var(--filter-btn-f-s);
     font-weight: var(--filter-btn-f-w);
     color: var(--filter-btn-f-c);
