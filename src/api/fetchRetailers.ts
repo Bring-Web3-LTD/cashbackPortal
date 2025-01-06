@@ -22,6 +22,9 @@ interface Response {
 }
 
 const fetchRetailers = async (body: Body): Promise<Response> => {
+    const params = new URLSearchParams(document.location.search)
+    const country = params.get("country") || undefined
+    if (country) body.country = country
     const res = await fetch(`${API_URL_PLATFORMS}retailers`, {
         method: "POST",
         body: JSON.stringify(body),

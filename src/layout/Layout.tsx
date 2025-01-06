@@ -18,6 +18,9 @@ const Layout = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
             >
+                <div style={{ width: '100vw', background: 'orange', color: 'white', textAlign: 'center', padding: '16px 0', fontSize: '16px', fontWeight: 600 }}>
+                    This is a demo environment
+                </div>
                 <Outlet />
             </motion.div>
         </GoogleAnalyticsProvider>
