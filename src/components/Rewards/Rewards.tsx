@@ -6,12 +6,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import claimSubmit from '../../api/claim/submit'
-import claimInitiate from '../../api/claim/initiate'
+// import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
-import message from '../../utils/message'
+// import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
+import DemoModal from '../Modals/DemoModal/DemoModal'
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ const Rewards = () => {
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
     const limit = searchParams.get('limit') || '14'
+    const [demoOpen, setDemoOpen] = useState(false)
 
     const { data: balance } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform }),
@@ -93,33 +95,33 @@ const Rewards = () => {
     }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendGaEvent, walletAddress]);
 
     // Get the message to sign from the API and post a message to parent page a request to sign the message
-    const signMessage = async () => {
-        setLoading(true)
+    // const signMessage = async () => {
+    //     setLoading(true)
 
-        const res = await claimInitiate({
-            platform,
-            walletAddress,
-            targetWalletAddress: walletAddress,
-            tokenSymbol: currentCryptoSymbol,
-            tokenAmount: claimAmount,
-        })
+    //     const res = await claimInitiate({
+    //         platform,
+    //         walletAddress,
+    //         targetWalletAddress: walletAddress,
+    //         tokenSymbol: currentCryptoSymbol,
+    //         tokenAmount: claimAmount,
+    //     })
 
-        sendGaEvent('claim_open', {
-            category: 'user_action',
-            action: 'click',
-            details: claimAmount,
-            process: 'initiate'
-        })
+    //     sendGaEvent('claim_open', {
+    //         category: 'user_action',
+    //         action: 'click',
+    //         details: claimAmount,
+    //         process: 'initiate'
+    //     })
 
-        const messageToSign = res?.messageToSign
+    //     const messageToSign = res?.messageToSign
 
-        if (!messageToSign) {
-            setLoading(false)
-            return
-        }
+    //     if (!messageToSign) {
+    //         setLoading(false)
+    //         return
+    //     }
 
-        message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
-    }
+    //     message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
+    // }
 
     const eligibleTokenAmount =
         (balance?.data?.eligible[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
@@ -167,7 +169,7 @@ const Rewards = () => {
                 </div>
                 <button
                     className={`${styles.btn} ${styles.claim_btn}`}
-                    onClick={() => signMessage()}
+                    onClick={() => setDemoOpen(true)}
                     disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
                 >
                     {
@@ -206,6 +208,7 @@ const Rewards = () => {
                     {t('viewRewards')}
                 </button>
             </div>
+            <DemoModal open={demoOpen} closeFn={() => setDemoOpen(false)} />
             <StatusModal
                 status={claimStatus}
                 open={modalState !== 'close'}
