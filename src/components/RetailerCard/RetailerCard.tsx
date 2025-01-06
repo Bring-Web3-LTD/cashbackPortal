@@ -23,6 +23,13 @@ interface Props extends Retailer {
     search: ReactSelectOptionType | null
 }
 
+const parseRetailerName = (name: string) => {
+    if (name.length > 17) {
+        return name.slice(0, 17) + '...'
+    }
+    return name
+}
+
 const RetailerCard = ({
     id,
     iconPath,
@@ -106,7 +113,7 @@ const RetailerCard = ({
                         />
                     }
                 </div>
-                <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
+                <div className={styles.retailer_name}>{section ? `/${section}` : parseRetailerName(name)}</div>
                 <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
             </div>
             <RetailerCardModal

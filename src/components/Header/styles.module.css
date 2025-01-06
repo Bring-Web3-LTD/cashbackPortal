@@ -59,3 +59,9 @@
     border-width: var(--pending-btn-hover-pressed-w);
     border-color: var(--pending-btn-hover-pressed-c);
 }
+
+@media screen and (max-width:1190px) {
+    .header {
+        margin-bottom: 32px;
+    }
+}

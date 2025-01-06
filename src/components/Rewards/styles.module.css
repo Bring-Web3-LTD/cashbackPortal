@@ -164,6 +164,10 @@
     border-color: var(--pending-btn-hover-pressed-c);
 }
 
+.br {
+    display: none;
+}
+
 @media screen and (max-width:1190px) {
     .container {
         flex-direction: column;
@@ -171,7 +175,20 @@
 }
 
 @media screen and (max-width: 768px) {
+    .container {
+        gap: 20px;
+    }
+
     .subcontainer {
+        --padding: 16px;
         width: calc(352px - (var(--padding) * 2));
+    }
+
+    .br {
+        display: block;
+    }
+
+    .btn {
+        width: 160px;
     }
 }

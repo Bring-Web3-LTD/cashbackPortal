@@ -147,3 +147,18 @@
     font-size: 10px;
     font-weight: 900;
 }
+
+@media screen and (max-width: 768px) {
+    .details {
+        align-items: start;
+        flex-direction: column;
+    }
+
+    .consent_txt {
+        text-align: center;
+    }
+
+    .markdown {
+        height: calc(180px - var(--padding) * 2);
+    }
+}

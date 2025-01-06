@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* Rubik */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 :root {
     --bg: #fff;
@@ -38,19 +39,20 @@
     --claim-text-f-c: black;
     --pending-text-f-c: black;
 
-    --rewards-usd-f-s: 14px;
+    --rewards-usd-f-s: 12px;
     --rewards-usd-f-w: 400;
     --claim-usd-f-c: black;
     --pending-usd-f-c: black;
 
-    --rewards-amount-f-s: 35px;
+    --rewards-amount-f-s: 20px;
     --rewards-amount-f-w: 500;
 
     --claim-amount-f-c: black;
 
     --pending-amount-f-c: black;
 
-    --rewards-btn-f-s: 16px;
+    --rewards-btn-width: 200px;
+    --rewards-btn-f-s: 14px;
     --rewards-btn-f-w: 500;
     --rewards-btn-radius: 8px;
 
@@ -181,8 +183,8 @@
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #4B6DDE;
 
-    --modal-deal-name-f-s: 20px;
-    --modal-deal-name-f-w: 700;
+    --modal-deal-name-f-s: 16px;
+    --modal-deal-name-f-w: 500;
     --modal-deal-name-f-c: #242838;
     --modal-deal-markdown-bg: #fff;
     --modal-deal-markdown-border-w: 1px;
@@ -234,7 +236,7 @@
     --scrollbar-w: 14px;
 
     --search-bg: #fff;
-    --search-f-s: 14px;
+    --search-f-s: 16px;
     --search-f-w: 400;
     --search-f-c: #242838;
     --search-option-f-c: #242838;
@@ -252,6 +254,11 @@
     --history-back-f-s: 14px;
     --history-back-f-w: 500;
     --history-back-f-c: #242838;
+
+    --history-back-hover-f-s: 14px;
+    --history-back-hover-f-w: 500;
+    --history-back-hover-f-c: #00000;
+
     --history-back-x-location: 64px;
 
     --history-table-header-bg: #fff;
@@ -286,6 +293,11 @@
     --history-description-f-s: 16px;
     --history-description-f-w: 400;
     --history-description-f-c: #242838;
+    --history-description-bold-f-w: 600;
+
+    --history-empty-f-s: 18px;
+    --history-empty-f-w: 500;
+    --history-empty-f-c: #242838;
 
     --faq-question-f-s: 16px;
     --faq-question-f-w: 500;
@@ -297,5 +309,5 @@
 }
 
 * {
-    font-family: "Poppins", sans-serif;
+    font-family: "Rubik", sans-serif;
 }

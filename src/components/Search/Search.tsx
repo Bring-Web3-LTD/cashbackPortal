@@ -2,7 +2,6 @@ import styles from './styles.module.css'
 // hooks
 import { Fragment, MouseEvent, useId, useState } from "react"
 import { useRouteLoaderData } from 'react-router-dom'
-// import { useAccount } from "wagmi"
 
 // components
 import Select, {
@@ -16,9 +15,6 @@ import Select, {
 } from "react-select"
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
-
-// functions
-// import { sendGaEventBring } from "@/utils/bringWeb3/services/googleAnalytics"
 
 interface Props {
     options: ReactSelectOptionType[]

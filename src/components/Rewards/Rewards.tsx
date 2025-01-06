@@ -124,20 +124,15 @@ const Rewards = () => {
     const eligibleTokenAmount =
         (balance?.data?.eligible[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
             minimumFractionDigits: 0,
-            // minimumFractionDigits: balance?.data?.eligible[0]?.tokenAmount ? 0 : 2,
             maximumFractionDigits: 2,
         })
 
     const eligibleTotalEstimatedUsd = formatCurrency(balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0)
-    // (balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0).toLocaleString(undefined, {
-    //     style: "currency",
-    //     currency: "USD",
-    // })
+
 
     const pendingTokenAmount =
         (balance?.data?.totalPendings[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
             minimumFractionDigits: 0,
-            // minimumFractionDigits: balance?.data?.totalPendings[0]?.tokenAmount ? 0 : 2,
             maximumFractionDigits: 2,
         })
 
@@ -158,14 +153,16 @@ const Rewards = () => {
                         <div className={`${styles.amount} ${styles.amount_claim}`}>
                             {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
                         </div>
-                        <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                            {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
-                                `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
-                                :
-                                `Current value: ${eligibleTotalEstimatedUsd}`
-                            }
+                        {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
+                            <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
+                                {`Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`}
+                            </div>
+                            :
+                            <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
+                                Current value:<br className={styles.br} />{eligibleTotalEstimatedUsd}
+                            </div>
+                        }
 
-                        </div>
                     </div>
                 </div>
                 <button
@@ -199,7 +196,7 @@ const Rewards = () => {
                             {balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
                         </div>
 
-                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: {pendingTotalEstimatedUsd}</div>
+                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value:<br className={styles.br} />{pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button

@@ -3,12 +3,12 @@ import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import fetchCache from '../../api/fetchCache'
-import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import fetchCache from '../../../api/fetchCache'
+import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
+import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 
-interface History {
+interface HistoryDesktop {
     status: string
     tokenAmount: string;
     imgSrc: string
@@ -18,7 +18,7 @@ interface History {
     retailerName?: string
 }
 
-interface RowProps extends History {
+interface RowProps extends HistoryDesktop {
     isActive: boolean
     toggleFn: () => void
 }
@@ -104,7 +104,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
     )
 }
 
-const History = () => {
+const HistoryDesktop = () => {
     const [activeRow, setActiveRow] = useState(-1)
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
@@ -120,7 +120,7 @@ const History = () => {
 
     const balance = data?.data
 
-    const createClaims = (claims: Claim[] | undefined): History[] => {
+    const createClaims = (claims: Claim[] | undefined): HistoryDesktop[] => {
         if (!claims) return []
         const res: ClaimsRes = {}
 
@@ -142,7 +142,7 @@ const History = () => {
         return arr
     }
 
-    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): History[] => {
+    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryDesktop[] => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
             tokenAmount: `${deal.tokenAmount} ${deal.tokenName}`,
@@ -216,4 +216,4 @@ const History = () => {
     )
 }
 
-export default History
+export default HistoryDesktop;
