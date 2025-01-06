@@ -56,16 +56,18 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     </div>
                     <span className={styles.purchase_name}>{retailerName || 'Total claims'}</span>
                 </div>
-                <div className={styles.amount}>
-                    <span>{tokenAmount}</span>
-                    <span>{totalEstimatedUsd}</span>
-                </div>
-                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
                 <button
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
                 >
                     <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
                 </button>
+                <span>{tokenAmount}</span>
+                <span>{totalEstimatedUsd}</span>
+            </div>
+            <hr className={styles.breakline} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 20px' }}>
+                <div>Status:</div>
+                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
             </div>
             <AnimatePresence>
                 {isActive && <motion.div
