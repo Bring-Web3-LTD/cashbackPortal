@@ -19,7 +19,7 @@ const Layout = () => {
                 transition={{ duration: 0.2 }}
             >
                 <div style={{ width: 'calc(100vw - 1px)', background: 'orange', color: 'white', textAlign: 'center', padding: '10px 0', fontSize: '14px', fontWeight: 600 }}>
-                    This is a demo environment
+                    You are using a demo wallet
                 </div>
                 <Outlet />
             </motion.div>

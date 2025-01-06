@@ -7,7 +7,6 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 
 const dev = {
-    walletAddress: 'addr1qydfh2z0m4j2297rzwsu7dfu4ld3a6nhgytrn2wzxgvdlwd6y4l5psyq79gflnhwlttgw8gk7aj5j6lj95vg7my67vpsdcvu4l',
     platform: 'yoroi',
     cryptoSymbols: ['ADA'],
     isCountryAvailable: true,
@@ -25,12 +24,15 @@ const loadStylesheet = (theme: string, platform: string) => {
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const walletAddress = params.get('address')
+    if (!walletAddress) {
+        throw new Error('This link is broken, please contact Bring to get a working link, you can contact us here: 1websitecontact@gmail.com')
+    }
     const theme = params.get('theme')?.toLowerCase() || 'light'
     loadStylesheet(theme, 'DEFAULT')
     i18n.setDefaultNamespace('DEFAULT')
     return {
         ...dev,
-        walletAddress: walletAddress || dev.walletAddress,
+        walletAddress,
         iconsPath: `${dev.platform.toUpperCase()}/icons/${theme}`,
     }
 }

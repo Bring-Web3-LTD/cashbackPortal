@@ -11,7 +11,7 @@ const DemoModal = ({ open, closeFn }: Props) => {
             open={open}
             closeFn={closeFn}
         >
-            <h2 style={{ textAlign: 'center' }}>This is a demo, you can't claim your rewards</h2>
+            <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: '40px' }}>This is a demo wallet, you can't claim any rewards</h3>
         </Modal>
     )
 }
