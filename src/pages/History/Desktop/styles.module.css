@@ -180,41 +180,5 @@ b {
 @media screen and (max-width: 768px) {
     .container {
         display: none;
-        margin-top: 40px;
-    }
-
-    .details_container {
-        padding-left: 0;
-    }
-
-    .table {
-        width: 343px;
-    }
-
-    .table_header {
-        display: none;
-    }
-
-    .collapsible_open {
-        background: var(--history-table-row-bg);
-    }
-
-    .collapsible {
-        margin-bottom: 18px;
-        border-bottom: none;
-    }
-
-    .title {
-        margin-bottom: 31px;
-    }
-
-    .back_btn {
-        position: absolute;
-        top: 40px;
-        left: calc(50vw - 171px);
-    }
-
-    .back_btn_text {
-        display: none;
     }
 }

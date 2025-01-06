@@ -167,40 +167,33 @@ const HistoryMobile = () => {
                 }}
             >
                 <img src={`${iconsPath}/arrow-left.svg`} alt="" />
-                <span className={styles.back_btn_text}>
-                    {t('back')}
-                </span>
+
             </Link>
             <h1 className={styles.title}>{t('historyTitle')}</h1>
-            {balance?.movements.claims.length || balance?.movements.deals.length ? <div className={styles.table}>
-                <div className={styles.table_header}>
-                    <span className={styles.table_header_cell}>Purchase</span>
-                    <span className={styles.table_header_cell}>Amount</span>
-                    <span className={styles.table_header_cell}>Status</span>
-                    <span className={styles.table_header_cell}>Details</span>
+            {balance?.movements.claims.length || balance?.movements.deals.length ?
+                <div className={styles.table}>
+                    {
+                        history.map((item, i) =>
+                            <Row
+                                key={`history-${i}`}
+                                isActive={activeRow === i}
+                                toggleFn={() => {
+                                    if (activeRow !== i) {
+                                        setActiveRow(i)
+                                        sendGaEvent('history_expand', {
+                                            category: 'user_action',
+                                            action: 'click',
+                                            details: item.retailerName || 'Total claims',
+                                        })
+                                    } else {
+                                        setActiveRow(-1)
+                                    }
+                                }}
+                                {...item}
+                            />
+                        )
+                    }
                 </div>
-                {
-                    history.map((item, i) =>
-                        <Row
-                            key={`history-${i}`}
-                            isActive={activeRow === i}
-                            toggleFn={() => {
-                                if (activeRow !== i) {
-                                    setActiveRow(i)
-                                    sendGaEvent('history_expand', {
-                                        category: 'user_action',
-                                        action: 'click',
-                                        details: item.retailerName || 'Total claims',
-                                    })
-                                } else {
-                                    setActiveRow(-1)
-                                }
-                            }}
-                            {...item}
-                        />
-                    )
-                }
-            </div>
                 :
                 <>
                     <img src={`${iconsPath}/no-history.svg`} alt="history" />
