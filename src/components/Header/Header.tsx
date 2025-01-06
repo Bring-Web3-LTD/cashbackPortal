@@ -1,9 +1,11 @@
 import styles from './styles.module.css'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const Header = () => {
     const { t } = useTranslation()
+    const [searchParams] = useSearchParams()
+
     return (
         <div className={styles.header}>
             {
@@ -17,7 +19,7 @@ const Header = () => {
                     : null
             }
             <Link
-                to={'/faq'}
+                to={`/faq${searchParams.toString() ? '?' + searchParams.toString() : ''}`}
                 className={styles.btn}
             >
                 {t('frequentlyAskedQuestion')}

@@ -203,7 +203,7 @@ const Rewards = () => {
                 </div>
                 <button
                     className={`${styles.btn} ${styles.pending_btn}`}
-                    onClick={() => navigate('/history')}
+                    onClick={() => navigate(`/history${searchParams.toString() ? '?' + searchParams.toString() : ''}`)}
                 >
                     {t('viewRewards')}
                 </button>

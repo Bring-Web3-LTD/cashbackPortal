@@ -7,6 +7,8 @@ import '../utils/i18n'
 
 const Layout = () => {
     const location = useLocation();
+    const params = new URLSearchParams(location.search)
+    const demo = !!params.get('demo')
     const { platform, walletAddress } = useRouteLoaderData('root') as LoaderData;
 
     return (
@@ -18,7 +20,7 @@ const Layout = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
             >
-                <div style={{ width: 'calc(100vw - 1px)', background: 'orange', color: 'white', textAlign: 'center', padding: '10px 0', fontSize: '14px', fontWeight: 600 }}>
+                <div style={{ width: 'calc(100vw - 1px)', background: demo ? 'transparent' : 'orange', color: demo ? 'transparent' : 'white', textAlign: 'center', padding: '10px 0', fontSize: '14px', fontWeight: 600 }}>
                     You are using a demo wallet
                 </div>
                 <Outlet />
