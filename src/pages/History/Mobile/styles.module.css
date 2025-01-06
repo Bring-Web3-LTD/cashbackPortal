@@ -18,7 +18,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    top: 32px;
+    top: calc(32px + 37px);
     left: var(--history-back-x-location);
     text-decoration: none;
     font-size: var(--history-back-f-s);
@@ -224,7 +224,7 @@ b {
 
     .back_btn {
         position: absolute;
-        top: 40px;
+        top: calc(40px + 37px);
         left: calc(50vw - 171px);
     }
 
