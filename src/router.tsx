@@ -18,7 +18,7 @@ const loadStylesheet = (theme: string, platform: string) => {
     const cssLink = document.createElement('link');
     cssLink.rel = 'stylesheet';
 
-    cssLink.href = `./${platform}/stylesheets/${theme}.css`; // Specify the path to your main CSS file
+    cssLink.href = `/${platform}/stylesheets/${theme}.css`; // Specify the path to your main CSS file
     document.head.appendChild(cssLink);
 }
 
@@ -37,7 +37,7 @@ const rootLoader = async ({ request }: LoaderFunctionArgs) => {
     return {
         ...dev,
         walletAddress,
-        iconsPath: `${dev.platform.toUpperCase()}/icons/${theme}`,
+        iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
     }
 }
 
@@ -64,11 +64,7 @@ const router = createBrowserRouter([
             },
         ],
     },
-],
-    {
-        basename: '/'
-        // basename: DEV_MODE ? '/' : 'https://portal-demo.bringweb3.io'
-    }
+]
 );
 
 export default router;
