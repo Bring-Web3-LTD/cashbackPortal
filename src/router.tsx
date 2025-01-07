@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, LoaderFunctionArgs } from 'react-router-dom';
 import Layout from './layout/Layout';
 import Home from './pages/Home/Home';
 import History from './pages/History';
@@ -21,9 +21,12 @@ const loadStylesheet = (theme: string, platform: string) => {
     document.head.appendChild(cssLink);
 }
 
-const rootLoader = async () => {
-    const params = new URLSearchParams(document.location.search)
+const rootLoader = async ({ request }: LoaderFunctionArgs) => {
+    console.log(request);
+
+    const { searchParams: params } = new URL(request.url)
     const walletAddress = params.get('address')
+
     if (!walletAddress) {
         throw new Error('This link is broken, please contact Bring to get a working link, you can contact us here: 1websitecontact@gmail.com')
     }
