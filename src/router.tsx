@@ -5,6 +5,7 @@ import History from './pages/History';
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
+// import { DEV_MODE } from './config';
 
 const dev = {
     platform: 'yoroi',
@@ -65,7 +66,8 @@ const router = createBrowserRouter([
     },
 ],
     {
-        basename: 'https://portal-demo.bringweb3.io'
+        basename: '/'
+        // basename: DEV_MODE ? '/' : 'https://portal-demo.bringweb3.io'
     }
 );
 
