@@ -23,8 +23,6 @@ const loadStylesheet = (theme: string, platform: string) => {
 }
 
 const rootLoader = async ({ request }: LoaderFunctionArgs) => {
-    console.log(request);
-
     const { searchParams: params } = new URL(request.url)
     const walletAddress = params.get('address')
 
