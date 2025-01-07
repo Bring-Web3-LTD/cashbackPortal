@@ -63,6 +63,10 @@ const router = createBrowserRouter([
             },
         ],
     },
-]);
+],
+    {
+        basename: 'https://portal-demo.bringweb3.io'
+    }
+);
 
 export default router;
