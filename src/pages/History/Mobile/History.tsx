@@ -63,7 +63,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                 </button>
                 <span>{tokenAmount}</span>
                 {
-                    totalEstimatedUsd !== 0 ?
+                    totalEstimatedUsd ?
                         <>
                             <span>/</span>
                             <span>{totalEstimatedUsd}</span>
