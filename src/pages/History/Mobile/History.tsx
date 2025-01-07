@@ -13,7 +13,7 @@ interface HistoryMobile {
     tokenAmount: string;
     imgSrc: string
     description: string[][];
-    totalEstimatedUsd?: string
+    totalEstimatedUsd?: string | number
     imgBg?: string
     retailerName?: string
 }
@@ -33,7 +33,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
@@ -54,7 +54,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                             alt="logo"
                         />
                     </div>
-                    <span className={styles.purchase_name}>{retailerName || 'Total claims'}</span>
+                    <span className={`${styles.purchase_name} ${retailerName.length > 20 ? '' : styles.nowrap}`}>{retailerName}</span>
                 </div>
                 <button
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
@@ -62,7 +62,15 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
                 </button>
                 <span>{tokenAmount}</span>
-                <span>{totalEstimatedUsd}</span>
+                {
+                    totalEstimatedUsd !== 0 ?
+                        <>
+                            <span>/</span>
+                            <span>{totalEstimatedUsd}</span>
+                        </>
+                        :
+                        null
+                }
             </div>
             <hr className={styles.breakline} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 20px' }}>

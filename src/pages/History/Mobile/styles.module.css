@@ -119,6 +119,10 @@
     color: var(--history-purchase-name-f-c);
 }
 
+.nowrap {
+    text-wrap: nowrap;
+}
+
 .amount {
     display: flex;
     gap: 20px;
