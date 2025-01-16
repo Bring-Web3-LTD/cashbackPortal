@@ -152,7 +152,7 @@ const HistoryDesktop = () => {
     const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryDesktop[] => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
-            tokenAmount: `${deal.tokenAmount} ${deal.tokenName}`,
+            tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
             status: formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerName,
