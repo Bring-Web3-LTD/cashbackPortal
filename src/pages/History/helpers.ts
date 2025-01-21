@@ -69,21 +69,19 @@ interface Item {
 
 export const createDescription = (item: Item) => {
     if (item.description) {
-        return [formatDate(item.date), item.description]
+        return item.description
     }
 
     switch (item.action) {
         case "PURCHASE_POSTED":
-            return [formatDate(item.date),
-            `${item.tokenAmount + " " + item.tokenSymbol} rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}. Status: Pending for the end of the return period.`]
+            return `${formatDate(item.date)} - ${item.tokenAmount + " " + item.tokenSymbol} rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}. Status: Pending for the end of the return period.`
         case "PURCHASE_APPROVED":
-            return [formatDate(item.date), `${item.tokenAmount + " " + item.tokenSymbol} eligible rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}.`]
+            return `${formatDate(item.date)} - ${item.tokenAmount + " " + item.tokenSymbol} eligible rewards for purchasing${item.retailerName ? ` at ${item.retailerName}` : ''}.`
         case "PURCHASE_CORRECTED":
             return (
-                [formatDate(item.date),
-                `${item.tokenAmount + " " + item.tokenSymbol} — purchase corrected. ${item.correctionReason ? item.correctionReason : ""}`]
+                `${formatDate(item.date)} - ${item.tokenAmount + " " + item.tokenSymbol} — purchase corrected. ${item.correctionReason ? item.correctionReason : ""}`
             )
         default:
-            return ['']
+            return ''
     }
 }
