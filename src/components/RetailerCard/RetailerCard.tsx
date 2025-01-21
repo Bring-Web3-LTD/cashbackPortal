@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
@@ -46,7 +46,7 @@ const RetailerCard = ({
     const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
     const isBig = isBigCashback(cashbackSymbol, maxCashback)
 
-    const activateDeal = useCallback(async () => {
+    const activateDeal = async () => {
         if (!walletAddress) return
 
         const body: Parameters<typeof activate>[0] = {
@@ -61,33 +61,33 @@ const RetailerCard = ({
         const res = await activate(body)
         setRedirectLink(res.url)
         setModalState('open')
-    }, [cryptoSymbols, id, platform, search?.value, walletAddress])
+    }
+
+    const handleClick = () => {
+        activateDeal()
+        setModalState('loading')
+        sendGaEvent('retailer_open', {
+            category: 'user_action',
+            action: 'click',
+            details: name,
+            process: 'activate'
+        })
+    }
 
     useEffect(() => {
-        if (modalState === 'loading') {
-            activateDeal()
-        }
-
         if (!termsUrl || terms.length || modalState === 'close') return
 
         fetch(termsUrl)
             .then(res => res.text())
             .then(data => setTerms(data))
-    }, [activateDeal, modalState, terms.length, termsUrl])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [modalState])
 
     return (
         <>
             <div
                 className={styles.card}
-                onClick={() => {
-                    setModalState('loading')
-                    sendGaEvent('retailer_open', {
-                        category: 'user_action',
-                        action: 'click',
-                        details: name,
-                        process: 'activate'
-                    })
-                }}
+                onClick={handleClick}
             >
                 {isBig ? <div className={styles.flag}>{cashback}</div> : null}
                 <div
