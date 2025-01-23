@@ -12,7 +12,7 @@ interface History {
     status: string
     tokenAmount: string;
     imgSrc: string
-    description: string[][];
+    description: string[];
     totalEstimatedUsd?: string
     imgBg?: string
     retailerName?: string
@@ -25,7 +25,7 @@ interface RowProps extends History {
 
 interface ClaimToken {
     tokenAmount: number
-    description: string[][]
+    description: string[]
     tokenSymbol: string
 }
 
@@ -89,11 +89,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                 className={styles.description}
                             >
                                 {
-                                    item[0] || item[1] ?
-                                        <>
-                                            <b>{item[0]}</b> - {item[1]}
-                                        </>
-                                        : null
+                                    item
                                 }
                             </div>
                         ))}
@@ -127,7 +123,7 @@ const History = () => {
         claims.map(claim => {
             const { tokenSymbol, tokenAmount, date } = claim
             if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
-            res[tokenSymbol].description.push([formatDate(date), `${tokenAmount} ${tokenSymbol}`])
+            res[tokenSymbol].description.push(`${formatDate(date)} - ${tokenAmount} ${tokenSymbol}`)
             res[tokenSymbol].tokenAmount += tokenAmount
         })
 
@@ -151,7 +147,7 @@ const History = () => {
             retailerName: deal.retailerName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,
-            description: deal.history?.map(history => createDescription(history)) || [['']]
+            description: deal.history?.map(history => createDescription(history)) || []
         }))
     }
     const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
