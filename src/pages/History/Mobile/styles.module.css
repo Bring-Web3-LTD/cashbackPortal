@@ -1,6 +1,6 @@
 .container {
-    margin-top: 80px;
-    display: flex;
+    display: none;
+    margin-top: 40px;
     flex-direction: column;
     align-items: center;
 }
@@ -10,69 +10,59 @@
     font-weight: var(--history-title-f-w);
     color: var(--history-title-f-c);
     margin: 0;
-    margin-bottom: 65px;
+    margin-bottom: 31px;
 }
 
 .back_btn {
-    position: fixed;
+    position: absolute;
     display: flex;
     align-items: center;
     gap: 6px;
-    top: 32px;
-    left: var(--history-back-x-location);
     text-decoration: none;
     font-size: var(--history-back-f-s);
     font-weight: var(--history-back-f-w);
     color: var(--history-back-f-c);
     transition: .2s;
+    top: calc(40px + 37px);
+    left: calc(50vw - 171px);
 }
 
 .table {
-    width: 1167px;
-}
-
-.table_header {
-    display: grid;
-    grid-template-columns: 1fr 1.75fr 1fr 0.25fr;
-    align-items: center;
-    /* justify-items: center; */
-    background: var(--history-table-header-bg);
-    border-width: var(--history-table-header-border-w);
-    border-style: solid;
-    border-color: var(--history-table-header-border-c);
-    border-radius: var(--history-table-header-radius);
-    height: 45px;
-    margin-bottom: 9px;
-    padding-left: 46px;
-    user-select: none;
-}
-
-.table_header_cell {
-    font-size: var(--history-table-header-f-s);
-    font-weight: var(--history-table-header-f-w);
-    color: var(--history-table-header-f-c);
-    line-height: 18px;
+    width: 343px;
 }
 
 .collapsible {
-    border-bottom-width: var(--history-table-row-border-w);
-    border-bottom-style: solid;
-    border-bottom-color: var(--history-table-row-border-c);
+    border: 1px solid black;
+    border-radius: 10px;
+    /* border-bottom-width: var(--history-table-row-border-w); */
+    /* border-bottom-style: solid; */
+    /* border-bottom-color: var(--history-table-row-border-c); */
     transition: .2s;
+    margin-bottom: 18px;
     min-height: 62px;
 }
 
 .collapsible_open {
-    background: var(--history-table-row-active-bg);
+    background: var(--history-table-row-bg);
 }
 
 .details_container {
-    padding-left: 50px;
-    height: 62px;
+    padding: 16px;
+    padding-bottom: 0;
+    height: 90px;
     display: grid;
-    grid-template-columns: 1fr 1.75fr 1fr 0.25fr;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
     align-items: center;
     transition: .2s;
+}
+
+.details_container>*:nth-child(2n-1) {
+    justify-self: start;
+}
+
+.details_container>*:nth-child(2n) {
+    justify-self: end;
 }
 
 .name_container {
@@ -86,8 +76,8 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    width: 35px;
+    height: 35px;
     background: var(--history-claimed-icon-bg);
 }
 
@@ -119,13 +109,18 @@
 .description_container {
     overflow: hidden;
     /* min-height: 40px; */
-    padding-left: 105px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .purchase_name {
     font-size: var(--history-purchase-name-f-s);
     font-weight: var(--history-purchase-name-f-w);
     color: var(--history-purchase-name-f-c);
+}
+
+.nowrap {
+    text-wrap: nowrap;
 }
 
 .amount {
@@ -164,52 +159,13 @@ b {
     font-weight: var(--history-description-bold-f-w);
 }
 
-@media (hover: hover) {
-    .collapsible:hover {
-        border-color: transparent;
-        background: var(--history-table-row-hover-bg);
-    }
-
-    .back_btn:hover {
-        font-size: var(--history-back-hover-f-s);
-        font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c);
-    }
+.breakline {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 @media screen and (max-width: 768px) {
     .container {
-        margin-top: 40px;
-    }
-
-    .table {
-        width: 343px;
-    }
-
-    .table_header {
-        display: none;
-    }
-
-    .collapsible_open {
-        background: var(--history-table-row-bg);
-    }
-
-    .collapsible {
-        margin-bottom: 18px;
-        border-bottom: none;
-    }
-
-    .title {
-        margin-bottom: 31px;
-    }
-
-    .back_btn {
-        position: absolute;
-        top: 40px;
-        left: calc(50vw - 171px);
-    }
-
-    .back_btn_text {
-        display: none;
+        display: flex;
     }
 }

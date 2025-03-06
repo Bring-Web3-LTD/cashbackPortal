@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from './layout/Layout';
 import Home from './pages/Home/Home';
-import History from './pages/History/History';
+import History from './pages/History';
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';

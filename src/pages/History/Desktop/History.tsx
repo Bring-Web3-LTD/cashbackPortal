@@ -3,29 +3,29 @@ import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import fetchCache from '../../api/fetchCache'
-import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import fetchCache from '../../../api/fetchCache'
+import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
+import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 
-interface History {
+interface HistoryDesktop {
     status: string
     tokenAmount: string;
     imgSrc: string
-    description: string[];
-    totalEstimatedUsd?: string
+    description: string[][];
+    totalEstimatedUsd?: string | number
     imgBg?: string
     retailerName?: string
 }
 
-interface RowProps extends History {
+interface RowProps extends HistoryDesktop {
     isActive: boolean
     toggleFn: () => void
 }
 
 interface ClaimToken {
     tokenAmount: number
-    description: string[]
+    description: string[][]
     tokenSymbol: string
 }
 
@@ -33,7 +33,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
@@ -54,14 +54,21 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                             alt="logo"
                         />
                     </div>
-                    <span className={styles.purchase_name}>{retailerName || 'Total claims'}</span>
+                    <span className={styles.purchase_name}>{retailerName}</span>
                 </div>
                 <div className={styles.amount}>
                     {totalEstimatedUsd ?
                         <>
                             <span>{tokenAmount}</span>
-                            <span>/</span>
-                            <span>{totalEstimatedUsd}</span>
+                            {
+                                totalEstimatedUsd !== 0 ?
+                                    <>
+                                        <span>/</span>
+                                        <span>{totalEstimatedUsd}</span>
+                                    </>
+                                    :
+                                    null
+                            }
                         </>
                         :
                         <span>{tokenAmount}</span>
@@ -89,7 +96,11 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                 className={styles.description}
                             >
                                 {
-                                    item
+                                    item[0] || item[1] ?
+                                        <>
+                                            <b>{item[0]}</b> - {item[1]}
+                                        </>
+                                        : null
                                 }
                             </div>
                         ))}
@@ -100,7 +111,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
     )
 }
 
-const History = () => {
+const HistoryDesktop = () => {
     const [activeRow, setActiveRow] = useState(-1)
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
@@ -116,14 +127,14 @@ const History = () => {
 
     const balance = data?.data
 
-    const createClaims = (claims: Claim[] | undefined): History[] => {
+    const createClaims = (claims: Claim[] | undefined): HistoryDesktop[] => {
         if (!claims) return []
         const res: ClaimsRes = {}
 
         claims.map(claim => {
             const { tokenSymbol, tokenAmount, date } = claim
             if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
-            res[tokenSymbol].description.push(`${formatDate(date)} - ${tokenAmount} ${tokenSymbol}`)
+            res[tokenSymbol].description.push([formatDate(date), `${tokenAmount} ${tokenSymbol}`])
             res[tokenSymbol].tokenAmount += tokenAmount
         })
 
@@ -138,16 +149,16 @@ const History = () => {
         return arr
     }
 
-    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): History[] => {
+    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryDesktop[] => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
-            tokenAmount: `${deal.tokenAmount} ${deal.tokenName}`,
+            tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
             status: formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,
-            description: deal.history?.map(history => createDescription(history)) || []
+            description: deal.history?.map(history => createDescription(history)) || [['']]
         }))
     }
     const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
@@ -212,4 +223,4 @@ const History = () => {
     )
 }
 
-export default History
+export default HistoryDesktop;
