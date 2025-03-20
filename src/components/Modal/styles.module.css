@@ -43,3 +43,9 @@
         width: calc(345px - var(--padding) * 2);
     }
 }
+
+@media screen and (max-height: 710px) {
+    .modal {
+        margin-top: 0;
+    }
+}
