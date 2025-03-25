@@ -12,6 +12,7 @@ import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
+import { ENV } from '../../config'
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -33,7 +34,7 @@ const Rewards = () => {
     const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || ''
     const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
     const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
-    const claimAmount = (limit ? +limit : null) || eligibleTokenNumber
+    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : ((limit ? +limit : null) || eligibleTokenNumber)
 
     useEffect(() => {
         // Define the message handler
