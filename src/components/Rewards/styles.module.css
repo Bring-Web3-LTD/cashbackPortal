@@ -164,14 +164,26 @@
     border-color: var(--pending-btn-hover-pressed-c);
 }
 
+.full_width {
+    width: calc((570px) * 2);
+}
+
 @media screen and (max-width:1190px) {
     .container {
         flex-direction: column;
+    }
+
+    .full_width {
+        width: calc(701px - (var(--padding) * 2));
     }
 }
 
 @media screen and (max-width: 768px) {
     .subcontainer {
         width: calc(352px - (var(--padding) * 2));
+    }
+
+    .full_width {
+        width: calc((352px));
     }
 }

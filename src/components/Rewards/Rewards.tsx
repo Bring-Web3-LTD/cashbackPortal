@@ -24,7 +24,9 @@ const Rewards = () => {
     const [modalState, setModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
+    const isAutoClaim = searchParams.get('autoclaim') === 'true'
     const limit = searchParams.get('limit') || '14'
+    console.log({ isAutoClaim });
 
     const { data: balance } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform }),
@@ -146,51 +148,53 @@ const Rewards = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.subcontainer}>
-                <div className={styles.reward_details}>
-                    <div className={`${styles.icon_container} ${styles.claim_icon}`}>
-                        <img
-                            className={styles.icon}
-                            src={`${iconsPath}/gift.svg`}
-                            alt="gift icon"
-                        />
-                    </div>
-                    <div className={styles.reward_details_subcontainer}>
-                        <div className={`${styles.amount} ${styles.amount_claim}`}>
-                            {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
-                        </div>
-                        <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                            {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
-                                `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
-                                :
-                                `Current value: ${eligibleTotalEstimatedUsd}`
-                            }
-
-                        </div>
-                    </div>
-                </div>
-                <button
-                    className={`${styles.btn} ${styles.claim_btn}`}
-                    onClick={() => signMessage()}
-                    disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
-                >
-                    {
-                        loading ?
-                            <Oval
-                                visible={true}
-                                height="20"
-                                width="20"
-                                color="#fff"
-                                secondaryColor='grey'
-                                strokeWidth={6}
-                                ariaLabel="oval-loading"
+            {!isAutoClaim ?
+                <div className={styles.subcontainer}>
+                    <div className={styles.reward_details}>
+                        <div className={`${styles.icon_container} ${styles.claim_icon}`}>
+                            <img
+                                className={styles.icon}
+                                src={`${iconsPath}/gift.svg`}
+                                alt="gift icon"
                             />
-                            :
-                            t('claimCashback')
-                    }
-                </button>
-            </div>
-            <div className={styles.subcontainer}>
+                        </div>
+                        <div className={styles.reward_details_subcontainer}>
+                            <div className={`${styles.amount} ${styles.amount_claim}`}>
+                                {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                            </div>
+                            <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
+                                {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
+                                    `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
+                                    :
+                                    `Current value: ${eligibleTotalEstimatedUsd}`
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        className={`${styles.btn} ${styles.claim_btn}`}
+                        onClick={() => signMessage()}
+                        disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
+                    >
+                        {
+                            loading ?
+                                <Oval
+                                    visible={true}
+                                    height="20"
+                                    width="20"
+                                    color="#fff"
+                                    secondaryColor='grey'
+                                    strokeWidth={6}
+                                    ariaLabel="oval-loading"
+                                />
+                                :
+                                t('claimCashback')
+                        }
+                    </button>
+                </div>
+                : null}
+            <div className={`${styles.subcontainer} ${isAutoClaim ? styles.full_width : ''}`}>
                 <div className={styles.reward_details}>
                     <div className={`${styles.icon_container} ${styles.pending_icon}`}>
                         <img className={styles.icon} src={`${iconsPath}/coins.svg`} alt="coins icon" />
