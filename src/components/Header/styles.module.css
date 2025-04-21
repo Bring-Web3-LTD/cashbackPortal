@@ -29,15 +29,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90px;
+    min-width: 90px;
     height: 29px;
+    padding: 0 16px;
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
     color: var(--header-btn-f-c);
     border-width: var(--header-btn-border-w);
     border-style: solid;
     border-color: var(--header-btn-border-c);
-    border-radius: 10px;
+    border-radius: var(--header-btn-radius, 10px);
     background: var(--header-btn-bg);
     margin-top: 8px;
     cursor: pointer;
