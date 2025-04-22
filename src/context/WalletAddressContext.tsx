@@ -17,7 +17,7 @@ export function WalletProvider({ children, initialWalletAddress }: { children: R
                 console.log('BRING! Received message:', event);
                 const { token } = event.data
                 if (token) {
-                    const res = await fetchToken(token)
+                    const res = await fetchToken({ token })
                     console.log({ fetchToken: res });
 
                     setWalletAddress(res.info.walletAddress || null)
