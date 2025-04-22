@@ -13,5 +13,6 @@
   "doneBtn": "DONE",
   "back": "BACK",
   "historyTitle": "Cashback history",
-  "emptyHistory": "No cashback history"
+  "emptyHistory": "No cashback history",
+  "needHelp": "Need help?"
 }

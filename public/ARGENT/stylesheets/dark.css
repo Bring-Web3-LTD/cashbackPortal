@@ -20,6 +20,7 @@
     --header-btn-border-w: 0;
     --header-btn-border-c: transparent;
     --header-btn-radius: 32px;
+    --header-btn-p: 8px 16px;
 
     --rewards-bg: #242424;
 
@@ -115,14 +116,14 @@
     --loading-msg-f-w: 500;
     --loading-msg-f-c: #FBFBFB;
     /* need to configure */
-    --filter-btn-f-s: 14px;
-    --filter-btn-f-w: 400;
-    --filter-btn-f-c: #7892E8;
-    --filter-btn-bg: #1F253B;
+    --filter-btn-f-s: 15px;
+    --filter-btn-f-w: 500;
+    --filter-btn-f-c: #FBFBFB;
+    --filter-btn-bg: #242424;
     --filter-btn-hover-bg: #242D4F;
     --filter-btn-hover-f-c: #A0B3F2;
-    --filter-btn-border-w: 0;
-    --filter-btn-border-c: transparent;
+    --filter-btn-border-w: 1px;
+    --filter-btn-border-c: #FFFFFF4D;
     --filter-btn-radius: 8px;
     /* until here */
     --category-btn-bg: transparent;
