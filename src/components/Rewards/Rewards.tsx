@@ -14,6 +14,8 @@ import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import LoginModal from '../Modals/LoginModal/LoginModal'
+
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -24,6 +26,7 @@ const Rewards = () => {
     const { platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
+    const [loginModalState, setLoginModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
     const isAutoClaim = searchParams.get('autoclaim') === 'true'
@@ -210,7 +213,7 @@ const Rewards = () => {
                 </div>
                 <button
                     className={`${styles.btn} ${styles.pending_btn}`}
-                    onClick={() => navigate('/history')}
+                    onClick={() => walletAddress ? navigate('/history') : setLoginModalState('open')}
                 >
                     {t('viewRewards')}
                 </button>
@@ -222,6 +225,10 @@ const Rewards = () => {
                     setModalState('close')
                     setClaimStatus('loading')
                 }}
+            />
+            <LoginModal
+                closeFn={() => setLoginModalState('close')}
+                open={loginModalState !== 'close'}
             />
         </div>
     )
