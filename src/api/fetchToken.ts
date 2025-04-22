@@ -25,6 +25,11 @@ const fetchToken = async (body: Body): Promise<Response> => {
         body: JSON.stringify({ ...body })
     })
     const data = await res.json()
+
+    if (data.info.walletAddress === 'null') {
+        data.info.walletAddress = null
+    }
+
     return data
 }
 
