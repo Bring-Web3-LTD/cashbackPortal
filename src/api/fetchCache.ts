@@ -1,7 +1,7 @@
 import { API_URL_PLATFORMS, API_KEY } from "../config"
 
 interface Body {
-    walletAddress: string | undefined
+    walletAddress: string | undefined | null
     type?: "default" | "aggregated"
     platform: string
 }
