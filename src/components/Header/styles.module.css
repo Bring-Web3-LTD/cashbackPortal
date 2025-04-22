@@ -25,13 +25,21 @@
     margin: 0;
 }
 
+.btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
 .btn {
     display: flex;
     justify-content: center;
     align-items: center;
     min-width: 90px;
     height: 29px;
-    padding: 0 16px;
+    padding: var(--header-btn-p, 0 16px);
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
     color: var(--header-btn-f-c);
@@ -40,7 +48,6 @@
     border-color: var(--header-btn-border-c);
     border-radius: var(--header-btn-radius, 10px);
     background: var(--header-btn-bg);
-    margin-top: 8px;
     cursor: pointer;
     outline: none;
     transition: .2s;

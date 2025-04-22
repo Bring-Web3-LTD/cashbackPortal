@@ -16,12 +16,20 @@ const Header = () => {
                     <h2 className={styles.subtitle}>{t('subtitle')}</h2>
                     : null
             }
-            <Link
-                to={'/faq'}
-                className={styles.btn}
-            >
-                {t('frequentlyAskedQuestion')}
-            </Link>
+            <div className={styles.btns}>
+                <Link
+                    to={'/faq'}
+                    className={styles.btn}
+                >
+                    {t('needHelp')}
+                </Link>
+                <Link
+                    to={'/faq'}
+                    className={styles.btn}
+                >
+                    {t('frequentlyAskedQuestion')}
+                </Link>
+            </div>
         </div>
     )
 }
