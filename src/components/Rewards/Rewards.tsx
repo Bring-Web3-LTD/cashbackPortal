@@ -28,7 +28,6 @@ const Rewards = () => {
     const [loading, setLoading] = useState(false)
     const isAutoClaim = searchParams.get('autoclaim') === 'true'
     const limit = searchParams.get('limit') || '14'
-    console.log({ isAutoClaim });
 
     const { data: balance } = useQuery({
         queryFn: () => fetchCache({ walletAddress, platform } as Parameters<typeof fetchCache>[0]),
