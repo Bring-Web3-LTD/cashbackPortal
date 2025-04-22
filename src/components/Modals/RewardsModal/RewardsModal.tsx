@@ -10,6 +10,7 @@ import claimInitiate from '../../../api/claim/initiate';
 import message from '../../../utils/message';
 import { useTranslation } from 'react-i18next';
 import claimSubmit from '../../../api/claim/submit';
+import { useWalletAddress } from '../../../utils/hooks/useWalletAddress';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     eligibleTokenAmount: string
@@ -21,7 +22,8 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 // }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
-    const { platform, walletAddress, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { t } = useTranslation()
 
     // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)

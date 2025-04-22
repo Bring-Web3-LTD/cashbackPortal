@@ -5,6 +5,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -36,7 +37,8 @@ const RetailerCard = ({
     generalTerms,
     search,
 }: Props) => {
-    const { walletAddress, platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')

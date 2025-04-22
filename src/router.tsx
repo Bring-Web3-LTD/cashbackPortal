@@ -9,7 +9,7 @@ import fetchToken from './api/fetchToken';
 import { DEV_MODE } from './config';
 
 const dev = {
-    walletAddress: 'addr1qydfh2z0m4j2297rzwsu7dfu4ld3a6nhgytrn2wzxgvdlwd6y4l5psyq79gflnhwlttgw8gk7aj5j6lj95vg7my67vpsdcvu4l',
+    walletAddress: '0x5ffa03d2caf23533c1f15e355196a20a11fd96441d34f351d2471c386e89859',
     platform: 'argent',
     cryptoSymbols: ['STRK', 'ETH', 'USDT', 'USDC', 'BTC'],
     isCountryAvailable: true,
