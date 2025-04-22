@@ -13,6 +13,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -20,7 +21,8 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { walletAddress, platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
@@ -29,11 +31,11 @@ const Rewards = () => {
     console.log({ isAutoClaim });
 
     const { data: balance } = useQuery({
-        queryFn: () => fetchCache({ walletAddress, platform }),
+        queryFn: () => fetchCache({ walletAddress, platform } as Parameters<typeof fetchCache>[0]),
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })
-    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || ''
+    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || cryptoSymbols[0]
     const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
     const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
     const claimAmount = ENV === 'prod' ? eligibleTokenNumber : ((limit ? +limit : null) || eligibleTokenNumber)
