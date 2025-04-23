@@ -60,6 +60,7 @@
     border-bottom-color: var(--history-table-row-border-c);
     transition: .2s;
     min-height: 62px;
+    background: var(--history-table-row-bg, transparent);
 }
 
 .collapsible_open {
