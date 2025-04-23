@@ -40,6 +40,8 @@ const rootLoader = async () => {
     const res = await fetchToken({ token });
     if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
     const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
+    console.log({ platform });
+
     loadStylesheet(theme, platform)
     i18n.setDefaultNamespace(platform)
 
