@@ -14,6 +14,7 @@
     --subtitle-f-c: #FFF;
 
     --header-btn-bg: #242424;
+    --header-btn-bg-hover: #505050;
     --header-btn-f-s: 18px;
     --header-btn-f-w: 600;
     --header-btn-f-c: #FFFFFF;
@@ -118,11 +119,11 @@
     --filter-btn-f-s: 15px;
     --filter-btn-f-w: 500;
     --filter-btn-f-c: #FBFBFB;
-    --filter-btn-bg: #242424;
-    --filter-btn-hover-bg: #242D4F;
+    --filter-btn-bg: transparent;
+    --filter-btn-hover-bg: #242424;
     --filter-btn-hover-f-c: #FBFBFB;
     --filter-btn-border-w: 1px;
-    --filter-btn-border-c: #FFFFFF4D;
+    --filter-btn-border-c: #FFFFFF1F;
     --filter-btn-radius: 8px;
     /* until here */
     --category-btn-bg: transparent;

@@ -65,7 +65,7 @@
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #F36A3D;
-    --primary-btn-hover-bg: #F36A3D;
+    --primary-btn-hover-bg: #FF875B;
     --primary-btn-pressed-bg: #F36A3D;
     --primary-btn-disabled-bg: #F36B3D80;
     --primary-btn-disabled-f-c: #FFFFFF80;
@@ -78,12 +78,12 @@
     --pending-btn-hover-f-c: #FFFFFF;
     --pending-btn-hover-border-c: transparent;
     --pending-btn-hover-border-w: 0;
-    --pending-btn-hover-bg: #F36A3D;
+    --pending-btn-hover-bg: #FFFFFF2E;
 
     --pending-btn-pressed-f-c: #FFFFFF;
     --pending-btn-pressed-border-c: transparent;
     --pending-btn-pressed-border-w: 0;
-    --pending-btn-pressed-bg: #F36A3D;
+    --pending-btn-pressed-bg: #FFFFFF1F;
 
     --retailer-card-bg: #242424;
     --retailer-card-border-w: 1px;
@@ -119,11 +119,11 @@
     --filter-btn-f-s: 15px;
     --filter-btn-f-w: 500;
     --filter-btn-f-c: #FBFBFB;
-    --filter-btn-bg: #242424;
-    --filter-btn-hover-bg: #242D4F;
+    --filter-btn-bg: transparent;
+    --filter-btn-hover-bg: #242424;
     --filter-btn-hover-f-c: #FBFBFB;
     --filter-btn-border-w: 1px;
-    --filter-btn-border-c: #FFFFFF4D;
+    --filter-btn-border-c: #FFFFFF1F;
     --filter-btn-radius: 8px;
     /* until here */
     --category-btn-bg: transparent;

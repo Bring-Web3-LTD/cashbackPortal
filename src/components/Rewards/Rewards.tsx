@@ -205,7 +205,7 @@ const Rewards = () => {
                     </div>
                     <div className={styles.reward_details_subcontainer}>
                         <div className={`${styles.amount} ${styles.amount_pending}`}>
-                            {balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                            {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}${t('pendingRewards') !== 'pendingRewards' ? ` ${t('pendingRewards')}` : ''}`}
                         </div>
 
                         <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: {pendingTotalEstimatedUsd}</div>

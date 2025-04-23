@@ -160,8 +160,8 @@
 .pending_btn:active {
     background: var(--pending-btn-pressed-bg);
     color: var(--pending-btn-pressed-f-c);
-    border-width: var(--pending-btn-hover-pressed-w);
-    border-color: var(--pending-btn-hover-pressed-c);
+    border-width: var(--pending-btn-pressed-border-w);
+    border-color: var(--pending-btn-pressed-border-c);
 }
 
 .full_width {
