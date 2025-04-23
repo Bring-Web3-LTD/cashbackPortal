@@ -26,7 +26,7 @@ const Rewards = () => {
     const { platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
-    const [loginModalState, setLoginModalState] = useState('open')
+    const [loginModalState, setLoginModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
     const isAutoClaim = searchParams.get('autoclaim') === 'true'
