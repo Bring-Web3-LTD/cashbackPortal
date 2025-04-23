@@ -25,6 +25,11 @@ interface Response {
 }
 
 const fetchFaq = async (body: Body): Promise<Response> => {
+
+    if (!body.walletAddress) {
+        body.walletAddress = 'null'
+    }
+
     const res = await fetch(`${API_URL_PLATFORMS}faq`, {
         method: "POST",
         body: JSON.stringify(body),
