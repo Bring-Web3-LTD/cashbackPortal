@@ -24,14 +24,14 @@ const Header = () => {
             }
             <div className={styles.btns}>
                 <Link
-                    to={supportUrl}
-                    target='_blank'
+                    to={'/faq'}
                     className={styles.btn}
                 >
                     {t('needHelp')}
                 </Link>
                 <Link
-                    to={'/faq'}
+                    to={supportUrl}
+                    target='_blank'
                     className={styles.btn}
                 >
                     {t('frequentlyAskedQuestion')}

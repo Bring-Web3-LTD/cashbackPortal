@@ -15,5 +15,6 @@
   "historyTitle": "Cashback history",
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
-  "connectYourWallet": "Connect your wallet"
+  "connectYourWallet": "Connect your wallet",
+  "pendingRewards": "PENDING REWARDS"
 }

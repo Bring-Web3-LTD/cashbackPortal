@@ -55,7 +55,7 @@
 }
 
 .btn:hover {
-    background: var(--header-btn-bg-hover, var(--pending-btn-hover-bg));
+    background: var(--pending-btn-hover-bg);
     color: var(--pending-btn-hover-f-c);
     border-width: var(--pending-btn-hover-border-w);
     border-color: var(--pending-btn-hover-border-c);
