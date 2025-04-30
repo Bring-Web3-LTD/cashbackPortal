@@ -213,7 +213,7 @@
     --search-radius: 8px;
     --search-border-w: 0;
     --search-border-c: transparent;
-    --search-placeholder-f-c: #7C85A3;
+    --search-placeholder-f-c: #8C8C8C;
     --search-scrollbar-bg: #c8ccce;
 
     --history-title-f-s: 28px;
@@ -222,11 +222,11 @@
 
     --history-back-f-s: 16px;
     --history-back-f-w: 500;
-    --history-back-f-c: #FFFFFF;
+    --history-back-f-c: #8C8C8C;
 
     --history-back-hover-f-s: 16px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #ffffff;
+    --history-back-hover-f-c: #8C8C8C;
 
     --history-back-x-location: 64px;
 
@@ -240,8 +240,8 @@
     --history-table-header-f-c: #8C8C8C;
 
     --history-table-row-border-w: 1px;
-    --history-table-row-border-c: #666;
-    --history-table-row-bg: #242424D9;
+    --history-table-row-border-c: #171717;
+    --history-table-row-bg: #242424;
 
     --history-table-row-hover-bg: #242424D9;
     --history-table-row-active-bg: #242424D9;
