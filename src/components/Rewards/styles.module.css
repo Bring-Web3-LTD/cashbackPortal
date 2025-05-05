@@ -64,7 +64,7 @@
     font-weight: var(--rewards-amount-f-w);
     letter-spacing: -1px;
     margin-right: 8px;
-    line-height: 35px;
+    line-height: var(--rewards-amount-l-h, 35px);
     text-wrap: nowrap;
 }
 
@@ -168,6 +168,10 @@
     width: calc((570px) * 2);
 }
 
+.br {
+    display: none;
+}
+
 @media screen and (max-width:1190px) {
     .container {
         flex-direction: column;
@@ -179,11 +183,33 @@
 }
 
 @media screen and (max-width: 768px) {
+    .container {
+        gap: 10px;
+    }
+
+    .icon_container {
+        display: none;
+    }
+
     .subcontainer {
+        --padding: 16px;
+        padding-left: 20px;
         width: calc(352px - (var(--padding) * 2));
     }
 
     .full_width {
-        width: calc((352px));
+        width: calc(352px - (var(--padding) * 2));
+    }
+
+    .pending_rewards_text {
+        display: none;
+    }
+
+    .rewards_usd {
+        font-size: 14px;
+    }
+
+    .br {
+        display: block;
     }
 }

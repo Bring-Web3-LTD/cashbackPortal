@@ -14,12 +14,9 @@ export function WalletProvider({ children, initialWalletAddress }: { children: R
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data.action === 'WALLET_ADDRESS_UPDATE') {
-                console.log('BRING! Received message:', event);
                 const { token } = event.data
                 if (token) {
                     const res = await fetchToken({ token })
-                    console.log({ fetchToken: res });
-
                     setWalletAddress(res.info.walletAddress || null)
                 }
             }
