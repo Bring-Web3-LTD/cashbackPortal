@@ -28,6 +28,8 @@ interface LoaderData {
     cryptoSymbols: string[]
     isCountryAvailable: boolean
     iconsPath: string
+    flowId: string
+    userId: string
 }
 
 

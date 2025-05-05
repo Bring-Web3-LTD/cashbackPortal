@@ -37,10 +37,9 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
-            console.log('BRING! Received message:', event);
             // Handle the message data here
             if (event.data.action === 'SIGNATURE') {
-                const res = await claimSubmit({
+                await claimSubmit({
                     walletAddress,
                     targetWalletAddress: walletAddress,
                     tokenSymbol: currentCryptoSymbol,
@@ -50,8 +49,6 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                     message: event.data.message,
                     platform
                 })
-                console.log({ submit: res });
-
             }
         };
 

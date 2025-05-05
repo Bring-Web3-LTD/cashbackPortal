@@ -13,7 +13,13 @@ const Layout = () => {
     const { platform } = data;
     return (
         <WalletProvider initialWalletAddress={data.walletAddress}>
-            <GoogleAnalyticsProvider measurementId={GA_MEASUREMENT_ID} platform={platform} walletAddress={data.walletAddress}>
+            <GoogleAnalyticsProvider
+                measurementId={GA_MEASUREMENT_ID}
+                platform={platform}
+                location={location.pathname}
+                flowId={data.flowId}
+                userId={data.userId}
+            >
                 <motion.div
                     key={location.pathname}
                     initial={{ opacity: 0 }}
