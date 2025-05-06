@@ -22,7 +22,7 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 // }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
-    const { platform, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { t } = useTranslation()
 
@@ -47,7 +47,9 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                     signature: event.data.signature,
                     key: event.data.key,
                     message: event.data.message,
-                    platform
+                    platform,
+                    userId,
+                    flowId
                 })
             }
         };
@@ -59,6 +61,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
         return () => {
             window.removeEventListener('message', handleMessage);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentCryptoSymbol, platform, walletAddress]);
 
     const signMessage = async () => {
@@ -69,6 +72,8 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
             tokenAmount: 13,
+            userId,
+            flowId
         })
 
         const messageToSign = res?.messageToSign

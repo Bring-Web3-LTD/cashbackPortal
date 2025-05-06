@@ -73,7 +73,9 @@ const Rewards = () => {
                     tokenAmount: claimAmount,
                     signature: event.data.signature,
                     message: event.data.message,
-                    platform
+                    platform,
+                    userId,
+                    flowId
                 }
                 if (event.data.key) body.key = event.data.key
                 const res = await claimSubmit(body)
@@ -107,6 +109,7 @@ const Rewards = () => {
         return () => {
             window.removeEventListener('message', handleMessage);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendGaEvent, walletAddress]);
 
     // Get the message to sign from the API and post a message to parent page a request to sign the message
@@ -119,6 +122,8 @@ const Rewards = () => {
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
             tokenAmount: claimAmount,
+            userId,
+            flowId
         })
 
         sendGaEvent('claim_open', {

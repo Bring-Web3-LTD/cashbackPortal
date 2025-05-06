@@ -30,7 +30,16 @@ const Home = () => {
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch } = useQuery({
-        queryFn: () => getFilters({ country, platform, user_id: userId, flow_id: flowId }),
+        queryFn: async () => {
+            const options: Parameters<typeof getFilters>[0] = {
+                country,
+                platform,
+                user_id: userId,
+                flow_id: flowId
+            }
+            if (walletAddress) options.wallet_address = walletAddress
+            return await getFilters(options)
+        },
         queryKey: ["categories-search"],
     })
 

@@ -93,7 +93,7 @@ interface Link {
 
 interface BackendRequestBody {
     userId: string
-    walletAddress?: string
+    walletAddress?: string | null
     platform: string
     flowId: string
 }
