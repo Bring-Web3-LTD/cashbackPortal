@@ -36,7 +36,7 @@ const getFilters = async (options: Options): Promise<Response> => {
     }
 
     const params = new URLSearchParams(searchParams)
-    const endpoint = `${API_URL_PLATFORMS}categories?${params.toString()}`
+    const endpoint = `${API_URL_PLATFORMS}categories-search?${params.toString()}`
 
     const res = await fetch(endpoint, {
         method: "GET",
