@@ -38,7 +38,7 @@ const RetailerCard = ({
     generalTerms,
     search,
 }: Props) => {
-    const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
@@ -57,6 +57,8 @@ const RetailerCard = ({
             platform,
             itemId: id,
             walletAddress,
+            userId,
+            flowId,
             tokenSymbol: cryptoSymbols[0]
         }
 

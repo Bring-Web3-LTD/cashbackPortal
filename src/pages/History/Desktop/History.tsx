@@ -117,12 +117,22 @@ const HistoryDesktop = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
-    const { platform, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const navigate = useNavigate()
 
     const { data } = useQuery({
-        queryFn: () => fetchCache({ walletAddress, platform }),
+        queryFn: async () => {
+            const body: Parameters<typeof fetchCache>[0] = {
+                platform,
+                userId,
+                flowId
+            }
+
+            if (walletAddress) body.walletAddress = walletAddress
+
+            return await fetchCache(body)
+        },
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })
