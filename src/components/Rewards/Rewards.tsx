@@ -13,6 +13,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import LoginModal from '../Modals/LoginModal/LoginModal'
+
 
 const Rewards = () => {
     const navigate = useNavigate()
@@ -20,18 +23,31 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { walletAddress, platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
+    const [loginModalState, setLoginModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
+    const isAutoClaim = searchParams.get('autoclaim') === 'true'
     const limit = searchParams.get('limit') || '14'
 
     const { data: balance } = useQuery({
-        queryFn: () => fetchCache({ walletAddress, platform }),
+        queryFn: async () => {
+            const body: Parameters<typeof fetchCache>[0] = {
+                platform,
+                userId,
+                flowId
+            }
+
+            if (walletAddress) body.walletAddress = walletAddress
+
+            return await fetchCache(body)
+        },
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })
-    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || ''
+    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || cryptoSymbols[0]
     const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
     const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
     const claimAmount = ENV === 'prod' ? eligibleTokenNumber : ((limit ? +limit : null) || eligibleTokenNumber)
@@ -57,7 +73,9 @@ const Rewards = () => {
                     tokenAmount: claimAmount,
                     signature: event.data.signature,
                     message: event.data.message,
-                    platform
+                    platform,
+                    userId,
+                    flowId
                 }
                 if (event.data.key) body.key = event.data.key
                 const res = await claimSubmit(body)
@@ -91,6 +109,7 @@ const Rewards = () => {
         return () => {
             window.removeEventListener('message', handleMessage);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendGaEvent, walletAddress]);
 
     // Get the message to sign from the API and post a message to parent page a request to sign the message
@@ -103,6 +122,8 @@ const Rewards = () => {
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
             tokenAmount: claimAmount,
+            userId,
+            flowId
         })
 
         sendGaEvent('claim_open', {
@@ -146,66 +167,77 @@ const Rewards = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.subcontainer}>
-                <div className={styles.reward_details}>
-                    <div className={`${styles.icon_container} ${styles.claim_icon}`}>
-                        <img
-                            className={styles.icon}
-                            src={`${iconsPath}/gift.svg`}
-                            alt="gift icon"
-                        />
-                    </div>
-                    <div className={styles.reward_details_subcontainer}>
-                        <div className={`${styles.amount} ${styles.amount_claim}`}>
-                            {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
-                        </div>
-                        <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                            {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
-                                `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
-                                :
-                                `Current value: ${eligibleTotalEstimatedUsd}`
-                            }
-
-                        </div>
-                    </div>
-                </div>
-                <button
-                    className={`${styles.btn} ${styles.claim_btn}`}
-                    onClick={() => signMessage()}
-                    disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
-                >
-                    {
-                        loading ?
-                            <Oval
-                                visible={true}
-                                height="20"
-                                width="20"
-                                color="#fff"
-                                secondaryColor='grey'
-                                strokeWidth={6}
-                                ariaLabel="oval-loading"
+            {!isAutoClaim ?
+                <div className={styles.subcontainer}>
+                    <div className={styles.reward_details}>
+                        <div className={`${styles.icon_container} ${styles.claim_icon}`}>
+                            <img
+                                className={styles.icon}
+                                src={`${iconsPath}/gift.svg`}
+                                alt="gift icon"
                             />
-                            :
-                            t('claimCashback')
-                    }
-                </button>
-            </div>
-            <div className={styles.subcontainer}>
+                        </div>
+                        <div className={styles.reward_details_subcontainer}>
+                            <div className={`${styles.amount} ${styles.amount_claim}`}>
+                                {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                            </div>
+                            <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
+                                {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
+                                    `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
+                                    :
+                                    `Current value: ${eligibleTotalEstimatedUsd}`
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        className={`${styles.btn} ${styles.claim_btn}`}
+                        onClick={() => signMessage()}
+                        disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
+                    >
+                        {
+                            loading ?
+                                <Oval
+                                    visible={true}
+                                    height="20"
+                                    width="20"
+                                    color="#fff"
+                                    secondaryColor='grey'
+                                    strokeWidth={6}
+                                    ariaLabel="oval-loading"
+                                />
+                                :
+                                t('claimCashback')
+                        }
+                    </button>
+                </div>
+                : null}
+            <div className={`${styles.subcontainer} ${isAutoClaim ? styles.full_width : ''}`}>
                 <div className={styles.reward_details}>
                     <div className={`${styles.icon_container} ${styles.pending_icon}`}>
                         <img className={styles.icon} src={`${iconsPath}/coins.svg`} alt="coins icon" />
                     </div>
                     <div className={styles.reward_details_subcontainer}>
                         <div className={`${styles.amount} ${styles.amount_pending}`}>
-                            {balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
+                            <span>
+                                {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}`}
+                            </span>
+                            {
+                                t('pendingRewards') !== 'pendingRewards' ?
+                                    <span className={styles.pending_rewards_text}> {t('pendingRewards')}</span>
+                                    : null
+                            }
                         </div>
-
-                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: {pendingTotalEstimatedUsd}</div>
+                        {/* <div className={`${styles.amount} ${styles.amount_pending}`}>
+                            {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}${t('pendingRewards') !== 'pendingRewards' ? ` ${t('pendingRewards')}` : ''}`}
+                        </div> */}
+                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value:<br className={styles.br} />{pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button
                     className={`${styles.btn} ${styles.pending_btn}`}
-                    onClick={() => navigate('/history')}
+                    onClick={() => walletAddress ? navigate('/history') : setLoginModalState('open')}
                 >
                     {t('viewRewards')}
                 </button>
@@ -217,6 +249,10 @@ const Rewards = () => {
                     setModalState('close')
                     setClaimStatus('loading')
                 }}
+            />
+            <LoginModal
+                closeFn={() => setLoginModalState('close')}
+                open={loginModalState !== 'close'}
             />
         </div>
     )

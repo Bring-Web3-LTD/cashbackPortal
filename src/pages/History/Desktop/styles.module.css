@@ -41,8 +41,8 @@
     border-style: solid;
     border-color: var(--history-table-header-border-c);
     border-radius: var(--history-table-header-radius);
-    height: 45px;
-    margin-bottom: 9px;
+    height: 54px;
+    /* margin-bottom: 9px; */
     padding-left: 46px;
     user-select: none;
 }
@@ -60,6 +60,7 @@
     border-bottom-color: var(--history-table-row-border-c);
     transition: .2s;
     min-height: 62px;
+    background: var(--history-table-row-bg, transparent);
 }
 
 .collapsible_open {

@@ -7,6 +7,7 @@ import fetchCache from '../../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
 import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
+import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
 
 interface HistoryMobile {
     status: string
@@ -112,11 +113,22 @@ const HistoryMobile = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
-    const { walletAddress, platform, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const navigate = useNavigate()
 
     const { data } = useQuery({
-        queryFn: () => fetchCache({ walletAddress, platform }),
+        queryFn: async () => {
+            const body: Parameters<typeof fetchCache>[0] = {
+                platform,
+                userId,
+                flowId
+            }
+
+            if (walletAddress) body.walletAddress = walletAddress
+
+            return await fetchCache(body)
+        },
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })

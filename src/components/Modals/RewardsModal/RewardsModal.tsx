@@ -10,6 +10,7 @@ import claimInitiate from '../../../api/claim/initiate';
 import message from '../../../utils/message';
 import { useTranslation } from 'react-i18next';
 import claimSubmit from '../../../api/claim/submit';
+import { useWalletAddress } from '../../../utils/hooks/useWalletAddress';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     eligibleTokenAmount: string
@@ -21,7 +22,8 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 // }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
-    const { platform, walletAddress, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { t } = useTranslation()
 
     // const [step, setStep] = useState(STEPS.SIGN_MESSAGE)
@@ -35,10 +37,9 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
-            console.log('BRING! Received message:', event);
             // Handle the message data here
             if (event.data.action === 'SIGNATURE') {
-                const res = await claimSubmit({
+                await claimSubmit({
                     walletAddress,
                     targetWalletAddress: walletAddress,
                     tokenSymbol: currentCryptoSymbol,
@@ -46,10 +47,10 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                     signature: event.data.signature,
                     key: event.data.key,
                     message: event.data.message,
-                    platform
+                    platform,
+                    userId,
+                    flowId
                 })
-                console.log({ submit: res });
-
             }
         };
 
@@ -60,6 +61,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
         return () => {
             window.removeEventListener('message', handleMessage);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentCryptoSymbol, platform, walletAddress]);
 
     const signMessage = async () => {
@@ -70,6 +72,8 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
             targetWalletAddress: walletAddress,
             tokenSymbol: currentCryptoSymbol,
             tokenAmount: 13,
+            userId,
+            flowId
         })
 
         const messageToSign = res?.messageToSign

@@ -5,6 +5,8 @@ import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import LoginModal from '../Modals/LoginModal/LoginModal'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -36,11 +38,13 @@ const RetailerCard = ({
     generalTerms,
     search,
 }: Props) => {
-    const { walletAddress, platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
     const [modalState, setModalState] = useState('close')
+    const [loginModalState, setLoginModalState] = useState('close')
     const [terms, setTerms] = useState('')
 
     const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
@@ -53,6 +57,8 @@ const RetailerCard = ({
             platform,
             itemId: id,
             walletAddress,
+            userId,
+            flowId,
             tokenSymbol: cryptoSymbols[0]
         }
 
@@ -64,6 +70,10 @@ const RetailerCard = ({
     }
 
     const handleClick = () => {
+        if (!walletAddress) {
+            setLoginModalState('open')
+            return
+        }
         activateDeal()
         setModalState('loading')
         sendGaEvent('retailer_open', {
@@ -126,6 +136,10 @@ const RetailerCard = ({
                 terms={terms}
                 generalTerms={generalTerms}
                 redirectLink={redirectLink}
+            />
+            <LoginModal
+                open={loginModalState !== 'close'}
+                closeFn={() => setLoginModalState('close')}
             />
         </>
     )

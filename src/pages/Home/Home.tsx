@@ -15,11 +15,13 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 
 const Home = () => {
-    const { platform, isCountryAvailable, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { sendGaEvent } = useGoogleAnalytics()
     const [searchParams] = useSearchParams();
+    const { walletAddress } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
@@ -28,7 +30,16 @@ const Home = () => {
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch } = useQuery({
-        queryFn: () => getFilters({ country, platform }),
+        queryFn: async () => {
+            const options: Parameters<typeof getFilters>[0] = {
+                country,
+                platform,
+                user_id: userId,
+                flow_id: flowId
+            }
+            if (walletAddress) options.wallet_address = walletAddress
+            return await getFilters(options)
+        },
         queryKey: ["categories-search"],
     })
 
@@ -45,9 +56,12 @@ const Home = () => {
                 type: "all",
                 pageSize: 40,
                 page: typeof pageParam === "number" ? pageParam : undefined,
-                platform
+                platform,
+                flowId,
+                userId,
             }
 
+            if (walletAddress) options.walletAddress = walletAddress
             if (country) options.country = country
             if (category?.id) options.category = category.id
             if (search?.value) options.search = search.value

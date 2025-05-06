@@ -28,6 +28,8 @@ interface LoaderData {
     cryptoSymbols: string[]
     isCountryAvailable: boolean
     iconsPath: string
+    flowId: string
+    userId: string
 }
 
 
@@ -87,4 +89,18 @@ interface GoogleAnalyticsContextType {
 interface Link {
     href: string,
     linkText: string
+}
+
+interface BackendRequestBody {
+    userId: string
+    walletAddress?: string | null
+    platform: string
+    flowId: string
+}
+
+interface BackendRequestParams {
+    user_id: string
+    wallet_address?: string
+    platform: string
+    flow_id: string
 }

@@ -1,7 +1,6 @@
 import { API_URL_PLATFORMS, API_KEY } from "../config"
 
-interface Body {
-    walletAddress: string | undefined
+interface Body extends BackendRequestBody {
     type?: "default" | "aggregated"
     platform: string
 }
@@ -20,6 +19,7 @@ interface Response {
 
 const fetchCache = async (body: Body): Promise<Response> => {
     body.type = "aggregated"
+
     const res = await fetch(`${API_URL_PLATFORMS}cache`, {
         method: "POST",
         body: JSON.stringify(body),

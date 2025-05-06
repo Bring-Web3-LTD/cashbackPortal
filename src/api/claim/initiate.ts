@@ -1,8 +1,8 @@
 import { API_URL_PLATFORMS, API_KEY } from "../../config"
 
-interface Body {
-    walletAddress: string
-    targetWalletAddress: string
+interface Body extends BackendRequestBody {
+    walletAddress: string | null
+    targetWalletAddress: string | null
     tokenSymbol: string
     tokenAmount: number
     platform: string
@@ -14,6 +14,10 @@ interface Response {
 }
 
 const claimInitiate = async (body: Body): Promise<Response> => {
+    if (!body.walletAddress || !body.targetWalletAddress) {
+        return { messageToSign: "", status: 400 }
+    }
+
     const res = await fetch(`${API_URL_PLATFORMS}claim-init`, {
         method: "POST",
         body: JSON.stringify(body),

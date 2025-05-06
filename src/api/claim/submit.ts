@@ -1,8 +1,8 @@
 import { API_URL_PLATFORMS, API_KEY } from "../../config"
 
-interface Body {
-    walletAddress: string
-    targetWalletAddress: string
+interface Body extends BackendRequestBody {
+    walletAddress: string | null
+    targetWalletAddress: string | null
     tokenSymbol: string
     tokenAmount: number
     signature: string
@@ -12,6 +12,8 @@ interface Body {
 }
 
 const claimSubmit = async (body: Body) => {
+    if (!body.walletAddress || !body.targetWalletAddress) return
+
     const res = await fetch(`${API_URL_PLATFORMS}claim-submit`, {
         method: "POST",
         body: JSON.stringify(body),

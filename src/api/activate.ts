@@ -1,6 +1,6 @@
 import { API_KEY, API_URL_PLATFORMS } from "../config"
 
-interface Body {
+interface Body extends BackendRequestBody {
     itemId: string
     walletAddress: string
     tokenSymbol: string
