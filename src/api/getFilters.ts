@@ -1,6 +1,6 @@
 import { API_URL_PLATFORMS, API_KEY } from "../config"
 
-interface Options {
+interface Options extends BackendRequestParams {
     country?: string
     platform: string
 }

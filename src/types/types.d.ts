@@ -90,3 +90,17 @@ interface Link {
     href: string,
     linkText: string
 }
+
+interface BackendRequestBody {
+    userId: string
+    walletAddress?: string
+    platform: string
+    flowId: string
+}
+
+interface BackendRequestParams {
+    user_id: string
+    wallet_address?: string
+    platform: string
+    flow_id: string
+}

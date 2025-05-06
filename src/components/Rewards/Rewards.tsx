@@ -23,7 +23,7 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { platform, iconsPath, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
@@ -33,7 +33,17 @@ const Rewards = () => {
     const limit = searchParams.get('limit') || '14'
 
     const { data: balance } = useQuery({
-        queryFn: () => fetchCache({ walletAddress, platform } as Parameters<typeof fetchCache>[0]),
+        queryFn: async () => {
+            const body: Parameters<typeof fetchCache>[0] = {
+                platform,
+                userId,
+                flowId
+            }
+
+            if (walletAddress) body.walletAddress = walletAddress
+
+            return await fetchCache(body)
+        },
         queryKey: ["balance", walletAddress],
         enabled: !!walletAddress,
     })
