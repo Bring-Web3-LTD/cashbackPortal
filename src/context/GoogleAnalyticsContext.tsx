@@ -54,6 +54,13 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
     const { walletAddress } = useWalletAddress()
 
     const sendBackendEvent = useCallback(async (name: EventName, event: BackendEvent) => {
+
+        if (event.details && typeof event.details === 'object' && !Array.isArray(event.details)) {
+            const tmpEvent = structuredClone({ ...event, ...event.details })
+            delete tmpEvent.details
+            event = tmpEvent
+        }
+
         const backendEvent: Parameters<typeof analytics>[0] = {
             ...event,
             type: name,
@@ -94,9 +101,9 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
     }, []);
 
     useEffect(() => {
-        if (window.origin.includes('localhost')) {
-            return
-        }
+        // if (window.origin.includes('localhost')) {
+        //     return
+        // }
 
         if (effectRan.current === location) return
 
