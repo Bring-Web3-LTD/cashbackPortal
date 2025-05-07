@@ -97,7 +97,7 @@ const Home = () => {
         sendGaEvent('category_select', {
             category: 'user_action',
             action: 'click',
-            details: category?.name
+            details: cat.name
         })
     }
 
