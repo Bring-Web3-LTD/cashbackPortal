@@ -18,13 +18,14 @@ import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 
 const Home = () => {
-    const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, iconsPath, userId, flowId, isTester } = useRouteLoaderData('root') as LoaderData
     const { sendGaEvent } = useGoogleAnalytics()
     const [searchParams] = useSearchParams();
     const { walletAddress } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
+    const [isDemo, setIsDemo] = useState(false)
     const paginationRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
@@ -133,6 +134,18 @@ const Home = () => {
 
     return (
         <div className={styles.container}>
+            {isTester ?
+                <label htmlFor="is-demo" className={styles.test_label}>
+                    <span>Demo store</span>
+                    <input
+                        type="checkbox"
+                        id="is-demo"
+                        className={styles.test_checkbox}
+                        checked={isDemo}
+                        onChange={e => setIsDemo(e.target.checked)}
+                    />
+                </label>
+                : null}
             <Header />
             <main ref={scrollRef} className={styles.main}>
                 <Rewards />
@@ -176,6 +189,7 @@ const Home = () => {
                     retailers={retailersList}
                     metadata={retailersMetadata}
                     search={search}
+                    isDemo={isDemo}
                 />
                 <div
                     className={styles.load}

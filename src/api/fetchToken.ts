@@ -12,6 +12,7 @@ interface Response {
         cryptoSymbols: string[]
         walletAddress: string
         userId: string | undefined
+        isTester?: boolean
     }
 }
 

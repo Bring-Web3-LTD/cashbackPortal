@@ -23,6 +23,7 @@ interface Props extends Retailer {
     generalTerms: string
     termsUrl: string
     search: ReactSelectOptionType | null
+    isDemo: boolean
 }
 
 const RetailerCard = ({
@@ -37,8 +38,9 @@ const RetailerCard = ({
     termsUrl,
     generalTerms,
     search,
+    isDemo
 }: Props) => {
-    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, isTester } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
@@ -63,6 +65,8 @@ const RetailerCard = ({
         }
 
         if (search?.value) body['search'] = search.value
+
+        if (isTester && isDemo) body.isDemo = true
 
         const res = await activate(body)
         setRedirectLink(res.url)
