@@ -6,6 +6,7 @@ interface Body extends BackendRequestBody {
     tokenSymbol: string
     search?: string
     platform: string
+    isDemo?: boolean
 }
 
 interface Response {

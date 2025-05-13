@@ -30,6 +30,7 @@ interface LoaderData {
     iconsPath: string
     flowId: string
     userId: string
+    isTester: boolean
 }
 
 

@@ -15,9 +15,10 @@ interface Props {
     metadata: Metadata | undefined
     loading: boolean
     search: ReactSelectOptionType | null
+    isDemo: boolean
 }
 
-const CardsList = ({ retailers, metadata, loading, search }: Props) => {
+const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
     const [generalTerms, setGeneralTerms] = useState('')
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const CardsList = ({ retailers, metadata, loading, search }: Props) => {
                     key={retailer.id}
                     {...retailer}
                     {...metadata}
+                    isDemo={isDemo}
                     search={search}
                     generalTerms={generalTerms}
                     termsUrl={`${metadata.retailerTermsBasePath}${retailer.termsPath}`}

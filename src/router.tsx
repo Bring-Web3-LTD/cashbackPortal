@@ -6,12 +6,12 @@ import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyA
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE } from './config';
+import { DEV_MODE, ENV } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 
 const dev = {
-    walletAddress: '0x5ffa03d2caf23533c1f15e355196a20a11fd96441d34f351d2471c386e89859',
+    walletAddress: '0x05FFa03d2CAF23533c1F15E355196A20a11Fd96441d34F351d2471C386E89859',
     platform: 'argent',
     cryptoSymbols: ['STRK', 'ETH', 'USDT', 'USDC', 'BTC'],
     isCountryAvailable: true,
@@ -38,6 +38,7 @@ const rootLoader = async () => {
             ...dev,
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
             userId: getUserId(dev.platform),
+            isTester: false,
             flowId
         }
     }
@@ -48,6 +49,12 @@ const rootLoader = async () => {
 
     loadStylesheet(theme, platform)
     i18n.setDefaultNamespace(platform)
+
+    if (ENV === 'prod') {
+        delete res.info.isTester
+    } else {
+        res.info.isTester = !!res.info.isTester
+    }
 
     return {
         ...res.info,
