@@ -40,8 +40,8 @@ const RetailerCard = ({
     search,
     isDemo
 }: Props) => {
-    const { platform, cryptoSymbols, userId, flowId, isTester } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, isTester } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')

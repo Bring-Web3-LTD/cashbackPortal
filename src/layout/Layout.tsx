@@ -12,7 +12,7 @@ const Layout = () => {
 
     const { platform } = data;
     return (
-        <WalletProvider initialWalletAddress={data.walletAddress}>
+        <WalletProvider initialWalletAddress={data.walletAddress} initIsTester={data.isTester}>
             <GoogleAnalyticsProvider
                 measurementId={GA_MEASUREMENT_ID}
                 platform={platform}
