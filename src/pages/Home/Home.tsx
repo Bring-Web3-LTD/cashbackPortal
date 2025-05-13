@@ -18,10 +18,10 @@ import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 
 const Home = () => {
-    const { platform, isCountryAvailable, iconsPath, userId, flowId, isTester } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { sendGaEvent } = useGoogleAnalytics()
     const [searchParams] = useSearchParams();
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, isTester } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
