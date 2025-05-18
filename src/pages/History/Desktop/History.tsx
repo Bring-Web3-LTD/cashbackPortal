@@ -173,6 +173,7 @@ const HistoryDesktop = () => {
             description: deal.history?.map(history => createDescription(history)) || [['']]
         }))
     }
+    const [imgExists, setImgExists] = useState(true)
     const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
 
     return (
@@ -227,7 +228,14 @@ const HistoryDesktop = () => {
             </div>
                 :
                 <>
-                    <img src={`${iconsPath}/no-history.svg`} alt="history" />
+                    {imgExists ?
+                        <img
+                            src={`${iconsPath}/no-history.svg`}
+                            alt="history"
+                            onError={() => setImgExists(false)}
+                        />
+                        : null
+                    }
                     <div className={styles.empty_history}>{t('emptyHistory')}</div>
                 </>
             }

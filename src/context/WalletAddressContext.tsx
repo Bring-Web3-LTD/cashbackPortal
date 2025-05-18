@@ -1,15 +1,18 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import fetchToken from '../api/fetchToken';
+import { ENV } from '../config';
 
 interface WalletContextType {
+    isTester: boolean
     walletAddress: string | null;
     setWalletAddress: (address: string) => void;
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
-export function WalletProvider({ children, initialWalletAddress }: { children: ReactNode, initialWalletAddress: string }) {
+export function WalletProvider({ children, initialWalletAddress, initIsTester }: { children: ReactNode, initialWalletAddress: string, initIsTester: boolean }) {
     const [walletAddress, setWalletAddress] = useState<string | null>(initialWalletAddress);
+    const [isTester, setIsTester] = useState(initIsTester)
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
@@ -18,6 +21,7 @@ export function WalletProvider({ children, initialWalletAddress }: { children: R
                 if (token) {
                     const res = await fetchToken({ token })
                     setWalletAddress(res.info.walletAddress || null)
+                    setIsTester(!!res.info.isTester && ENV !== 'prod')
                 }
             }
         };
@@ -30,7 +34,7 @@ export function WalletProvider({ children, initialWalletAddress }: { children: R
     }, [])
 
     return (
-        <WalletContext.Provider value={{ walletAddress, setWalletAddress }}>
+        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress }}>
             {children}
         </WalletContext.Provider>
     );
