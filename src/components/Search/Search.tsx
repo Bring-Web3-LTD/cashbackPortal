@@ -1,8 +1,7 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, MouseEvent, useId, useState } from "react"
+import { Fragment, MouseEvent, useEffect, useId, useState } from "react"
 import { useRouteLoaderData } from 'react-router-dom'
-// import { useAccount } from "wagmi"
 
 // components
 import Select, {
@@ -16,9 +15,7 @@ import Select, {
 } from "react-select"
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
-
-// functions
-// import { sendGaEventBring } from "@/utils/bringWeb3/services/googleAnalytics"
+import { useDebounce } from 'use-debounce'
 
 interface Props {
     options: ReactSelectOptionType[]
@@ -152,13 +149,25 @@ const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
 
 const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const id = useId()
-    const [filteredOptions, setFilteredOptions] =
-        useState<ReactSelectOptionType[]>(options)
+    const [input, setInput] = useState('')
+    const [debouncedInput] = useDebounce(input, 500)
+    const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
     const [msg, setMsg] = useState("")
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
+
+    useEffect(() => {
+        if (!debouncedInput.length) return
+        sendGaEvent("search_input", {
+            category: "user_action",
+            action: "input",
+            details: debouncedInput,
+            hasResults: !!filteredOptions.length,
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedInput])
 
     const handleChange = (
         item:
@@ -180,6 +189,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     }
 
     const handleInputChange = (inputValue: string) => {
+        setInput(inputValue)
         // eslint-disable-next-line no-unsafe-optional-chaining
         if (!inputValue || (inputValue?.trim()).length < 2) {
             // eslint-disable-next-line no-unsafe-optional-chaining
@@ -197,13 +207,13 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             if (msg.length) setMsg("")
             if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
 
-            if (input.length === 3) {
-                sendGaEvent("search_input", {
-                    category: "user_action",
-                    action: "input",
-                    details: input,
-                })
-            }
+            // if (input.length === 3) {
+            //     sendGaEvent("search_input", {
+            //         category: "user_action",
+            //         action: "input",
+            //         details: input,
+            //     })
+            // }
             let filtered: ReactSelectOptionType[] = []
             const notFirstWordMatches: ReactSelectOptionType[] = []
             if (options?.length) {
