@@ -101,9 +101,9 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
     }, []);
 
     useEffect(() => {
-        // if (window.origin.includes('localhost')) {
-        //     return
-        // }
+        if (window.origin.includes('localhost')) {
+            return
+        }
 
         if (effectRan.current === location) return
 
