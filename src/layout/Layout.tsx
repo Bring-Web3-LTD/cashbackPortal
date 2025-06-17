@@ -2,15 +2,24 @@ import { motion } from 'framer-motion'
 import { useLocation, useRouteLoaderData } from 'react-router-dom';
 import { GoogleAnalyticsProvider } from '../context/GoogleAnalyticsContext';
 import { Outlet } from 'react-router-dom';
-import { GA_MEASUREMENT_ID } from '../config';
+import { GA_MEASUREMENT_ID, MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
+import Maintenance from '../pages/Maintenance/Maintenance';
 
 const Layout = () => {
     const location = useLocation();
     const data = useRouteLoaderData('root') as LoaderData;
 
     const { platform } = data;
+
+    if (MAINTENANCE_MODE) {
+        return (
+            <Maintenance />
+        );
+
+    }
+
     return (
         <WalletProvider initialWalletAddress={data.walletAddress} initIsTester={data.isTester}>
             <GoogleAnalyticsProvider
