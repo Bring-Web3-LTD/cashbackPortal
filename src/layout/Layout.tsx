@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { GA_MEASUREMENT_ID, MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
-import Maintenance from '../pages/Maintenance/maintenance';
+import Maintenance from '../pages/Maintenance/Maintenance';
 
 const Layout = () => {
     const location = useLocation();
