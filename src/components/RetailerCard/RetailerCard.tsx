@@ -45,6 +45,7 @@ const RetailerCard = ({
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
+    const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
     const [terms, setTerms] = useState('')
@@ -69,6 +70,11 @@ const RetailerCard = ({
         if (isTester && isDemo) body.isDemo = true
 
         const res = await activate(body)
+        setPopupData({
+            iframeUrl: res.iframeUrl,
+            token: res.token,
+            domain: res.domain
+        })
         setRedirectLink(res.url)
         setModalState('open')
     }
@@ -140,6 +146,7 @@ const RetailerCard = ({
                 terms={terms}
                 generalTerms={generalTerms}
                 redirectLink={redirectLink}
+                {...popupData}
             />
             <LoginModal
                 open={loginModalState !== 'close'}

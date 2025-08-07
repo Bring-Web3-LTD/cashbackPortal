@@ -10,12 +10,12 @@ import { DEV_MODE, ENV } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 
-const dev = {
-    walletAddress: '0x05FFa03d2CAF23533c1F15E355196A20a11Fd96441d34F351d2471C386E89859',
-    platform: 'argent',
-    cryptoSymbols: ['STRK', 'ETH', 'USDT', 'USDC', 'BTC'],
-    isCountryAvailable: true,
-}
+// const dev = {
+//     walletAddress: 'addr1qydfh2z0m4j2297rzwsu7dfu4ld3a6nhgytrn2wzxgvdlwd6y4l5psyq79gflnhwlttgw8gk7aj5j6lj95vg7my67vpsdcvu4l',
+//     platform: 'yoroi',
+//     cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
+//     isCountryAvailable: true,
+// }
 
 const loadStylesheet = (theme: string, platform: string) => {
     // Dynamically load the main CSS file
@@ -29,9 +29,17 @@ const loadStylesheet = (theme: string, platform: string) => {
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
+    const extensionId = params.get('extensionId')
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
     if (DEV_MODE) {
+        const dev = {
+            walletAddress: params.get('walletAddress') || null,
+            platform: params.get('platform'),
+            cryptoSymbols: params.get('cryptoSymbols')?.split(','),
+            isCountryAvailable: true,
+        }
+        if (!dev.platform) throw Error('Missing platform')
         loadStylesheet(theme, dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         return {
@@ -39,7 +47,8 @@ const rootLoader = async () => {
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
             userId: getUserId(dev.platform),
             isTester: false,
-            flowId
+            flowId,
+            extensionId
         }
     }
     if (!token) throw Error('There was an error while loading the page')
@@ -60,6 +69,7 @@ const rootLoader = async () => {
         ...res.info,
         iconsPath: `/${platform}/icons/${theme}`,
         userId: getUserId(res.info.platform),
+        extensionId,
         flowId
     }
 }

@@ -31,6 +31,7 @@ interface LoaderData {
     flowId: string
     userId: string
     isTester: boolean
+    extensionId: string | null
 }
 
 

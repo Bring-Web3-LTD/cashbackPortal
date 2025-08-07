@@ -5,6 +5,7 @@ import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
 import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
+import { useRouteLoaderData } from 'react-router-dom'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -14,6 +15,9 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     terms: string
     generalTerms: string
     redirectLink: string
+    iframeUrl?: string
+    token?: string
+    domain?: string
 }
 
 const RetailerCardModal = ({
@@ -25,16 +29,38 @@ const RetailerCardModal = ({
     cashback,
     terms,
     generalTerms,
-    redirectLink
+    redirectLink,
+    iframeUrl,
+    token,
+    domain
 }: Props) => {
 
     const { sendGaEvent } = useGoogleAnalytics()
+    const { extensionId } = useRouteLoaderData('root') as LoaderData
     const [fallbackImg, setFallbackImg] = useState('')
     const { t } = useTranslation()
 
     const onClose = () => {
         message({ action: 'POPUP_CLOSED' })
         closeFn()
+    }
+
+    const activate = () => {
+        window.postMessage({
+            from: 'bringweb3',
+            action: 'PORTAL_ACTIVATE',
+            extensionId,
+            time: 30 * 60 * 1000, // 30 minutes
+            domain,
+            iframeUrl,
+            token
+        })
+        onClose()
+        sendGaEvent('retailer_shop', {
+            category: 'user_action',
+            action: 'click',
+            details: name,
+        })
     }
 
     return (
@@ -79,14 +105,7 @@ const RetailerCardModal = ({
                 {redirectLink && terms ?
                     <a
                         className={styles.start_btn}
-                        onClick={() => {
-                            onClose()
-                            sendGaEvent('retailer_shop', {
-                                category: 'user_action',
-                                action: 'click',
-                                details: name,
-                            })
-                        }}
+                        onClick={activate}
                         href={redirectLink}
                         target='_blank'
                     >
