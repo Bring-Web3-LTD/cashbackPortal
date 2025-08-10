@@ -7,10 +7,13 @@ import message from '../../utils/message'
 interface Props {
     children: ReactNode
     open: boolean
+    style?: { [key: string]: string }
+    xMarkPath?: string
+    showCloseBtn?: boolean
     closeFn: () => void
 }
 
-const Modal = ({ children, open, closeFn }: Props) => {
+const Modal = ({ children, style, open, closeFn, xMarkPath = 'x-mark.svg', showCloseBtn = true }: Props) => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     const closePopup = useCallback(() => {
@@ -56,21 +59,26 @@ const Modal = ({ children, open, closeFn }: Props) => {
 
     return (
         <div
+            style={style}
             className={styles.overlay}
             onClick={handleOverlayClick}
         >
             <div className={styles.modal}>
-                <button
-                    className={styles.close_btn}
-                    onClick={closePopup}
-                >
-                    <img
-                        width={20}
-                        height={20}
-                        src={`${iconsPath}/x-mark.svg`}
-                        alt="x-mark"
-                    />
-                </button>
+                {showCloseBtn ?
+                    <button
+                        className={styles.close_btn}
+                        onClick={closePopup}
+                    >
+                        <img
+                            width={20}
+                            height={20}
+                            src={`${iconsPath}/${xMarkPath}`}
+                            alt="x-mark"
+                            onError={(e) => {
+                                e.currentTarget.src = `${iconsPath}/x-mark.svg`
+                            }}
+                        />
+                    </button> : null}
                 {children}
             </div>
         </div>

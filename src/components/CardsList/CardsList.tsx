@@ -2,10 +2,12 @@ import styles from './styles.module.css'
 import RetailerCard from '../RetailerCard/RetailerCard'
 import RetailerCardSkeleton from '../RetailerCard/RetailerCardSkeleton'
 import { useEffect, useState } from 'react'
+import fetchTerms from '../../utils/fetchTerms'
 
 interface Metadata {
     iconQueryParam: string
     generalTermsUrl: string
+    topGeneralTermsUrl: string
     retailerIconBasePath: string
     retailerTermsBasePath: string
 }
@@ -20,14 +22,31 @@ interface Props {
 
 const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
     const [generalTerms, setGeneralTerms] = useState('')
+    const [topGeneralTerms, setTopGeneralTerms] = useState('')
 
     useEffect(() => {
-        if (!metadata?.generalTermsUrl || generalTerms.length) return
+        if (!metadata?.generalTermsUrl || !metadata?.topGeneralTermsUrl) return
+        if (generalTerms && topGeneralTerms) return
 
-        fetch(metadata.generalTermsUrl)
-            .then(res => res.text())
-            .then(data => setGeneralTerms(data))
-    }, [generalTerms.length, metadata?.generalTermsUrl])
+        const controller = new AbortController()
+
+        Promise.all([
+            fetchTerms(metadata.topGeneralTermsUrl),
+            fetchTerms(metadata.generalTermsUrl)
+        ])
+            .then(([topTerms, terms]) => {
+                if (!controller.signal.aborted) {
+                    setTopGeneralTerms(topTerms)
+                    setGeneralTerms(terms)
+                }
+            })
+            .catch((error) => {
+                if (!controller.signal.aborted) {
+                    console.error('Failed to fetch terms:', error)
+                }
+            })
+        return () => controller.abort()
+    }, [metadata?.generalTermsUrl, metadata?.topGeneralTermsUrl, generalTerms, topGeneralTerms])
 
     if (loading || !metadata) {
         return (
@@ -48,7 +67,9 @@ const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
                     {...metadata}
                     isDemo={isDemo}
                     search={search}
+                    topGeneralTerms={topGeneralTerms}
                     generalTerms={generalTerms}
+                    campaignUrl={retailer.campaignPath ? `${metadata.retailerTermsBasePath}${retailer.campaignPath}` : undefined}
                     termsUrl={`${metadata.retailerTermsBasePath}${retailer.termsPath}`}
                     iconPath={`${metadata.retailerIconBasePath}${retailer.iconPath}${metadata.iconQueryParam}`}
                 />

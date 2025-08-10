@@ -87,6 +87,7 @@
     --retailer-card-border-w: 1px;
     --retailer-card-border-color: #DCE0E9;
     --retailer-card--hover-border-color: #242838;
+    --retailer-custom-modal-bg: #15171F;
 
     --retailer-card-img-border-c: #DCE0E9;
     --retailer-card-img-border-w: 1px;
@@ -185,19 +186,19 @@
 
     --modal-deal-name-f-s: 16px;
     --modal-deal-name-f-w: 500;
-    --modal-deal-name-f-c: #242838;
-    --modal-deal-markdown-bg: #fff;
+    --modal-deal-name-f-c: #E1E6F5;
+    --modal-deal-markdown-bg: #15171F;
     --modal-deal-markdown-border-w: 1px;
-    --modal-deal-markdown-border-c: #DCE0E9;
+    --modal-deal-markdown-border-c: #262A38;
     --modal-deal-markdown-radius: 12px;
     --modal-deal-markdown-f-s: 14px;
     --modal-deal-markdown-f-w: 500;
-    --modal-deal-markdown-f-c: #242838;
+    --modal-deal-markdown-f-c: #E1E6F5;
     --modal-deal-markdown-bold-f-w: 500;
-    --modal-deal-markdown-bold-f-c: #242838;
+    --modal-deal-markdown-bold-f-c: #E1E6F5;
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
-    --modal-deal-consent-f-c: #242838;
+    --modal-deal-consent-f-c: #E1E6F5;
 
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 500;

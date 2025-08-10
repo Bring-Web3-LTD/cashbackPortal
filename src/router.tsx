@@ -10,13 +10,6 @@ import { DEV_MODE, ENV } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 
-// const dev = {
-//     walletAddress: 'addr1qydfh2z0m4j2297rzwsu7dfu4ld3a6nhgytrn2wzxgvdlwd6y4l5psyq79gflnhwlttgw8gk7aj5j6lj95vg7my67vpsdcvu4l',
-//     platform: 'yoroi',
-//     cryptoSymbols: ['ADA', 'ETH', 'USDT', 'USDC', 'BTC'],
-//     isCountryAvailable: true,
-// }
-
 const loadStylesheet = (theme: string, platform: string) => {
     // Dynamically load the main CSS file
     const cssLink = document.createElement('link');
@@ -30,6 +23,8 @@ const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
     const extensionId = params.get('extensionId')
+    const showTerms = !(params.get('terms')?.toLowerCase() === 'false')
+    console.log({ showTerms })
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
     if (DEV_MODE) {
@@ -48,6 +43,7 @@ const rootLoader = async () => {
             userId: getUserId(dev.platform),
             isTester: false,
             flowId,
+            showTerms,
             extensionId
         }
     }
@@ -70,6 +66,7 @@ const rootLoader = async () => {
         iconsPath: `/${platform}/icons/${theme}`,
         userId: getUserId(res.info.platform),
         extensionId,
+        showTerms,
         flowId
     }
 }

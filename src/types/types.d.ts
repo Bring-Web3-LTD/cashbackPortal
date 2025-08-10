@@ -14,6 +14,7 @@ interface Retailer {
     isFeatured: number
     exclusionCriteria: null
     termsPath: string
+    campaignPath?: string
     cashbackCurrency: string
 }
 
@@ -32,6 +33,7 @@ interface LoaderData {
     userId: string
     isTester: boolean
     extensionId: string | null
+    showTerms: boolean
 }
 
 
