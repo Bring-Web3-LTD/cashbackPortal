@@ -11,6 +11,7 @@ interface Body extends BackendRequestBody {
 }
 
 interface Response {
+    topGeneralTermsUrl: string
     generalTermsUrl: string
     items: Retailer[]
     nextPageNumber: number | null
