@@ -17,6 +17,10 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data.action === 'WALLET_ADDRESS_UPDATE') {
+                if (ENV === 'development') {
+                    setWalletAddress(event.data.walletAddress || null)
+                    return
+                }
                 const { token } = event.data
                 if (token) {
                     const res = await fetchToken({ token })

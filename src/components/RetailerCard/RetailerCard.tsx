@@ -7,6 +7,7 @@ import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
+import fetchTerms from '../../utils/fetchTerms'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -20,6 +21,8 @@ const isBigCashback = (symbol: string, amount: number) => {
 }
 
 interface Props extends Retailer {
+    topGeneralTerms: string
+    campaignUrl?: string
     generalTerms: string
     termsUrl: string
     search: ReactSelectOptionType | null
@@ -36,6 +39,8 @@ const RetailerCard = ({
     cashbackSymbol,
     cashbackCurrency,
     termsUrl,
+    campaignUrl,
+    topGeneralTerms,
     generalTerms,
     search,
     isDemo
@@ -45,6 +50,7 @@ const RetailerCard = ({
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
+    const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
     const [terms, setTerms] = useState('')
@@ -69,6 +75,11 @@ const RetailerCard = ({
         if (isTester && isDemo) body.isDemo = true
 
         const res = await activate(body)
+        setPopupData({
+            iframeUrl: res.iframeUrl,
+            token: res.token,
+            domain: res.domain
+        })
         setRedirectLink(res.url)
         setModalState('open')
     }
@@ -91,9 +102,14 @@ const RetailerCard = ({
     useEffect(() => {
         if (!termsUrl || terms.length || modalState === 'close') return
 
-        fetch(termsUrl)
-            .then(res => res.text())
-            .then(data => setTerms(data))
+        const fetches = [fetchTerms(termsUrl)]
+        if (campaignUrl) fetches.push(fetchTerms(campaignUrl))
+
+        Promise.all(fetches)
+            .then(([retailerTerms, campaignTerms]) => {
+                setTerms(campaignTerms || topGeneralTerms + retailerTerms + generalTerms)
+            })
+            .catch(console.error)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalState])
 
@@ -138,8 +154,8 @@ const RetailerCard = ({
                 name={name}
                 cashback={cashback}
                 terms={terms}
-                generalTerms={generalTerms}
                 redirectLink={redirectLink}
+                {...popupData}
             />
             <LoginModal
                 open={loginModalState !== 'close'}
