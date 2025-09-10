@@ -1,5 +1,5 @@
 {
-  "title": "Ready Wallet Cashback",
+  "title": "",
   "subtitle": "Shop online with any card. Get cashback in STRK.",
   "claimCashback": "CLAIM CASHBACK",
   "viewRewards": "All cashback details",
@@ -16,5 +16,6 @@
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
-  "pendingRewards": "PENDING REWARDS"
+  "pendingRewards": "PENDING REWARDS",
+  "chromeStoreLink": "https://chromewebstore.google.com/detail/ready-wallet-formerly-arg/dlcobpjiigpikoobohmabehhmhfoodbb"
 }

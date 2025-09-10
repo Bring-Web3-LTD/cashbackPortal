@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
@@ -43,9 +43,10 @@ const RetailerCard = ({
     topGeneralTerms,
     generalTerms,
     search,
-    isDemo
+    isDemo,
+    campaignId
 }: Props) => {
-    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
@@ -55,8 +56,9 @@ const RetailerCard = ({
     const [loginModalState, setLoginModalState] = useState('close')
     const [terms, setTerms] = useState('')
 
-    const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
-    const isBig = isBigCashback(cashbackSymbol, maxCashback)
+    const cashback = useMemo(() => formatCashback(maxCashback, cashbackSymbol, cashbackCurrency), [cashbackCurrency, cashbackSymbol, maxCashback])
+    const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
+    const isCampaign = useMemo(() => Boolean(campaignId), [campaignId])
 
     const activateDeal = async () => {
         if (!walletAddress) return
@@ -117,11 +119,12 @@ const RetailerCard = ({
         <>
             <div
                 className={styles.card}
+                style={isCampaign ? { background: `url(${iconsPath}/campaign-card-background.png) lightgray 50% / cover no-repeat` } : {}}
                 onClick={handleClick}
             >
-                {isBig ? <div className={styles.flag}>{cashback}</div> : null}
+                {isBig || isCampaign ? <div className={`${styles.flag} ${isCampaign ? styles.flag_campaign : ''}`}>{cashback}</div> : null}
                 <div
-                    className={styles.logo_container}
+                    className={`${styles.logo_container} ${isCampaign ? styles.logo_container_campaign : ''}`}
                     style={{ backgroundColor: backgroundColor || 'white' }}
                 >
                     {fallbackImg ?
@@ -137,7 +140,7 @@ const RetailerCard = ({
                     }
                 </div>
                 <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
-                <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
+                <div className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
             </div>
             <RetailerCardModal
                 open={modalState !== 'close'}

@@ -16,6 +16,7 @@ interface Retailer {
     termsPath: string
     campaignPath?: string
     cashbackCurrency: string
+    campaignId?: number
 }
 
 interface Category {

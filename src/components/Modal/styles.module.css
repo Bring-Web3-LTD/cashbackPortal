@@ -30,8 +30,8 @@
 .close_btn {
     --corner: 32px;
     position: absolute;
-    top: 19px;
-    right: 19px;
+    top: 32px;
+    right: 32px;
     z-index: 11;
     cursor: pointer;
     background: transparent;
