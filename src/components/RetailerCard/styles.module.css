@@ -34,7 +34,10 @@
     border-style: solid;
     border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
-    margin-bottom: 6px;
+}
+
+.logo_container_campaign {
+    border-color: var(--retailer-card-img-border-campaign-c, var(--retailer-card-img-border-c));
 }
 
 .logo {
@@ -56,6 +59,7 @@
     color: var(--retailer-card-name-f-c);
     white-space: nowrap;
     line-height: 20.8px;
+    margin: 4px 0;
 }
 
 .cashback_rate {
@@ -70,9 +74,15 @@
     white-space: nowrap;
 }
 
+.cashback_rate_campaign {
+    background: var(--retailer-card-amount-campaign-bg, var(--retailer-card-amount-bg));
+    color: var(--retailer-card-amount-campaign-f-c, var(--retailer-card-amount-f-c));
+    font-weight: var(--retailer-card-amount-campaign-f-w, var(--retailer-card-amount-f-w));
+}
+
 .flag {
     position: absolute;
-    top: 10px;
+    top: 16px;
     right: 0;
     width: 50px;
     height: 12px;
@@ -86,6 +96,12 @@
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);
     border-bottom-left-radius: var(--retailer-card-flag-radius);
+}
+
+.flag_campaign {
+    background: var(--retailer-card-flag-campaign-bg, var(--retailer-card-flag-bg));
+    color: var(--retailer-card-flag-campaign-f-c, var(--retailer-card-flag-f-c));
+    font-weight: var(--retailer-card-flag-campaign-f-w, var(--retailer-card-flag-f-w));
 }
 
 .skeleton,

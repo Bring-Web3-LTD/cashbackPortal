@@ -20,6 +20,7 @@ interface Response {
     retailerTermsBasePath: string
     totalItems: number
     iconQueryParam: string
+    campaigns: number[]
 }
 
 const fetchRetailers = async (body: Body): Promise<Response> => {
