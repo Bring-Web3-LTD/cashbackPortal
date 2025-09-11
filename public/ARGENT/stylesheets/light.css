@@ -145,6 +145,7 @@
     --category-btn-hover-border-c: #FFFFFF4D;
     --category-btn-hover-radius: 20px;
 
+    --modal-offset-top: -80px;
     --modal-bg: #242424;
     --modal-overlay-bg: #000000A6;
     --modal-border-w: 0;
