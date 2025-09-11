@@ -1,12 +1,16 @@
 import styles from './styles.module.css'
 import { ComponentProps } from "react"
 import Modal from "../../Modal/Modal"
-import { useRouteLoaderData } from "react-router-dom"
+import { useRouteLoaderData, useSearchParams } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
+import getCampaign from '../../../utils/campaigns'
+import formatCashback from '../../../utils/formatCashback'
 
 const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 'children'>) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath, platform } = useRouteLoaderData('root') as LoaderData
+    const [params] = useSearchParams()
     const { t } = useTranslation()
+    const campaign = getCampaign(platform, params.get('campaignId') ? Number(params.get('campaignId')) : 0)
 
     return (
         <Modal
@@ -16,7 +20,17 @@ const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 
             <div className={styles.modal}>
                 <img src={`${iconsPath}/download.svg`} alt="wallet icon" />
                 <div className={styles.title}>Better luck next time!</div>
-                <div className={styles.subtitle}>The deal is sold out or isn't available in your country.<br />Install Ready Wallet now to catch the next one.</div>
+                <div className={styles.subtitle}>
+                    {campaign ?
+                        <>
+                            The {formatCashback(+campaign.amount, campaign.symbol, 'USD')} cashback deal on {campaign.name} is sold out.<br />Install ready wallet now to catch the next one.
+                        </>
+                        :
+                        <>
+                            The deal is sold out or isn't available in your country.<br />Install Ready Wallet now to catch the next one.
+                        </>
+                    }
+                </div>
                 <a
                     className={styles.btn}
                     href={`${t('chromeStoreLink')}`}
