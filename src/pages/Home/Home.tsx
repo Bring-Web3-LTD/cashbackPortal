@@ -17,6 +17,7 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { parseCampaignId } from '../../utils/campaigns'
 
 const Home = () => {
     const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
@@ -24,7 +25,7 @@ const Home = () => {
     const [searchParams] = useSearchParams();
     const { walletAddress, isTester } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
-    const campaignId = Number(searchParams.get('campaignId')) || undefined
+    const campaign = parseCampaignId(searchParams.get('campaignId'))
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
@@ -92,13 +93,13 @@ const Home = () => {
         if (isRetailersSuccess && !isFirstLoadComplete && campaignEndModalStatus === 'idle') {
             setIsFirstLoadComplete(true)
 
-            if (campaignId && !retailers.pages[0].campaigns?.includes(campaignId)) {
+            if (campaign && !retailers.pages[0].campaigns?.includes(campaign.id)) {
                 setCampaignEndModalStatus('show')
             } else {
                 setCampaignEndModalStatus('shown')
             }
         }
-    }, [isRetailersSuccess, isFirstLoadComplete, campaignEndModalStatus, campaignId, retailers?.pages])
+    }, [isRetailersSuccess, isFirstLoadComplete, campaignEndModalStatus, campaign, retailers?.pages])
 
     const scrollToTop = () => {
         if (!scrollRef?.current) return
@@ -217,7 +218,7 @@ const Home = () => {
                 >{isFetchingNextPage ? "Loading..." : ''}</div>
             </main>
             <CampaignEndModal
-                open={Boolean(campaignId) && campaignEndModalStatus === 'show'}
+                open={Boolean(campaign) && campaignEndModalStatus === 'show'}
                 closeFn={() => setCampaignEndModalStatus('shown')}
             />
         </div>

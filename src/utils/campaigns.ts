@@ -6,27 +6,45 @@ interface Campaign {
 
 interface Campaigns {
     [key: string]: {
-        [key: number]: Campaign
+        [key: number]: {
+            [key: string]: Campaign
+        }
     }
 }
 
 const campaigns: Campaigns = {
     argent: {
         1023: {
-            name: "AliExpress EU",
-            amount: "50",
-            symbol: "%"
-        },
-        1024: {
-            name: "Adidas",
-            amount: "70",
-            symbol: "%"
+            'a392cf154ee26de29bd59ce937f585b1a482bb43': {
+                name: "Nike",
+                amount: "50",
+                symbol: "%"
+            },
+            'd52684322843300f4c40380a1cb89bdb7b72e274': {
+                name: "AliExpress",
+                amount: "70",
+                symbol: "%"
+            }
         }
     }
 }
 
-const getCampaign = (platform: string, campaignId: number): Campaign | null => {
-    return campaigns[platform]?.[campaignId] || null
+export const getCampaign = (platform: string, campaignId: number, hash: string): Campaign | null => {
+    return campaigns[platform]?.[campaignId]?.[hash] || null
 }
 
-export default getCampaign;
+export const parseCampaignId = (campaignId: string | null): { id: number, hash: string } | null => {
+    if (!campaignId) return null
+
+    const arr = campaignId.split('-').filter(str => str.length)
+
+    if (arr.length !== 2) return null
+
+    const id = Number(arr[0])
+
+    const hash = arr[1]
+
+    if (isNaN(id)) return null
+
+    return { id, hash }
+}

@@ -3,14 +3,15 @@ import { ComponentProps } from "react"
 import Modal from "../../Modal/Modal"
 import { useRouteLoaderData, useSearchParams } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
-import getCampaign from '../../../utils/campaigns'
+import { getCampaign, parseCampaignId } from '../../../utils/campaigns'
 import formatCashback from '../../../utils/formatCashback'
 
 const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 'children'>) => {
     const { iconsPath, platform } = useRouteLoaderData('root') as LoaderData
     const [params] = useSearchParams()
     const { t } = useTranslation()
-    const campaign = getCampaign(platform, params.get('campaignId') ? Number(params.get('campaignId')) : 0)
+    const campaignKey = parseCampaignId(params.get('campaignId'))
+    const campaign = campaignKey ? getCampaign(platform, campaignKey.id, campaignKey.hash) : null
 
     return (
         <Modal
