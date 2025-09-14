@@ -11,6 +11,7 @@ interface Body extends BackendRequestBody {
 }
 
 interface Response {
+    topGeneralTermsUrl: string
     generalTermsUrl: string
     items: Retailer[]
     nextPageNumber: number | null
@@ -19,6 +20,7 @@ interface Response {
     retailerTermsBasePath: string
     totalItems: number
     iconQueryParam: string
+    campaigns: number[]
 }
 
 const fetchRetailers = async (body: Body): Promise<Response> => {

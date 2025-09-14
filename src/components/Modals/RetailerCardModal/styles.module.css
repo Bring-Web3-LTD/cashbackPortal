@@ -1,9 +1,30 @@
+.modal_container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
 .modal {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
     width: 100%;
+}
+
+.back_btn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--history-back-f-s);
+    font-weight: var(--history-back-f-w);
+    color: var(--modal-deal-name-f-c);
 }
 
 .full {
@@ -33,6 +54,13 @@
     padding: var(--padding);
     overflow-y: auto;
     font-size: var(--modal-deal-markdown-f-s);
+}
+
+.markdown_short {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    height: 151px;
+    border: none;
 }
 
 .markdown::-webkit-scrollbar {
@@ -142,8 +170,24 @@
     border-radius: 50%;
 }
 
+.logo_big {
+    width: 70px;
+    height: 70px;
+}
+
 .fallback_img {
     color: black;
     font-size: 10px;
     font-weight: 900;
+}
+
+.terms_btn {
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: var(--primary-btn-bg);
+    font-size: var(--modal-deal-consent-f-s);
+    font-weight: var(--modal-deal-consent-f-w);
+    cursor: pointer;
 }

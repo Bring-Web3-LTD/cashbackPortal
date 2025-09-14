@@ -12,6 +12,9 @@ interface Body extends BackendRequestBody {
 interface Response {
     url: string
     cashbackInfoUrl: string | null
+    iframeUrl: string
+    token: string
+    domain: string
 }
 
 const activate = async (body: Body): Promise<Response> => {

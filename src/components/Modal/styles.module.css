@@ -9,6 +9,7 @@
 }
 
 .modal {
+    --_modal-bg: var(--custom-modal-bg, var(--modal-bg));
     --padding: 32px;
     margin-top: var(--modal-offset-top);
     position: relative;
@@ -17,7 +18,7 @@
     display: flex;
     justify-content: center;
     padding: var(--padding);
-    background: var(--modal-bg);
+    background: var(--_modal-bg);
     border-width: var(--modal-border-w);
     border-style: solid;
     border-color: var(--modal-border-c);
@@ -29,8 +30,8 @@
 .close_btn {
     --corner: 32px;
     position: absolute;
-    top: 19px;
-    right: 19px;
+    top: 32px;
+    right: 32px;
     z-index: 11;
     cursor: pointer;
     background: transparent;

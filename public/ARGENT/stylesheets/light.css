@@ -5,13 +5,13 @@
     --bg: #171717;
     --header-bg: #171717;
 
-    --title-f-s: 34px;
-    --title-f-w: 700;
-    --title-f-c: #FFF;
-
-    --subtitle-f-s: 20px;
-    --subtitle-f-w: 400;
+    --subtitle-f-s: 34px;
+    --subtitle-f-w: 700;
     --subtitle-f-c: #FFF;
+
+    /* --subtitle-f-s: 20px;
+--subtitle-f-w: 400;
+--subtitle-f-c: #FFF; */
 
     --header-btn-bg: #242424;
     --header-btn-bg-hover: #505050;
@@ -87,16 +87,19 @@
 
     --retailer-card-bg: #242424;
     --retailer-card-border-w: 1px;
-    --retailer-card-border-color: #FFFFFF1F;
-    --retailer-card--hover-border-color: #FFFFFF1F;
+    --retailer-card-border-color: #3F3F3F;
+    --retailer-card--hover-border-color: #3F3F3F;
 
     --retailer-card-img-border-c: #DCE0E980;
     --retailer-card-img-border-w: 1px;
+    --retailer-card-img-border-campaign-c: #F36A3D;
 
     --retailer-card-flag-f-s: 13px;
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #171717;
     --retailer-card-flag-bg: #F36A3D;
+    --retailer-card-flag-campaign-f-c: #F36A3D;
+    --retailer-card-flag-campaign-bg: #3F3F3F;
     --retailer-card-flag-radius: 4px;
 
     --retailer-card-name-f-s: 17px;
@@ -107,6 +110,8 @@
     --retailer-card-amount-f-c: #FFFFFF;
     --retailer-card-amount-f-w: 500;
     --retailer-card-amount-bg: #FFFFFF1F;
+    --retailer-card-amount-campaign-f-w: 600;
+    --retailer-card-amount-campaign-bg: #F36A3D;
 
     --deals-amount-f-s: 17px;
     --deals-amount-f-w: 600;
@@ -140,6 +145,7 @@
     --category-btn-hover-border-c: #FFFFFF4D;
     --category-btn-hover-radius: 20px;
 
+    --modal-offset-top: -120px;
     --modal-bg: #242424;
     --modal-overlay-bg: #000000A6;
     --modal-border-w: 0;

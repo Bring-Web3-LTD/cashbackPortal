@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
@@ -7,6 +7,7 @@ import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
+import fetchTerms from '../../utils/fetchTerms'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -20,6 +21,8 @@ const isBigCashback = (symbol: string, amount: number) => {
 }
 
 interface Props extends Retailer {
+    topGeneralTerms: string
+    campaignUrl?: string
     generalTerms: string
     termsUrl: string
     search: ReactSelectOptionType | null
@@ -36,21 +39,26 @@ const RetailerCard = ({
     cashbackSymbol,
     cashbackCurrency,
     termsUrl,
+    campaignUrl,
+    topGeneralTerms,
     generalTerms,
     search,
-    isDemo
+    isDemo,
+    campaignId
 }: Props) => {
-    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
     const [fallbackImg, setFallbackImg] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
+    const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
     const [terms, setTerms] = useState('')
 
-    const cashback = formatCashback(maxCashback, cashbackSymbol, cashbackCurrency)
-    const isBig = isBigCashback(cashbackSymbol, maxCashback)
+    const cashback = useMemo(() => formatCashback(maxCashback, cashbackSymbol, cashbackCurrency), [cashbackCurrency, cashbackSymbol, maxCashback])
+    const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
+    const isCampaign = useMemo(() => Boolean(campaignId), [campaignId])
 
     const activateDeal = async () => {
         if (!walletAddress) return
@@ -69,6 +77,11 @@ const RetailerCard = ({
         if (isTester && isDemo) body.isDemo = true
 
         const res = await activate(body)
+        setPopupData({
+            iframeUrl: res.iframeUrl,
+            token: res.token,
+            domain: res.domain
+        })
         setRedirectLink(res.url)
         setModalState('open')
     }
@@ -91,9 +104,14 @@ const RetailerCard = ({
     useEffect(() => {
         if (!termsUrl || terms.length || modalState === 'close') return
 
-        fetch(termsUrl)
-            .then(res => res.text())
-            .then(data => setTerms(data))
+        const fetches = [fetchTerms(termsUrl)]
+        if (campaignUrl) fetches.push(fetchTerms(campaignUrl))
+
+        Promise.all(fetches)
+            .then(([retailerTerms, campaignTerms]) => {
+                setTerms(campaignTerms || topGeneralTerms + retailerTerms + generalTerms)
+            })
+            .catch(console.error)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalState])
 
@@ -101,11 +119,12 @@ const RetailerCard = ({
         <>
             <div
                 className={styles.card}
+                style={isCampaign ? { background: `url(${iconsPath}/campaign-card-background.png) lightgray 50% / cover no-repeat` } : {}}
                 onClick={handleClick}
             >
-                {isBig ? <div className={styles.flag}>{cashback}</div> : null}
+                {isBig || isCampaign ? <div className={`${styles.flag} ${isCampaign ? styles.flag_campaign : ''}`}>{cashback}</div> : null}
                 <div
-                    className={styles.logo_container}
+                    className={`${styles.logo_container} ${isCampaign ? styles.logo_container_campaign : ''}`}
                     style={{ backgroundColor: backgroundColor || 'white' }}
                 >
                     {fallbackImg ?
@@ -121,7 +140,7 @@ const RetailerCard = ({
                     }
                 </div>
                 <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
-                <div className={styles.cashback_rate}>Up to {cashback} cashback</div>
+                <div className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
             </div>
             <RetailerCardModal
                 open={modalState !== 'close'}
@@ -138,8 +157,8 @@ const RetailerCard = ({
                 name={name}
                 cashback={cashback}
                 terms={terms}
-                generalTerms={generalTerms}
                 redirectLink={redirectLink}
+                {...popupData}
             />
             <LoginModal
                 open={loginModalState !== 'close'}

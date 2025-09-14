@@ -6,6 +6,7 @@ import Rewards from '../../components/Rewards/Rewards'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
+import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignEndModal'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
@@ -16,6 +17,7 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { parseCampaignId } from '../../utils/campaigns'
 
 const Home = () => {
     const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
@@ -23,9 +25,14 @@ const Home = () => {
     const [searchParams] = useSearchParams();
     const { walletAddress, isTester } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
+    const campaign = parseCampaignId(searchParams.get('campaignId'))
+
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
     const [isDemo, setIsDemo] = useState(false)
+    const [campaignEndModalStatus, setCampaignEndModalStatus] = useState<'idle' | 'show' | 'shown'>('idle')
+    const [isFirstLoadComplete, setIsFirstLoadComplete] = useState(false)
+
     const paginationRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
@@ -50,6 +57,7 @@ const Home = () => {
         isFetching,
         isFetchingNextPage,
         isLoading: isLoadingRetailers,
+        isSuccess: isRetailersSuccess,
     } = useInfiniteQuery({
         queryKey: ["retailers", category, search],
         queryFn: async ({ pageParam }) => {
@@ -66,6 +74,7 @@ const Home = () => {
             if (country) options.country = country
             if (category?.id) options.category = category.id
             if (search?.value) options.search = search.value
+
             return await fetchRetailers(options)
         },
         getNextPageParam: (lastPage) => {
@@ -79,6 +88,18 @@ const Home = () => {
             fetchNextPage()
         }
     }, [isVisible, fetchNextPage, isFetchingNextPage])
+
+    useEffect(() => {
+        if (isRetailersSuccess && !isFirstLoadComplete && campaignEndModalStatus === 'idle') {
+            setIsFirstLoadComplete(true)
+
+            if (campaign && !retailers.pages[0].campaigns?.includes(campaign.id)) {
+                setCampaignEndModalStatus('show')
+            } else {
+                setCampaignEndModalStatus('shown')
+            }
+        }
+    }, [isRetailersSuccess, isFirstLoadComplete, campaignEndModalStatus, campaign, retailers?.pages])
 
     const scrollToTop = () => {
         if (!scrollRef?.current) return
@@ -196,6 +217,10 @@ const Home = () => {
                     ref={paginationRef}
                 >{isFetchingNextPage ? "Loading..." : ''}</div>
             </main>
+            <CampaignEndModal
+                open={Boolean(campaign) && campaignEndModalStatus === 'show'}
+                closeFn={() => setCampaignEndModalStatus('shown')}
+            />
         </div>
     )
 }
