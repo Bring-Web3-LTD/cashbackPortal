@@ -24,7 +24,6 @@ const rootLoader = async () => {
     const token = params.get('token')
     const extensionId = params.get('extensionId')
     const showTerms = !(params.get('terms')?.toLowerCase() === 'false')
-    console.log({ showTerms })
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
     if (DEV_MODE) {

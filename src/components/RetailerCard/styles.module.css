@@ -96,6 +96,7 @@
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);
     border-bottom-left-radius: var(--retailer-card-flag-radius);
+    text-wrap: nowrap;
 }
 
 .flag_campaign {
