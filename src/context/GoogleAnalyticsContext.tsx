@@ -101,6 +101,9 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
     }, []);
 
     useEffect(() => {
+        if (window.origin.includes('localhost')) {
+            return
+        }
 
         if (effectRan.current === location) return
 
@@ -108,12 +111,10 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
             pageLocation: window.location.href,
             pagePath: window.location.pathname,
             pageTitle: document.title,
-            parentLocation: window.parent?.location?.href || 'N/A'
+            parentLocation: location
         }
         console.log('BRING: Sending page_view event', details)
-        if (window.origin.includes('localhost')) {
-            return
-        }
+
         sendBackendEvent('page_view', {
             category: 'system',
             details
