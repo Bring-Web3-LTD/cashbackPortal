@@ -113,6 +113,7 @@ export const GoogleAnalyticsProvider: FC<Props> = ({ measurementId, children, pl
             pageTitle: document.title,
             parentLocation: location
         }
+        console.log('BRING: Sending page_view event', details)
 
         sendBackendEvent('page_view', {
             category: 'system',

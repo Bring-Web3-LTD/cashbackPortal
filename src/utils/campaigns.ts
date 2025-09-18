@@ -24,6 +24,21 @@ const campaigns: Campaigns = {
                 name: "AliExpress",
                 amount: "70",
                 symbol: "%"
+            },
+            "a91ab933c971ab9782b57b39377fc6b9aa878294": {
+                name: "Macy's",
+                amount: "85",
+                symbol: "%"
+            },
+            "ca0b67c6c085f1f22dfc04267917b59ef460de87": {
+                name: "Sephora",
+                amount: "85",
+                symbol: "%"
+            },
+            "d4cfdf3e9552e9d9233a0675a9070baa509f651f": {
+                name: "Expedia",
+                amount: "85",
+                symbol: "%"
             }
         }
     }
