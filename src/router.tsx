@@ -23,7 +23,7 @@ const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
     const extensionId = params.get('extensionId')
-    const showTerms = params.get('terms')?.toLowerCase() !== 'false' && SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
+    const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
     if (DEV_MODE) {
