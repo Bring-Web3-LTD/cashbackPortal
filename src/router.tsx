@@ -6,7 +6,7 @@ import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyA
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV } from './config';
+import { DEV_MODE, ENV, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 
@@ -23,7 +23,7 @@ const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
     const extensionId = params.get('extensionId')
-    const showTerms = !(params.get('terms')?.toLowerCase() === 'false')
+    const showTerms = params.get('terms')?.toLowerCase() !== 'false' && SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
     if (DEV_MODE) {
