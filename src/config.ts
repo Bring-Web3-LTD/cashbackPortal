@@ -5,5 +5,5 @@ export const DEV_MODE = import.meta.env.VITE_ENV === 'development'
 export const GA_MEASUREMENT_ID = import.meta.env.VITE_ENV_GA_MEASUREMENT_ID || ''
 export const ENV = import.meta.env.VITE_ENV || 'development'
 export const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true'
-
+export const SHOW_TERMS_PLATFORMS = import.meta.env.VITE_SHOW_TERMS_PLATFORMS ? import.meta.env.VITE_SHOW_TERMS_PLATFORMS.split(',') : []
 export const currencyFormat = 'code'
