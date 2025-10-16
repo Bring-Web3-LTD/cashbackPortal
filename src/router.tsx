@@ -42,7 +42,7 @@ const rootLoader = async () => {
             userId: getUserId(dev.platform),
             isTester: false,
             flowId,
-            showTerms,
+            showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase()),
             extensionId
         }
     }
@@ -65,7 +65,7 @@ const rootLoader = async () => {
         iconsPath: `/${platform}/icons/${theme}`,
         userId: getUserId(res.info.platform),
         extensionId,
-        showTerms,
+        showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes(platform),
         flowId
     }
 }
