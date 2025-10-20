@@ -2,40 +2,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-    --bg: #171717;
-    --header-bg: #171717;
+    --bg: #000;
+    --header-bg: #000;
 
-    --subtitle-f-s: 34px;
+    --subtitle-f-s: 27px;
     --subtitle-f-w: 700;
-    --subtitle-f-c: #FFF;
+    --subtitle-f-c: #FBFBFB;
 
     /* --subtitle-f-s: 20px;
 --subtitle-f-w: 400;
 --subtitle-f-c: #FFF; */
 
-    --header-btn-bg: #242424;
-    --header-btn-bg-hover: #505050;
-    --header-btn-f-s: 18px;
-    --header-btn-f-w: 600;
-    --header-btn-f-c: #FFFFFF;
+    --header-btn-bg: #222;
+    --header-btn-bg-hover: #222;
+    --header-btn-f-s: 14px;
+    --header-btn-f-w: 7600;
+    --header-btn-f-c: #FBFBFB;
     --header-btn-border-w: 0;
     --header-btn-border-c: transparent;
-    --header-btn-radius: 32px;
+    --header-btn-radius: 5px;
 
     --rewards-bg: #242424;
 
     --rewards-img-size: 24px;
-
+/* //---------------- */
     --claim-img-bg: #3F3F3F;
     --claim-img-border-w: 0;
     --claim-img-border-c: transparent;
     --claim-img-radius: 50%;
-
+/* //------------------ */
     --pending-img-bg: #3F3F3F;
     --pending-img-border-w: 0;
     --pending-img-border-c: transparent;
-    --pending-img-radius: 50%;
-
+    --pending-img-radius: 40px;
+/* /////////////////////////// */
     --rewards-text-f-s: 16px;
     --rewards-text-f-w: 500;
     --claim-text-f-c: #fff;
@@ -58,16 +58,16 @@
     --rewards-btn-f-w: 600;
     --rewards-btn-radius: 32px;
 
-    --primary-btn-f-s: 18px;
-    --primary-btn-f-w: 600;
-    --primary-btn-f-c: #FFFFFF;
-    --primary-btn-radius: 32px;
+    --primary-btn-f-s: 17px;
+    --primary-btn-f-w: 700;
+    --primary-btn-f-c: #000;
+    --primary-btn-radius: 5px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg: #F36A3D;
-    --primary-btn-hover-bg: #FF875B;
-    --primary-btn-pressed-bg: #F36A3D;
-    --primary-btn-disabled-bg: #F36B3D80;
+    --primary-btn-bg: #00DB7D;
+    --primary-btn-hover-bg:  #00DB7D;
+    --primary-btn-pressed-bg:  #00DB7D;
+    --primary-btn-disabled-bg:  #00DB7D;
     --primary-btn-disabled-f-c: #FFFFFF80;
 
     --pending-btn-f-c: #FFFFFF;
