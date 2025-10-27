@@ -25,7 +25,6 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
                 }
                 else if (ENV === 'development') {
                     setWalletAddress(event.data.walletAddress || null)
-                    return
                 }
             }
         };
