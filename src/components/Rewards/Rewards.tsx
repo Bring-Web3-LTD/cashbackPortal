@@ -30,7 +30,7 @@ const Rewards = () => {
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
     const isAutoClaim = searchParams.get('autoclaim') === 'true'
-    const limit = searchParams.get('limit') || '14'
+    const limit = searchParams.get('limit') || Infinity
 
     const { data: balance } = useQuery({
         queryFn: async () => {
@@ -50,7 +50,7 @@ const Rewards = () => {
     const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || cryptoSymbols[0]
     const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
     const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
-    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : ((limit ? +limit : null) || eligibleTokenNumber)
+    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : Math.min(eligibleTokenNumber, +limit)
 
     useEffect(() => {
         // Define the message handler
