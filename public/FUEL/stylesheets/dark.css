@@ -154,7 +154,7 @@
 
     --modal-offset-top: -120px;
     --modal-bg: #000;
-    --modal-overlay-bg: #000;
+    --modal-overlay-bg:#2B2B2B80;
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 0px;
