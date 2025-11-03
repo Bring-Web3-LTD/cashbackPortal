@@ -1,21 +1,21 @@
 {
   "title": "",
-  "subtitle": "Shop online with any card. Get cashback in STRK.",
+  "subtitle": "Shop online with any card. Get cashback in CSPR",
   "claimCashback": "CLAIM CASHBACK",
   "viewRewards": "All cashback details",
   "frequentlyAskedQuestion": "Missing a reward?",
-  "searchPlaceholder": "Search by brand, product, destination",
+  "searchPlaceholder": "Brand, product, destination...",
   "claimToYourWallet": "CLAIM TO YOUR WALLET",
   "signNow": "SIGN NOW",
-  "startShopping": "GO SHOPPING",
+  "startShopping": "Go Shopping",
   "loading": "Loading...",
   "loadingBtn": "LOADING...",
   "doneBtn": "DONE",
-  "back": "Back",
+  "back": "BACK",
   "historyTitle": "Cashback history",
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
   "pendingRewards": "PENDING REWARDS",
-  "chromeStoreLink": "https://chromewebstore.google.com/detail/ready-wallet-formerly-arg/dlcobpjiigpikoobohmabehhmhfoodbb"
+  "chromeStoreLink": "https://chromewebstore.google.com/detail/casper-wallet/abkahkcbhngaebpcgfmhkoioedceoigp"
 }
