@@ -56,7 +56,7 @@
     --claim-amount-f-c: #FBFBFB;
 
     --pending-amount-f-c: #FBFBFB;
-   
+
     --rewards-btn-width: 291px;
     --rewards-btn-f-s: 18px;
     --rewards-btn-f-w: 700;
@@ -69,13 +69,13 @@
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #00DB7D;
-    --primary-btn-hover-bg: #00DB7D;
-    --primary-btn-pressed-bg: #00DB7D;
+    --primary-btn-hover-bg: #52F8B1;
+    --primary-btn-pressed-bg: #52F8B1;
     --primary-btn-disabled-bg: #00DB7D;
-    --primary-btn-disabled-f-c: #FFFFFF80;
+    --primary-btn-disabled-f-c: #000;
 
     --pending-btn-f-c: #171717;
-    
+
     --pending-btn-border-c: transparent;
     --pending-btn-border-w: 0;
     --pending-btn-bg: #00DB7D;
@@ -116,8 +116,9 @@
     --retailer-card-amount-f-w: 400;
     --retailer-card-amount-bg: rgba(111, 111, 111, 0.40);
     --retailer-card-amount-campaign-f-w: 600;
-    --retailer-card-amount-campaign-bg: #F36A3D; /*?*/
-   
+    --retailer-card-amount-campaign-bg: #F36A3D;
+    /*?*/
+
 
     --deals-amount-f-s: 16px;
     --deals-amount-f-w: 400;
