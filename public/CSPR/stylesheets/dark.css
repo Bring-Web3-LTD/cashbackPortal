@@ -22,10 +22,10 @@
 
     --rewards-img-size: 25px;
 
-    --claim-img-bg: #d61010;
+    --claim-img-bg:  #0A2EBF;;
     --claim-img-border-w: 0;
     --claim-img-border-c: transparent;
-    --claim-img-radius: 50%;
+    --claim-img-radius: 40px;
 
     --pending-img-bg:var(--Content-Light-contentAction, #0A2EBF);
     --pending-img-border-w: 0;
@@ -64,7 +64,7 @@
     --primary-btn-hover-bg:  #CC000F;
     --primary-btn-pressed-bg:  #CC000F;
     --primary-btn-disabled-bg:  #CC000F;
-    --primary-btn-disabled-f-c:  #CC000F;
+    --primary-btn-disabled-f-c:  #FFFFFF;
 
     --pending-btn-f-c: #FFFFFF;
     --pending-btn-border-c: transparent;
