@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
@@ -37,17 +37,37 @@ interface ClaimsRes {
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
     const [copiedIndex, setCopiedIndex] = useState<string | null>(null)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [])
 
     const shortenTxId = (txId: string) => {
         if (txId.length <= 16) return txId
         return `${txId.slice(0, 8)}...${txId.slice(-8)}`
     }
 
-    const handleCopyTxId = (txId: string, index: number) => {
-        navigator.clipboard.writeText(txId)
-        const key = `${index}-${txId}`
-        setCopiedIndex(key)
-        setTimeout(() => setCopiedIndex(null), 2000)
+    const handleCopyTxId = async (txId: string, index: number) => {
+        // Clear any existing timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+        }
+
+        try {
+            await navigator.clipboard.writeText(txId)
+            const key = `${index}-${txId}`
+            setCopiedIndex(key)
+            timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000)
+        } catch (error) {
+            const key = `${index}-${txId}`
+            setCopiedIndex(`error-${key}`)
+            timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000)
+        }
     }
 
     return (
