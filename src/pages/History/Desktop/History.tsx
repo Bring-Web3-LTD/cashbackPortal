@@ -36,10 +36,18 @@ interface ClaimsRes {
 
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
+    const [copiedIndex, setCopiedIndex] = useState<string | null>(null)
 
     const shortenTxId = (txId: string) => {
         if (txId.length <= 16) return txId
         return `${txId.slice(0, 8)}...${txId.slice(-8)}`
+    }
+
+    const handleCopyTxId = (txId: string, index: number) => {
+        navigator.clipboard.writeText(txId)
+        const key = `${index}-${txId}`
+        setCopiedIndex(key)
+        setTimeout(() => setCopiedIndex(null), 2000)
     }
 
     return (
@@ -96,25 +104,44 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     transition={{ duration: 0.2 }}
                 >
                     <div>
-                        {description.map((item, index) => (
-                            <div
-                                key={`description-${index}`}
-                                className={styles.description}
-                            >
-                                {
-                                    item[0] || item[1] ?
-                                        <>
-                                            <b>{item[0]}</b> - {item[1]}
-                                            {item[2] && (
-                                                <span style={{ marginLeft: '12px', fontSize: '12px', color: '#666' }}>
-                                                    TxID: {shortenTxId(item[2])}
-                                                </span>
-                                            )}
-                                        </>
-                                        : null
-                                }
-                            </div>
-                        ))}
+                        {description.map((item, index) => {
+                            const txIdKey = `${index}-${item[2]}`
+                            const isCopied = copiedIndex === txIdKey
+                            
+                            return (
+                                <div
+                                    key={`description-${index}`}
+                                    className={styles.description}
+                                >
+                                    {
+                                        item[0] || item[1] ?
+                                            <>
+                                                <b>{item[0]}</b> - {item[1]}
+                                                {item[2] && (
+                                                    <span className={styles.txid_container}>
+                                                        <span 
+                                                            data-txid={item[2]}
+                                                            className={styles.txid_badge}
+                                                        >
+                                                            TxID: {shortenTxId(item[2])}
+                                                        </span>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                handleCopyTxId(item[2]!, index)
+                                                            }}
+                                                            className={`${styles.txid_copy_btn} ${isCopied ? styles.copied : ''}`}
+                                                        >
+                                                            {isCopied ? '✓ Copied' : 'Copy'}
+                                                        </button>
+                                                    </span>
+                                                )}
+                                            </>
+                                            : null
+                                    }
+                                </div>
+                            )
+                        })}
                     </div>
                 </motion.div>}
             </AnimatePresence>
