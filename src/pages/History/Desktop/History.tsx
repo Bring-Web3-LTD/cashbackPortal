@@ -37,6 +37,11 @@ interface ClaimsRes {
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
+    const shortenTxId = (txId: string) => {
+        if (txId.length <= 16) return txId
+        return `${txId.slice(0, 8)}...${txId.slice(-8)}`
+    }
+
     return (
         <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
@@ -100,6 +105,11 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                     item[0] || item[1] ?
                                         <>
                                             <b>{item[0]}</b> - {item[1]}
+                                            {item[2] && (
+                                                <span style={{ marginLeft: '12px', fontSize: '12px', color: '#666' }}>
+                                                    TxID: {shortenTxId(item[2])}
+                                                </span>
+                                            )}
                                         </>
                                         : null
                                 }
@@ -144,9 +154,15 @@ const HistoryDesktop = () => {
         const res: ClaimsRes = {}
 
         claims.map(claim => {
-            const { tokenSymbol, tokenAmount, date } = claim
+            const { tokenSymbol, tokenAmount, date, txid } = claim
             if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
-            res[tokenSymbol].description.push([formatDate(date), `${tokenAmount} ${tokenSymbol}`])
+            
+            const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
+            if (txid) {
+                descriptionItem.push(txid)
+            }
+            
+            res[tokenSymbol].description.push(descriptionItem)
             res[tokenSymbol].tokenAmount += tokenAmount
         })
 
