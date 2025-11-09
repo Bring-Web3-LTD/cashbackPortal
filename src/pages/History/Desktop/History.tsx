@@ -196,9 +196,6 @@ const HistoryDesktop = () => {
                     {t('back')}
                 </span>
             </Link>
-            {/* {(balance?.movements.claims.length || balance?.movements.deals.length) && (
-                <h1 className={styles.title}>{t('historyTitle')}</h1>
-            )} */}
             {balance?.movements.claims.length || balance?.movements.deals.length ? <div className={styles.table}>
                 <div className={styles.table_header}>
                     <span className={styles.table_header_cell}>Purchase</span>
