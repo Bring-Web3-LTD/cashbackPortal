@@ -150,7 +150,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                                                 e.stopPropagation()
                                                                 handleCopyTxId(item[2]!, index)
                                                             }}
-                                                            className={`${styles.txid_copy_btn} ${isCopied ? styles.copied : ''}`}
+                                                            className={styles.txid_copy_btn} 
                                                         >
                                                             {isCopied ? '✓ Copied' : 'Copy'}
                                                         </button>

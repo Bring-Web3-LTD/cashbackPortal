@@ -162,12 +162,7 @@
 }
 
 .txid_badge {
-    font-size: 11px;
-    font-family: monospace;
-    color: var(--history-description-f-c);
-    white-space: nowrap;
     position: relative;
-    cursor: default;
 }
 
 .txid_badge:hover::after {
@@ -176,15 +171,15 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 11px;
+    /* background: var(--history-details-TxID-bg);     */
+    background: var(--history-details-btn-bg);
+    padding: 6px 10px;    
+    font-size: var(--history-description-f-s);
+    font-weight: var(--history-description-f-w);    
     white-space: nowrap;
     z-index: 1000;
     margin-top: 5px;
-    pointer-events: none;
+  
 }
 
 .txid_badge:hover::before {
@@ -194,27 +189,25 @@
     left: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
-    border-bottom-color: rgba(0, 0, 0, 0.9);
+    background: var(--history-details-btn-bg);
     z-index: 1000;
     pointer-events: none;
     margin-top: -5px;
 }
 
 .txid_copy_btn {
+    font-size: var(--history-description-f-s);
+    font-weight: var(--history-description-f-w);
+    color: var(--history-description-f-c);
+    margin-bottom: 8px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 2px 6px;
-    font-size: 11px;
-    color: #007bff;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s ease;
+
 }
 
-.txid_copy_btn.copied {
-    color: #4CAF50;
-}
+
 
 .empty_history {
     margin-top: 16px;
