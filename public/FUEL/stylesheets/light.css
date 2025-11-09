@@ -1,4 +1,4 @@
-/* Dark mode */
+/* Light mode */
 @import url('https://media.bringweb3.io/fonts/px-grotesk-regular.css');
 
 :root {
@@ -69,10 +69,10 @@
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #00DB7D;
-    --primary-btn-hover-bg: #00DB7D;
-    --primary-btn-pressed-bg: #00DB7D;
+    --primary-btn-hover-bg: #52F8B1;
+    --primary-btn-pressed-bg: #52F8B1;
     --primary-btn-disabled-bg: #00DB7D;
-    --primary-btn-disabled-f-c: #FFFFFF80;
+    --primary-btn-disabled-f-c: #000;
 
     --pending-btn-f-c: #171717;
     
@@ -154,7 +154,7 @@
 
     --modal-offset-top: -120px;
     --modal-bg: #000;
-    --modal-overlay-bg: #2B2B2B80;
+    --modal-overlay-bg:#2B2B2B80;
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 0px;
