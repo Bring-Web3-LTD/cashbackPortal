@@ -113,9 +113,9 @@
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #FFF;
     --retailer-card-flag-bg: #FF00B8;
-    --retailer-card-flag-campaign-f-c: #FF00B8;
+    --retailer-card-flag-campaign-f-c: #FFF;
     --retailer-card-flag-campaign-bg: #FF00B8;
-    --retailer-card-flag-radius: 4px;
+    --retailer-card-flag-radius:  var(--corner-radius-4, 4px) 0 0 var(--corner-radius-4, 4px);
 
     --retailer-card-name-f-s: 15px;
     --retailer-card-name-f-w: 700;
