@@ -1,4 +1,4 @@
-/* Dark mode */
+/* Light mode */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
     --bg: #1A1E3E;
@@ -157,8 +157,8 @@
     --category-btn-border-w: 1px;
     --category-btn-border-c: #AEB0BB;
     --category-btn-radius: 7px;
-    --category-btn-hover-bg: #00000000;
-    /*not found in figma*/
+    --category-btn-hover-bg: #404A8D;
+    
     --category-btn-hover-f-c: #FFFFFF;
     --category-btn-hover-f-w: 600;
     --category-btn-hover-border-w: 1px;
