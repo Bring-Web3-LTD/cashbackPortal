@@ -1,5 +1,6 @@
 /* Light mode */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
     --bg: #1A1E3E;
     --header-bg: #1A1E3E;
@@ -109,13 +110,13 @@
     --retailer-card-img-border-campaign-c: #F36A3D;
     /*not found in figma*/
 
-    --retailer-card-flag-f-s: 13px;
+    --retailer-card-flag-f-s: 11px;
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #FFF;
     --retailer-card-flag-bg: #FF00B8;
     --retailer-card-flag-campaign-f-c: #FFF;
     --retailer-card-flag-campaign-bg: #FF00B8;
-    --retailer-card-flag-radius:  var(--corner-radius-4, 4px) 0 0 var(--corner-radius-4, 4px);
+    --retailer-card-flag-radius: 4px;
 
     --retailer-card-name-f-s: 15px;
     --retailer-card-name-f-w: 700;
@@ -158,7 +159,7 @@
     --category-btn-border-c: #AEB0BB;
     --category-btn-radius: 7px;
     --category-btn-hover-bg: #404A8D;
-    
+
     --category-btn-hover-f-c: #FFFFFF;
     --category-btn-hover-f-w: 600;
     --category-btn-hover-border-w: 1px;
