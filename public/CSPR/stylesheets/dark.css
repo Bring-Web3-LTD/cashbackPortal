@@ -210,7 +210,7 @@
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
     --scrollbar-w: 10px;
 
-    --search-bg: transparent;
+    --search-bg: #FFFFFF;
     --search-f-s: 15px;
     --search-f-w: 400;
     /* Here */
