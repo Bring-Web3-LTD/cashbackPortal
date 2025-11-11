@@ -5,9 +5,13 @@
     --bg: rgba(245, 246, 247, 1);
     --header-bg: rgba(245, 246, 247, 1);
 
-    --subtitle-f-s: 28px;
-    --subtitle-f-w: 700;
-    --subtitle-f-c: rgba(245, 246, 247, 1);
+    --title-f-c:#1A1919;
+    --title-f-s: 25px;
+    --title-f-w: 700;
+
+    --subtitle-f-s: 18px;
+    --subtitle-f-w: 400;
+    --subtitle-f-c: #1A1919;
 
     --header-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
     --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
@@ -20,8 +24,8 @@
 
     --rewards-bg: var(--Background-Light-backgroundPrimary, #FFF);
 
-    --rewards-img-size: 24px;/*?*/
-    /* image size in figma width: 20px;height: 20px;*/
+    --rewards-img-size: 24px;
+    
 
     --claim-img-bg:  #0A2EBF;;
     --claim-img-border-w: 0;
@@ -64,8 +68,8 @@
     --primary-btn-bg:  #CC000F;
     --primary-btn-hover-bg:   #B2000D;
     --primary-btn-pressed-bg:  #99000B;
-    --primary-btn-disabled-bg:  #CC000F;/*?*/
-    --primary-btn-disabled-f-c:  #FFFFFF;
+    --primary-btn-disabled-bg:  linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --primary-btn-disabled-f-c:  #BCBDC1;
 
     --pending-btn-f-c: #0A2EBF;
     --pending-btn-border-c: transparent;
