@@ -9,18 +9,19 @@
     --subtitle-f-w: 700;
     --subtitle-f-c: rgba(245, 246, 247, 1);
 
-    --header-btn-bg: var(--Fill-Light-fillSecondary, linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%));
-    --header-btn-bg-hover: var(--Fill-Light-fillSecondary, linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%));
+    --header-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
     --header-btn-f-s: 15px;
     --header-btn-f-w: 600;
     --header-btn-f-c: #0A2EBF;
     --header-btn-border-w: 0;
     --header-btn-border-c: transparent;
-    --header-btn-radius: 32px;
+    --header-btn-radius: 6px;
 
     --rewards-bg: var(--Background-Light-backgroundPrimary, #FFF);
 
-    --rewards-img-size: 25px;
+    --rewards-img-size: 24px;/*?*/
+    /* image size in figma width: 20px;height: 20px;*/
 
     --claim-img-bg:  #0A2EBF;;
     --claim-img-border-w: 0;
@@ -42,44 +43,44 @@
     --claim-usd-f-c:  #1A1919;
     --pending-usd-f-c:  #1A1919;
 
-    --rewards-amount-f-s: 28px;
+    --rewards-amount-f-s: 22px;
     --rewards-amount-f-w: 700;
 
     --claim-amount-f-c: #1A1919;;
 
     --pending-amount-f-c: #1A1919;;
 
-    --rewards-btn-width: 291px;
+    --rewards-btn-width: 205px;
     --rewards-btn-f-s: 18px;
-    --rewards-btn-f-w: 700;
+    --rewards-btn-f-w: 600;
     --rewards-btn-radius: 6px;
 
     --primary-btn-f-s: 18px;
     --primary-btn-f-w: 700;
-    --primary-btn-f-c: var(--Content-Light-contentOnFill, #FFF) !important;/**/
+    --primary-btn-f-c:  #FFF;
     --primary-btn-radius: 6px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg: #CC000F;
-    --primary-btn-hover-bg:  #CC000F;
-    --primary-btn-pressed-bg:  #CC000F;
-    --primary-btn-disabled-bg:  #CC000F;
+    --primary-btn-bg:  #CC000F;
+    --primary-btn-hover-bg:   #B2000D;
+    --primary-btn-pressed-bg:  #99000B;
+    --primary-btn-disabled-bg:  #CC000F;/*?*/
     --primary-btn-disabled-f-c:  #FFFFFF;
 
-    --pending-btn-f-c: #FFFFFF;
+    --pending-btn-f-c: #0A2EBF;
     --pending-btn-border-c: transparent;
     --pending-btn-border-w: 0;
-    --pending-btn-bg: #CC000F;
+    --pending-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
 
-    --pending-btn-hover-f-c: #FFFFFF;
+    --pending-btn-hover-f-c: #0A2EBF;;
     --pending-btn-hover-border-c: transparent;
     --pending-btn-hover-border-w: 0;
-    --pending-btn-hover-bg:  #CC000F;
+    --pending-btn-hover-bg:  var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
 
-    --pending-btn-pressed-f-c: #FFFFFF;
+    --pending-btn-pressed-f-c: #0A2EBF;
     --pending-btn-pressed-border-c: transparent;
     --pending-btn-pressed-border-w: 0;
-    --pending-btn-pressed-bg:  #CC000F;
+    --pending-btn-pressed-bg:   #E8E9EC;
 
     --retailer-card-bg: #FFF;
     --retailer-card-border-w: 0px;
@@ -134,9 +135,9 @@
     --category-btn-border-w: 0px;
     --category-btn-border-c: transparent;
     --category-btn-radius: 6px;
-    --category-btn-hover-bg:#EDEEF0;
-    --category-btn-hover-f-c: #0A2EBF;
-    --category-btn-hover-f-w: 400;
+    --category-btn-hover-bg:#0A2EBF;
+    --category-btn-hover-f-c: #FFF;
+    --category-btn-hover-f-w: 700;
     --category-btn-hover-border-w: 0px;
     --category-btn-hover-border-c:transparent;
     --category-btn-hover-radius: 6px;
@@ -147,12 +148,12 @@
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 12px;
-    --modal-title-f-s: 22px;
+    --modal-title-f-s: 20px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #1A1919;
     --modal-paragraph-f-s: 13px;
     --modal-paragraph-f-w: 400;
-    --modal-paragraph-f-c: #84868C;
+    --modal-paragraph-f-c: #1A1919;
 /****/
     --modal-claim-amount-f-s: 40px;
     --modal-claim-amount-f-w: 500;

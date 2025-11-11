@@ -2,7 +2,7 @@
   "title": "",
   "subtitle": "Shop online with any card. Get cashback in CSPR",
   "claimCashback": "CLAIM CASHBACK",
-  "viewRewards": "All cashback details",
+  "viewRewards": "Cashback History",
   "frequentlyAskedQuestion": "Missing a reward?",
   "searchPlaceholder": "Brand, product, destination...",
   "claimToYourWallet": "CLAIM TO YOUR WALLET",
@@ -16,6 +16,6 @@
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
-  "pendingRewards": "PENDING REWARDS",
+  "pendingRewards": "",
   "chromeStoreLink": "https://chromewebstore.google.com/detail/casper-wallet/abkahkcbhngaebpcgfmhkoioedceoigp"
 }

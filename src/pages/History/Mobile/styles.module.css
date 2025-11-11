@@ -155,6 +155,14 @@
     color: var(--history-empty-f-c);
 }
 
+.empty_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
 b {
     font-weight: var(--history-description-bold-f-w);
 }
