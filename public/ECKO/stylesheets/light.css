@@ -1,6 +1,5 @@
 /* Light mode */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 :root {
     --bg: #1A1E3E;
     --header-bg: #1A1E3E;
@@ -15,15 +14,21 @@
 
 
 
-    /* --header-btn-bg: #35d50d; */
-    --header-btn-bg-hover: #13172F;
-    /*not found in figma*/
+   
     --header-btn-f-s: 13px;
     --header-btn-f-w: 500;
     --header-btn-f-c: #363F82;
     --header-btn-border-w: 2px;
     --header-btn-border-c: #363F82;
     --header-btn-radius: 8px;
+    --header-btn-hover-bg: transparent;
+    --header-btn-hover-f-c: #363F82;
+    --header-btn-hover-border-w: 2px;
+    --header-btn-hover-border-c: #363F82;
+    --header-btn-pressed-bg: transparent;
+    --header-btn-pressed-f-c: #363F82;
+    --header-btn-pressed-border-w: 2px;
+    --header-btn-pressed-border-c: #363F82;
 
     --rewards-bg: #13172F;
 
@@ -159,7 +164,7 @@
     --category-btn-border-c: #AEB0BB;
     --category-btn-radius: 7px;
     --category-btn-hover-bg: #404A8D;
-
+    
     --category-btn-hover-f-c: #FFFFFF;
     --category-btn-hover-f-w: 600;
     --category-btn-hover-border-w: 1px;
