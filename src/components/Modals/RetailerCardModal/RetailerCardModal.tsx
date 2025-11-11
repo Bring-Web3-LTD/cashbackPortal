@@ -165,7 +165,7 @@ const RetailerCardModal = ({
                                     By clicking Go Shopping, you accept the <button
                                         className={styles.terms_btn}
                                         onClick={() => setShowingTerms(true)}
-                                    >Terms and Exclusions</button>.
+                                    >Terms and Exclusions</button>
                                 </div>
                             </motion.div>
                         )}

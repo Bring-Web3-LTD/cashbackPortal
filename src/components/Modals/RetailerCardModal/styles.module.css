@@ -186,8 +186,13 @@
     border: none;
     margin: 0;
     padding: 0;
-    color: var(--primary-btn-bg);
+    color: var(--modal-deal-consent-f-c);
     font-size: var(--modal-deal-consent-f-s);
     font-weight: var(--modal-deal-consent-f-w);
+    text-decoration: underline;
     cursor: pointer;
+}
+
+.terms_btn:hover {
+    color: var(--primary-btn-bg);
 }
