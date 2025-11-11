@@ -191,9 +191,9 @@
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #7892E8;
 /***/
-    --modal-deal-name-f-s: 19px;/*?*/
+    --modal-deal-name-f-s: 22px;
     --modal-deal-name-f-w: 700;
-    --modal-deal-name-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --modal-deal-name-f-c: #1A1919;
     --modal-deal-markdown-bg: transparent;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: var(--Content-Light-contentDisabled, #BCBDC1);
@@ -203,7 +203,7 @@
     --modal-deal-markdown-f-c: var(--Content-Light-contentPrimary, #1A1919);
     --modal-deal-markdown-bold-f-w: 600;
     --modal-deal-markdown-bold-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --modal-deal-consent-f-s: 12px;
+    --modal-deal-consent-f-s: 13px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #84868C;
 
