@@ -107,13 +107,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                             <>
                                                 <b>{item[0]}</b> - {item[1]}
                                                 {item[2] && (
-                                                    <span style={{ 
-                                                        marginLeft: '12px', 
-                                                        fontSize: 'var(--history-description-f-s)', 
-                                                        fontWeight: 'var(--history-description-f-w)', 
-                                                        color: 'var(--history-description-f-c)',
-                                                        marginBottom: '8px'
-                                                    }}>
+                                                    <span className={styles.txid}>
                                                         TxID: {shortenTxId(item[2])}
                                                     </span>
                                                 )}
