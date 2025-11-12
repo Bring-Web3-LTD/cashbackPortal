@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
@@ -36,38 +36,9 @@ interface ClaimsRes {
 
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
-    const [copiedIndex, setCopiedIndex] = useState<string | null>(null)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-    useEffect(() => {
-        return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-            }
-        }
-    }, [])
 
     const shortenTxId = (txId: string) => {
-        if (txId.length <= 16) return txId
-        return `${txId.slice(0, 8)}...${txId.slice(-8)}`
-    }
-
-    const handleCopyTxId = async (txId: string, index: number) => {
-        // Clear any existing timeout
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current)
-        }
-
-        try {
-            await navigator.clipboard.writeText(txId)
-            const key = `${index}-${txId}`
-            setCopiedIndex(key)
-            timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000)
-        } catch (error) {
-            const key = `${index}-${txId}`
-            setCopiedIndex(`error-${key}`)
-            timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000)
-        }
+        return txId
     }
 
     return (
@@ -121,8 +92,6 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                 >
                     <div>
                         {description.map((item, index) => {
-                            const txIdKey = `${index}-${item[2]}`
-                            const isCopied = copiedIndex === txIdKey
                             
                             return (
                                 <div
@@ -134,23 +103,15 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                             <>
                                                 <b>{item[0]}</b> - {item[1]}
                                                 {item[2] && (
-                                                    <div className={styles.txid_container}>
-                                                        <span 
-                                                            data-txid={item[2]}
-                                                            className={styles.txid_badge}
-                                                        >
-                                                            TxID: {shortenTxId(item[2])}
-                                                        </span>
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleCopyTxId(item[2]!, index)
-                                                            }}
-                                                            className={`${styles.txid_copy_btn} ${isCopied ? styles.copied : ''}`}
-                                                        >
-                                                            {isCopied ? '✓ Copied' : 'Copy'}
-                                                        </button>
-                                                    </div>
+                                                    <span style={{ 
+                                                        marginLeft: '12px', 
+                                                        fontSize: 'var(--history-description-f-s)', 
+                                                        fontWeight: 'var(--history-description-f-w)', 
+                                                        color: 'var(--history-description-f-c)',
+                                                        marginBottom: '8px'
+                                                    }}>
+                                                        TxID: {shortenTxId(item[2])}
+                                                    </span>
                                                 )}
                                             </>
                                             : null

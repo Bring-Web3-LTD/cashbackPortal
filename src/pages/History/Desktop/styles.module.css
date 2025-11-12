@@ -154,61 +154,6 @@
     margin-bottom: 8px;
 }
 
-.txid_container {
-    margin-left: 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.txid_badge {
-    position: relative;
-}
-
-.txid_badge:hover::after {
-    content: attr(data-txid);
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    /* background: var(--history-details-TxID-bg);     */
-    background: var(--history-details-btn-bg);
-    padding: 6px 10px;    
-    font-size: var(--history-description-f-s);
-    font-weight: var(--history-description-f-w);    
-    white-space: nowrap;
-    z-index: 1000;
-    margin-top: 5px;
-  
-}
-
-.txid_badge:hover::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    background: var(--history-details-btn-bg);
-    z-index: 1000;
-    pointer-events: none;
-    margin-top: -5px;
-}
-
-.txid_copy_btn {
-    font-size: var(--history-description-f-s);
-    font-weight: var(--history-description-f-w);
-    color: var(--history-description-f-c);
-    margin-bottom: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 2px 6px;
-
-}
-
-
-
 .empty_history {
     margin-top: 16px;
     font-size: var(--history-empty-f-s);
