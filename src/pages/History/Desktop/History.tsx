@@ -37,10 +37,6 @@ interface ClaimsRes {
 const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
-    const shortenTxId = (txId: string) => {
-        return txId
-    }
-
     return (
         <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
@@ -108,7 +104,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                                                 <b>{item[0]}</b> - {item[1]}
                                                 {item[2] && (
                                                     <span className={styles.txid}>
-                                                        TxID: {shortenTxId(item[2])}
+                                                        TxID: {item[2]}
                                                     </span>
                                                 )}
                                             </>
