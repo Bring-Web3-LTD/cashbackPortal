@@ -148,6 +148,14 @@
     margin-bottom: 8px;
 }
 
+.txid {
+    font-size: var(--history-description-f-s);
+    font-weight: var(--history-description-f-w);
+    color: var(--history-description-f-c);
+    margin-bottom: 8px;
+    margin-left: 12px;
+}
+
 .empty_history {
     margin-top: 16px;
     font-size: var(--history-empty-f-s);

@@ -87,20 +87,28 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     transition={{ duration: 0.2 }}
                 >
                     <div>
-                        {description.map((item, index) => (
-                            <div
-                                key={`description-${index}`}
-                                className={styles.description}
-                            >
-                                {
-                                    item[0] || item[1] ?
-                                        <>
-                                            <b>{item[0]}</b> - {item[1]}
-                                        </>
-                                        : null
-                                }
-                            </div>
-                        ))}
+                        {description.map((item, index) => {
+                            
+                            return (
+                                <div
+                                    key={`description-${index}`}
+                                    className={styles.description}
+                                >
+                                    {
+                                        item[0] || item[1] ?
+                                            <>
+                                                <b>{item[0]}</b> - {item[1]}
+                                                {item[2] && (
+                                                    <span className={styles.txid}>
+                                                        TxID: {item[2]}
+                                                    </span>
+                                                )}
+                                            </>
+                                            : null
+                                    }
+                                </div>
+                            )
+                        })}
                     </div>
                 </motion.div>}
             </AnimatePresence>
@@ -140,9 +148,15 @@ const HistoryMobile = () => {
         const res: ClaimsRes = {}
 
         claims.map(claim => {
-            const { tokenSymbol, tokenAmount, date } = claim
+            const { tokenSymbol, tokenAmount, date, txid } = claim
             if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
-            res[tokenSymbol].description.push([formatDate(date), `${tokenAmount} ${tokenSymbol}`])
+            
+            const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
+            if (txid) {
+                descriptionItem.push(txid)
+            }
+            
+            res[tokenSymbol].description.push(descriptionItem)
             res[tokenSymbol].tokenAmount += tokenAmount
         })
 
