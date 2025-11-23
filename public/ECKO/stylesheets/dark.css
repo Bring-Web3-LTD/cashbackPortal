@@ -1,4 +1,4 @@
-/* Dark mode */
+/* Light mode */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
     --bg: #1A1E3E;
@@ -12,9 +12,6 @@
     --subtitle-f-w: 700;
     --subtitle-f-c: #FFF;
 
-
-
-   
     --header-btn-f-s: 13px;
     --header-btn-f-w: 500;
     --header-btn-f-c: #363F82;
@@ -234,14 +231,14 @@
 
     --scrollbar-bg: #404A8D;
     --scrollbar-w: 10px;
-
-    --search-bg: #00000000;
+    
+    --search-bg: #1A1E3E;
     --search-f-s: 15px;
     --search-f-w: 400;
     /* Here */
     --search-f-c: #AEB0BB;
     --search-option-f-c: #AEB0BB;
-    --search-option-hover-bg: #AEB0BB;
+    --search-option-hover-bg: #404A8D;
     --search-radius: 8px;
     --search-border-w: 1px;
     --search-border-c: rgba(255, 255, 255, 0.70);
