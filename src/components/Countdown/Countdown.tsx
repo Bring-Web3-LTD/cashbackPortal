@@ -32,8 +32,9 @@ const CountDown = ({ isRunning, setIsRunning }: Props): JSX.Element => {
     }
 
     return (
-        <div className={styles.container}>
+        <div id="countdown-container" className={styles.container}>
             <div
+                id="countdown-progress-bar"
                 className={styles.progress_bar}
                 style={{ width: `${timePassed}%` }}
             />

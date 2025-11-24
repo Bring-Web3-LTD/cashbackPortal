@@ -118,6 +118,7 @@ const RetailerCard = ({
     return (
         <>
             <div
+                id={`retailer-card-${name}`}
                 className={styles.card}
                 style={isCampaign ? { background: `url(${iconsPath}/campaign-card-background.png) lightgray 50% / cover no-repeat` } : {}}
                 onClick={handleClick}

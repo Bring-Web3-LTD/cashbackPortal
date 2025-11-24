@@ -192,6 +192,7 @@ const Rewards = () => {
                         </div>
                     </div>
                     <button
+                        id="rewards-claim-btn"
                         className={`${styles.btn} ${styles.claim_btn}`}
                         onClick={() => signMessage()}
                         disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
@@ -236,6 +237,7 @@ const Rewards = () => {
                     </div>
                 </div>
                 <button
+                    id="rewards-view-btn"
                     className={`${styles.btn} ${styles.pending_btn}`}
                     onClick={() => walletAddress ? navigate('/history') : setLoginModalState('open')}
                 >

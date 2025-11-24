@@ -34,6 +34,7 @@ const Loading = () => {
                 We are processing your request<br />it could take a few seconds.
             </div>
             <button
+                id="status-modal-loading-btn"
                 disabled
                 className={styles.btn}
             >{t('doneBtn')}</button>
@@ -54,6 +55,7 @@ const Success = ({ closeFn }: StatusProps) => {
                 The rewards have been successfully<br />deposited into your wallet.
             </div>
             <button
+                id="status-modal-success-btn"
                 onClick={() => closeFn()}
                 className={styles.btn}
             >{t('doneBtn')}</button>
@@ -76,6 +78,7 @@ const Failure = ({ closeFn }: StatusProps) => {
                 Something went wrong.<br />Please try again later.
             </div>
             <button
+                id="status-modal-failure-btn"
                 onClick={() => closeFn()}
                 className={styles.btn}
             >{t('doneBtn')}</button>
