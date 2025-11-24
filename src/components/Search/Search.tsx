@@ -109,6 +109,10 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         ...base,
         color: 'var(--search-placeholder-f-c)'
     }),
+    singleValue: (base) => ({
+        ...base,
+        color: 'var(--search-f-c)',
+    }),
 }
 
 const CustomSingleValue = (
