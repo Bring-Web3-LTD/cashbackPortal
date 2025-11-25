@@ -50,7 +50,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         return (
             <div className={styles.container}>
                 {Array(maxCategories).fill(0).map((_, index) => (
-                    <button className={`${styles.category} ${styles.skeleton}`} key={index}></button>
+                    <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton}`} key={index}></button>
                 ))}
             </div>
         )
@@ -61,6 +61,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
             <div className={styles.container}>
                 {categories.map(cat => (
                     <button
+                        id={`category-${cat.name}`}
                         onClick={() => onClickFn(cat)}
                         key={cat.id}
                         className={`${styles.category} ${cat === category ? styles.selected : ''}`}
@@ -75,18 +76,21 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
     return (
         <div className={styles.container}>
             <button
+                id="categories-arrow-left"
                 className={`${styles.arrow} ${styles.arrow_left}`}
                 onClick={scrollLeft}
             >
                 &#8249;
             </button>
             <div
+                id="categories-scrollable"
                 className={styles.categories}
                 {...handlers}
                 ref={scrollRef}
             >
                 {categories.map(cat => (
                     <button
+                        id={`category-scroll-${cat.name}`}
                         onClick={() => onClickFn(cat)}
                         key={cat.id}
                         className={`${styles.category} ${cat === category ? styles.selected : ''}`}
@@ -96,6 +100,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                 ))}
             </div>
             <button
+                id="categories-arrow-right"
                 className={`${styles.arrow} ${styles.arrow_right}`}
                 onClick={scrollRight}
             >

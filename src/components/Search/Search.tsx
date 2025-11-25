@@ -251,9 +251,11 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
 
     return (
         <div
+            id="search-container"
             onClick={e => handleClick(e)}
             className={styles.search}>
             <Select
+                id="search-select"
                 instanceId={id}
                 placeholder={t('searchPlaceholder')}
                 styles={customStyles}

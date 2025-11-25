@@ -38,7 +38,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
-        <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
+        <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
                 className={styles.details_container}
                 onClick={toggleFn}
@@ -58,6 +58,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     <span className={`${styles.purchase_name} ${retailerName.length > 20 ? '' : styles.nowrap}`}>{retailerName}</span>
                 </div>
                 <button
+                    id="history-mobile-details-btn"
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
                 >
                     <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
@@ -189,6 +190,7 @@ const HistoryMobile = () => {
     return (
         <div className={styles.container}>
             <Link
+                id="history-mobile-back-btn"
                 className={styles.back_btn}
                 to='..'
                 onClick={e => {

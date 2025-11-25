@@ -124,6 +124,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                     />
                     :
                     <button
+                        id="rewards-modal-sign-btn"
                         className={`${styles.sign_btn} ${loading ? styles.disabled : ''}`}
                         disabled={loading}
                         onClick={signMessage}
