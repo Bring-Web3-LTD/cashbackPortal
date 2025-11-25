@@ -36,7 +36,7 @@ const LoginModal = ({
                 <img src={`${iconsPath}/wallet.svg`} alt="wallet icon" />
                 <div className={styles.title}>{t('connectYourWallet')}</div>
                 <div className={styles.subtitle}>Please login to your wallet to proceed.</div>
-                <button className={styles.btn} onClick={promptLogin}>Login</button>
+                <button id="login-modal-btn" className={styles.btn} onClick={promptLogin}>Login</button>
             </div>
         </Modal>
     )

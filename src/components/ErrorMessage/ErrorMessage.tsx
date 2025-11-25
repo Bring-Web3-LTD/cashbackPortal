@@ -6,8 +6,8 @@ const ErrorMessage = () => {
     const error = useRouteError() as { message: string, stack: string }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.message}>
+        <div id="error-message-container" className={styles.container}>
+            <div id="error-message" className={styles.message}>
                 {DEV_MODE ?
                     <div>
                         {error.message}

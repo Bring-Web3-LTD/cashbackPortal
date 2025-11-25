@@ -38,7 +38,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
-        <div className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
+        <div id="history-desktop-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
                 className={styles.details_container}
                 onClick={toggleFn}
@@ -77,6 +77,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                 </div>
                 <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
                 <button
+                    id="history-desktop-details-btn"
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
                 >
                     <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
@@ -193,6 +194,7 @@ const HistoryDesktop = () => {
     return (
         <div className={styles.container}>
             <Link
+                id="history-desktop-back-btn"
                 className={styles.back_btn}
                 to='..'
                 onClick={e => {

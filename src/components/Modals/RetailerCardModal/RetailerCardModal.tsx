@@ -76,6 +76,7 @@ const RetailerCardModal = ({
             >
                 {showingTerms && (
                     <button
+                        id="retailer-modal-back-btn"
                         className={styles.back_btn}
                         onClick={() => setShowingTerms(false)}
                     >
@@ -146,6 +147,7 @@ const RetailerCardModal = ({
                                 <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} cashback</div>
                                 {redirectLink && terms ?
                                     <a
+                                        id="retailer-modal-start-shopping-btn"
                                         className={styles.start_btn}
                                         onClick={activate}
                                         href={redirectLink}
@@ -155,6 +157,7 @@ const RetailerCardModal = ({
                                     </a>
                                     :
                                     <button
+                                        id="retailer-modal-loading-btn"
                                         className={styles.start_btn}
                                         disabled={true}
                                     >
@@ -163,6 +166,7 @@ const RetailerCardModal = ({
                                 }
                                 <div className={styles.consent_txt}>
                                     By clicking Go Shopping, you accept the <button
+                                        id="retailer-modal-terms-btn"
                                         className={styles.terms_btn}
                                         onClick={() => setShowingTerms(true)}
                                     >Terms and Exclusions</button>
@@ -217,6 +221,7 @@ const RetailerCardModal = ({
                 }
                 {redirectLink && terms ?
                     <a
+                        id="retailer-modal-start-shopping-mobile-btn"
                         className={styles.start_btn}
                         onClick={activate}
                         href={redirectLink}
@@ -226,6 +231,7 @@ const RetailerCardModal = ({
                     </a>
                     :
                     <button
+                        id="retailer-modal-loading-mobile-btn"
                         className={styles.start_btn}
                         disabled={true}
                     >

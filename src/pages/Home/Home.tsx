@@ -181,6 +181,7 @@ const Home = () => {
                             <AnimatePresence>
                                 {search?.value || category?.name ?
                                     <motion.button
+                                        id="home-filter-reset-btn"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
