@@ -59,13 +59,15 @@ const Modal = ({ children, style, open, closeFn, xMarkPath = 'x-mark.svg', showC
 
     return (
         <div
+            id="modal-overlay"
             style={style}
             className={styles.overlay}
             onClick={handleOverlayClick}
         >
-            <div className={styles.modal}>
+            <div id="modal-content" className={styles.modal}>
                 {showCloseBtn ?
                     <button
+                        id="modal-close-btn"
                         className={styles.close_btn}
                         onClick={closePopup}
                     >

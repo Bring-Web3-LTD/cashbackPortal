@@ -56,17 +56,17 @@
 }
 
 .btn:hover {
-    background: var(--pending-btn-hover-bg);
-    color: var(--pending-btn-hover-f-c);
-    border-width: var(--pending-btn-hover-border-w);
-    border-color: var(--pending-btn-hover-border-c);
+    background: var(--header-btn-hover-bg,var(--header-btn-bg));
+    color: var(--header-btn-hover-f-c,var(--header-btn-f-c));
+    border-width: var(--header-btn-hover-border-w,var(--header-btn-border-w));
+    border-color: var(--header-btn-hover-border-c,var(--header-btn-border-c));
 }
 
 .btn:active {
-    background: var(--pending-btn-pressed-bg);
-    color: var(--pending-btn-pressed-f-c);
-    border-width: var(--pending-btn-hover-pressed-w);
-    border-color: var(--pending-btn-hover-pressed-c);
+    background: var(--header-btn-pressed-bg,var(--header-btn-bg));
+    color: var(--header-btn-pressed-f-c,var(--header-btn-f-c));
+    border-width: var(--header-btn-pressed-border-w,var(--header-btn-border-w));
+    border-color: var(--header-btn-pressed-border-c,var(--header-btn-border-c));
 }
 
 @media screen and (max-width:1190px) {
