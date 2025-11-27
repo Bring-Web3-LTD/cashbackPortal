@@ -125,6 +125,7 @@ const RetailerCard = ({
             >
                 {isBig || isCampaign ? <div className={`${styles.flag} ${isCampaign ? styles.flag_campaign : ''}`}>{cashback}</div> : null}
                 <div
+                    id={`retailer-logo-container-${name}`}
                     className={`${styles.logo_container} ${isCampaign ? styles.logo_container_campaign : ''}`}
                     style={{ backgroundColor: backgroundColor || 'white' }}
                 >
@@ -132,6 +133,7 @@ const RetailerCard = ({
                         <div className={styles.fallback_img}>{fallbackImg}</div>
                         :
                         <img
+                            id={`retailer-logo-${name}`}
                             className={styles.logo}
                             loading='eager'
                             src={iconPath}
@@ -140,8 +142,8 @@ const RetailerCard = ({
                         />
                     }
                 </div>
-                <div className={styles.retailer_name}>{section ? `/${section}` : name}</div>
-                <div className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
+                <div id={`retailer-name-${name}`} className={styles.retailer_name}>{section ? `/${section}` : name}</div>
+                <div id={`retailer-cashback-rate-${name}`} className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
             </div>
             <RetailerCardModal
                 open={modalState !== 'close'}
