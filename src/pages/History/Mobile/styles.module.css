@@ -25,6 +25,7 @@
     transition: .2s;
     top: calc(40px + 37px);
     left: calc(50vw - 171px);
+    z-index: 10;
 }
 
 .table {
