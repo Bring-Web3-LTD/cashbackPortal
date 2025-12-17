@@ -14,7 +14,7 @@
 }
 
 .back_btn {
-    position: fixed;
+    position: absolute;
     display: flex;
     align-items: center;
     gap: 6px;
