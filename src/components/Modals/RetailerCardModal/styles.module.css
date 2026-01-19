@@ -93,7 +93,7 @@
 }
 
 .markdown a {
-    color: var(--primary-btn-hover-bg);
+    color: var(--primary-btn-bg);
     text-decoration: var(--modal-deal-markdown-link-decoration, underline);
     font-weight: var(--modal-deal-markdown-link-f-w, 400);
     transition: .2s;
