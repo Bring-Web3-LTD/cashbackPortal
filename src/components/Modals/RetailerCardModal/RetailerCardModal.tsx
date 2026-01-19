@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import Markdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
@@ -8,6 +9,8 @@ import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useRouteLoaderData } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
+import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
+import { ENV } from '../../../config'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -36,7 +39,8 @@ const RetailerCardModal = ({
 }: Props) => {
 
     const { sendGaEvent } = useGoogleAnalytics()
-    const { extensionId, cryptoSymbols, iconsPath, showTerms } = useRouteLoaderData('root') as LoaderData
+    const { extensionId, cryptoSymbols, iconsPath, showTerms, platform } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const [fallbackImg, setFallbackImg] = useState('')
     const [showingTerms, setShowingTerms] = useState(false)
     const { t } = useTranslation()
@@ -105,7 +109,37 @@ const RetailerCardModal = ({
                                 style={{ width: '100%' }}
                             >
                                 {terms ? (
-                                    <Markdown className={`${styles.markdown} ${styles.markdown_short}`}>
+                                    <Markdown 
+                                        className={`${styles.markdown} ${styles.markdown_short}`}
+                                        rehypePlugins={[rehypeRaw]}
+                                        components={{
+                                            a: ({ href, children, ...props }) => {
+                                                if (href?.startsWith('#')) {
+                                                    return <a href={href} {...props}>{children}</a>
+                                                }
+                                                if (href?.startsWith('http')) {
+                                                    const url = new URL(href)
+                                                    url.searchParams.set('platform', platform.toUpperCase())
+                                                    url.searchParams.set('address', walletAddress || 'null')
+                                                    url.searchParams.set('env', ENV)                                                    
+                                                    return (
+                                                        <a
+                                                            {...props}
+                                                            className={styles.externalLink}
+                                                            href="#"
+                                                            onClick={(e) => {
+                                                                e.preventDefault()
+                                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </a>
+                                                    )
+                                                }
+                                                return <a href={href} {...props}>{children}</a>
+                                            }
+                                        }}
+                                    >
                                         {terms}
                                     </Markdown>
                                 ) : (
@@ -211,7 +245,39 @@ const RetailerCardModal = ({
                     </div>
                 </div>
                 {terms ?
-                    <Markdown className={styles.markdown}>
+                    <Markdown 
+                        className={styles.markdown}
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                            a: ({ href, children, ...props }) => {
+                                if (href?.startsWith('#')) {
+                                    return <a href={href} {...props}>{children}</a>
+                                }
+                                if (href?.startsWith('http')) {
+                                    const url = new URL(href)
+                                    url.searchParams.set('platform', platform.toUpperCase())
+                                    url.searchParams.set('address', walletAddress || 'null')
+                                    if (ENV !== 'prod') {
+                                        url.searchParams.set('env', ENV)
+                                    }
+                                    return (
+                                        <a
+                                            {...props}
+                                            className={styles.externalLink}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
+                                            }}
+                                        >
+                                            {children}
+                                        </a>
+                                    )
+                                }
+                                return <a href={href} {...props}>{children}</a>
+                            }
+                        }}
+                    >
                         {terms}
                     </Markdown>
                     :
