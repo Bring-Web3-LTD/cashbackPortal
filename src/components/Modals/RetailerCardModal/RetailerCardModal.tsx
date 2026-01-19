@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import Markdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
@@ -10,6 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
 import Icon from '../../Icon/Icon'
 import { getInitials } from '../../../utils/getInitials'
+import { useWalletAddress } from '../../../hooks/useWalletAddress'
+import { ENV } from '../../../config'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
@@ -40,7 +43,8 @@ const RetailerCardModal = ({
 }: Props) => {
 
     const { sendGaEvent } = useGoogleAnalytics()
-    const { extensionId, cryptoSymbols, showTerms } = useRouteLoaderData('root') as LoaderData
+    const { extensionId, cryptoSymbols, showTerms, platform } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
     const [showingTerms, setShowingTerms] = useState(false)
     const { t } = useTranslation()
@@ -121,7 +125,37 @@ const RetailerCardModal = ({
                                 className={styles.modal}
                             >
                                 {terms ? (
-                                    <Markdown className={`${styles.markdown} ${styles.markdown_short}`}>
+                                    <Markdown 
+                                        className={`${styles.markdown} ${styles.markdown_short}`}
+                                        rehypePlugins={[rehypeRaw]}
+                                        components={{
+                                            a: ({ href, children, ...props }) => {
+                                                if (href?.startsWith('#')) {
+                                                    return <a href={href} {...props}>{children}</a>
+                                                }
+                                                if (href?.startsWith('http')) {
+                                                    const url = new URL(href)
+                                                    url.searchParams.set('platform', platform.toUpperCase())
+                                                    url.searchParams.set('address', walletAddress || 'null')
+                                                    url.searchParams.set('env', ENV)                                                    
+                                                    return (
+                                                        <a
+                                                            {...props}
+                                                            className={styles.externalLink}
+                                                            href="#"
+                                                            onClick={(e) => {
+                                                                e.preventDefault()
+                                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </a>
+                                                    )
+                                                }
+                                                return <a href={href} {...props}>{children}</a>
+                                            }
+                                        }}
+                                    >
                                         {terms}
                                     </Markdown>
                                 ) : (
@@ -232,7 +266,39 @@ const RetailerCardModal = ({
                     </div>
                 </div>
                 {terms ?
-                    <Markdown className={styles.markdown}>
+                    <Markdown 
+                        className={styles.markdown}
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                            a: ({ href, children, ...props }) => {
+                                if (href?.startsWith('#')) {
+                                    return <a href={href} {...props}>{children}</a>
+                                }
+                                if (href?.startsWith('http')) {
+                                    const url = new URL(href)
+                                    url.searchParams.set('platform', platform.toUpperCase())
+                                    url.searchParams.set('address', walletAddress || 'null')
+                                    if (ENV !== 'prod') {
+                                        url.searchParams.set('env', ENV)
+                                    }
+                                    return (
+                                        <a
+                                            {...props}
+                                            className={styles.externalLink}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
+                                            }}
+                                        >
+                                            {children}
+                                        </a>
+                                    )
+                                }
+                                return <a href={href} {...props}>{children}</a>
+                            }
+                        }}
+                    >
                         {terms}
                     </Markdown>
                     :
