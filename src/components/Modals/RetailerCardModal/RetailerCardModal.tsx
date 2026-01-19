@@ -256,19 +256,14 @@ const RetailerCardModal = ({
                                 if (href?.startsWith('http')) {
                                     const url = new URL(href)
                                     url.searchParams.set('platform', platform.toUpperCase())
-                                    url.searchParams.set('address', walletAddress || 'null')
-                                    if (ENV !== 'prod') {
-                                        url.searchParams.set('env', ENV)
-                                    }
+                                    url.searchParams.set('address', walletAddress || 'null')                                    
+                                    url.searchParams.set('env', ENV)                                    
                                     return (
                                         <a
-                                            {...props}
-                                            className={styles.externalLink}
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
-                                            }}
+                                            {...props}                                            
+                                            href={url.toString()}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                         >
                                             {children}
                                         </a>
