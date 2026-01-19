@@ -109,39 +109,36 @@ const RetailerCardModal = ({
                                 style={{ width: '100%' }}
                             >
                                 {terms ? (
-                                    <Markdown 
-                                        className={`${styles.markdown} ${styles.markdown_short}`}
-                                        rehypePlugins={[rehypeRaw]}
-                                        components={{
-                                            a: ({ href, children, ...props }) => {
-                                                if (href?.startsWith('#')) {
-                                                    return <a href={href} {...props}>{children}</a>
-                                                }
-                                                if (href?.startsWith('http')) {
-                                                    const url = new URL(href)
-                                                    url.searchParams.set('platform', platform.toUpperCase())
-                                                    url.searchParams.set('address', walletAddress || 'null')
-                                                    url.searchParams.set('env', ENV)                                                    
-                                                    return (
-                                                        <a
-                                                            {...props}
-                                                            className={styles.externalLink}
-                                                            href="#"
-                                                            onClick={(e) => {
-                                                                e.preventDefault()
-                                                                window.open(url.toString(), '_blank', 'noopener,noreferrer')
-                                                            }}
-                                                        >
-                                                            {children}
-                                                        </a>
-                                                    )
-                                                }
-                                                return <a href={href} {...props}>{children}</a>
-                                            }
-                                        }}
-                                    >
-                                        {terms}
-                                    </Markdown>
+                            <Markdown 
+                                className={styles.markdown}
+                                rehypePlugins={[rehypeRaw]}
+                                components={{
+                                    a: ({ href, children, ...props }) => {
+                                        if (href?.startsWith('#')) {
+                                            return <a href={href} {...props}>{children}</a>
+                                        }
+                                        if (href?.startsWith('http')) {
+                                            const url = new URL(href)
+                                            url.searchParams.set('platform', platform.toUpperCase())
+                                            url.searchParams.set('address', walletAddress || 'null')                                    
+                                            url.searchParams.set('env', ENV)                                    
+                                            return (
+                                                <a
+                                                    {...props}                                            
+                                                    href={url.toString()}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {children}
+                                                </a>
+                                            )
+                                        }
+                                        return <a href={href} {...props}>{children}</a>
+                                    }
+                                }}
+                            >
+                                {terms}
+                            </Markdown>
                                 ) : (
                                     <div className={`${styles.markdown} ${styles.center}`}>
                                         Loading...
