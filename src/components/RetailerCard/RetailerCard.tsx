@@ -137,7 +137,7 @@ const RetailerCard = ({
                             id={`retailer-logo-${name}`}
                             className={styles.logo}
                             loading='eager'
-                            src=""
+                            src={iconPath}
                             alt={`${name} logo`}
                             onError={() => setFallbackImg(getInitials(name))}
                         />
