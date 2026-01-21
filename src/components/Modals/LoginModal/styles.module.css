@@ -29,14 +29,15 @@
 
 .btn {
     display: flex;
-    align-items: center;
+    padding: 13px 24px;
     justify-content: center;
-    width: 251px;
+    align-items: center;
+    gap: 6px;
+    align-self: stretch;
     background: var(--primary-btn-bg);
     font-size: var(--primary-btn-f-s);
     font-weight: var(--primary-btn-f-w);
     color: var(--primary-btn-f-c);
-    height: 48px;
     border-width: var(--primary-btn-border-w);
     border-style: solid;
     border-color: var(--primary-btn-border-c);
