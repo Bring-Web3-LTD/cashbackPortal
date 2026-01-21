@@ -207,6 +207,14 @@
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #84868C;
 
+    --retailer-logo-fallback-bg: #FFF;
+    --retailer-logo-fallback-f-c: #000;
+    --retailer-logo-fallback-f-s: 20px;
+    --retailer-logo-fallback-f-w: 700;
+    --retailer-logo-fallback-line-height: 24px;
+    --retailer-logo-fallback-border-w: 1px;
+    --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
+
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
     --scrollbar-w: 10px;
 

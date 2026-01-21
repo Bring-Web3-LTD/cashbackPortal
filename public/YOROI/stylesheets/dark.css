@@ -91,6 +91,14 @@
     --retailer-card-img-border-c: #262A38;
     --retailer-card-img-border-w: 1px;
 
+    --retailer-logo-fallback-bg: #4B6DDE;
+    --retailer-logo-fallback-f-c: #FFF;
+    --retailer-logo-fallback-f-s: 28px;
+    --retailer-logo-fallback-f-w: 500;
+    --retailer-logo-fallback-line-height: 24px;
+    --retailer-logo-fallback-border-w: 1px;
+    --retailer-logo-fallback-border-c: #FFF;
+
     --retailer-card-flag-f-s: 12px;
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #0B0B0F;

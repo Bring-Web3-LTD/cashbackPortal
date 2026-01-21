@@ -8,6 +8,7 @@ import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import fetchTerms from '../../utils/fetchTerms'
+import { getInitials } from '../../utils/getInitials'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -136,9 +137,9 @@ const RetailerCard = ({
                             id={`retailer-logo-${name}`}
                             className={styles.logo}
                             loading='eager'
-                            src={iconPath}
+                            src=""
                             alt={`${name} logo`}
-                            onError={() => setFallbackImg(name)}
+                            onError={() => setFallbackImg(getInitials(name))}
                         />
                     }
                 </div>

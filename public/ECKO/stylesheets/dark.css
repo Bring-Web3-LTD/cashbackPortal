@@ -112,6 +112,14 @@
     --retailer-card-img-border-campaign-c: #F36A3D;
     /*not found in figma*/
 
+    --retailer-logo-fallback-bg: #FFF;
+    --retailer-logo-fallback-f-c: #13172F;
+    --retailer-logo-fallback-f-s: 25px;
+    --retailer-logo-fallback-f-w: 700;
+    --retailer-logo-fallback-line-height: 24px;
+    --retailer-logo-fallback-border-w: 1px;
+    --retailer-logo-fallback-border-c: rgba(64, 74, 141, 0.50);
+
     --retailer-card-flag-f-s: 11px;
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #FFF;

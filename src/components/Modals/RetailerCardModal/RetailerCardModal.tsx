@@ -8,6 +8,7 @@ import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useRouteLoaderData } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
+import { getInitials } from '../../../utils/getInitials'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor: string | undefined,
@@ -140,7 +141,7 @@ const RetailerCardModal = ({
                                             loading='eager'
                                             src={iconPath}
                                             alt={`${name} logo`}
-                                            onError={() => setFallbackImg(name)}
+                                            onError={() => setFallbackImg(getInitials(name))}
                                         />
                                     }
                                 </div>
@@ -199,7 +200,7 @@ const RetailerCardModal = ({
                                 loading='eager'
                                 src={iconPath}
                                 alt={`${name} logo`}
-                                onError={() => setFallbackImg(name)}
+                                onError={() => setFallbackImg(getInitials(name))}
                             />
                         }
                     </div>

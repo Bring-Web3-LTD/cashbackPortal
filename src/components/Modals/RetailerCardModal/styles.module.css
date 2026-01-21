@@ -176,9 +176,23 @@
 }
 
 .fallback_img {
-    color: black;
-    font-size: 10px;
-    font-weight: 900;
+    display: flex;
+    width: 56px;
+    height: 56px;
+    padding: 4px 3.9px 4px 4.1px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    text-align: center;
+    font-style: normal;
+    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, rgba(64, 74, 141, 0.50));
+    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    color: var(--retailer-logo-fallback-f-c, white);
+    font-size: var(--retailer-logo-fallback-f-s, 24px);
+    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    line-height: var(--retailer-logo-fallback-line-height, 45px);
+    text-transform: uppercase;
 }
 
 .terms_btn {
