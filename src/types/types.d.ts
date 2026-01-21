@@ -61,6 +61,7 @@ interface Claim {
     tokenAmount: number
     tokenSymbol: string
     type?: "claim"
+    txid?: string
 }
 
 interface Deal {
