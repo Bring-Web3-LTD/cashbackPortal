@@ -35,6 +35,17 @@
     border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
 }
+.fallback_logo_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-width: var(--retailer-card-img-border-w);
+    border-style: solid;
+    border-color: var(--retailer-card-img-border-c);
+    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, var(--retailer-card-img-border-c));
+    border-radius: 50%;
+}
 
 .logo_container_campaign {
     border-color: var(--retailer-card-img-border-campaign-c, var(--retailer-card-img-border-c));
@@ -47,7 +58,7 @@
     border-radius: 50%;
 }
 
-.fallback_img {
+.fallback_logo {
     display: flex;
     width: 56px;
     height: 56px;
@@ -58,13 +69,16 @@
     border-radius: 50%;
     text-align: center;
     font-style: normal;
-    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, rgba(64, 74, 141, 0.50));
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    background: var(--retailer-logo-fallback-bg,var(--retailer-card-img-border-c));
     color: var(--retailer-logo-fallback-f-c, white);
     font-size: var(--retailer-logo-fallback-f-s, 24px);
     font-weight: var(--retailer-logo-fallback-f-w, 700);
     line-height: var(--retailer-logo-fallback-line-height, 45px);
     text-transform: uppercase;
+}
+.fallback_logo_two_letters {
+    font-size: var(--retailer-logo-fallback-f-s-two-letters, 37px); 
+    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));  
 }
 
 .retailer_name {
