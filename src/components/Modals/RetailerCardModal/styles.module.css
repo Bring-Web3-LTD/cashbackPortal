@@ -191,7 +191,6 @@
     color: var(--retailer-logo-fallback-f-c, white);
     font-size: var(--retailer-logo-fallback-f-s, 24px);
     font-weight: var(--retailer-logo-fallback-f-w, 700);
-    line-height: var(--retailer-logo-fallback-line-height, 45px);
     text-transform: uppercase;
 }
 
