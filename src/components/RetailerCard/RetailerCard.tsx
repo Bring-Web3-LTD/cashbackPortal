@@ -162,6 +162,7 @@ const RetailerCard = ({
                 cashback={cashback}
                 terms={terms}
                 redirectLink={redirectLink}
+                fallbackLogo={fallbackLogo}
                 {...popupData}
             />
             <LoginModal
