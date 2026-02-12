@@ -11,7 +11,7 @@ import { isDesktop } from 'react-device-detect'
 import { getInitials } from '../../../utils/getInitials'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
-    backgroundColor: string | undefined,
+    backgroundColor?: string | undefined,
     iconPath: string
     name: string
     cashback: string

@@ -156,7 +156,7 @@ const RetailerCard = ({
                         details: 'Retailer',
                     })
                 }}
-                backgroundColor={backgroundColor}
+                {...(!fallbackLogo && { backgroundColor })}
                 iconPath={iconPath}
                 name={name}
                 cashback={cashback}
