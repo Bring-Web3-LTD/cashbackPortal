@@ -109,6 +109,10 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         ...base,
         color: 'var(--search-placeholder-f-c)'
     }),
+    singleValue: (base) => ({
+        ...base,
+        color: 'var(--search-f-c)',
+    }),
 }
 
 const CustomSingleValue = (
@@ -247,9 +251,11 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
 
     return (
         <div
+            id="search-container"
             onClick={e => handleClick(e)}
             className={styles.search}>
             <Select
+                id="search-select"
                 instanceId={id}
                 placeholder={t('searchPlaceholder')}
                 styles={customStyles}

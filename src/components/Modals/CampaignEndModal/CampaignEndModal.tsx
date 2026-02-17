@@ -33,6 +33,7 @@ const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 
                     }
                 </div>
                 <a
+                    id="campaign-end-modal-install-btn"
                     className={styles.btn}
                     href={`${t('chromeStoreLink')}`}
                     target='_blank'

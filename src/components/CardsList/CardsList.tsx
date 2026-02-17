@@ -59,7 +59,7 @@ const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
     }
 
     return (
-        <div className={styles.container}>
+        <div id="cards-list" className={styles.container}>
             {retailers.map(retailer =>
                 <RetailerCard
                     key={retailer.id}

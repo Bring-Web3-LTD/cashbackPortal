@@ -26,6 +26,33 @@ const rootLoader = async () => {
     const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
     const theme = params.get('theme')?.toLowerCase() || 'light'
     const flowId = v4()
+
+    // If token is provided, use it (works in both dev and prod mode)
+    if (token) {
+        const res = await fetchToken({ token });
+        if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
+        const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
+
+        loadStylesheet(theme, platform)
+        i18n.setDefaultNamespace(platform)
+
+        if (ENV === 'prod') {
+            delete res.info.isTester
+        } else {
+            res.info.isTester = !!res.info.isTester
+        }
+
+        return {
+            ...res.info,
+            iconsPath: `/${platform}/icons/${theme}`,
+            userId: getUserId(res.info.platform),
+            extensionId,
+            showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes(platform),
+            flowId
+        }
+    }
+
+    // Fallback to dev mode parameters if no token provided
     if (DEV_MODE) {
         const dev = {
             walletAddress: params.get('walletAddress') || null,
@@ -46,28 +73,9 @@ const rootLoader = async () => {
             extensionId
         }
     }
-    if (!token) throw Error('There was an error while loading the page')
-    const res = await fetchToken({ token });
-    if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
-    const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
 
-    loadStylesheet(theme, platform)
-    i18n.setDefaultNamespace(platform)
-
-    if (ENV === 'prod') {
-        delete res.info.isTester
-    } else {
-        res.info.isTester = !!res.info.isTester
-    }
-
-    return {
-        ...res.info,
-        iconsPath: `/${platform}/icons/${theme}`,
-        userId: getUserId(res.info.platform),
-        extensionId,
-        showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes(platform),
-        flowId
-    }
+    // If no token and not in dev mode, throw error
+    throw Error('There was an error while loading the page')
 }
 
 const router = createBrowserRouter([

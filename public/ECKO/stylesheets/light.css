@@ -232,14 +232,14 @@
 
     --scrollbar-bg: #404A8D;
     --scrollbar-w: 10px;
-
-    --search-bg: #00000000;
+    
+    --search-bg: #1A1E3E;
     --search-f-s: 15px;
     --search-f-w: 400;
     /* Here */
     --search-f-c: #AEB0BB;
     --search-option-f-c: #AEB0BB;
-    --search-option-hover-bg: #AEB0BB;
+    --search-option-hover-bg: #404A8D;
     --search-radius: 8px;
     --search-border-w: 1px;
     --search-border-c: rgba(255, 255, 255, 0.70);

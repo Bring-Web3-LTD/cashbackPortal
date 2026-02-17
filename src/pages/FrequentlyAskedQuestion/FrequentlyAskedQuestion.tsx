@@ -25,6 +25,7 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
             if (subPart.toLowerCase() === link.linkText.toLowerCase()) {
               return (
                 <a
+                  id={`faq-link-${linkIndex}-${subIndex}`}
                   key={`${linkIndex}-${subIndex}`}
                   className={styles.link_btn}
                   href={link.href}
@@ -78,6 +79,7 @@ const FrequentlyAskedQuestion = () => {
         {
           data?.faq?.map(item => (
             <div
+              id={`faq-item-${item.id}`}
               key={item.question + item.id}
               className={`${styles.collapsible} ${currentIndex === item.itemOrder ? styles.collapsible_open : ''}`}
             >
@@ -89,6 +91,7 @@ const FrequentlyAskedQuestion = () => {
                   {item.question}
                 </div>
                 <button
+                  id={`faq-details-btn-${item.id}`}
                   className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
                 >
                   <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
@@ -113,6 +116,7 @@ const FrequentlyAskedQuestion = () => {
           ))}
       </div>
       <Link
+        id="faq-back-btn"
         className={styles.back_btn}
         to={'..'}
         onClick={e => {

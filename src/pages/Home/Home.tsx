@@ -181,6 +181,7 @@ const Home = () => {
                             <AnimatePresence>
                                 {search?.value || category?.name ?
                                     <motion.button
+                                        id="home-filter-reset-btn"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
@@ -194,7 +195,7 @@ const Home = () => {
                                     : null}
                             </AnimatePresence>
                         </div>
-                        <div className={styles.deals_amount}>{
+                        <div id="deals-amount" className={styles.deals_amount}>{
                             isLoadingRetailers ? "Searching for deals..." :
                                 `Showing ${retailersMetadata?.totalItems} deals`
                         }</div>
