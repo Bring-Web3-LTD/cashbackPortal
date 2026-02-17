@@ -11,9 +11,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
 import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
 import { ENV } from '../../../config'
+import { getInitials } from '../../../utils/getInitials'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
-    backgroundColor: string | undefined,
+    backgroundColor?: string | undefined,
     iconPath: string
     name: string
     cashback: string
@@ -22,6 +23,7 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     iframeUrl?: string
     token?: string
     domain?: string
+    fallbackLogo?: string
 }
 
 const RetailerCardModal = ({
@@ -35,13 +37,15 @@ const RetailerCardModal = ({
     redirectLink,
     iframeUrl,
     token,
-    domain
+    domain,
+    fallbackLogo: fallbackLogoProp
 }: Props) => {
 
     const { sendGaEvent } = useGoogleAnalytics()
     const { extensionId, cryptoSymbols, iconsPath, showTerms, platform } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
-    const [fallbackImg, setFallbackImg] = useState('')
+    const { walletAddress } = useWalletAddress()    
+    const { extensionId, cryptoSymbols, iconsPath, showTerms } = useRouteLoaderData('root') as LoaderData
+    const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
     const [showingTerms, setShowingTerms] = useState(false)
     const { t } = useTranslation()
 
@@ -163,15 +167,15 @@ const RetailerCardModal = ({
                                     className={styles.logo_container}
                                     style={{ backgroundColor: backgroundColor || 'white' }}
                                 >
-                                    {fallbackImg ?
-                                        <div className={styles.fallback_img}>{fallbackImg}</div>
+                                    {fallbackLogo ?
+                                        <div className={styles.fallback_logo}>{fallbackLogo}</div>
                                         :
                                         <img
                                             className={`${styles.logo} ${styles.logo_big}`}
                                             loading='eager'
                                             src={iconPath}
                                             alt={`${name} logo`}
-                                            onError={() => setFallbackImg(name)}
+                                            onError={() => setFallbackLogo(getInitials(name))}
                                         />
                                     }
                                 </div>
@@ -222,15 +226,15 @@ const RetailerCardModal = ({
                         className={styles.logo_container}
                         style={{ backgroundColor: backgroundColor || 'white' }}
                     >
-                        {fallbackImg ?
-                            <div className={styles.fallback_img}>{fallbackImg}</div>
+                        {fallbackLogo ?
+                            <div className={styles.fallback_logo}>{fallbackLogo}</div>
                             :
                             <img
                                 className={styles.logo}
                                 loading='eager'
                                 src={iconPath}
                                 alt={`${name} logo`}
-                                onError={() => setFallbackImg(name)}
+                                onError={() => setFallbackLogo(getInitials(name))}
                             />
                         }
                     </div>
