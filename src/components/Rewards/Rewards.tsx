@@ -233,7 +233,7 @@ const Rewards = () => {
                         {/* <div className={`${styles.amount} ${styles.amount_pending}`}>
                             {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}${t('pendingRewards') !== 'pendingRewards' ? ` ${t('pendingRewards')}` : ''}`}
                         </div> */}
-                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value:<br className={styles.br} />{pendingTotalEstimatedUsd}</div>
+                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: <br className={styles.br} />{pendingTotalEstimatedUsd}</div>
                     </div>
                 </div>
                 <button
