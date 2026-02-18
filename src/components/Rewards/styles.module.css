@@ -66,6 +66,7 @@
     margin-right: 8px;
     line-height: var(--rewards-amount-l-h, 35px);
     text-wrap: nowrap;
+    padding-right: 1px;
 }
 
 .amount_claim {
