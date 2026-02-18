@@ -28,6 +28,7 @@
     "react-router-dom": "^6.26.1",
     "react-select": "^5.8.0",
     "react-swipeable": "^7.0.1",
+    "rehype-raw": "6",
     "use-debounce": "^10.0.4",
     "uuid": "^11.1.0"
   },
