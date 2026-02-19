@@ -106,7 +106,7 @@
     --retailer-card-border-color: #404A8D;
     --retailer-card--hover-border-color: #404A8D;
 
-    --retailer-card-img-border-c: #DCE0E980;
+    --retailer-card-img-border-c: #404A8D80;
     /*not found in figma*/
     --retailer-card-img-border-w: 1px;
     /*not found in figma*/
@@ -188,7 +188,7 @@
     --modal-title-f-c: #FFF;
     --modal-paragraph-f-s: 12px;
     --modal-paragraph-f-w: 400;
-    --modal-paragraph-f-c: #AEB0BB;
+    --modal-paragraph-f-c: #FFFFFF;
     /*doesn't exeist for Ecko*/
     --modal-claim-amount-f-s: 40px;
     --modal-claim-amount-f-w: 500;
@@ -237,6 +237,7 @@
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #AEB0BB;
+    --modal-deal-terms-btn-hover-f-c: #FF00B8;
 
     --scrollbar-bg: #404A8D;
     --scrollbar-w: 10px;
