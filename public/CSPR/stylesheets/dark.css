@@ -206,6 +206,7 @@
     --modal-deal-consent-f-s: 13px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #84868C;
+    --modal-deal-terms-btn-hover-f-c: #CC000F;
 
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
     --scrollbar-w: 10px;

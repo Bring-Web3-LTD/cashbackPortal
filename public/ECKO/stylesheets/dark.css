@@ -79,7 +79,7 @@
     --primary-btn-radius: 100px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg: #FF00B8;
+    --primary-btn-bg: #404A8D;
     --primary-btn-hover-bg: #404A8D;
     --primary-btn-pressed-bg: #404A8D;
     --primary-btn-disabled-bg: #404A8D;
@@ -229,6 +229,7 @@
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #AEB0BB;
+    --modal-deal-terms-btn-hover-f-c: #FF00B8;
 
     --scrollbar-bg: #404A8D;
     --scrollbar-w: 10px;
