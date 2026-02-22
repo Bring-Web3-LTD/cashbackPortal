@@ -28,8 +28,9 @@
     --header-btn-pressed-border-c: #363F82;
 
     --rewards-bg: #13172F;
-
-    --rewards-img-size: 56px;
+    --rewards-icon-container-width: 52px;
+    --rewards-icon-container-height: 56px;
+    --rewards-img-size: 52px;
     /* image size in figma width: 52px;height: 56px;*/
 
     --claim-img-bg: #13172F;
@@ -44,7 +45,7 @@
     --pending-img-bg: #13172F;
     --pending-img-border-w: 1px;
     --pending-img-border-c: #AEB0BB;
-    --pending-img-radius: 40%;
+    --pending-img-radius: 50%;
 
     --rewards-text-f-s: 10px;
     /*not found*/
@@ -72,17 +73,17 @@
     --rewards-btn-f-w: 700;
     --rewards-btn-radius: 100px;
 
-    --primary-btn-f-s: 15px;
+    --primary-btn-f-s: 16px;
     --primary-btn-f-w: 700;
-    --primary-btn-f-c: #13172F;
+    --primary-btn-f-c: #FFF;
     --primary-btn-radius: 100px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg: linear-gradient(168deg, #FFD300 -163.2%, #FF00B8 94.25%);
-    --primary-btn-hover-bg: linear-gradient(168deg, #FFD300 -163.2%, #FF00B8 94.25%);
-    --primary-btn-pressed-bg: linear-gradient(168deg, #FFD300 -163.2%, #FF00B8 94.25%);
-    --primary-btn-disabled-bg: linear-gradient(168deg, #FFD300 -163.2%, #FF00B8 94.25%);
-    --primary-btn-disabled-f-c: #13172F;
+    --primary-btn-bg: #404A8D;
+    --primary-btn-hover-bg: #404A8D;
+    --primary-btn-pressed-bg: #404A8D;
+    --primary-btn-disabled-bg: #404A8D;
+    --primary-btn-disabled-f-c: #FFF;
 
     --pending-btn-f-c: #13172F;
     --pending-btn-border-c: transparent;
@@ -105,7 +106,7 @@
     --retailer-card-border-color: #404A8D;
     --retailer-card--hover-border-color: #404A8D;
 
-    --retailer-card-img-border-c: #DCE0E980;
+    --retailer-card-img-border-c: #404A8D80;
     /*not found in figma*/
     --retailer-card-img-border-w: 1px;
     /*not found in figma*/
@@ -151,15 +152,15 @@
     /*found but no value in figma*/
     /* need to configure */
     /*found but no value in figma*/
-    --filter-btn-f-s: 15px;
-    --filter-btn-f-w: 500;
-    --filter-btn-f-c: #FBFBFB;
-    --filter-btn-bg: transparent;
-    --filter-btn-hover-bg: #242424;
-    --filter-btn-hover-f-c: #FBFBFB;
-    --filter-btn-border-w: 1px;
-    --filter-btn-border-c: #FFFFFF1F;
-    --filter-btn-radius: 8px;
+    --filter-btn-f-s: 12px;
+    --filter-btn-f-w: 600;
+    --filter-btn-f-c: #FFFFFF;
+    --filter-btn-bg: rgba(64, 74, 141, 0.40);
+    --filter-btn-hover-bg: rgba(64, 74, 141, 0.40);
+    --filter-btn-hover-f-c: #FFFFFF;
+    --filter-btn-border-w: 0px;
+    --filter-btn-border-c: transparent;
+    --filter-btn-radius: 10px;
     /* until here */
     --category-btn-bg: transparent;
     --category-btn-f-s: 12px;
@@ -172,8 +173,8 @@
     
     --category-btn-hover-f-c: #FFFFFF;
     --category-btn-hover-f-w: 600;
-    --category-btn-hover-border-w: 1px;
-    --category-btn-hover-border-c: #AEB0BB;
+    --category-btn-hover-border-w: 0px;
+    --category-btn-hover-border-c: transparent;
     --category-btn-hover-radius: 7px;
 
     --modal-offset-top: -120px;
@@ -187,7 +188,7 @@
     --modal-title-f-c: #FFF;
     --modal-paragraph-f-s: 12px;
     --modal-paragraph-f-w: 400;
-    --modal-paragraph-f-c: #AEB0BB;
+    --modal-paragraph-f-c: #FFFFFF;
     /*doesn't exeist for Ecko*/
     --modal-claim-amount-f-s: 40px;
     --modal-claim-amount-f-w: 500;
@@ -236,6 +237,7 @@
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #AEB0BB;
+    --modal-deal-terms-btn-hover-f-c: #FF00B8;
 
     --scrollbar-bg: #404A8D;
     --scrollbar-w: 10px;

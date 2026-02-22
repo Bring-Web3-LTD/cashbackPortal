@@ -20,7 +20,7 @@
 .reward_details {
     display: flex;
     gap: 8px;
-    align-items: flex-start;
+    align-items: center;
     user-select: none;
 }
 
@@ -36,8 +36,8 @@
     justify-content: center;
     align-items: center;
     border-style: solid;
-    width: 35px;
-    height: 35px;
+    width: var(--rewards-icon-container-width, 35px);
+    height: var(--rewards-icon-container-height, 35px);
 }
 
 .claim_icon {
@@ -66,6 +66,7 @@
     margin-right: 8px;
     line-height: var(--rewards-amount-l-h, 35px);
     text-wrap: nowrap;
+    padding-right: 1px;
 }
 
 .amount_claim {

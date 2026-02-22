@@ -207,5 +207,5 @@
 }
 
 .terms_btn:hover {
-    color: var(--primary-btn-bg);
+    color: var(--modal-deal-terms-btn-hover-f-c, var(--primary-btn-bg));
 }
