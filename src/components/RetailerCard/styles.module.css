@@ -85,6 +85,9 @@
     font-weight: var(--retailer-card-name-f-w);
     color: var(--retailer-card-name-f-c);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
     line-height: 20.8px;
     margin: 4px 0;
 }
