@@ -147,7 +147,7 @@ const RetailerCardModal = ({
                                         />
                                     }
                                 </div>
-                                <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} cashback</div>
+                                <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} Cashback</div>
                                 {redirectLink && terms ?
                                     <a
                                         id="retailer-modal-start-shopping-btn"
@@ -168,7 +168,7 @@ const RetailerCardModal = ({
                                     </button>
                                 }
                                 <div className={styles.consent_txt}>
-                                    By clicking Go Shopping, you accept the <button
+                                    By clicking Start Shopping, you accept the <button
                                         id="retailer-modal-terms-btn"
                                         className={styles.terms_btn}
                                         onClick={() => setShowingTerms(true)}
@@ -242,7 +242,7 @@ const RetailerCardModal = ({
                     </button>
                 }
                 <div className={styles.consent_txt}>
-                    By clicking Go Shopping, you accept the Terms and Exclusions above.
+                    By clicking Start Shopping, you accept the Terms and Exclusions above.
                 </div>
             </div>
         </Modal>
