@@ -17,6 +17,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 35px;
     background: var(--bg);
     padding-bottom: 11px;
