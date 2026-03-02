@@ -166,7 +166,7 @@
 }
 
 .full_width {
-    width: calc((570px) * 2);
+    width: calc(1176px - (var(--padding) * 2));
 }
 
 .br {
