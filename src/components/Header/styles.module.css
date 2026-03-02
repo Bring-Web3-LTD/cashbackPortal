@@ -39,7 +39,8 @@
     justify-content: center;
     align-items: center;
     min-width: 90px;
-    height: 29px;
+    width: 185px;
+    height: 36px;
     padding: var(--header-btn-p, 0 16px);
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
