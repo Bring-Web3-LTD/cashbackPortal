@@ -72,8 +72,8 @@ const Modal = ({ children, style, open, closeFn, xMarkPath = 'x-mark.svg', showC
                         onClick={closePopup}
                     >
                         <img
-                            width={20}
-                            height={20}
+                            width={24}
+                            height={24}
                             src={`${iconsPath}/${xMarkPath}`}
                             alt="x-mark"
                             onError={(e) => {
