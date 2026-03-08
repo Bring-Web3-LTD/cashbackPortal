@@ -117,7 +117,7 @@ const RetailerCardModal = ({
                                         if (href?.startsWith('#')) {
                                             return <a href={href} {...props}>{children}</a>
                                         }
-                                        if (href?.startsWith('http')) {
+                                        if (href?.startsWith('http://') || href?.startsWith('https://')) {
                                             const url = new URL(href)
                                             url.searchParams.set('platform', platform.toUpperCase())
                                             url.searchParams.set('address', walletAddress || 'null')                                    
@@ -250,7 +250,7 @@ const RetailerCardModal = ({
                                 if (href?.startsWith('#')) {
                                     return <a href={href} {...props}>{children}</a>
                                 }
-                                if (href?.startsWith('http')) {
+                                if (href?.startsWith('http://') || href?.startsWith('https://')) {
                                     const url = new URL(href)
                                     url.searchParams.set('platform', platform.toUpperCase())
                                     url.searchParams.set('address', walletAddress || 'null')                                    
