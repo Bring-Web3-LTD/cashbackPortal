@@ -8,6 +8,7 @@ import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import fetchTerms from '../../utils/fetchTerms'
+import { getInitials } from '../../utils/getInitials'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -49,7 +50,7 @@ const RetailerCard = ({
     const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()
-    const [fallbackImg, setFallbackImg] = useState('')
+    const [fallbackLogo, setFallbackLogo] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
     const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
@@ -126,11 +127,11 @@ const RetailerCard = ({
                 {isBig || isCampaign ? <div className={`${styles.flag} ${isCampaign ? styles.flag_campaign : ''}`}>{cashback}</div> : null}
                 <div
                     id={`retailer-logo-container-${name}`}
-                    className={`${styles.logo_container} ${isCampaign ? styles.logo_container_campaign : ''}`}
-                    style={{ backgroundColor: backgroundColor || 'white' }}
+                    className={`${fallbackLogo ? styles.fallback_logo_container : styles.logo_container} ${isCampaign ? styles.logo_container_campaign : ''}`}
+                    style={!fallbackLogo ? { backgroundColor: backgroundColor || 'white' } : undefined}
                 >
-                    {fallbackImg ?
-                        <div className={styles.fallback_img}>{fallbackImg}</div>
+                    {fallbackLogo ?
+                        <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                         :
                         <img
                             id={`retailer-logo-${name}`}
@@ -138,7 +139,7 @@ const RetailerCard = ({
                             loading='eager'
                             src={iconPath}
                             alt={`${name} logo`}
-                            onError={() => setFallbackImg(name)}
+                            onError={() => setFallbackLogo(getInitials(name))}
                         />
                     }
                 </div>
@@ -155,12 +156,13 @@ const RetailerCard = ({
                         details: 'Retailer',
                     })
                 }}
-                backgroundColor={backgroundColor}
+                {...(!fallbackLogo && { backgroundColor })}
                 iconPath={iconPath}
                 name={name}
                 cashback={cashback}
                 terms={terms}
                 redirectLink={redirectLink}
+                fallbackLogo={fallbackLogo}
                 {...popupData}
             />
             <LoginModal
