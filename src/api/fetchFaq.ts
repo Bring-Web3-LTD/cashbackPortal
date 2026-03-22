@@ -1,4 +1,4 @@
-import { API_URL_PLATFORMS, API_KEY } from "../config"
+import { API_URL, API_KEY } from "../config"
 
 interface Body extends BackendRequestBody {
     walletAddress: string | undefined
@@ -30,7 +30,7 @@ const fetchFaq = async (body: Body): Promise<Response> => {
         body.walletAddress = 'null'
     }
 
-    const res = await fetch(`${API_URL_PLATFORMS}faq`, {
+    const res = await fetch(`${API_URL}faq`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
