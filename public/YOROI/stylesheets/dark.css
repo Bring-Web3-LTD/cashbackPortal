@@ -189,6 +189,23 @@
     --modal-claim-countdown-f-s: 16px;
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #7892E8;
+    
+    --modal-deal-name-f-s: 16px;
+    --modal-deal-name-f-w: 500;
+    --modal-deal-name-f-c: #E1E6F5;
+    --modal-deal-markdown-bg: #15171F;
+    --modal-deal-markdown-border-w: 1px;
+    --modal-deal-markdown-border-c: #262A38;
+    --modal-deal-markdown-radius: 12px;
+    --modal-deal-markdown-f-s: 14px;
+    --modal-deal-markdown-f-w: 500;
+    --modal-deal-markdown-f-c: #E1E6F5;
+    --modal-deal-markdown-bold-f-w: 500;
+    --modal-deal-markdown-bold-f-c: #E1E6F5;
+    --modal-deal-consent-f-s: 12px;
+    --modal-deal-consent-f-w: 400;
+    --modal-deal-consent-f-c: #E1E6F5;
+    --modal-deal-terms-btn-hover-f-c: #4B6DDE;
 
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 500;
@@ -214,7 +231,7 @@
     --modal-status-btn-hover-border-w: 0;
     --modal-status-btn-hover-border-c: transparent;
     --modal-status-btn-hover-radius: 8px;
-    
+
     --modal-status-btn-disabled-bg: #242D4F;
     --modal-status-btn-disabled-f-s: 16px;
     --modal-status-btn-disabled-f-w: 500;
@@ -222,23 +239,6 @@
     --modal-status-btn-disabled-border-w: 0;
     --modal-status-btn-disabled-border-c: transparent;
     --modal-status-btn-disabled-radius: 8px;
-
-    --modal-deal-name-f-s: 16px;
-    --modal-deal-name-f-w: 500;
-    --modal-deal-name-f-c: #E1E6F5;
-    --modal-deal-markdown-bg: #15171F;
-    --modal-deal-markdown-border-w: 1px;
-    --modal-deal-markdown-border-c: #262A38;
-    --modal-deal-markdown-radius: 12px;
-    --modal-deal-markdown-f-s: 14px;
-    --modal-deal-markdown-f-w: 500;
-    --modal-deal-markdown-f-c: #E1E6F5;
-    --modal-deal-markdown-bold-f-w: 500;
-    --modal-deal-markdown-bold-f-c: #E1E6F5;
-    --modal-deal-consent-f-s: 12px;
-    --modal-deal-consent-f-w: 400;
-    --modal-deal-consent-f-c: #E1E6F5;
-    --modal-deal-terms-btn-hover-f-c: #4B6DDE;
 
     --scrollbar-bg: #c8ccce;
     --scrollbar-w: 14px;
