@@ -61,6 +61,28 @@ const RetailerCard = ({
     const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
     const isCampaign = useMemo(() => Boolean(campaignId), [campaignId])
 
+    const offerName = useMemo(() => {
+        // Long names (>26 chars) are always truncated to 24 + ".."
+        if (name.length > 26) return name.slice(0, 24) + '..'
+
+        // Search results with a section: show "name/section"
+        // Truncate section to fit within 24 chars total, minimum 3 chars of section shown
+        // If section can't fit 3 chars, show name only
+        if (search && section) {
+            const full = `${name}/${section}`
+            if (full.length <= 24) return full
+            const availableForSection = 24 - name.length - 1 - 2 // 1 for "/", 2 for ".."
+            if (availableForSection >= 3) return `${name}/${section.slice(0, availableForSection)}..`
+            return name
+        }
+
+        // Search results without a section: show name (already truncated above if >26)
+        if (search) return name
+
+        // Default (non-search): show "/section" if available, otherwise name
+        return section ? `/${section}` : name
+    }, [name, search, section])
+
     const activateDeal = async () => {
         if (!walletAddress) return
 
@@ -143,7 +165,7 @@ const RetailerCard = ({
                         />
                     }
                 </div>
-                <div id={`retailer-name-${name}`} className={styles.retailer_name}>{section ? `/${section}` : name}</div>
+                <div id={`retailer-name-${name}`} className={styles.retailer_name}>{offerName}</div>
                 <div id={`retailer-cashback-rate-${name}`} className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
             </div>
             <RetailerCardModal
