@@ -35,6 +35,7 @@ interface LoaderData {
     isTester: boolean
     extensionId: string | null
     showTerms: boolean
+    autoclaim: boolean
 }
 
 

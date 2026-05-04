@@ -23,13 +23,13 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { platform, iconsPath, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
     const [loading, setLoading] = useState(false)
-    const isAutoClaim = searchParams.get('autoclaim') === 'true'
+    const isAutoClaim = autoclaim
     const limit = searchParams.get('limit') || Infinity
 
     const { data: balance } = useQuery({

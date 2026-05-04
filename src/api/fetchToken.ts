@@ -13,6 +13,10 @@ interface Response {
         walletAddress: string
         userId: string | undefined
         isTester?: boolean
+        autoclaim?: boolean
+        theme?: string
+        terms?: boolean
+        extensionId?: string
     }
 }
 
