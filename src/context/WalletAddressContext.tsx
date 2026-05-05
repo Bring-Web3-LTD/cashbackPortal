@@ -1,6 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import fetchToken from '../api/fetchToken';
 import { ENV } from '../config';
+import { loadStylesheet } from '../utils/loadStylesheet';
 
 interface WalletContextType {
     isTester: boolean
@@ -16,12 +17,18 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.action === 'WALLET_ADDRESS_UPDATE') {
+            // `SESSION_UPDATE` is the current name; `WALLET_ADDRESS_UPDATE` is
+            // kept as a legacy alias so existing partner integrations keep
+            // working. Both carry the same `{ token }` payload.
+            if (event.data.action === 'SESSION_UPDATE' || event.data.action === 'WALLET_ADDRESS_UPDATE') {
                 const { token } = event.data
                 if (token) {
                     const res = await fetchToken({ token })
                     setWalletAddress(res.info.walletAddress || null)
                     setIsTester(!!res.info.isTester && ENV !== 'prod')
+                    if (res.info.theme) {
+                        loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT')
+                    }
                 }
                 else if (ENV === 'development') {
                     setWalletAddress(event.data.walletAddress || null)

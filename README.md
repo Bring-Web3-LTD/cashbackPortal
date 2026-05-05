@@ -6,8 +6,8 @@ This document explains how partners can integrate the Bring **Cashback Portal** 
 
 There are two supported integration modes:
 
-1. [**Hosted by Bring**](#option-1--hosted-by-bringweb3): we host the portal; you provide an SDK hook so we can detect/connect the wallet and request a signature.
-2. [**Self-hosted iframe**](#option-2--self-hosted-iframe): you embed the portal in an iframe inside your own page.
+1. [**Hosted by Bring**](#option-1-hosted-by-bring): we host the portal; you provide an SDK hook so we can detect/connect the wallet and request a signature.
+2. [**Self-hosted iframe**](#option-2-self-hosted-iframe): you embed the portal in an iframe inside your own page.
 
 Pick the option that best fits your product. Both modes give the end user the same Cashback Portal experience.
 
@@ -43,7 +43,7 @@ Regardless of which domain is used, you only need to provide:
 
 We need to be able to:
 
-- **Detect the connected wallet address** of the current user.
+- **Detect the connected wallet address** of the current user, and be **notified when it changes** (connect, disconnect, or switch to a different account).
 - **Prompt a wallet connection** if no wallet is connected yet.
 - **Request a signature** for a message we provide (used to authenticate the user for claim requests).
 
@@ -68,6 +68,13 @@ That is everything required for the hosted mode. No embedding, routing, or API c
 ## Option 2: Self-hosted iframe
 
 In this mode you embed the Cashback Portal inside your own page using an iframe.
+
+**You do not provide any SDK to Bring.** The portal talks to your page through a small `postMessage` protocol; you keep using whatever wallet stack you already have (Casper Wallet, MetaMask, viem, ethers, …) and only need to:
+
+- Call our bootstrap endpoint to get the `portalUrl` + a JWT, and again whenever the wallet or theme changes, then push the fresh JWT to the iframe with a single `SESSION_UPDATE` message.
+- Listen for the portal's `LOGIN` / `SIGN_MESSAGE` messages, call your wallet, and `postMessage` the result back.
+
+That is the entire contract. Steps 1–5 below walk through it.
 
 ### 1. Add the iframe
 
@@ -124,30 +131,37 @@ const res = await fetch('https://api.bringweb3.io/v1/extension/check/portal', {
   }),
 });
 
-const { iframeUrl, token } = await res.json();
+const { portalUrl, token } = await res.json();
 ```
 
 **Response**
 
 ```json
 {
+  "portalUrl": "https://portal.bringweb3.io/...",
   "iframeUrl": "https://portal.bringweb3.io/...",
   "token": "<jwt-or-opaque-token>"
 }
 ```
 
+| Field        | Type     | Use                                                                                              |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------ |
+| `portalUrl`  | `string` | **Use this.** The URL to set as the iframe `src`. Includes the initial `token` as a query param. |
+| `iframeUrl`  | `string` | **Legacy. Do not use in new integrations.** Kept only for backward compatibility with existing partner sites; will not receive new behavior and may eventually be removed. |
+| `token`      | `string` | The JWT to use when re-syncing via `postMessage` (see [step 4](#4-re-sync-on-parameter-changes)). The same token is also embedded in `portalUrl`'s query string, so no separate `postMessage` is needed for the first load. |
+
 ### 3. Load the iframe
 
-Set the iframe `src` to the returned `iframeUrl`. The initial `token` is already embedded in the URL, so no further action is needed for the first load:
+Set the iframe `src` to the returned `portalUrl`. The initial `token` is already embedded in the URL's query string, so the portal authenticates itself on load. **No `postMessage` is required for the first render.**
 
 ```ts
 const iframe = document.getElementById('bring-cashback-portal') as HTMLIFrameElement;
-iframe.src = iframeUrl;
+iframe.src = portalUrl;
 ```
 
 ### 4. Re-sync on parameter changes
 
-Whenever any of the inputs change (the user **connects / disconnects / switches wallet**, or the **theme** changes), repeat the bootstrap call with the updated values and post the new `token` to the iframe via `postMessage`:
+Whenever any of the inputs change (the user **connects / disconnects / switches wallet**, or the **theme** changes), call the bootstrap endpoint again with the updated values to get a fresh, wallet-bound JWT, and post it to the iframe in a single `SESSION_UPDATE` message:
 
 ```ts
 async function refreshPortal({ walletAddress, theme }) {
@@ -167,100 +181,79 @@ async function refreshPortal({ walletAddress, theme }) {
   const { token } = await res.json();
 
   iframe.contentWindow?.postMessage(
-    { type: 'BRING_PORTAL_TOKEN', token },
+    { to: 'bringweb3', action: 'SESSION_UPDATE', token },
     new URL(iframe.src).origin,
   );
 }
 ```
 
-You typically do **not** need to change the iframe `src` again. Just post the refreshed `token`.
+The portal verifies the new token server-side and pulls the updated `walletAddress` (and any other session info) from the verify response. Do **not** change the iframe `src` again; just post the refreshed `token`.
 
 > Always pass the explicit target origin to `postMessage` (do not use `'*'`).
 
----
+### 5. Handle wallet messages from the portal
 
-## Minimal React example (iframe mode)
+When the user clicks **Connect** or **Claim** inside the portal, the iframe posts a message **up** to your page asking the wallet to act. Your page is responsible for listening to those messages, calling into **your own** wallet (whatever SDK you already use, Bring is not involved), and posting the result back.
 
-```tsx
-import { useEffect, useRef, useState } from 'react';
+All messages from the portal carry `from: 'bringweb3'`. All messages your page sends back must carry `to: 'bringweb3'`.
 
-const API_URL = 'https://api.bringweb3.io/v1/extension/check/portal';
-const EXTENSION_ID = 'your-extension-id';
-const API_KEY = import.meta.env.VITE_BRING_API_KEY;
+**Messages from the portal → your page**
 
-type Theme = 'dark' | 'light';
+| `action`         | Payload                                                  | What it means                                                                                  |
+| ---------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `LOGIN`          | `{}`                                                     | The user clicked **Connect**. Trigger your wallet's connect flow.                              |
+| `SIGN_MESSAGE`   | `{ messageToSign, amount, tokenSymbol }`                 | The user wants to claim. Ask the wallet to sign `messageToSign`.                               |
+| `POPUP_CLOSED`   | `{}`                                                     | A modal inside the portal was dismissed. Informational; nothing required.                      |
 
-export function CashbackPortal({
-  walletAddress,
-  theme,
-}: {
-  walletAddress: string | null;
-  theme: Theme;
-}) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
-  const isFirstLoad = useRef(true);
+**Messages from your page → the portal** (sent via `iframe.contentWindow.postMessage(..., portalOrigin)`)
 
-  useEffect(() => {
-    let cancelled = false;
+| `action`                | Payload                              | When to send                                                                                       |
+| ----------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `SESSION_UPDATE`        | `{ token }`                          | After a successful connect, after a disconnect, or whenever the active wallet or theme changes. The `token` is the fresh JWT from a `check/portal` call made with the new values. The portal re-verifies the token and pulls the new `walletAddress` / `theme` / etc. from the verify response. Do **not** put `walletAddress` in the message. |
+| `SIGNATURE`             | `{ signature, key, message }`        | After the wallet successfully signs a `SIGN_MESSAGE` request.                                      |
+| `ABORT_SIGN_MESSAGE`    | `{}`                                 | If the user rejects the signature prompt or the signing flow fails.                                |
 
-    (async () => {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'x-api-key': API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          extensionId: EXTENSION_ID,
-          walletAddress,
-          theme,
-        }),
-      });
+**Minimal listener**
 
-      const { iframeUrl: url, token } = await res.json();
-      if (cancelled) return;
+```ts
+const portalOrigin = new URL(iframe.src).origin;
 
-      if (isFirstLoad.current) {
-        // First load: the token is already embedded in iframeUrl.
-        isFirstLoad.current = false;
-        setIframeUrl(url);
-      } else {
-        // Subsequent updates: keep the same iframe, post the new token.
-        const iframe = iframeRef.current;
-        iframe?.contentWindow?.postMessage(
-          { type: 'BRING_PORTAL_TOKEN', token },
-          new URL(url).origin,
+window.addEventListener('message', async (event) => {
+  if (event.data?.from !== 'bringweb3' || !event.data.action) return;
+
+  switch (event.data.action) {
+    case 'LOGIN': {
+      const address = await wallet.connect(); // your wallet SDK
+      // Refresh the JWT for the new wallet, then push it to the portal.
+      const token = await refreshToken(address);
+      iframe.contentWindow?.postMessage(
+        { to: 'bringweb3', action: 'SESSION_UPDATE', token },
+        portalOrigin,
+      );
+      break;
+    }
+
+    case 'SIGN_MESSAGE': {
+      try {
+        const { signature, key } = await wallet.signMessage(event.data.messageToSign);
+        iframe.contentWindow?.postMessage(
+          { to: 'bringweb3', action: 'SIGNATURE', signature, key, message: event.data.messageToSign },
+          portalOrigin,
+        );
+      } catch {
+        iframe.contentWindow?.postMessage(
+          { to: 'bringweb3', action: 'ABORT_SIGN_MESSAGE' },
+          portalOrigin,
         );
       }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [walletAddress, theme]);
-
-  return (
-    <iframe
-      ref={iframeRef}
-      src={iframeUrl ?? undefined}
-      title="Bring Cashback Portal"
-      style={{ width: '100%', height: '100%', border: 0 }}
-    />
-  );
-}
+      break;
+    }
+  }
+});
 ```
+
+> `refreshToken(address)` is the same `check/portal` call from [step 4](#4-re-sync-on-parameter-changes) called with the new wallet address; it returns the JWT to forward.
 
 ---
 
-## Summary
-
-| Concern                    | Hosted by Bring              | Self-hosted iframe                  |
-| -------------------------- | -------------------------------- | ----------------------------------- |
-| Where the portal runs      | Bring or your dedicated domain | Inside your page (iframe)           |
-| What you provide           | Wallet SDK + theme               | API key, wallet, theme (+ `extensionId` if using the extension kit) |
-| Bootstrap API call         | Not required                     | `POST /v1/extension/check/portal`   |
-| Token handling             | Handled by Bring             | Embedded in initial `iframeUrl`; `postMessage` on updates |
-| Re-sync on changes         | Handled by Bring             | Re-call API and post new `token`    |
-
-For any questions or to receive your API key, contact the Bring team.
+For any questions or to receive your API key, [contact us](https://bring.network/#contact)

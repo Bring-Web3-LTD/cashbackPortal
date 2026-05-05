@@ -9,24 +9,7 @@ import fetchToken from './api/fetchToken';
 import { DEV_MODE, ENV, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
-
-const loadStylesheet = (theme: string, platform: string) => {
-    // Always load DEFAULT first, then the platform-specific stylesheet on top.
-    // Platform values override DEFAULT via normal CSS source order, and any
-    // variable missing from the platform sheet (or a 404 on the platform sheet)
-    // falls back to DEFAULT — no FOUC, no broken UI for unset platforms.
-    const append = (href: string) => {
-        const cssLink = document.createElement('link');
-        cssLink.rel = 'stylesheet';
-        cssLink.href = href;
-        document.head.appendChild(cssLink);
-    }
-
-    append(`/DEFAULT/stylesheets/${theme}.css`);
-    if (platform && platform.toUpperCase() !== 'DEFAULT') {
-        append(`/${platform}/stylesheets/${theme}.css`);
-    }
-}
+import { loadStylesheet } from './utils/loadStylesheet';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)

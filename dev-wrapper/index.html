@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cashback Portal — dev wrapper</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <header class="bar">
+            <div class="bar-text">
+                <h1>Cashback Portal — dev wrapper</h1>
+                <p class="hint">
+                    Simulates a partner page embedding the portal via the
+                    <code>POST /v1/extension/check/portal</code> bootstrap call.
+                </p>
+            </div>
+            <button id="walletBtn" type="button" class="wallet-btn" data-state="disconnected">
+                Connect wallet
+            </button>
+        </header>
+
+        <main class="layout" id="layout">
+            <button id="toggleSidebar" class="toggle" type="button" aria-label="Toggle sidebar" title="Toggle sidebar">
+                <span class="toggle-icon" aria-hidden="true">‹</span>
+            </button>
+            <aside class="controls">
+                <fieldset>
+                    <legend>Inputs</legend>
+
+                    <label>
+                        <span>Theme</span>
+                        <select id="theme">
+                            <option value="light">light</option>
+                            <option value="dark">dark</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Wallet address</span>
+                        <input id="wallet" type="text" placeholder="0x… (leave empty for null)" />
+                    </label>
+
+                    <label>
+                        <span>Extension ID</span>
+                        <input id="extensionId" type="text" />
+                    </label>
+
+                    <button id="refresh" type="button">Refresh</button>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Mock wallet SDK</legend>
+                    <label class="row">
+                        <input id="startDisconnected" type="checkbox" checked />
+                        <span>Start disconnected</span>
+                    </label>
+                    <label class="row">
+                        <input id="autoConnect" type="checkbox" checked />
+                        <span>Auto-respond to LOGIN</span>
+                    </label>
+                    <label class="row">
+                        <input id="autoSign" type="checkbox" checked />
+                        <span>Auto-respond to SIGN_MESSAGE</span>
+                    </label>
+                    <div class="btn-row">
+                        <button id="manualConnect" type="button" class="secondary">Send connect</button>
+                        <button id="manualAbort" type="button" class="secondary">Abort sign</button>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Event log</legend>
+                    <div id="log" class="log"></div>
+                    <button id="clearLog" type="button" class="secondary">Clear</button>
+                </fieldset>
+
+                <details class="debug">
+                    <summary>Last API response</summary>
+                    <label>
+                        <span>portalUrl</span>
+                        <textarea id="lastUrl" rows="3" readonly></textarea>
+                    </label>
+                    <label>
+                        <span>token (decoded payload)</span>
+                        <pre id="lastToken"></pre>
+                    </label>
+                </details>
+                <p id="status" class="status"></p>
+            </aside>
+
+            <section class="frame">
+                <iframe id="portal" title="Bring Cashback Portal"></iframe>
+            </section>
+        </main>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
