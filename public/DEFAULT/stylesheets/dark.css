@@ -163,10 +163,12 @@
     --category-btn-hover-radius: 8px;
 
     --modal-offset-top: -112px;
-    --modal-bg: #1E2328;
-    --modal-overlay-bg: rgba(30, 35, 40, 0.85);
-    --modal-border-w: 0;
-    --modal-border-c: transparent;
+    /* Popup surface is one step brighter than the page (--bg #1E2328) so the
+       modal reads as a distinct panel rather than blending in. */
+    --modal-bg: #252B33;
+    --modal-overlay-bg: rgba(10, 12, 16, 0.75);
+    --modal-border-w: 1px;
+    --modal-border-c: #2A3038;
     --modal-radius: 8px;
     --modal-title-f-s: 18px;
     --modal-title-f-w: 600;
