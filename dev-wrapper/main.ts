@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 
-import { createMockWallet } from './mockWallet'
+import { createMockWallet, type MockWallet } from './mockWallet'
+import { createNightlyWallet } from './nightlyWallet'
+import { createSolflareWallet } from './solflareWallet'
+import { createYoroiWallet } from './yoroiWallet'
+import { createCasperWallet } from './casperWallet'
+import { createEckoWallet } from './eckoWallet'
+import { createReadyWallet } from './readyWallet'
 import { createPortalBridge, type LogKind } from './portalBridge'
 
 type Theme = 'light' | 'dark'
@@ -62,6 +68,7 @@ startDisconnectedEl.addEventListener('change', () => {
 const manualConnectBtn = $<HTMLButtonElement>('manualConnect')
 const manualAbortBtn = $<HTMLButtonElement>('manualAbort')
 const walletBtn = $<HTMLButtonElement>('walletBtn')
+const walletProviderEl = $<HTMLSelectElement>('walletProvider')
 const logEl = $<HTMLDivElement>('log')
 const clearLogBtn = $<HTMLButtonElement>('clearLog')
 
@@ -119,9 +126,112 @@ const wallet = createMockWallet({
     getPreferredAddress: () => walletEl.value.trim() || DEFAULT_WALLET,
 })
 
+// `wallet` above is the in-page mock. The bridge always talks to a single
+// `MockWallet` reference, so we wrap a proxy that forwards to whichever
+// adapter the user picks in the sidebar (mock | nightly | ...).
+type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'casper' | 'ecko' | 'ready'
+const WALLET_PROVIDER_KEY = 'bring-dev-wrapper:wallet-provider'
+
+const mockAdapter = wallet
+let nightlyAdapter: MockWallet | null = null
+const getNightlyAdapter = (): MockWallet => {
+    if (!nightlyAdapter) {
+        nightlyAdapter = createNightlyWallet({
+            onSign: ({ key }) => appendLog('info', `Nightly signed with ${shortAddress(key)}`),
+        })
+    }
+    return nightlyAdapter
+}
+let solflareAdapter: MockWallet | null = null
+const getSolflareAdapter = (): MockWallet => {
+    if (!solflareAdapter) {
+        solflareAdapter = createSolflareWallet({
+            onSign: ({ key }) => appendLog('info', `Solflare signed with ${shortAddress(key)}`),
+        })
+    }
+    return solflareAdapter
+}
+let yoroiAdapter: MockWallet | null = null
+const getYoroiAdapter = (): MockWallet => {
+    if (!yoroiAdapter) {
+        yoroiAdapter = createYoroiWallet({
+            onSign: ({ key }) => appendLog('info', `Yoroi signed with ${shortAddress(key)}`),
+        })
+    }
+    return yoroiAdapter
+}
+let casperAdapter: MockWallet | null = null
+const getCasperAdapter = (): MockWallet => {
+    if (!casperAdapter) {
+        casperAdapter = createCasperWallet({
+            onSign: ({ key }) => appendLog('info', `Casper signed with ${shortAddress(key)}`),
+        })
+    }
+    return casperAdapter
+}
+let eckoAdapter: MockWallet | null = null
+const getEckoAdapter = (): MockWallet => {
+    if (!eckoAdapter) eckoAdapter = createEckoWallet()
+    return eckoAdapter
+}
+let readyAdapter: MockWallet | null = null
+const getReadyAdapter = (): MockWallet => {
+    if (!readyAdapter) readyAdapter = createReadyWallet()
+    return readyAdapter
+}
+
+const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProviderId | null) ?? 'mock'
+walletProviderEl.value = initialProvider
+let activeProvider: WalletProviderId = initialProvider
+
+const pickAdapter = (): MockWallet => {
+    switch (activeProvider) {
+        case 'nightly': return getNightlyAdapter()
+        case 'solflare': return getSolflareAdapter()
+        case 'yoroi': return getYoroiAdapter()
+        case 'casper': return getCasperAdapter()
+        case 'ecko': return getEckoAdapter()
+        case 'ready': return getReadyAdapter()
+        default: return mockAdapter
+    }
+}
+
+const walletProxy: MockWallet = {
+    getAddress: () => pickAdapter().getAddress(),
+    connect: (override) => pickAdapter().connect(override),
+    signMessage: (msg) => pickAdapter().signMessage(msg),
+    disconnect: () => pickAdapter().disconnect(),
+}
+
+const applyProviderUi = () => {
+    const isExternal = activeProvider !== 'mock'
+    // External wallets supply their own address; the input becomes a display.
+    walletEl.readOnly = isExternal
+    walletEl.placeholder = isExternal
+        ? '(provided by extension)'
+        : '0x… (leave empty for null)'
+    walletBtn.title = isExternal
+        ? 'Click to connect via the selected wallet extension'
+        : (walletBtn.dataset.state === 'connected'
+            ? `${walletEl.value} — click to disconnect`
+            : 'Click to connect mock wallet')
+}
+applyProviderUi()
+
+walletProviderEl.addEventListener('change', async () => {
+    const next = walletProviderEl.value as WalletProviderId
+    if (next === activeProvider) return
+    // Disconnect the current adapter cleanly so its internal state matches the UI.
+    try { await bridge.disconnect() } catch { /* ignore */ }
+    activeProvider = next
+    localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
+    appendLog('info', `Wallet provider → ${activeProvider}`)
+    applyProviderUi()
+})
+
 const bridge = createPortalBridge({
     iframe: iframeEl,
-    wallet,
+    wallet: walletProxy,
     log: appendLog,
     shouldAutoConnect: () => autoConnectEl.checked,
     shouldAutoSign: () => autoSignEl.checked,
@@ -132,18 +242,24 @@ const bridge = createPortalBridge({
     onAddressChange: (address) => {
         walletEl.value = address ?? ''
         setWalletButton(address)
-        if (address) appendLog('info', `Mock wallet connected: ${address}`)
+        if (address) appendLog('info', `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
     },
 })
 
-// If the wrapper started with a wallet pre-filled ("start disconnected" off),
-// pre-connect the mock wallet so its internal state matches the UI.
-if (walletEl.value.trim()) {
-    void wallet.connect(walletEl.value.trim())
+// If the wrapper started with a wallet pre-filled ("start disconnected" off)
+// AND the mock provider is active, pre-connect the mock wallet so its
+// internal state matches the UI. External providers (e.g. nightly) drive
+// the address themselves on connect, so we never auto-poke them here.
+if (activeProvider === 'mock' && walletEl.value.trim()) {
+    void mockAdapter.connect(walletEl.value.trim())
 }
 
 manualConnectBtn.addEventListener('click', () => {
-    void bridge.connect(walletEl.value.trim() || DEFAULT_WALLET || undefined)
+    // For external wallets we never pass an override — the extension owns the key.
+    const override = activeProvider === 'mock'
+        ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
+        : undefined
+    void bridge.connect(override)
 })
 manualAbortBtn.addEventListener('click', () => {
     bridge.abortSign()
@@ -153,7 +269,10 @@ walletBtn.addEventListener('click', () => {
     if (walletBtn.dataset.state === 'connected') {
         void bridge.disconnect()
     } else {
-        void bridge.connect(walletEl.value.trim() || DEFAULT_WALLET || undefined)
+        const override = activeProvider === 'mock'
+            ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
+            : undefined
+        void bridge.connect(override)
     }
 })
 
@@ -297,7 +416,9 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
         walletAddress,
-        theme: themeEl.value as Theme,
+        // Empty string means "don't include theme in the payload" so the
+        // portal/API uses its own defaults.
+        theme: (themeEl.value || undefined) as Theme | undefined,
     }
 
     const requestId = ++pendingId
