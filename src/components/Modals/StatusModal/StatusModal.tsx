@@ -5,6 +5,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
 import { Oval } from 'react-loader-spinner'
+import Icon from '../../Icon/Icon'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     status: 'success' | "failure" | 'loading'
@@ -47,7 +48,7 @@ const Success = ({ closeFn }: StatusProps) => {
     const { t } = useTranslation()
     return (
         <div className={styles.card}>
-            <img src={`${iconsPath}/success.svg`} alt="icon" />
+            <Icon name="success.svg" alt="icon" />
             <div className={`${styles.title} ${styles.title_success}`}>
                 Success
             </div>
@@ -70,7 +71,7 @@ const Failure = ({ closeFn }: StatusProps) => {
 
     return (
         <div className={styles.card}>
-            <img src={`${iconsPath}/error.svg`} alt="icon" />
+            <Icon name="error.svg" alt="icon" />
             <div className={`${styles.title} ${styles.title_error}`}>
                 Error
             </div>

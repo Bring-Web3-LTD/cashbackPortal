@@ -6,6 +6,7 @@ import fetchFaq from '../../api/fetchFaq'
 import { useQuery } from '@tanstack/react-query'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
+import Icon from '../../components/Icon/Icon'
 
 interface AnswerParserProps {
   answer: string[];
@@ -94,7 +95,7 @@ const FrequentlyAskedQuestion = () => {
                   id={`faq-details-btn-${item.id}`}
                   className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
                 >
-                  <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
+                  <Icon name="arrow-down.svg" alt="arrow-down" />
                 </button>
               </div>
               <AnimatePresence>
@@ -129,7 +130,7 @@ const FrequentlyAskedQuestion = () => {
           navigate(-1)
         }}
       >
-        <img src={`${iconsPath}/arrow-left.svg`} alt="arrow" />
+        <Icon name="arrow-left.svg" alt="arrow" />
         <span className={styles.back_btn_text}>
           {t('back')}
         </span>

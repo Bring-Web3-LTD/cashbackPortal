@@ -50,6 +50,7 @@ const rootLoader = async () => {
         return {
             ...res.info,
             iconsPath: `/${platform}/icons/${theme}`,
+            defaultIconsPath: `/DEFAULT/icons/${theme}`,
             userId: getUserId(res.info.platform),
             extensionId,
             showTerms,
@@ -76,6 +77,7 @@ const rootLoader = async () => {
         return {
             ...dev,
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
+            defaultIconsPath: `/DEFAULT/icons/${theme}`,
             userId: getUserId(dev.platform),
             isTester: false,
             flowId,

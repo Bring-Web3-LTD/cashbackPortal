@@ -15,6 +15,7 @@ import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
+import Icon from '../Icon/Icon'
 
 
 const Rewards = () => {
@@ -171,9 +172,9 @@ const Rewards = () => {
                 <div className={styles.subcontainer}>
                     <div className={styles.reward_details}>
                         <div className={`${styles.icon_container} ${styles.claim_icon}`}>
-                            <img
+                            <Icon
                                 className={styles.icon}
-                                src={`${iconsPath}/gift.svg`}
+                                name="gift.svg"
                                 alt="gift icon"
                             />
                         </div>
@@ -217,7 +218,7 @@ const Rewards = () => {
             <div className={`${styles.subcontainer} ${isAutoClaim ? styles.full_width : ''}`}>
                 <div className={styles.reward_details}>
                     <div className={`${styles.icon_container} ${styles.pending_icon}`}>
-                        <img className={styles.icon} src={`${iconsPath}/coins.svg`} alt="coins icon" />
+                        <Icon className={styles.icon} name="coins.svg" alt="coins icon" />
                     </div>
                     <div className={styles.reward_details_subcontainer}>
                         <div className={`${styles.amount} ${styles.amount_pending}`}>
