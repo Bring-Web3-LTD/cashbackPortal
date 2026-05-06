@@ -1,4 +1,4 @@
-# Cashback Portal — dev wrapper
+# Cashback Portal: dev wrapper
 
 A tiny local "fake partner" page used to develop the iframe-mode integration
 end-to-end against a dev API. It also contains a minimal mock wallet + a

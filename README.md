@@ -32,7 +32,7 @@ In this mode, Bring hosts the Cashback Portal web app for you.
 
 The portal can be served from either:
 
-- **A Bring domain** (`your-brand@bringweb3.io`): quickest to set up, no DNS work required.
+- **A Bring domain** (`your-brand.bringweb3.io`): quickest to set up, no DNS work required.
 - **A dedicated domain you own** (e.g. `cashback.your-brand.com`): you point a DNS record to our infrastructure and we serve the portal from your branded domain. Recommended if you want the portal to live under your own brand.
 
 Reach out during onboarding to choose between the two and to coordinate DNS / certificates if you go with a dedicated domain.
