@@ -82,9 +82,16 @@
                         <textarea id="lastUrl" rows="3" readonly></textarea>
                     </label>
                     <label>
-                        <span>token (decoded payload)</span>
-                        <pre id="lastToken"></pre>
+                        <span>raw token</span>
+                        <textarea id="lastTokenRaw" rows="3" readonly></textarea>
                     </label>
+                </details>
+
+                <details class="debug">
+                    <summary>Decoded JWT</summary>
+                    <div id="lastTokenDecoded" class="jwt-decoded">
+                        <p class="hint">No token yet.</p>
+                    </div>
                 </details>
                 <p id="status" class="status"></p>
             </aside>

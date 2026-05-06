@@ -33,7 +33,8 @@ const extensionEl = $<HTMLInputElement>('extensionId')
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const lastUrlEl = $<HTMLTextAreaElement>('lastUrl')
-const lastTokenEl = $<HTMLPreElement>('lastToken')
+const lastTokenRawEl = $<HTMLTextAreaElement>('lastTokenRaw')
+const lastTokenDecodedEl = $<HTMLDivElement>('lastTokenDecoded')
 const statusEl = $<HTMLParagraphElement>('status')
 
 const STARTED_DISCONNECTED_KEY = 'bring-dev-wrapper:start-disconnected'
@@ -69,7 +70,15 @@ function appendLog(kind: LogKind, label: string, payload?: unknown) {
     entry.className = 'entry'
     const ts = new Date().toLocaleTimeString(undefined, { hour12: false })
     const head = document.createElement('span')
-    head.innerHTML = `<span class="ts">${ts}</span><span class="${kind}">${kind === 'in' ? '←' : kind === 'out' ? '→' : kind === 'err' ? '✗' : '·'} ${label}</span>`
+    const tsSpan = document.createElement('span')
+    tsSpan.className = 'ts'
+    tsSpan.textContent = ts
+    const labelSpan = document.createElement('span')
+    labelSpan.className = kind
+    const direction = kind === 'in' ? '←' : kind === 'out' ? '→' : kind === 'err' ? '✗' : '·'
+    labelSpan.textContent = `${direction} ${label}`
+    head.appendChild(tsSpan)
+    head.appendChild(labelSpan)
     entry.appendChild(head)
     if (payload !== undefined) {
         const pre = document.createElement('div')
@@ -157,16 +166,104 @@ function setStatus(text: string, isError = false) {
     if (text) appendLog(isError ? 'err' : 'info', text)
 }
 
-function decodeJwtPayload(token: string): unknown {
+function decodeJwtSegment(seg: string): unknown {
+    const b64 = seg.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4)
+    return JSON.parse(atob(padded))
+}
+
+interface DecodedJwt {
+    header: unknown
+    payload: Record<string, unknown>
+    signature: string
+}
+
+function decodeJwt(token: string): DecodedJwt | null {
+    const parts = token.split('.')
+    if (parts.length !== 3) return null
     try {
-        const part = token.split('.')[1]
-        if (!part) return token
-        const b64 = part.replace(/-/g, '+').replace(/_/g, '/')
-        const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4)
-        return JSON.parse(atob(padded))
+        return {
+            header: decodeJwtSegment(parts[0]),
+            payload: decodeJwtSegment(parts[1]) as Record<string, unknown>,
+            signature: parts[2],
+        }
     } catch {
-        return token
+        return null
     }
+}
+
+function formatTimestamp(value: unknown): string | null {
+    if (typeof value !== 'number' || !Number.isFinite(value)) return null
+    const date = new Date(value * 1000)
+    if (Number.isNaN(date.getTime())) return null
+    const delta = value * 1000 - Date.now()
+    const abs = Math.abs(delta)
+    const seconds = Math.round(abs / 1000)
+    const rel =
+        seconds < 60 ? `${seconds}s`
+        : seconds < 3600 ? `${Math.round(seconds / 60)}m`
+        : seconds < 86400 ? `${Math.round(seconds / 3600)}h`
+        : `${Math.round(seconds / 86400)}d`
+    return `${date.toLocaleString()} (${delta >= 0 ? 'in ' : ''}${rel}${delta >= 0 ? '' : ' ago'})`
+}
+
+function renderDecodedJwt(token: string) {
+    lastTokenRawEl.value = token
+    lastTokenDecodedEl.innerHTML = ''
+
+    const decoded = decodeJwt(token)
+    if (!decoded) {
+        const p = document.createElement('p')
+        p.className = 'hint error'
+        p.textContent = 'Token is not a valid JWT (expected three dot-separated segments).'
+        lastTokenDecodedEl.appendChild(p)
+        return
+    }
+
+    const section = (title: string, body: HTMLElement) => {
+        const wrap = document.createElement('div')
+        wrap.className = 'jwt-section'
+        const h = document.createElement('h4')
+        h.textContent = title
+        wrap.appendChild(h)
+        wrap.appendChild(body)
+        lastTokenDecodedEl.appendChild(wrap)
+    }
+
+    const pre = (value: unknown) => {
+        const el = document.createElement('pre')
+        el.textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2)
+        return el
+    }
+
+    section('Header', pre(decoded.header))
+
+    section('Payload', pre(decoded.payload))
+
+    const claimsTable = document.createElement('table')
+    claimsTable.className = 'jwt-claims'
+    const tsClaims: Array<[string, string]> = [
+        ['iat', 'Issued at'],
+        ['exp', 'Expires at'],
+        ['nbf', 'Not before'],
+    ]
+    let hasRows = false
+    for (const [key, label] of tsClaims) {
+        const formatted = formatTimestamp(decoded.payload[key])
+        if (!formatted) continue
+        hasRows = true
+        const row = document.createElement('tr')
+        const th = document.createElement('th')
+        th.textContent = `${label} (${key})`
+        const td = document.createElement('td')
+        td.textContent = formatted
+        row.appendChild(th)
+        row.appendChild(td)
+        claimsTable.appendChild(row)
+    }
+    if (hasRows) section('Timestamps', claimsTable)
+
+    section('Signature', pre(decoded.signature))
 }
 
 function buildIframeSrc(returnedUrl: string, token: string): string {
@@ -244,7 +341,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     }
 
     lastUrlEl.value = portalUrl
-    lastTokenEl.textContent = JSON.stringify(decodeJwtPayload(token), null, 2)
+    renderDecodedJwt(token)
     return data
 }
 

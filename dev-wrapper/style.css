@@ -253,6 +253,57 @@ html, body {
     margin-top: 10px;
 }
 
+.jwt-decoded {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.jwt-section h4 {
+    margin: 0 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #8a93a3;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.jwt-claims {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    background: #15191f;
+    border: 1px solid #2a313c;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.jwt-claims th,
+.jwt-claims td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #20262f;
+    vertical-align: top;
+}
+
+.jwt-claims tr:last-child th,
+.jwt-claims tr:last-child td {
+    border-bottom: none;
+}
+
+.jwt-claims th {
+    color: #8a93a3;
+    font-weight: 500;
+    width: 40%;
+    white-space: nowrap;
+}
+
+.jwt-claims td {
+    color: #d6dae3;
+    word-break: break-word;
+}
+
 .controls pre {
     margin: 0;
     background: #15191f;
