@@ -35,6 +35,10 @@ const rootLoader = async () => {
         const autoclaim = !!res.info.autoclaim
 
         loadStylesheet(theme, platform)
+        // Make sure the platform translation bundle is fetched before we
+        // switch to it as the default namespace; missing keys fall back
+        // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
+        await i18n.loadNamespaces(platform)
         i18n.setDefaultNamespace(platform)
 
         if (ENV === 'prod') {
@@ -67,6 +71,7 @@ const rootLoader = async () => {
         }
         if (!dev.platform) throw Error('Missing platform')
         loadStylesheet(theme, dev.platform.toUpperCase())
+        await i18n.loadNamespaces(dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         return {
             ...dev,
