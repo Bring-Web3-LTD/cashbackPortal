@@ -17,11 +17,17 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
+            const data = event.data
+            // Validate message shape and tag before trusting the payload.
+            // The portal protocol requires partner-originated messages to
+            // carry `to: 'bringweb3'` so unrelated frames/scripts cannot
+            // trigger session refreshes.
+            if (!data || typeof data !== 'object' || data.to !== 'bringweb3') return
             // `SESSION_UPDATE` is the current name; `WALLET_ADDRESS_UPDATE` is
             // kept as a legacy alias so existing partner integrations keep
             // working. Both carry the same `{ token }` payload.
-            if (event.data.action === 'SESSION_UPDATE' || event.data.action === 'WALLET_ADDRESS_UPDATE') {
-                const { token } = event.data
+            if (data.action === 'SESSION_UPDATE' || data.action === 'WALLET_ADDRESS_UPDATE') {
+                const { token } = data
                 if (token) {
                     const res = await fetchToken({ token })
                     setWalletAddress(res.info.walletAddress || null)
@@ -31,7 +37,7 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
                     }
                 }
                 else if (ENV === 'development') {
-                    setWalletAddress(event.data.walletAddress || null)
+                    setWalletAddress(data.walletAddress || null)
                 }
             }
         };

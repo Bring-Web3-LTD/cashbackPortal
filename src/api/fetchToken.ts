@@ -10,7 +10,7 @@ interface Response {
         isCountryAvailable: boolean
         platform: string
         cryptoSymbols: string[]
-        walletAddress: string
+        walletAddress: string | null
         userId: string | undefined
         isTester?: boolean
         autoclaim?: boolean
