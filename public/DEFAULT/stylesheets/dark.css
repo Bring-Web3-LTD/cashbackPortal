@@ -22,18 +22,8 @@
     --header-btn-border-w: 1px;
     --header-btn-border-c: #7B9AEB;
     --header-btn-radius: 8px;
-    --header-btn-hover-bg: #2A3038;
-    --header-btn-hover-f-c: #A0B3F2;
-    --header-btn-hover-border-w: 1px;
-    --header-btn-hover-border-c: #A0B3F2;
-    --header-btn-pressed-bg: #2A3038;
-    --header-btn-pressed-f-c: #A0B3F2;
-    --header-btn-pressed-border-w: 1px;
-    --header-btn-pressed-border-c: #A0B3F2;
 
     --rewards-bg: linear-gradient(195deg, rgba(123, 154, 235, 0.20) 0%, rgba(61, 90, 235, 0.10) 50%, rgba(61, 90, 235, 0.16) 100%);
-    --rewards-icon-container-width: 24px;
-    --rewards-icon-container-height: 24px;
     --rewards-img-size: 20px;
 
     --claim-img-bg: #3D5AEB;
@@ -97,7 +87,7 @@
     --retailer-card-bg: #252B33;
     --retailer-card-border-w: 1px;
     --retailer-card-border-color: #2A3038;
-    --retailer-card--hover-border-color: #7B9AEB;
+    --retailer-card--hover-border-color: var(--retailer-card-border-color);
 
     --retailer-card-img-border-c: #2A3038;
     --retailer-card-img-border-w: 1px;
