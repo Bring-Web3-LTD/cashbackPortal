@@ -18,11 +18,8 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             const data = event.data
-            // Validate message shape and tag before trusting the payload.
-            // The portal protocol requires partner-originated messages to
-            // carry `to: 'bringweb3'` so unrelated frames/scripts cannot
-            // trigger session refreshes.
-            if (!data || typeof data !== 'object' || data.to !== 'bringweb3') return
+            // Validate message shape before trusting the payload.
+            if (!data || typeof data !== 'object') return
             // `SESSION_UPDATE` is the current name; `WALLET_ADDRESS_UPDATE` is
             // kept as a legacy alias so existing partner integrations keep
             // working. Both carry the same `{ token }` payload.
