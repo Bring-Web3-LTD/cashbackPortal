@@ -16,7 +16,6 @@ const LoginModal = ({
 }: Props) => {
 
     const { t } = useTranslation()
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     const onClose = () => {
         message({ action: 'POPUP_CLOSED' })

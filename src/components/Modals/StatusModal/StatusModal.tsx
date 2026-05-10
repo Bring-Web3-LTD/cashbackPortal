@@ -66,7 +66,6 @@ const Success = ({ closeFn }: StatusProps) => {
 
 
 const Failure = ({ closeFn }: StatusProps) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
 
     return (

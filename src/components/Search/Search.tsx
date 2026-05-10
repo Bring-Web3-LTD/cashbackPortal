@@ -138,7 +138,6 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     return (
         <components.Control {...props}>
             <Icon

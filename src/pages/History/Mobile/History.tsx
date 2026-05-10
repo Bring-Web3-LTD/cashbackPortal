@@ -37,8 +37,6 @@ interface ClaimsRes {
 }
 
 const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
-
     return (
         <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div

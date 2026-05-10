@@ -23,7 +23,7 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
 // }
 
 const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol }: Props): JSX.Element => {
-    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { t } = useTranslation()
 
