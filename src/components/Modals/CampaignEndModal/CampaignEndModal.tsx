@@ -5,6 +5,7 @@ import { useRouteLoaderData, useSearchParams } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
 import { getCampaign, parseCampaignId } from '../../../utils/campaigns'
 import formatCashback from '../../../utils/formatCashback'
+import Icon from '../../Icon/Icon'
 
 const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 'children'>) => {
     const { iconsPath, platform } = useRouteLoaderData('root') as LoaderData
@@ -19,7 +20,7 @@ const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 
             closeFn={closeFn}
         >
             <div className={styles.modal}>
-                <img src={`${iconsPath}/download.svg`} alt="wallet icon" />
+                <Icon name="download.svg" alt="wallet icon" />
                 <div className={styles.title}>Better luck next time!</div>
                 <div className={styles.subtitle}>
                     {campaign ?

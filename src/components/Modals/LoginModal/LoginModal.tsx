@@ -4,6 +4,7 @@ import { ComponentProps } from 'react'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
+import Icon from '../../Icon/Icon'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
@@ -33,7 +34,7 @@ const LoginModal = ({
             closeFn={onClose}
         >
             <div className={styles.modal}>
-                <img src={`${iconsPath}/wallet.svg`} alt="wallet icon" />
+                <Icon name="wallet.svg" alt="wallet icon" />
                 <div className={styles.title}>{t('connectYourWallet')}</div>
                 <div className={styles.subtitle}>Please login to your wallet to proceed</div>
                 <button id="login-modal-btn" className={styles.btn} onClick={promptLogin}>CONNECT</button>

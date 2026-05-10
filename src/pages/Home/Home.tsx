@@ -18,9 +18,10 @@ import getFilters from '../../api/getFilters'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import { parseCampaignId } from '../../utils/campaigns'
+import Icon from '../../components/Icon/Icon'
 
 const Home = () => {
-    const { platform, isCountryAvailable, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { sendGaEvent } = useGoogleAnalytics()
     const [searchParams] = useSearchParams();
     const { walletAddress, isTester } = useWalletAddress()
@@ -190,7 +191,7 @@ const Home = () => {
                                         onClick={resetFilters}
                                     >
                                         <span>{search?.value || category?.name}</span>
-                                        <img src={`${iconsPath}/x-mark-filter.svg`} alt="x-icon" />
+                                        <Icon name="x-mark-filter.svg" alt="x-icon" />
                                     </motion.button>
                                     : null}
                             </AnimatePresence>

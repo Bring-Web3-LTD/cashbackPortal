@@ -9,22 +9,16 @@ import fetchToken from './api/fetchToken';
 import { DEV_MODE, ENV, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
-
-const loadStylesheet = (theme: string, platform: string) => {
-    // Dynamically load the main CSS file
-    const cssLink = document.createElement('link');
-    cssLink.rel = 'stylesheet';
-
-    cssLink.href = `/${platform}/stylesheets/${theme}.css`; // Specify the path to your main CSS file
-    document.head.appendChild(cssLink);
-}
+import { loadStylesheet } from './utils/loadStylesheet';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
     const token = params.get('token')
-    const extensionId = params.get('extensionId')
-    const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
-    const theme = params.get('theme')?.toLowerCase() || 'light'
+    // URL-provided values are kept as a fallback for backward compatibility.
+    // The token (verify response) is the newer source of truth and wins when
+    // it carries the value.
+    const urlExtensionId = params.get('extensionId')
+    const urlTheme = params.get('theme')?.toLowerCase()
     const flowId = v4()
 
     // If token is provided, use it (works in both dev and prod mode)
@@ -33,7 +27,18 @@ const rootLoader = async () => {
         if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
         const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
 
+        // Resolution order: token (newer) → URL (legacy) → default.
+        // terms & autoclaim come from the token only (no URL fallback).
+        const theme = res.info.theme?.toLowerCase() || urlTheme || 'light'
+        const extensionId = res.info.extensionId || urlExtensionId || null
+        const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
+        const autoclaim = !!res.info.autoclaim
+
         loadStylesheet(theme, platform)
+        // Make sure the platform translation bundle is fetched before we
+        // switch to it as the default namespace; missing keys fall back
+        // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
+        await i18n.loadNamespaces(platform)
         i18n.setDefaultNamespace(platform)
 
         if (ENV === 'prod') {
@@ -45,15 +50,20 @@ const rootLoader = async () => {
         return {
             ...res.info,
             iconsPath: `/${platform}/icons/${theme}`,
+            defaultIconsPath: `/DEFAULT/icons/${theme}`,
             userId: getUserId(res.info.platform),
             extensionId,
-            showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes(platform),
+            showTerms,
+            autoclaim,
             flowId
         }
     }
 
     // Fallback to dev mode parameters if no token provided
     if (DEV_MODE) {
+        const theme = urlTheme || 'light'
+        const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
+        const autoclaim = params.get('autoclaim') === 'true'
         const dev = {
             walletAddress: params.get('walletAddress') || null,
             platform: params.get('platform'),
@@ -62,15 +72,18 @@ const rootLoader = async () => {
         }
         if (!dev.platform) throw Error('Missing platform')
         loadStylesheet(theme, dev.platform.toUpperCase())
+        await i18n.loadNamespaces(dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         return {
             ...dev,
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
+            defaultIconsPath: `/DEFAULT/icons/${theme}`,
             userId: getUserId(dev.platform),
             isTester: false,
             flowId,
-            showTerms: showTerms || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase()),
-            extensionId
+            showTerms,
+            autoclaim,
+            extensionId: urlExtensionId
         }
     }
 

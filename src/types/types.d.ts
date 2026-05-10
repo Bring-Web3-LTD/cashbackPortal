@@ -30,11 +30,13 @@ interface LoaderData {
     cryptoSymbols: string[]
     isCountryAvailable: boolean
     iconsPath: string
+    defaultIconsPath: string
     flowId: string
     userId: string
     isTester: boolean
     extensionId: string | null
     showTerms: boolean
+    autoclaim: boolean
 }
 
 

@@ -9,8 +9,13 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'en',
-        ns: ['LACE', 'ARGENT', 'YOROI', 'DEFAULT'],
+        ns: ['DEFAULT'],
         defaultNS: 'DEFAULT',
+        // When a key is missing in the active (platform) namespace, fall
+        // back to DEFAULT so platform translation files only need to
+        // override the strings that actually differ.
+        fallbackNS: 'DEFAULT',
+        partialBundledLanguages: true,
         backend: {
             loadPath: '/{{ns}}/translations/{{lng}}.json',
         },

@@ -11,6 +11,7 @@ import message from '../../../utils/message';
 import { useTranslation } from 'react-i18next';
 import claimSubmit from '../../../api/claim/submit';
 import { useWalletAddress } from '../../../utils/hooks/useWalletAddress';
+import Icon from '../../Icon/Icon';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     eligibleTokenAmount: string
@@ -108,8 +109,8 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
                         iconFallback ?
                             null
                             :
-                            <img
-                                src={`${iconsPath}/claim.svg`}
+                            <Icon
+                                name="claim.svg"
                                 className={styles.modal_img}
                                 alt="claim icon"
                                 onError={() => setIconFallback(true)}

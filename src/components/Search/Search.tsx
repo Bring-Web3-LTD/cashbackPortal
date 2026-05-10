@@ -16,6 +16,7 @@ import Select, {
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
+import Icon from '../Icon/Icon'
 
 interface Props {
     options: ReactSelectOptionType[]
@@ -140,10 +141,10 @@ const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
     return (
         <components.Control {...props}>
-            <img
+            <Icon
                 height={20}
                 width={20}
-                src={`${iconsPath}/magnifying-glass.svg`}
+                name="magnifying-glass.svg"
                 alt="magnifying-glass-icon"
             />
             {props.children}

@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import { MouseEvent, ReactNode, useCallback, useEffect } from "react"
-import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
+import Icon from '../Icon/Icon'
 
 
 interface Props {
@@ -14,8 +14,6 @@ interface Props {
 }
 
 const Modal = ({ children, style, open, closeFn, xMarkPath = 'x-mark.svg', showCloseBtn = true }: Props) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
-
     const closePopup = useCallback(() => {
         closeFn()
         message({ action: 'POPUP_CLOSED' })
@@ -71,14 +69,12 @@ const Modal = ({ children, style, open, closeFn, xMarkPath = 'x-mark.svg', showC
                         className={styles.close_btn}
                         onClick={closePopup}
                     >
-                        <img
+                        <Icon
                             width={20}
                             height={20}
-                            src={`${iconsPath}/${xMarkPath}`}
+                            name={xMarkPath}
+                            fallbackName="x-mark.svg"
                             alt="x-mark"
-                            onError={(e) => {
-                                e.currentTarget.src = `${iconsPath}/x-mark.svg`
-                            }}
                         />
                     </button> : null}
                 {children}

@@ -8,6 +8,7 @@ import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useRouteLoaderData } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
+import Icon from '../../Icon/Icon'
 import { getInitials } from '../../../utils/getInitials'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
@@ -83,9 +84,9 @@ const RetailerCardModal = ({
                         className={styles.back_btn}
                         onClick={() => setShowingTerms(false)}
                     >
-                        <img
-                            src={`${iconsPath}/arrow-left-light.svg`}
-                            onError={e => e.currentTarget.src = `${iconsPath}/arrow-left.svg`}
+                        <Icon
+                            name="arrow-left-light.svg"
+                            fallbackName="arrow-left.svg"
                             alt="arrow-left"
                         />
                         <span>{t('back')}</span>

@@ -9,6 +9,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "dev:wrapper": "yarn --cwd dev-wrapper dev",
+    "dev:all": "concurrently -n portal,wrapper -c blue,magenta \"yarn dev\" \"yarn dev:wrapper\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -43,6 +45,7 @@
     "globals": "^15.9.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
-    "vite": "^7.1.10"
+    "vite": "^7.1.10",
+    "concurrently": "^9.0.0"
   }
 }

@@ -8,11 +8,13 @@ import { createDescription, formatCurrency, formatDate, formatStatus } from '../
 import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
+import Icon from '../../../components/Icon/Icon'
 
 interface HistoryDesktop {
     status: string
     tokenAmount: string;
     imgSrc: string
+    imgSrcFallback?: string
     description: string[][];
     totalEstimatedUsd?: string | number
     imgBg?: string
@@ -34,7 +36,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const { iconsPath } = useRouteLoaderData('root') as LoaderData
 
     return (
@@ -53,6 +55,9 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                             className={styles.img}
                             src={imgSrc}
                             alt="logo"
+                            onError={imgSrcFallback ? (e) => {
+                                if (e.currentTarget.src !== imgSrcFallback) e.currentTarget.src = imgSrcFallback
+                            } : undefined}
                         />
                     </div>
                     <span className={styles.purchase_name}>{retailerName}</span>
@@ -80,7 +85,7 @@ const Row = ({ isActive, toggleFn, imgSrc, status, tokenAmount, totalEstimatedUs
                     id="history-desktop-details-btn"
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
                 >
-                    <img src={`${iconsPath}/arrow-down.svg`} alt="arrow-down" />
+                    <Icon name="arrow-down.svg" alt="arrow-down" />
                 </button>
             </div>
             <AnimatePresence>
@@ -126,7 +131,7 @@ const HistoryDesktop = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
-    const { platform, iconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const navigate = useNavigate()
 
@@ -169,6 +174,7 @@ const HistoryDesktop = () => {
             ...res[key]
             , tokenAmount: `${res[key].tokenAmount} ${key}`,
             imgSrc: `${iconsPath}/gift.svg`,
+            imgSrcFallback: `${defaultIconsPath}/gift.svg`,
             tokenSymbol: key,
             status: formatStatus('claimed'),
         }))
@@ -207,7 +213,7 @@ const HistoryDesktop = () => {
                     navigate(-1)
                 }}
             >
-                <img src={`${iconsPath}/arrow-left.svg`} alt="" />
+                <Icon name="arrow-left.svg" alt="" />
                 <span className={styles.back_btn_text}>
                     {t('back')}
                 </span>
@@ -248,8 +254,8 @@ const HistoryDesktop = () => {
             ) : (
                 <div className={styles.empty_container}>
                     {imgExists ? (
-                        <img
-                            src={`${iconsPath}/no-history.svg`}
+                        <Icon
+                            name="no-history.svg"
                             alt="history"
                             onError={() => setImgExists(false)}
                         />

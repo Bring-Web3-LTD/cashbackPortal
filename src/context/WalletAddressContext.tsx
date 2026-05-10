@@ -1,6 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import fetchToken from '../api/fetchToken';
 import { ENV } from '../config';
+import { loadStylesheet } from '../utils/loadStylesheet';
 
 interface WalletContextType {
     isTester: boolean
@@ -16,15 +17,27 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.action === 'WALLET_ADDRESS_UPDATE') {
-                const { token } = event.data
+            const data = event.data
+            // Validate message shape and tag before trusting the payload.
+            // The portal protocol requires partner-originated messages to
+            // carry `to: 'bringweb3'` so unrelated frames/scripts cannot
+            // trigger session refreshes.
+            if (!data || typeof data !== 'object' || data.to !== 'bringweb3') return
+            // `SESSION_UPDATE` is the current name; `WALLET_ADDRESS_UPDATE` is
+            // kept as a legacy alias so existing partner integrations keep
+            // working. Both carry the same `{ token }` payload.
+            if (data.action === 'SESSION_UPDATE' || data.action === 'WALLET_ADDRESS_UPDATE') {
+                const { token } = data
                 if (token) {
                     const res = await fetchToken({ token })
                     setWalletAddress(res.info.walletAddress || null)
                     setIsTester(!!res.info.isTester && ENV !== 'prod')
+                    if (res.info.theme) {
+                        loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT')
+                    }
                 }
                 else if (ENV === 'development') {
-                    setWalletAddress(event.data.walletAddress || null)
+                    setWalletAddress(data.walletAddress || null)
                 }
             }
         };
