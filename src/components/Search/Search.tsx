@@ -1,7 +1,6 @@
 import styles from './styles.module.css'
 // hooks
 import { Fragment, MouseEvent, useEffect, useId, useState } from "react"
-import { useRouteLoaderData } from 'react-router-dom'
 
 // components
 import Select, {

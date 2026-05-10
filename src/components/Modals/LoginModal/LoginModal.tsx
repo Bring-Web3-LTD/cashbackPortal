@@ -3,7 +3,6 @@ import Modal from '../../Modal/Modal'
 import { ComponentProps } from 'react'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
 import Icon from '../../Icon/Icon'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
