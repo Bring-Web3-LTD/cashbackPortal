@@ -8,7 +8,7 @@ import formatCashback from '../../../utils/formatCashback'
 import Icon from '../../Icon/Icon'
 
 const CampaignEndModal = ({ open, closeFn }: Omit<ComponentProps<typeof Modal>, 'children'>) => {
-    const { iconsPath, platform } = useRouteLoaderData('root') as LoaderData
+    const { platform } = useRouteLoaderData('root') as LoaderData
     const [params] = useSearchParams()
     const { t } = useTranslation()
     const campaignKey = parseCampaignId(params.get('campaignId'))

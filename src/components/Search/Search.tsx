@@ -1,7 +1,6 @@
 import styles from './styles.module.css'
 // hooks
 import { Fragment, MouseEvent, useEffect, useId, useState } from "react"
-import { useRouteLoaderData } from 'react-router-dom'
 
 // components
 import Select, {
@@ -138,7 +137,6 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     return (
         <components.Control {...props}>
             <Icon

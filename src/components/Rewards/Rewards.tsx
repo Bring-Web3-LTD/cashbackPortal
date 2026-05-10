@@ -24,7 +24,7 @@ const Rewards = () => {
     const { sendGaEvent } = useGoogleAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
-    const { platform, iconsPath, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')

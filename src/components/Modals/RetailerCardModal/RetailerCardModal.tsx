@@ -40,7 +40,7 @@ const RetailerCardModal = ({
 }: Props) => {
 
     const { sendGaEvent } = useGoogleAnalytics()
-    const { extensionId, cryptoSymbols, iconsPath, showTerms } = useRouteLoaderData('root') as LoaderData
+    const { extensionId, cryptoSymbols, showTerms } = useRouteLoaderData('root') as LoaderData
     const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
     const [showingTerms, setShowingTerms] = useState(false)
     const { t } = useTranslation()

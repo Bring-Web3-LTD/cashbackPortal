@@ -1,7 +1,6 @@
 import styles from './styles.module.css'
 import { ComponentProps } from 'react'
 import Modal from '../../Modal/Modal'
-import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
 import { Oval } from 'react-loader-spinner'
@@ -44,7 +43,6 @@ const Loading = () => {
 }
 
 const Success = ({ closeFn }: StatusProps) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
     return (
         <div className={styles.card}>
@@ -66,7 +64,6 @@ const Success = ({ closeFn }: StatusProps) => {
 
 
 const Failure = ({ closeFn }: StatusProps) => {
-    const { iconsPath } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
 
     return (

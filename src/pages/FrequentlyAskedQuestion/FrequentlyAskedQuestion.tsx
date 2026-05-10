@@ -61,7 +61,7 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
 
 const FrequentlyAskedQuestion = () => {
   const navigate = useNavigate()
-  const { iconsPath, walletAddress, platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
+  const { walletAddress, platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
   const { sendGaEvent } = useGoogleAnalytics()
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(-1)
