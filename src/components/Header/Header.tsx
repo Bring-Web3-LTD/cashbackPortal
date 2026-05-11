@@ -8,7 +8,7 @@ const Header = () => {
     const { t } = useTranslation()
     const { platform } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
-    const supportUrl = `https://support.bringweb3.io/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
 
     return (
         <div className={styles.header}>
