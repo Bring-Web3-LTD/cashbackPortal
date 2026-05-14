@@ -10,7 +10,7 @@
 
 .modal {
     --_modal-bg: var(--custom-modal-bg, var(--modal-bg));
-    --padding: 32px;
+    --padding: 24px;
     margin-top: var(--modal-offset-top);
     position: relative;
     max-height: calc(621px - var(--padding) * 2);
