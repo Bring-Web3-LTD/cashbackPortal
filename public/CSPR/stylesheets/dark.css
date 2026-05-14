@@ -13,7 +13,7 @@
     --subtitle-f-w: 400;
     --subtitle-f-c: #1A1919;
 
-    --header-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --header-btn-bg: #EDEEF0;
     --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
     --header-btn-f-s: 15px;
     --header-btn-f-w: 600;
@@ -35,7 +35,7 @@
     --pending-img-bg:var(--Content-Light-contentAction, #0A2EBF);
     --pending-img-border-w: 0;
     --pending-img-border-c: transparent;
-    --pending-img-radius: 40%;
+    --pending-img-radius: 40px;
 
     --rewards-text-f-s: 24px;/*?*/
     --rewards-text-f-w: 700;/*?*/
@@ -56,7 +56,7 @@
 
     --rewards-btn-width: 205px;
     --rewards-btn-f-s: 18px;
-    --rewards-btn-f-w: 600;
+    --rewards-btn-f-w: 700;
     --rewards-btn-radius: 6px;
 
     --primary-btn-f-s: 18px;
@@ -101,7 +101,7 @@
     --retailer-card-flag-bg: #2DDC88;
     --retailer-card-flag-campaign-f-c: #2DDC88;/*?*/
     --retailer-card-flag-campaign-bg: #FFF;/*?*/
-    --retailer-card-flag-radius:  var(--corner-radius-4, 4px) 0 0 var(--corner-radius-4, 4px);
+    --retailer-card-flag-radius:  4px;
 
     --retailer-card-name-f-s: 18px;
     --retailer-card-name-f-w: 700;
@@ -269,6 +269,7 @@
     --history-purchase-name-f-s: 15px;
     --history-purchase-name-f-w: 600;
     --history-purchase-name-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --history-purchase-name-bg-c: #FFF;
 
     --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
