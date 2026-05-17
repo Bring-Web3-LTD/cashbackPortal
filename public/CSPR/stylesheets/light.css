@@ -87,9 +87,9 @@
     --pending-btn-pressed-bg:   #E8E9EC;
 
     --retailer-card-bg: #FFF;
-    --retailer-card-border-w: 0px;
+    --retailer-card-border-w: 1px;
     --retailer-card-border-color: transparent;
-    --retailer-card--hover-border-color: transparent;
+    --retailer-card--hover-border-color: #1A1919;
 
     --retailer-card-img-border-c: #FFF;
     --retailer-card-img-border-w: 0px;
