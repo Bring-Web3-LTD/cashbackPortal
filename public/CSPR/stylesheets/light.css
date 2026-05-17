@@ -274,7 +274,7 @@
     --history-purchase-name-f-s: 15px;
     --history-purchase-name-f-w: 600;
     --history-purchase-name-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --history-purchase-name-bg-c: #FFF;
+    --history-purchase-name-bg: #FFF;
 
     --history-amount-f-s: 15px;
     --history-amount-f-w: 400;

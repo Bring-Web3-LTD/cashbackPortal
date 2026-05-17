@@ -34,7 +34,7 @@
 
 .collapsible {
     color: var(--history-purchase-name-f-c);
-    background: var(--history-purchase-name-bg-c, transparent);
+    background: var(--history-purchase-name-bg, transparent);
     border-bottom-width: var(--history-table-row-border-w);
     border-bottom-style: solid;
     border-bottom-color: var(--history-table-row-border-c);
