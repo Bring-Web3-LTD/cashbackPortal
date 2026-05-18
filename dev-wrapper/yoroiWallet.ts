@@ -197,7 +197,7 @@ export function createYoroiWallet(opts: YoroiWalletOptions = {}): MockWallet {
             // the signature through as-is; the partner backend decodes it.
             const result: SignResult = {
                 signature: rawResponse.signature,
-                key: address!,
+                key: rawResponse.key,
                 message,
             }
             opts.onSign?.(result)
