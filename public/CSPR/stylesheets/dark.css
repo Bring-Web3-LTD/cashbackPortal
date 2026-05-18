@@ -25,7 +25,8 @@
     --rewards-bg: var(--Background-Light-backgroundPrimary, #FFF);
 
     --rewards-img-size: 24px;
-    
+    --rewards-icon-container-width: 48px;
+    --rewards-icon-container-height: 48px;
 
     --claim-img-bg:  #0A2EBF;;
     --claim-img-border-w: 0;
