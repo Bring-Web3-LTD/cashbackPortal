@@ -7,7 +7,14 @@ export const TEST_ID = import.meta.env.VITE_TEST_ID || ''
 export const ENV = import.meta.env.VITE_ENV || 'development'
 export const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true'
 export const SHOW_TERMS_PLATFORMS = import.meta.env.VITE_SHOW_TERMS_PLATFORMS ? import.meta.env.VITE_SHOW_TERMS_PLATFORMS.split(',') : []
-export const currencyFormat = 'code'
+
+// Per-platform currency display format.
+// 'code' shows "USD", 'symbol' shows "$".
+const CURRENCY_CODE_PLATFORMS = ['YOROI']
+export let currencyFormat: 'code' | 'symbol' = 'symbol'
+export const setCurrencyFormat = (platform: string) => {
+    currencyFormat = CURRENCY_CODE_PLATFORMS.includes(platform) ? 'code' : 'symbol'
+}
 
 // Mobile Portal — opt-in per platform, only renders below the viewport threshold.
 export const MOBILE_PORTAL_PLATFORMS: string[] = import.meta.env.VITE_MOBILE_PORTAL_PLATFORMS

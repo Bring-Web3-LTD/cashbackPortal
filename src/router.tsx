@@ -4,7 +4,7 @@ import { HomeDispatcher, HistoryDispatcher, FaqDispatcher } from './dispatchers'
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS } from './config';
+import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
@@ -39,6 +39,7 @@ const rootLoader = async () => {
         const stylePlatform = normalizePlatform(params.get('styleAs') || platform)
 
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
+        setCurrencyFormat(platform)
         // Make sure the platform translation bundle is fetched before we
         // switch to it as the default namespace; missing keys fall back
         // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
@@ -95,12 +96,14 @@ const rootLoader = async () => {
         const stylePlatform = normalizePlatform(params.get('styleAs') || devPlatform)
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
+        setCurrencyFormat(devPlatform)
         const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform
         await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', devPlatform] : [devPlatform])
         i18n.setDefaultNamespace(activeNs)
 
         const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
+
 
         const userId = getUserId(dev.platform)
         const variant = selectVariant(userId, dev.platform)
