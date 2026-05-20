@@ -50,7 +50,7 @@ export const formatStatus = (status: string, eligibleDate?: string) => {
             return "Completed";
         case "pending":
             return `In ${days} ${days && days > 1 ? "days" : "day"}`;
-        case "canceled":
+        case "cancelled":
             return "Canceled";
         default:
             return `In ${days} ${days && days > 1 ? "days" : "day"}`;
