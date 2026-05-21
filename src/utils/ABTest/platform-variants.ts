@@ -14,8 +14,7 @@ export type VariantsConfig = {
 // Variant distributions per platform (percentages, must sum to 100)
 export const variants: VariantsConfig = {
   default: {
-    control: 50,
-    testA: 50    
+    control: 100,  
   },
 }
 
