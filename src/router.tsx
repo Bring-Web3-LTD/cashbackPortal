@@ -49,7 +49,7 @@ const rootLoader = async () => {
         }
 
         const userId = getUserId(res.info.platform)
-        const variant = selectVariant(res.info.walletAddress || userId, platform)
+        const variant = selectVariant(userId, platform)
 
         return {
             ...res.info,
@@ -80,7 +80,7 @@ const rootLoader = async () => {
         await i18n.loadNamespaces(dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
         const userId = getUserId(dev.platform)
-        const variant = selectVariant(dev.walletAddress || userId, dev.platform.toUpperCase())
+        const variant = selectVariant(userId, dev.platform)
         return {
             ...dev,
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,

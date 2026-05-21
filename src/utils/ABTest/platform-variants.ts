@@ -1,21 +1,12 @@
 import { TEST_ID } from "../../config"
 import murmurhash from "./murmurhash"
+import { createDistribution, type VariantDistribution, type VariantsConfig } from "./variant-distribution-validation"
 
 export type PlatformName = string
 
-export type VariantDistribution = {
-  [variant: string]: number
-}
-
-export type VariantsConfig = {
-  [platformName: string]: VariantDistribution
-}
-
 // Variant distributions per platform (percentages, must sum to 100)
 export const variants: VariantsConfig = {
-  default: {
-    control: 100,  
-  },
+  default: createDistribution([['control', 100]]),
 }
 
 export type VariantKey = keyof typeof variants['default']
@@ -80,13 +71,10 @@ export const selectNestedVariant = (userId: string, platformName: PlatformName, 
 }
 
 // Map variants to enabled features
-export const hasFeature = (userId: string, platformName: PlatformName, featureName: string): boolean => {
-  const variant = selectVariant(userId, platformName)
-
+export const hasFeature = (variant: string, featureName: string): boolean => {
+  
   const featureFlagMap: Record<string, string[]> = {
-    control: ['basic_dashboard', 'export_data'],
-    testA: ['basic_dashboard', 'export_data', 'advanced_analytics'],
-    testB: ['basic_dashboard', 'export_data', 'new_ui_design'],
+    control: [],  
   }
 
   return (featureFlagMap[variant] || []).includes(featureName)
