@@ -1,12 +1,21 @@
 import { TEST_ID } from "../../config"
 import murmurhash from "./murmurhash"
-import { createDistribution, type VariantDistribution, type VariantsConfig } from "./variant-distribution-validation"
 
 export type PlatformName = string
 
+export type VariantDistribution = {
+  [variant: string]: number
+}
+
+export type VariantsConfig = {
+  [platformName: string]: VariantDistribution
+}
+
 // Variant distributions per platform (percentages, must sum to 100)
 export const variants: VariantsConfig = {
-  default: createDistribution([['control', 100]]),
+  default: {
+    control: 100,
+  },
 }
 
 export type VariantKey = keyof typeof variants['default']
