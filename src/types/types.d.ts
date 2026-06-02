@@ -7,6 +7,7 @@ interface Retailer {
     id: string
     iconPath: string
     name: string
+    displayName: string
     section: string
     backgroundColor: string
     maxCashback: number
