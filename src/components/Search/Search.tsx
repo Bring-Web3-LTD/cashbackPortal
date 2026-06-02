@@ -83,12 +83,11 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     option: (base, state) => ({
         ...base,
         ...optionRowStyle,
-        backgroundColor:
-            state.isFocused && state.options.length > 1
-                ? "var(--search-option-hover-bg)"
-                : state.isSelected
-                    ? "var(--search-menu-bg, var(--search-bg))"
-                    : "transparent",
+        backgroundColor: state.isFocused
+            ? "var(--search-option-hover-bg)"
+            : state.isSelected
+                ? "var(--search-menu-bg, var(--search-bg))"
+                : "transparent",
         "&:hover": { backgroundColor: "var(--search-option-hover-bg)" },
         "&:active": { backgroundColor: "var(--search-option-hover-bg)" },
         cursor: "pointer",
@@ -165,7 +164,6 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
-    const [msg, setMsg] = useState("")
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
@@ -209,7 +207,6 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             }
         } else {
             const input = inputValue.trimStart().toLowerCase()
-            if (msg.length) setMsg("")
             if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
 
             // if (input.length === 3) {
@@ -275,11 +272,6 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 value={value}
                 onBlur={() => setIsFocused(false)}
             />
-            {msg.length ? (
-                <div className={styles.msg}>
-                    {msg}
-                </div>
-            ) : null}
         </div>
     )
 }

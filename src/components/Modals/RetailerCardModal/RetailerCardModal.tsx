@@ -167,6 +167,7 @@ const RetailerCardModal = ({
                                             onClick={activate}
                                             href={redirectLink}
                                             target='_blank'
+                                            rel="noopener noreferrer"
                                         >
                                             {t('startShopping')}
                                         </a>
