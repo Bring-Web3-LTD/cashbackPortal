@@ -202,12 +202,13 @@
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #FFF;
     --modal-deal-markdown-bg: #171717;
-    --modal-deal-markdown-border-w: 0;
-    --modal-deal-markdown-border-c: transparent;
-    --modal-deal-markdown-radius: 12px;
+    --modal-deal-markdown-border-w: 1px;
+    --modal-deal-markdown-border-c: rgba(140, 140, 140, 0.30);
+    --modal-deal-markdown-radius: 8px;
     --modal-deal-markdown-f-s: 12px;
-    --modal-deal-markdown-f-w: 500;
+    --modal-deal-markdown-f-w: 400;
     --modal-deal-markdown-f-c: #8C8C8C;
+    --modal-deal-markdown-title-f-s: 13px;
     --modal-deal-markdown-bold-f-w: 700;
     --modal-deal-markdown-bold-f-c: #FFF;
     --modal-deal-consent-f-s: 12px;
