@@ -207,7 +207,7 @@ const HistoryMobile = () => {
                     navigate(-1)
                 }}
             >
-                <Icon name="arrow-left.svg" alt="" />
+                <Icon name="arrow-left-light.svg" fallbackName="arrow-left.svg" alt="" />
 
             </Link>
             {balance?.movements.claims.length || balance?.movements.deals.length ? (

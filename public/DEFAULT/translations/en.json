@@ -15,5 +15,6 @@
   "historyTitle": "Transaction history",
   "emptyHistory": "No transaction history yet",
   "needHelp": "Need help?",
-  "connectYourWallet": "Connect your wallet"
+  "connectYourWallet": "Connect your wallet",
+  "termsAndExclusions": "Terms and Exclusions"
 }
