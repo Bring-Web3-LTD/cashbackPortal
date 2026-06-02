@@ -493,7 +493,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     const apiUrl = getApiUrl()
     const apiKey = getApiKey()
     if (!apiUrl || !apiKey) {
-        setStatus(`Missing API URL or key for provider "${activeProvider}" (set VITE_PORTAL_API[_KEY] in .env.local)`, true)
+        setStatus(`Missing API URL or key for provider "${activeProvider}" (set VITE_PORTAL_API / VITE_PORTAL_API_KEY, or the per-provider overrides VITE_PORTAL_API_<PROVIDER> / VITE_PORTAL_API_KEY_<PROVIDER>, in .env.local)`, true)
         return null
     }
 

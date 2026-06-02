@@ -2,8 +2,9 @@
  * Dev-only visual-diff overlay for the dev-wrapper.
  *
  * Drop a Figma PNG export over the running wrapper page to pixel-compare
- * layouts. Enable by adding `?visualDiff=1` to the URL (the flag is then
- * persisted to localStorage so reloads keep it on).
+ * layouts. The overlay is always mounted; `VITE_VISUAL_DIFF` controls whether
+ * the panel starts expanded or collapsed. The loaded image, position, and
+ * settings are persisted to localStorage so reloads keep them.
  *
  * Controls:
  *   - File picker, URL field, or drag & drop to load an image (drop a PNG
@@ -14,9 +15,9 @@
  *   - `diff` toggles `mix-blend-mode: difference` (matching pixels go black)
  *   - `hide` / `lock` / `reset`
  *
- * Note: this overlays the dev-wrapper page itself, NOT the portal inside the
- * iframe. To overlay the portal, open the portal directly with `?visualDiff=1`
- * (the React mount in `src/dev/VisualDiffOverlay.tsx` handles that case).
+ * Note: this overlays the dev-wrapper page itself, NOT the portal rendered
+ * inside the iframe (the portal is served from a separate origin in the
+ * iframe, so it can't be overlaid from here).
  */
 
 type State = {
