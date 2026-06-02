@@ -280,7 +280,7 @@
 
     --history-back-hover-f-s: 14px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #7B9AEB;
+    --history-back-hover-f-c: var(--history-back-f-c);
 
     --history-back-x-location: 64px;
 
