@@ -8,6 +8,18 @@ import { createCasperWallet } from './casperWallet'
 import { createEckoWallet } from './eckoWallet'
 import { createReadyWallet } from './readyWallet'
 import { createPortalBridge, type LogKind } from './portalBridge'
+import { mountVisualDiffOverlay } from './visualDiffOverlay'
+
+// The visual-diff overlay is an authoring aid for pixel-comparing the page
+// against a design. It's included in the hosted build too: the URL/file/drag
+// loaders are pure client-side, and the Figma loader works either via the
+// dev-only `/__figma-image` proxy (local, using the server FIGMA_TOKEN) or by
+// a Figma token pasted into the overlay (which stays in the browser). No
+// secret is ever baked into the build. VITE_VISUAL_DIFF controls whether it
+// starts expanded (1/true).
+mountVisualDiffOverlay({
+    startExpanded: import.meta.env.VITE_VISUAL_DIFF === '1' || import.meta.env.VITE_VISUAL_DIFF === 'true',
+})
 
 type Theme = 'light' | 'dark'
 
@@ -21,11 +33,48 @@ interface PortalApiResponse {
 
 const env = import.meta.env
 
-const API_URL = env.VITE_PORTAL_API as string | undefined
+// Shared/default API config. Used as a fallback when a provider-specific
+// override isn't set.
+const API_BASE = env.VITE_PORTAL_API as string | undefined
 const API_KEY = env.VITE_PORTAL_API_KEY as string | undefined
+
+// Per-provider API config keyed by the wallet-provider id (the values of the
+// "Wallet provider" <select>). Each platform/partner has its own API key (and
+// optionally its own API URL). Anything left unset falls back to the shared
+// VITE_PORTAL_API / VITE_PORTAL_API_KEY above.
+const PROVIDER_API: Record<string, { url?: string; key?: string }> = {
+    mock: { url: env.VITE_PORTAL_API_MOCK, key: env.VITE_PORTAL_API_KEY_MOCK },
+    nightly: { url: env.VITE_PORTAL_API_NIGHTLY, key: env.VITE_PORTAL_API_KEY_NIGHTLY },
+    solflare: { url: env.VITE_PORTAL_API_SOLFLARE, key: env.VITE_PORTAL_API_KEY_SOLFLARE },
+    yoroi: { url: env.VITE_PORTAL_API_YOROI, key: env.VITE_PORTAL_API_KEY_YOROI },
+    casper: { url: env.VITE_PORTAL_API_CASPER, key: env.VITE_PORTAL_API_KEY_CASPER },
+    ecko: { url: env.VITE_PORTAL_API_ECKO, key: env.VITE_PORTAL_API_KEY_ECKO },
+    ready: { url: env.VITE_PORTAL_API_READY, key: env.VITE_PORTAL_API_KEY_READY },
+}
+
+// The API URL has the shape `https://host/<stage>/v1/extension/check/portal`.
+// The `<stage>` segment is fixed at build time and is shown read-only in the UI
+// for information only.
+const stageOf = (url?: string): string => {
+    if (!url) return ''
+    try {
+        return new URL(url).pathname.split('/').filter(Boolean)[0] ?? ''
+    } catch {
+        return ''
+    }
+}
+
+const defaultStage = stageOf(API_BASE)
+
+const apiStage = defaultStage
+// Resolved against the currently selected wallet provider at call time.
+const getApiUrl = (): string | undefined => PROVIDER_API[activeProvider]?.url || API_BASE
+const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key || API_KEY
+
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
+const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
 
 const $ = <T extends HTMLElement>(id: string) => {
     const el = document.getElementById(id)
@@ -36,6 +85,7 @@ const $ = <T extends HTMLElement>(id: string) => {
 const themeEl = $<HTMLSelectElement>('theme')
 const walletEl = $<HTMLInputElement>('wallet')
 const extensionEl = $<HTMLInputElement>('extensionId')
+const apiStageInfoEl = $<HTMLElement>('apiStageInfo')
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const lastUrlEl = $<HTMLTextAreaElement>('lastUrl')
@@ -48,6 +98,8 @@ const startDisconnectedDefault = localStorage.getItem(STARTED_DISCONNECTED_KEY) 
 
 extensionEl.value = DEFAULT_EXT_ID
 walletEl.value = startDisconnectedDefault ? '' : DEFAULT_WALLET
+themeEl.value = DEFAULT_THEME === 'dark' || DEFAULT_THEME === 'light' ? DEFAULT_THEME : ''
+apiStageInfoEl.textContent = apiStage || '(default)'
 
 const layoutEl = $<HTMLElement>('layout')
 const toggleBtn = $<HTMLButtonElement>('toggleSidebar')
@@ -71,6 +123,29 @@ const walletBtn = $<HTMLButtonElement>('walletBtn')
 const walletProviderEl = $<HTMLSelectElement>('walletProvider')
 const logEl = $<HTMLDivElement>('log')
 const clearLogBtn = $<HTMLButtonElement>('clearLog')
+
+// "Log out" clears the CloudFront HTTP basic-auth credentials the browser has
+// cached for this origin. It only makes sense on the hosted build (the local
+// dev server isn't password-protected), so the button stays hidden on
+// localhost / 127.0.0.1.
+const logoutBtn = $<HTMLButtonElement>('logoutBtn')
+const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'].includes(location.hostname)
+if (!isLocalHost) {
+    logoutBtn.hidden = false
+    logoutBtn.addEventListener('click', () => {
+        // Overwrite the stored Basic-Auth credentials with bogus ones so the
+        // browser drops the cached pair for this realm, then reload to force a
+        // fresh 401 / credentials prompt.
+        try {
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', location.href, true, 'logout', String(Date.now()))
+            xhr.onloadend = () => location.reload()
+            xhr.send()
+        } catch {
+            location.reload()
+        }
+    })
+}
 
 function appendLog(kind: LogKind, label: string, payload?: unknown) {
     const entry = document.createElement('div')
@@ -183,6 +258,8 @@ const getReadyAdapter = (): MockWallet => {
 const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProviderId | null) ?? 'mock'
 walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
+// Now that the active provider is known, show its API stage.
+apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
 
 const pickAdapter = (): MockWallet => {
     switch (activeProvider) {
@@ -227,6 +304,11 @@ walletProviderEl.addEventListener('change', async () => {
     localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
     appendLog('info', `Wallet provider → ${activeProvider}`)
     applyProviderUi()
+    // Switching provider = new platform/API key = brand-new portal session:
+    // reflect the (possibly different) stage and force a full iframe reload.
+    apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
+    isFirstLoad = true
+    void refresh()
 })
 
 const bridge = createPortalBridge({
@@ -408,8 +490,10 @@ function buildIframeSrc(returnedUrl: string, token: string): string {
 }
 
 async function bootstrap(walletAddress: string | null): Promise<PortalApiResponse | null> {
-    if (!API_URL || !API_KEY) {
-        setStatus('Missing VITE_PORTAL_API or VITE_PORTAL_API_KEY in .env.local', true)
+    const apiUrl = getApiUrl()
+    const apiKey = getApiKey()
+    if (!apiUrl || !apiKey) {
+        setStatus(`Missing API URL or key for provider "${activeProvider}" (set VITE_PORTAL_API[_KEY] in .env.local)`, true)
         return null
     }
 
@@ -426,10 +510,10 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
 
     let res: Response
     try {
-        res = await fetch(API_URL, {
+        res = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'x-api-key': API_KEY,
+                'x-api-key': apiKey,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
