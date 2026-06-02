@@ -1,0 +1,375 @@
+/* SOLFLARE — Dark mode
+   Based on the Solflare Figma "Cashback Integrations" file.
+   Palette: yellow #FFEF46 accent, dark surfaces (#0E1116 page / #1B1E24 card / #282B30 raised),
+   #F5F8FF primary text, fully rounded pill CTAs (100px).
+   Font: FK Grotesk (licensed) — served from S3/CloudFront at
+   https://media.bringweb3.io/fonts/solflare/ */
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Medium.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Medium.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Bold.woff2') format('woff2');
+}
+
+:root {
+    --bg: #0E1116;
+    --header-bg: #0E1116;
+
+    --title-f-s: 25px;
+    --title-f-w: 700;
+    --title-f-c: #F5F8FF;
+
+    --subtitle-f-s: 18px;
+    --subtitle-f-w: 400;
+    --subtitle-f-c: #F5F8FF;
+
+    --header-btn-bg: rgba(245, 248, 255, 0.08);
+    --header-btn-hover-bg: rgba(245, 248, 255, 0.12);
+    --header-btn-f-s: 15px;
+    --header-btn-f-w: 400;
+    --header-btn-f-c: #F5F8FF;
+    --header-btn-border-w: 0;
+    --header-btn-border-c: transparent;
+    --header-btn-radius: 100px;
+    --header-btn-p: 9px 12px;
+
+    --rewards-bg: #1B1E24;
+    --rewards-img-size: 20px;
+
+    --claim-img-bg: #282B30;
+    --claim-img-border-w: 0;
+    --claim-img-border-c: transparent;
+    --claim-img-radius: 50%;
+
+    --pending-img-bg: #282B30;
+    --pending-img-border-w: 0;
+    --pending-img-border-c: transparent;
+    --pending-img-radius: 50%;
+
+    --rewards-text-f-s: 22px;
+    --rewards-text-f-w: 700;
+    --claim-text-f-c: #F5F8FF;
+    --pending-text-f-c: #F5F8FF;
+
+    --rewards-usd-f-s: 15px;
+    --rewards-usd-f-w: 400;
+    --claim-usd-f-c: #B9BBBF;
+    --pending-usd-f-c: #B9BBBF;
+
+    --rewards-amount-f-s: 22px;
+    --rewards-amount-f-w: 700;
+    --rewards-amount-l-h: 28px;
+
+    --claim-amount-f-c: #F5F8FF;
+    --pending-amount-f-c: #F5F8FF;
+
+    --rewards-btn-width: 205px;
+    --rewards-btn-f-s: 18px;
+    --rewards-btn-f-w: 700;
+    --rewards-btn-radius: 100px;
+
+    --primary-btn-f-s: 18px;
+    --primary-btn-f-w: 700;
+    --primary-btn-f-c: #1F2018;
+    --primary-btn-radius: 100px;
+    --primary-btn-border-w: 0;
+    --primary-btn-border-c: transparent;
+    --primary-btn-bg: #FFEF46;
+    --primary-btn-hover-bg: #EEDA0F;
+    --primary-btn-pressed-bg: #E6D73F;
+    --primary-btn-disabled-bg: rgba(255, 239, 70, 0.3);
+    --primary-btn-disabled-f-c: #1F2018;
+
+    --pending-btn-f-c: #1F2018;
+    --pending-btn-border-c: transparent;
+    --pending-btn-border-w: 0;
+    --pending-btn-bg: #FFEF46;
+
+    --pending-btn-hover-f-c: #1F2018;
+    --pending-btn-hover-border-c: transparent;
+    --pending-btn-hover-border-w: 0;
+    --pending-btn-hover-bg: #EEDA0F;
+
+    --pending-btn-pressed-f-c: #1F2018;
+    --pending-btn-pressed-border-c: transparent;
+    --pending-btn-pressed-border-w: 0;
+    --pending-btn-pressed-bg: #E6D73F;
+
+    --retailer-card-bg: #12151A;
+    --retailer-card-hover-bg: #16181D;
+    --retailer-card-border-w: 1px;
+    --retailer-card-border-color: rgba(102, 104, 110, 0.3);
+    --retailer-card--hover-border-color: rgba(102, 104, 110, 0.45);
+
+    --retailer-card-img-border-c: rgba(177, 190, 213, 0.5);
+    --retailer-card-img-border-w: 1px;
+    --retailer-card-img-border-campaign-c: #FFEF46;
+
+    --retailer-logo-fallback-bg: #FDDB32;
+    --retailer-logo-fallback-f-c: #1F2018;
+    --retailer-logo-fallback-f-s: 37px;
+    --retailer-logo-fallback-f-s-two-letters: 24px;
+    --retailer-logo-fallback-f-w: 700;
+    --retailer-logo-fallback-border-w: 1px;
+    --retailer-logo-fallback-border-c: rgba(177, 190, 213, 0.5);
+
+    --retailer-card-flag-f-s: 12px;
+    --retailer-card-flag-f-w: 700;
+    --retailer-card-flag-f-c: #FFEF46;
+    --retailer-card-flag-bg: #282B30;
+    --retailer-card-flag-campaign-f-c: #FFEF46;
+    --retailer-card-flag-campaign-bg: #282B30;
+    --retailer-card-flag-radius: 5px;
+
+    --retailer-card-name-f-s: 15px;
+    --retailer-card-name-f-w: 500;
+    --retailer-card-name-f-c: #F5F8FF;
+
+    --retailer-card-amount-f-s: 12px;
+    --retailer-card-amount-f-c: #F5F8FF;
+    --retailer-card-amount-f-w: 500;
+    --retailer-card-amount-bg: #2C2F36;
+    --retailer-card-amount-campaign-f-w: 700;
+    --retailer-card-amount-campaign-bg: rgba(255, 239, 70, 0.18);
+
+    --deals-amount-f-s: 15px;
+    --deals-amount-f-w: 500;
+    --deals-amount-f-c: #6C6F75;
+
+    --loading-msg-f-s: 12px;
+    --loading-msg-f-w: 500;
+    --loading-msg-f-c: #F5F8FF;
+
+    --filter-btn-f-s: 15px;
+    --filter-btn-f-w: 400;
+    --filter-btn-f-c: #B1B4BB;
+    --filter-btn-bg: #1B1E23;
+    --filter-btn-hover-bg: #282B30;
+    --filter-btn-hover-f-c: #F5F8FF;
+    --filter-btn-border-w: 0;
+    --filter-btn-border-c: transparent;
+    --filter-btn-radius: 8px;
+
+    --category-btn-bg: #1B1E23;
+    --category-btn-f-s: 15px;
+    --category-btn-f-w: 400;
+    --category-btn-f-c: #B1B4BB;
+    --category-btn-border-w: 0;
+    --category-btn-border-c: transparent;
+    --category-btn-radius: 8px;
+    --category-btn-hover-bg: #2C2F36;
+    --category-btn-hover-f-c: #F5F8FF;
+    --category-btn-hover-f-w: 500;
+    --category-btn-hover-border-w: 0;
+    --category-btn-hover-border-c: transparent;
+    --category-btn-hover-radius: 8px;
+    --category-skeleton-bg: #1B1E23;
+
+    --modal-offset-top: -112px;
+    --modal-bg: #1B1E24;
+    --modal-overlay-bg: rgba(8, 10, 14, 0.75);
+    --modal-border-w: 1px;
+    --modal-border-c: #282B30;
+    --modal-radius: 12px;
+    --modal-title-f-s: 22px;
+    --modal-title-f-w: 700;
+    --modal-title-f-c: #F5F8FF;
+    --modal-paragraph-f-s: 15px;
+    --modal-paragraph-f-w: 400;
+    --modal-paragraph-f-c: #B9BBBF;
+
+    --modal-claim-amount-f-s: 40px;
+    --modal-claim-amount-f-w: 700;
+    --modal-claim-amount-f-c: #F5F8FF;
+    --modal-claim-details-bg: #282B30;
+    --modal-claim-details-border-w: 0;
+    --modal-claim-details-border-c: transparent;
+    --modal-claim-details-radius: 12px;
+    --modal-claim-disclaimer-f-s: 14px;
+    --modal-claim-disclaimer-f-w: 400;
+    --modal-claim-disclaimer-f-c: #B9BBBF;
+    --modal-claim-address-bg: #282B30;
+    --modal-claim-address-title-f-s: 14px;
+    --modal-claim-address-title-f-w: 500;
+    --modal-claim-address-title-f-c: #F5F8FF;
+    --modal-claim-address-border-w: 0;
+    --modal-claim-address-border-c: transparent;
+    --modal-claim-address-radius: 12px;
+    --modal-claim-address-f-s: 14px;
+    --modal-claim-address-f-w: 400;
+    --modal-claim-address-f-c: #F5F8FF;
+    --modal-claim-tooltip-f-s: 14px;
+    --modal-claim-tooltip-f-w: 400;
+    --modal-claim-tooltip-f-c: #F5F8FF;
+
+    --modal-claim-countdown-radius: 100px;
+    --modal-claim-countdown-border-w: 2px;
+    --modal-claim-countdown-border-c: #FFEF46;
+    --modal-claim-countdown-progress-c: #282B30;
+    --modal-claim-countdown-f-s: 16px;
+    --modal-claim-countdown-f-w: 500;
+    --modal-claim-countdown-f-c: #FFEF46;
+
+    --modal-deal-name-f-s: 20px;
+    --modal-deal-name-f-w: 700;
+    --modal-deal-name-f-c: #F5F8FF;
+    --modal-deal-btn-f-s: 17px;
+    --modal-deal-back-f-c: #797A7D;
+    --modal-deal-markdown-bg: rgba(9, 12, 17, 0.1);
+    --modal-deal-markdown-border-w: 1px;
+    --modal-deal-markdown-border-c: rgba(245, 248, 255, 0.1);
+    --modal-deal-markdown-radius: 8px;
+    --modal-deal-markdown-f-s: 13px;
+    --modal-deal-markdown-f-w: 400;
+    --modal-deal-markdown-f-c: rgba(245, 248, 255, 0.5);
+    --modal-deal-markdown-bold-f-w: 400;
+    --modal-deal-markdown-bold-f-c: #F5F8FF;
+    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.3);
+    --modal-deal-consent-f-s: 12px;
+    --modal-deal-consent-f-w: 400;
+    --modal-deal-consent-f-c: #B9BBBF;
+    --modal-deal-terms-btn-f-c: rgba(245, 248, 255, 0.85);
+    --modal-deal-terms-btn-hover-f-c: #F5F8FF;
+
+    --modal-status-title-f-s: 30px;
+    --modal-status-title-f-w: 700;
+    --modal-status-title-success-f-c: #08C29D;
+    --modal-status-title-failure-f-c: #DA493F;
+
+    --modal-status-msg-f-s: 16px;
+    --modal-status-msg-f-w: 400;
+    --modal-status-msg-f-c: #F5F8FF;
+
+    --modal-status-btn-bg: rgba(245, 248, 255, 0.08);
+    --modal-status-btn-f-s: 17px;
+    --modal-status-btn-f-w: 700;
+    --modal-status-btn-f-c: #F5F8FF;
+    --modal-status-btn-border-w: 0;
+    --modal-status-btn-border-c: transparent;
+    --modal-status-btn-radius: 100px;
+
+    --modal-status-btn-hover-bg: rgba(245, 248, 255, 0.12);
+    --modal-status-btn-hover-f-s: 17px;
+    --modal-status-btn-hover-f-w: 700;
+    --modal-status-btn-hover-f-c: #F5F8FF;
+    --modal-status-btn-hover-border-w: 0;
+    --modal-status-btn-hover-border-c: transparent;
+    --modal-status-btn-hover-radius: 100px;
+
+    --modal-status-btn-disabled-bg: var(--primary-btn-disabled-bg);
+    --modal-status-btn-disabled-f-s: 18px;
+    --modal-status-btn-disabled-f-w: 700;
+    --modal-status-btn-disabled-f-c: var(--primary-btn-disabled-f-c);
+    --modal-status-btn-disabled-border-w: 0;
+    --modal-status-btn-disabled-border-c: transparent;
+    --modal-status-btn-disabled-radius: 100px;
+
+    --scrollbar-bg: #282B30;
+    --scrollbar-w: 12px;
+
+    --search-bg: #1B1E24;
+    --search-menu-bg: #0C0F14;
+    --search-f-s: 16px;
+    --search-f-w: 400;
+    --search-f-c: #F5F8FF;
+    --search-option-f-c: #F5F8FF;
+    --search-option-f-s: 15px;
+    --search-option-f-w: 400;
+    --search-option-hover-bg: #16181D;
+    --search-radius: 10px;
+    --search-menu-radius: 10px;
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: rgba(245, 248, 255, 0.1);
+    --search-border-w: 1px;
+    --search-border-c: #F5F8FF;
+    --search-placeholder-f-c: #66686E;
+    --search-scrollbar-bg: #282B30;
+
+    --history-title-f-s: 22px;
+    --history-title-f-w: 700;
+    --history-title-f-c: #F5F8FF;
+
+    --history-back-f-s: 14px;
+    --history-back-f-w: 500;
+    --history-back-f-c: #F5F8FF;
+    --history-page-back-f-c: #797A7D;
+
+    --history-back-hover-f-s: 14px;
+    --history-back-hover-f-w: 500;
+    --history-back-hover-f-c: #F5F8FF;
+
+    --history-back-x-location: 64px;
+
+    --history-table-header-bg: #0E1116;
+    --history-table-header-border-c: transparent;
+    --history-table-header-border-w: 0;
+    --history-table-header-radius: 0;
+
+    --history-table-header-f-s: 14px;
+    --history-table-header-f-w: 400;
+    --history-table-header-f-c: #B9BBBF;
+
+    --history-table-row-border-w: 1px;
+    --history-table-row-border-c: #1B1E24;
+    --history-table-row-bg: #1B1E24;
+
+    --history-table-row-hover-bg: #282B30;
+    --history-table-row-active-bg: #1B1E24;
+    --history-claimed-icon-bg: #FFEF46;
+    --history-details-btn-bg: #282B30;
+    --history-purchase-name-f-s: 16px;
+    --history-purchase-name-f-w: 500;
+    --history-purchase-name-f-c: #F5F8FF;
+
+    --history-amount-f-s: 16px;
+    --history-amount-f-w: 400;
+    --history-amount-f-c: #F5F8FF;
+
+    --history-status-f-s: 16px;
+    --history-status-f-w: 400;
+    --history-status-f-c: #08C29D;
+    --history-status-canceled-f-c: #FF7196;
+
+    --history-description-f-s: 14px;
+    --history-description-f-w: 400;
+    --history-description-f-c: #B9BBBF;
+    --history-description-bold-f-w: 700;
+
+    --history-empty-f-s: 15px;
+    --history-empty-f-w: 400;
+    --history-empty-f-c: #7A7D83;
+
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 700;
+    --faq-question-f-c: #F5F8FF;
+
+    --faq-answer-f-s: 16px;
+    --faq-answer-f-w: 400;
+    --faq-answer-f-c: #B9BBBF;
+}
+
+* {
+    font-family: "FK Grotesk", system-ui, -apple-system, sans-serif;
+}
