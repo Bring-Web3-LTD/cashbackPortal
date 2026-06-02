@@ -1,9 +1,8 @@
-/* SOLFLARE — Dark mode
-   Based on the Solflare Figma "Cashback Integrations" file.
+/* SOLFLARE —Light mode is not set, use Dark mode in this case
    Palette: yellow #FFEF46 accent, dark surfaces (#0E1116 page / #1B1E24 card / #282B30 raised),
    #F5F8FF primary text, fully rounded pill CTAs (100px).
-   Font: FK Grotesk (licensed) — served from S3/CloudFront at
-   https://media.bringweb3.io/fonts/solflare/ */
+   Font: FK Grotesk (licensed)
+*/
 @font-face {
     font-family: 'FK Grotesk';
     font-style: normal;
