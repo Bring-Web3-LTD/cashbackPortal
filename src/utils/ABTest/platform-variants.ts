@@ -14,7 +14,8 @@ export type VariantsConfig = {
 // Variant distributions per platform (percentages, must sum to 100)
 export const variants: VariantsConfig = {
   default: {
-    control: 100,
+    testA: 50,
+    testB: 50,
   },
 }
 
@@ -83,7 +84,8 @@ export const selectNestedVariant = (userId: string, platformName: PlatformName, 
 export const hasFeature = (variant: string, featureName: string): boolean => {
   
   const featureFlagMap: Record<string, string[]> = {
-    control: [],  
+    testA: ['show_missing_reward'],
+    testB: [],
   }
 
   return (featureFlagMap[variant] || []).includes(featureName)
