@@ -18,6 +18,13 @@ if [[ ! -f .env.deploy ]]; then
   exit 1
 fi
 
+# Reject anything except blank lines, comments, or simple KEY=VALUE assignments.
+# This avoids accidentally executing shell code when sourcing the deploy config.
+if grep -Eqv '^\s*(#.*)?$|^[A-Za-z_][A-Za-z0-9_]*=([A-Za-z0-9._-]+|"[A-Za-z0-9._-]+")$' .env.deploy; then
+  echo "error: .env.deploy must contain only KEY=VALUE lines (no shell code)." >&2
+  exit 1
+fi
+
 set -a
 # shellcheck disable=SC1091
 . ./.env.deploy
