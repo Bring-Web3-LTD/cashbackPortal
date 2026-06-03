@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "yarn build && aws s3 sync dist s3://portal-viewer.bringweb3.io --delete --exclude index.html --cache-control \"public,max-age=31536000,immutable\" && aws s3 cp dist/index.html s3://portal-viewer.bringweb3.io/index.html --cache-control \"no-cache\" --content-type \"text/html; charset=utf-8\" && aws cloudfront create-invalidation --distribution-id E1LQKQMDXNNDKB --paths \"/*\""
+    "deploy": "bash deploy.sh",
+    "deploy:portal": "bash deploy.sh portal",
+    "deploy:wrapper": "bash deploy.sh wrapper"
   },
   "devDependencies": {
     "typescript": "^5.5.4",
