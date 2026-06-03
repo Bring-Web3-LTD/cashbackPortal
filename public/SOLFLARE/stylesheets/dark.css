@@ -33,8 +33,8 @@
 }
 
 :root {
-    --bg: #0E1116;
-    --header-bg: #0E1116;
+    --bg: #090C11;
+    --header-bg: #090C11;
 
     --title-f-s: 25px;
     --title-f-w: 700;
@@ -189,9 +189,9 @@
     --modal-offset-top: -112px;
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(8, 10, 14, 0.75);
-    --modal-border-w: 1px;
-    --modal-border-c: #282B30;
-    --modal-radius: 12px;
+    --modal-border-w: 0;
+    --modal-border-c: transparent;
+    --modal-radius: 20px;
     --modal-title-f-s: 22px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #F5F8FF;
@@ -236,19 +236,23 @@
     --modal-deal-name-f-c: #F5F8FF;
     --modal-deal-btn-f-s: 17px;
     --modal-deal-back-f-c: #797A7D;
+    --modal-deal-back-f-s: 13px;
     --modal-deal-markdown-bg: rgba(9, 12, 17, 0.1);
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: rgba(245, 248, 255, 0.1);
     --modal-deal-markdown-radius: 8px;
     --modal-deal-markdown-f-s: 13px;
+    --modal-deal-markdown-list-f-s: 12px;
     --modal-deal-markdown-f-w: 400;
     --modal-deal-markdown-f-c: rgba(245, 248, 255, 0.5);
     --modal-deal-markdown-bold-f-w: 400;
     --modal-deal-markdown-bold-f-c: #F5F8FF;
-    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.3);
+    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.10);
+    --modal-deal-markdown-scrollbar-w: 11px;
+    --modal-deal-markdown-scrollbar-thumb-h: 30px;
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
-    --modal-deal-consent-f-c: #B9BBBF;
+    --modal-deal-consent-f-c: #636772;
     --modal-deal-terms-btn-f-c: rgba(245, 248, 255, 0.85);
     --modal-deal-terms-btn-hover-f-c: #F5F8FF;
 
@@ -302,7 +306,8 @@
     --search-menu-border-w: 1px;
     --search-menu-border-c: rgba(245, 248, 255, 0.1);
     --search-border-w: 1px;
-    --search-border-c: #F5F8FF;
+    --search-border-c: rgba(102, 104, 110, 0.3);
+    --search-border-focus-c: #F5F8FF;
     --search-placeholder-f-c: #66686E;
     --search-scrollbar-bg: #282B30;
 
@@ -321,35 +326,36 @@
 
     --history-back-x-location: 64px;
 
-    --history-table-header-bg: #0E1116;
+    --history-table-header-bg: #090C11;
     --history-table-header-border-c: transparent;
     --history-table-header-border-w: 0;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 14px;
     --history-table-header-f-w: 400;
-    --history-table-header-f-c: #B9BBBF;
+    --history-table-header-f-c: #7A7D83;
 
     --history-table-row-border-w: 1px;
-    --history-table-row-border-c: #1B1E24;
-    --history-table-row-bg: #1B1E24;
+    --history-table-row-border-c: rgba(138, 142, 148, 0.1);
+    --history-table-row-bg: #090C11;
 
-    --history-table-row-hover-bg: #282B30;
-    --history-table-row-active-bg: #1B1E24;
+    --history-table-row-hover-bg: #14171D;
+    --history-table-row-active-bg: #090C11;
     --history-claimed-icon-bg: #FFEF46;
-    --history-details-btn-bg: #282B30;
+    --history-details-btn-bg: #1B1E23;
     --history-purchase-name-f-s: 16px;
     --history-purchase-name-f-w: 500;
     --history-purchase-name-f-c: #F5F8FF;
 
-    --history-amount-f-s: 16px;
+    --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
     --history-amount-f-c: #F5F8FF;
 
-    --history-status-f-s: 16px;
+    --history-status-f-s: 15px;
     --history-status-f-w: 400;
-    --history-status-f-c: #08C29D;
-    --history-status-canceled-f-c: #FF7196;
+    --history-status-f-c: #71CC49;
+    --history-status-pending-f-c: #F5F8FF;
+    --history-status-canceled-f-c: #DA493F;
 
     --history-description-f-s: 14px;
     --history-description-f-w: 400;
@@ -366,7 +372,7 @@
 
     --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
-    --faq-answer-f-c: #B9BBBF;
+    --faq-answer-f-c: #F5F8FF;
 }
 
 * {

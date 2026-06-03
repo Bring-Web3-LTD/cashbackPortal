@@ -231,8 +231,9 @@
     --modal-deal-markdown-radius: 5px;
     --modal-deal-markdown-f-s: 12px;
     --modal-deal-markdown-f-w: 400;
-    --modal-deal-markdown-f-c: #FFF;
+    --modal-deal-markdown-f-c: rgba(255, 255, 255, 0.50);
     --modal-deal-markdown-title-f-s: 13px;
+    --modal-deal-markdown-scrollbar-w: 11px;
     --modal-deal-markdown-bold-f-w: 600;
     --modal-deal-markdown-bold-f-c: #FFF;
     --modal-deal-consent-f-s: 12px;

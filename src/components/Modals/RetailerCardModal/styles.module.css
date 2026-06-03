@@ -71,7 +71,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: var(--history-back-f-s);
+    font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
     font-weight: var(--history-back-f-w);
     color: var(--modal-deal-back-f-c, var(--modal-deal-name-f-c));
 }
@@ -99,7 +99,7 @@
     border-style: solid;
     border-color: var(--modal-deal-markdown-border-c);
     height: calc(300px - var(--padding) * 2);
-    width: calc(100% - var(--padding) * 2);
+    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w, 0px) * 2);
     padding: var(--padding);
     overflow-y: auto;
     font-size: var(--modal-deal-markdown-f-s);
@@ -114,20 +114,27 @@
 
 .markdown::-webkit-scrollbar {
     background: transparent;
-    width: var(--scrollbar-w);
+    width: var(--modal-deal-markdown-scrollbar-w, var(--scrollbar-w));
 }
 
 .markdown::-webkit-scrollbar-thumb {
-    border: 4px solid rgba(0, 0, 0, 0);
+    border: var(--modal-deal-markdown-scrollbar-pad, 4px) solid rgba(0, 0, 0, 0);
     background-clip: padding-box;
     border-radius: 9999px;
     background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
+    min-height: var(--modal-deal-markdown-scrollbar-thumb-h, auto);
 }
 
 .markdown p {
     margin-top: 10px;
     margin-bottom: 10px;
     line-height: 18px;
+}
+
+.markdown ul,
+.markdown ol,
+.markdown li {
+    font-size: var(--modal-deal-markdown-list-f-s, var(--modal-deal-markdown-f-s));
 }
 
 .markdown p strong,

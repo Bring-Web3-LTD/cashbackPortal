@@ -1,6 +1,6 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, MouseEvent, useEffect, useId, useState } from "react"
+import { Fragment, MouseEvent, useEffect, useId, useRef, useState } from "react"
 
 // components
 import Select, {
@@ -11,6 +11,7 @@ import Select, {
     ControlProps,
     NoticeProps,
     SingleValueProps,
+    SelectInstance,
 } from "react-select"
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
@@ -33,13 +34,17 @@ const optionRowStyle = {
 } as const
 
 const customStyles: StylesConfig<ReactSelectOptionType> = {
-    control: (base) => ({
+    control: (base, state) => {
+        const borderColor = state.isFocused
+            ? "var(--search-border-focus-c, var(--search-border-c))"
+            : "var(--search-border-c)"
+        return {
         ...base,
-        border: "var(--search-border-w) solid var(--search-border-c)",
+        border: `var(--search-border-w) solid ${borderColor}`,
         borderRadius: "var(--search-radius, 10px)",
         alignContent: "center",
         "&:hover": {
-            border: "var(--search-border-w) solid var(--search-border-c)",
+            border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
         width: "438px",
@@ -54,7 +59,8 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         "@media only screen and (max-width: 1280px)": {
             width: "342px",
         }
-    }),
+        }
+    },
     menuList: (base) => ({
         ...base,
         paddingTop: 0,
@@ -169,6 +175,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
+    const selectRef = useRef<SelectInstance<ReactSelectOptionType> | null>(null)
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
@@ -199,7 +206,9 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
         })
 
         onChangeFn({ value, label: value })
-        setIsFocused(false)
+        // Blurring fires the Select's onBlur, which sets isFocused(false) –
+        // keep focus state driven by a single source (the blur event).
+        selectRef.current?.blur()
     }
 
     const handleInputChange = (inputValue: string) => {
@@ -259,6 +268,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             className={styles.search}>
             <Select
                 id="search-select"
+                ref={selectRef}
                 instanceId={id}
                 placeholder={t('searchPlaceholder')}
                 styles={customStyles}

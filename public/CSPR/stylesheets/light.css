@@ -194,6 +194,7 @@
     --modal-deal-name-f-s: 22px;
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #1A1919;
+    --modal-deal-back-f-c: #0A2EBF;
     --modal-deal-markdown-bg: transparent;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: var(--Content-Light-contentDisabled, #BCBDC1);
@@ -202,6 +203,7 @@
     --modal-deal-markdown-f-w: 400;
     --modal-deal-markdown-f-c: var(--Content-Light-contentPrimary, #1A1919);
     --modal-deal-markdown-title-f-s: 13px;
+    --modal-deal-markdown-scrollbar-w: 11px;
     --modal-deal-markdown-bold-f-w: 600;
     --modal-deal-markdown-bold-f-c: var(--Content-Light-contentPrimary, #1A1919);
     --modal-deal-consent-f-s: 13px;
