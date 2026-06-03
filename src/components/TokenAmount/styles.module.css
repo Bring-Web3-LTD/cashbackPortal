@@ -1,0 +1,14 @@
+/*
+ * <sub> styling for the TokenAmount component.
+ *
+ * Color is inherited from the surrounding text by default (per spec).
+ * Size and baseline offset are exposed as CSS variables so each platform
+ * stylesheet can tune them; defaults are sensible fallbacks.
+ */
+.sub {
+    font-size: var(--token-amount-sub-f-s, 0.7em);
+    line-height: 1;
+    vertical-align: var(--token-amount-sub-v-a, sub);
+    /* Inherit color from parent text. */
+    color: inherit;
+}

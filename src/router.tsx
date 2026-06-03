@@ -1,12 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from './layout/Layout';
-import Home from './pages/Home/Home';
-import History from './pages/History';
-import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
+import { HomeDispatcher, HistoryDispatcher, FaqDispatcher } from './dispatchers';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV, SHOW_TERMS_PLATFORMS } from './config';
+import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet } from './utils/loadStylesheet';
@@ -33,13 +31,15 @@ const rootLoader = async () => {
         const extensionId = res.info.extensionId || urlExtensionId || null
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
+        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
 
-        loadStylesheet(theme, platform)
+        loadStylesheet(theme, platform, useMobilePortal ? 'mobile' : 'desktop')
         // Make sure the platform translation bundle is fetched before we
         // switch to it as the default namespace; missing keys fall back
         // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
-        await i18n.loadNamespaces(platform)
-        i18n.setDefaultNamespace(platform)
+        const activeNs = useMobilePortal ? `${platform}_MOBILE` : platform
+        await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', platform] : [platform])
+        i18n.setDefaultNamespace(activeNs)
 
         if (ENV === 'prod') {
             delete res.info.isTester
@@ -47,14 +47,18 @@ const rootLoader = async () => {
             res.info.isTester = !!res.info.isTester
         }
 
+        const iconsBase = useMobilePortal ? `/${platform}/mobile/icons` : `/${platform}/icons`
+        const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
+
         return {
             ...res.info,
-            iconsPath: `/${platform}/icons/${theme}`,
-            defaultIconsPath: `/DEFAULT/icons/${theme}`,
+            iconsPath: `${iconsBase}/${theme}`,
+            defaultIconsPath: `${defaultIconsBase}/${theme}`,
             userId: getUserId(res.info.platform),
             extensionId,
             showTerms,
             autoclaim,
+            useMobilePortal,
             flowId
         }
     }
@@ -71,18 +75,26 @@ const rootLoader = async () => {
             isCountryAvailable: true,
         }
         if (!dev.platform) throw Error('Missing platform')
-        loadStylesheet(theme, dev.platform.toUpperCase())
-        await i18n.loadNamespaces(dev.platform.toUpperCase())
-        i18n.setDefaultNamespace(dev.platform.toUpperCase())
+        const devPlatform = dev.platform.toUpperCase()
+        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
+        loadStylesheet(theme, devPlatform, useMobilePortal ? 'mobile' : 'desktop')
+        const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform
+        await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', devPlatform] : [devPlatform])
+        i18n.setDefaultNamespace(activeNs)
+
+        const iconsBase = useMobilePortal ? `/${devPlatform}/mobile/icons` : `/${devPlatform}/icons`
+        const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
+
         return {
             ...dev,
-            iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
-            defaultIconsPath: `/DEFAULT/icons/${theme}`,
+            iconsPath: `${iconsBase}/${theme}`,
+            defaultIconsPath: `${defaultIconsBase}/${theme}`,
             userId: getUserId(dev.platform),
             isTester: false,
             flowId,
             showTerms,
             autoclaim,
+            useMobilePortal,
             extensionId: urlExtensionId
         }
     }
@@ -102,15 +114,15 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />,
+                element: <HomeDispatcher />,
             },
             {
                 path: 'history',
-                element: <History />,
+                element: <HistoryDispatcher />,
             },
             {
                 path: 'faq',
-                element: <FrequentlyAskedQuestion />,
+                element: <FaqDispatcher />,
             },
         ],
     },

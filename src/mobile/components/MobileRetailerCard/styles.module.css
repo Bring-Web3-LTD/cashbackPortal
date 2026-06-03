@@ -1,0 +1,131 @@
+/* Retailer card styles. */
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--retailer-name-shop-gap, 32px);
+    width: 100%;
+    background: var(--retailer-card-bg);
+    border: none;
+    border-radius: var(--retailer-card-radius);
+    padding: var(--retailer-card-pad-y) var(--retailer-card-pad-x);
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Prompt', sans-serif;
+}
+
+.card:focus-visible {
+    outline: 2px solid var(--retailer-card-focus-ring, #7685a0);
+    outline-offset: -2px;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: var(--retailer-card-gap);
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.logo {
+    flex: 0 0 auto;
+    width: var(--retailer-icon-size);
+    height: var(--retailer-icon-size);
+    border-radius: var(--retailer-icon-radius);
+    overflow: hidden;
+    background: var(--retailer-icon-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.fallback {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--retailer-fallback-f-c);
+}
+
+.fallback_two {
+    font-size: 14px;
+}
+
+/* Shop stays right-aligned; card `gap` keeps min spacing from the name. On
+   tiny screens (≤320px) the name column caps at 114px so Shop never clips. */
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    flex: 0 1 var(--retailer-name-max-w, 139px);
+    max-width: var(--retailer-name-max-w, 139px);
+}
+
+@media (max-width: 320px) {
+    .text {
+        flex: 0 1 var(--retailer-name-max-w-sm, 114px);
+        max-width: var(--retailer-name-max-w-sm, 114px);
+    }
+}
+
+.name {
+    font-size: var(--retailer-name-f-s);
+    font-weight: var(--retailer-name-f-w);
+    line-height: var(--retailer-name-l-h);
+    color: var(--retailer-name-f-c);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sub {
+    font-size: var(--retailer-sub-f-s);
+    line-height: var(--retailer-sub-l-h);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sub_label {
+    color: var(--retailer-sub-label-f-c);
+    font-weight: 400;
+}
+
+.sub_amount,
+.sub_coin {
+    color: var(--retailer-sub-amount-f-c);
+    font-weight: 700;
+    letter-spacing: 0.24px;
+}
+
+.shop {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: var(--shop-btn-h);
+    padding: 0 var(--shop-btn-pad-x);
+    background: var(--shop-btn-bg);
+    border-radius: var(--shop-btn-radius);
+    color: var(--shop-btn-f-c);
+}
+
+.shop_label {
+    font-size: var(--shop-btn-f-s);
+    line-height: var(--shop-btn-l-h);
+    color: var(--shop-btn-f-c);
+}
+
+.shop img {
+    width: var(--shop-btn-icon-size);
+    height: var(--shop-btn-icon-size);
+}

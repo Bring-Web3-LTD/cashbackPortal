@@ -1,0 +1,174 @@
+/* History — bottom-sheet overlay. The previous page (Home) renders behind a
+   darkening layer; the sheet is anchored to the bottom with rounded top
+   corners + border, leaving an ~88px gap so the darkened page peeks through. */
+
+.root {
+    position: fixed;
+    inset: 0;
+    /* Cap to the portal width (360px) and center, mirroring MobileLayout so
+       the overlay (behind Home + darken + sheet) never stretches on wider
+       viewports — only the surrounding gutters grow. */
+    max-width: var(--mobile-portal-max-width, 360px);
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Previous page behind the overlay — inert (no pointer events).
+   `isolation: isolate` traps any fixed/sticky descendants (e.g. Home's
+   rewards bar) inside this layer so they can't paint over the sheet. */
+.behind {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    isolation: isolate;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Darkening layer over the previous page. */
+.darken {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--history-overlay-darken-bg, #040407);
+    opacity: var(--history-overlay-darken-opacity, 0.65);
+}
+
+/* Bottom sheet: anchored to the bottom,
+   rounded top corners, 1px border, drop shadow. */
+.sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: var(--history-sheet-gap-top, 88px);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    background: var(--history-sheet-bg, #0F0F1A);
+    border: var(--history-sheet-border-w, 1px) solid
+        var(--history-sheet-border-c, #2B344D);
+    border-bottom: none;
+    border-top-left-radius: var(--history-sheet-radius, 16px);
+    border-top-right-radius: var(--history-sheet-radius, 16px);
+    box-shadow: var(--history-sheet-shadow, 0px 4px 16px 0px rgba(4, 4, 7, 0.5));
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Bottom fade: 24px gradient from transparent
+   to the sheet bg, so long lists fade out at the bottom edge. */
+.sheet::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--history-sheet-fade-h, 24px);
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        var(--history-sheet-fade-from, rgba(15, 15, 26, 0)),
+        var(--history-sheet-fade-to, #0F0F1A)
+    );
+}
+
+/* ── Header close (X) button — mirrors MobileHeader action. */
+.close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--header-action-size, 32px);
+    height: var(--header-action-size, 32px);
+    padding: 0;
+    border: none;
+    background: var(--header-action-bg, rgba(43, 52, 77, 0.5));
+    border-radius: var(--header-action-radius, 16px);
+    cursor: pointer;
+    color: var(--header-action-icon-c, currentColor);
+    box-sizing: border-box;
+}
+
+.close:hover {
+    background: var(--header-action-hover-bg, var(--header-action-bg, rgba(43, 52, 77, 0.5)));
+}
+
+.closeIcon {
+    width: var(--header-action-icon-size, 16px);
+    height: var(--header-action-icon-size, 16px);
+    display: block;
+}
+
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: var(--mobile-content-pad-y, 16px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--history-list-gap, 8px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.intro {
+    margin: 0;
+    padding: 0 var(--mobile-content-pad-x, 16px);
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--history-intro-f-s, 12px);
+    font-weight: var(--history-intro-f-w, 400);
+    line-height: var(--history-intro-l-h, 16px);
+    color: var(--history-intro-f-c, #7685A0);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--history-list-gap, 8px);
+    padding: 0 var(--mobile-content-pad-x, 16px);
+}
+
+/* ── Loading skeleton: collapsed-height tiles ── */
+.skeletonItem {
+    display: block;
+    width: 100%;
+    height: var(--history-skeleton-h, 56px);
+    border-radius: var(--history-item-radius, 6px);
+    background: var(--skeleton-tile-bg, #1D2133);
+    animation: mobileHistoryPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mobileHistoryPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* ── Empty state — centered message tile. */
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 var(--mobile-content-pad-x, 16px);
+    padding: var(--history-empty-pad-y, 6px) var(--history-empty-pad-x, 8px);
+    border-radius: var(--history-empty-radius, 6px);
+    background: var(--history-empty-bg, #0F0F1A);
+    box-sizing: border-box;
+}
+
+.emptyText {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--history-empty-f-s, 14px);
+    font-weight: var(--history-empty-f-w, 400);
+    line-height: var(--history-empty-l-h, 20px);
+    color: var(--history-empty-f-c, #7685A0);
+    white-space: nowrap;
+}

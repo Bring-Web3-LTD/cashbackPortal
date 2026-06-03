@@ -17,6 +17,10 @@ interface Response {
         theme?: string
         terms?: boolean
         extensionId?: string
+        // Optional wallet identity fields passed through from /check/portal
+        // and embedded in the issued JWT. Surfaced in the Mobile Portal UI.
+        walletEmoji?: string
+        walletName?: string
     }
 }
 

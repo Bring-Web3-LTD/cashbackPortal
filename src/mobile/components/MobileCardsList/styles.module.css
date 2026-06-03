@@ -1,0 +1,120 @@
+/* Vertical stack of MobileRetailerCard — the only scrollable area on the page. */
+
+/* Relative wrapper so the bottom fog can be pinned over the scroll viewport. */
+.listWrap {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cards-list-gap);
+    /* Empty space at the end so the always-on fog reads as invisible once
+       fully scrolled, and only dims a card while more remains. */
+    padding-bottom: var(--cards-fog-h, 24px);
+    /* Hidden scrollbar; list still scrolls. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Bottom fade. Always-on, pure CSS; fades to the page background so it's
+   invisible over the bottom padding and only shows while a card sits under it. */
+.bottomFog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--cards-fog-h, 24px);
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 0%, var(--cards-fog-color, var(--bg, #0F0F1A)) 100%);
+}
+
+
+/* Skeleton tile mirrors the loaded card shell so layout doesn't jump. */
+.skeleton_card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: var(--retailer-card-h);
+    padding: var(--retailer-card-pad-y) var(--retailer-card-pad-x);
+    background: var(--skeleton-tile-bg, #1D2133);
+    border-radius: var(--retailer-card-radius);
+    box-shadow: var(--skeleton-tile-shadow, 0 2px 6px rgba(4, 4, 7, 0.5));
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton_left {
+    display: flex;
+    align-items: center;
+    gap: var(--retailer-card-gap);
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.skeleton_logo {
+    flex: 0 0 auto;
+    width: var(--retailer-icon-size);
+    height: var(--retailer-icon-size);
+    border-radius: var(--retailer-icon-radius);
+    background: var(--skeleton-fill, #262B3F);
+}
+
+/* Left column with the two stacked bars. */
+.skeleton_text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    height: 50px;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.skeleton_bar {
+    height: 15px;
+    background: var(--skeleton-fill, #262B3F);
+    border-radius: var(--skeleton-bar-radius, 5px);
+}
+
+.skeleton_bar_short {
+    width: 87px;
+    max-width: 60%;
+}
+
+.skeleton_bar_long {
+    width: 115px;
+    max-width: 75%;
+}
+
+.skeleton_shop {
+    flex: 0 0 auto;
+    width: 66px;
+    height: 24px;
+    border-radius: 4px;
+    background: var(--skeleton-fill, #262B3F);
+}
+
+.sentinel {
+    height: 1px;
+    width: 100%;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 1; }
+}

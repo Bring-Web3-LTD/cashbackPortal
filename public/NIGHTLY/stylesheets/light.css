@@ -1,0 +1,6 @@
+/* NIGHTLY desktop overrides — light. NIGHTLY is currently mobile-only;
+   this file exists so the desktop fallback resolves without 404s when a
+   wider viewport is used during development. Real desktop styles go here
+   if/when NIGHTLY ships a desktop portal. */
+:root {
+}

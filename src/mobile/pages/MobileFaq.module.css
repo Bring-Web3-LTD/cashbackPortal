@@ -1,0 +1,51 @@
+/* FAQ page layout. Header is fixed at the top; intro + question list scroll. */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    background: var(--bg, #0F0F1A);
+    overflow: hidden;
+}
+
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: var(--mobile-content-pad-y, 16px) var(--mobile-content-pad-x, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--faq-list-gap, 8px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.intro {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--faq-intro-f-s, 14px);
+    font-weight: var(--faq-intro-f-w, 400);
+    line-height: var(--faq-intro-l-h, 20px);
+    color: var(--faq-intro-f-c, #7685A0);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--faq-list-gap, 8px);
+}
+
+/* ── Loading skeleton: collapsed-height pills ── */
+.skeletonItem {
+    display: block;
+    width: 100%;
+    height: var(--faq-item-collapsed-h, 40px);
+    border-radius: var(--faq-item-radius, 6px);
+    background: var(--skeleton-tile-bg, #1D2133);
+    animation: mobileFaqPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mobileFaqPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}

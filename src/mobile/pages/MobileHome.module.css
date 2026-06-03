@@ -1,0 +1,28 @@
+/* Home page layout. Hero + rewards + helper buttons + tabs row are fixed at
+   the top; only the retailer list scrolls. */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: var(--mobile-content-pad-y, 16px) var(--mobile-content-pad-x, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--mobile-content-gap, 16px);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* All fixed top sections (hero, rewards, helper buttons, tabs row) keep
+   their natural height; only the cards list (last child) flexes to fill
+   the remaining space and scroll. */
+.content > *:not(:last-child) {
+    flex-shrink: 0;
+}

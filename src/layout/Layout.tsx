@@ -6,6 +6,7 @@ import { GA_MEASUREMENT_ID, MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
+import MobileLayout from '../mobile/MobileLayout';
 
 const Layout = () => {
     const location = useLocation();
@@ -18,6 +19,10 @@ const Layout = () => {
             <Maintenance />
         );
 
+    }
+
+    if (data.useMobilePortal) {
+        return <MobileLayout data={data} />
     }
 
     return (

@@ -11,7 +11,14 @@ interface Body extends BackendRequestBody {
     platform: string
 }
 
-const claimSubmit = async (body: Body) => {
+interface Response {
+    status?: number
+    // Per-platform chain explorer URL for the submitted tx. Omitted by the
+    // backend when no explorer is configured for the platform.
+    explorerLink?: string
+}
+
+const claimSubmit = async (body: Body): Promise<Response | undefined> => {
     if (!body.walletAddress || !body.targetWalletAddress) return
 
     const res = await fetch(`${API_URL_PLATFORMS}claim-submit`, {

@@ -1,0 +1,129 @@
+/* Mobile categories tabs row. */
+
+.root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: var(--tabs-h, 32px);
+}
+
+/* Horizontal pill scroller; margin-right reserves the search-icon gutter. */
+.scroller {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--tabs-gap, 4px);
+    height: 100%;
+    margin-right: var(--tabs-search-reserve, 28px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scroller::-webkit-scrollbar {
+    display: none;
+}
+
+/* Right-edge fade over overflowing pills; fades to the page background. */
+.fog {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: var(--tabs-search-reserve, 28px);
+    width: var(--tabs-fog-w, 24px);
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent 0%, var(--tabs-fog-color, var(--bg, #0F0F1A)) 100%);
+}
+
+/* Single tab pill */
+.tab {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: var(--tab-pad-y, 6px) var(--tab-pad-x, 10px);
+    border: none;
+    border-radius: var(--tab-radius, 6px);
+    background: var(--tab-bg, transparent);
+    color: var(--tab-f-c, #7685A0);
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--tab-f-s, 14px);
+    font-weight: var(--tab-f-w, 400);
+    line-height: var(--tab-l-h, 20px);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tab:hover:not(.tabActive) {
+    color: var(--tab-hover-f-c, var(--tab-f-c, #7685A0));
+    background: var(--tab-hover-bg, transparent);
+    padding: var(--tab-active-pad-y, 4px) var(--tab-active-pad-x, 8px);
+}
+
+.tabActive {
+    background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
+    color: var(--tab-active-f-c, #8793FF);
+    padding: var(--tab-active-pad-y, 4px) var(--tab-active-pad-x, 8px);
+}
+
+/* Trailing search icon — bare 16px glyph, overlaid flush right. Default and
+   hover/pressed are two assets; CSS swaps their visibility per state. */
+.searchBtn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tabs-search-btn-size, 16px);
+    height: var(--tabs-search-btn-size, 16px);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.searchBtnIcon {
+    position: absolute;
+    inset: 0;
+    width: var(--tabs-search-btn-icon-size, 16px);
+    height: var(--tabs-search-btn-icon-size, 16px);
+    display: block;
+    transition: opacity 0.15s ease;
+}
+
+.searchBtnIconActive {
+    opacity: 0;
+}
+
+.searchBtn:hover .searchBtnIconDefault,
+.searchBtn:active .searchBtnIconDefault {
+    opacity: 0;
+}
+
+.searchBtn:hover .searchBtnIconActive,
+.searchBtn:active .searchBtnIconActive {
+    opacity: 1;
+}
+
+/* Skeleton pill */
+.skeleton {
+    width: 64px;
+    background: var(--skeleton-bg, rgba(247, 247, 247, 0.08));
+    animation: mobileCategoriesPulse 1.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes mobileCategoriesPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}

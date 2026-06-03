@@ -1,0 +1,122 @@
+/* FAQ accordion item. Visuals driven by CSS vars with hardcoded fallbacks. */
+
+.item {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: var(--faq-item-bg, #171C2F);
+    border-radius: var(--faq-item-radius, 6px);
+    padding: var(--faq-item-pad-y, 8px) var(--faq-item-pad-r, 8px) var(--faq-item-pad-y, 8px) var(--faq-item-pad-l, 12px);
+    transition: background 0.15s ease;
+    overflow: hidden;
+}
+
+/* Both collapsed and expanded cards turn Grey/500 on hover (hover-capable
+   pointers only, so touch devices don't get a stuck highlight). */
+@media (hover: hover) {
+    .item:hover {
+        background: var(--faq-item-hover-bg, #2B344D);
+    }
+
+    /* When an expanded card is hovered its surface matches the divider colour,
+       so lift the divider a shade to keep it visible. */
+    .itemOpen:hover .divider {
+        background: var(--faq-divider-hover-c, #3A4663);
+    }
+}
+
+/* ── Question row (always visible, acts as the toggle button) ── */
+.question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--faq-question-gap, 8px);
+    width: 100%;
+    min-height: var(--faq-question-h, 24px);
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font-family: 'Prompt', system-ui, sans-serif;
+}
+
+.questionText {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--faq-question-f-s, 16px);
+    font-weight: var(--faq-question-f-w, 400);
+    line-height: var(--faq-question-l-h, 22px);
+    color: var(--faq-question-f-c, #F7F7F7);
+}
+
+.chevron {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--faq-chevron-size, 16px);
+    height: var(--faq-chevron-size, 16px);
+    /* Default: Grey/300. Turns Grey/100 on hover or when expanded. */
+    color: var(--faq-chevron-f-c, #7685A0);
+    transition: transform 0.2s ease, color 0.15s ease;
+}
+
+.item:hover .chevron,
+.chevronOpen {
+    color: var(--faq-chevron-active-f-c, #F7F7F7);
+}
+
+.chevronOpen {
+    transform: rotate(180deg);
+}
+
+.chevronIcon {
+    width: var(--faq-chevron-size, 16px);
+    height: var(--faq-chevron-size, 16px);
+    display: block;
+}
+
+/* ── Expandable answer panel ── */
+.answer {
+    overflow: hidden;
+}
+
+.divider {
+    display: block;
+    width: 100%;
+    height: var(--faq-divider-w, 1px);
+    margin-top: var(--faq-answer-gap, 8px);
+    background: var(--faq-divider-c, #2B344D);
+}
+
+.answerBody {
+    margin-top: var(--faq-answer-gap, 8px);
+}
+
+.answerLine {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--faq-answer-f-s, 12px);
+    font-weight: var(--faq-answer-f-w, 400);
+    line-height: var(--faq-answer-l-h, 16px);
+    color: var(--faq-answer-f-c, #7685A0);
+    word-break: break-word;
+}
+
+.answerLine + .answerLine {
+    margin-top: var(--faq-answer-line-gap, 4px);
+}
+
+.answerIndented {
+    padding-left: var(--faq-answer-indent, 16px);
+}
+
+.link {
+    color: var(--faq-link-f-c, inherit);
+    text-decoration: underline;
+    cursor: pointer;
+}

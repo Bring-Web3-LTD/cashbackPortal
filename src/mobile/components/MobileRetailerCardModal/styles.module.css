@@ -1,0 +1,348 @@
+/* T&C modal — bottom-sheet overlay below the 88px top gap. */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    /* vh fallback for environments where dvh isn't supported. */
+    height: 100vh;
+    height: 100dvh;
+    z-index: 50;
+    background: var(--modal-backdrop-bg);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: contain;
+}
+
+.panel {
+    position: relative;
+    width: 100%;
+    max-width: var(--mobile-max-width, 360px);
+    /* Panel pinned to bottom, height = viewport - 88px gap. */
+    height: calc(100% - var(--retailer-modal-top-gap));
+    max-height: calc(100dvh - var(--retailer-modal-top-gap));
+    background: var(--retailer-modal-bg);
+    border: 1px solid var(--retailer-modal-border-c);
+    border-bottom: none;
+    border-top-left-radius: var(--retailer-modal-radius);
+    border-top-right-radius: var(--retailer-modal-radius);
+    box-shadow: var(--retailer-modal-shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ── Header (Cashback Details + X) ───────────────────────────────── */
+.header {
+    height: var(--retailer-modal-header-h);
+    padding: var(--retailer-modal-header-pad-y) var(--retailer-modal-header-pad-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--retailer-modal-header-border-c);
+    flex-shrink: 0;
+}
+
+.header_spacer {
+    width: var(--retailer-modal-header-action-size);
+    height: var(--retailer-modal-header-action-size);
+}
+
+.header_title {
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    font-size: var(--retailer-modal-header-title-f-s);
+    font-weight: var(--retailer-modal-header-title-f-w);
+    line-height: var(--retailer-modal-header-title-l-h);
+    letter-spacing: var(--retailer-modal-header-title-l-s);
+    color: var(--retailer-modal-header-title-f-c);
+}
+
+.header_close {
+    width: var(--retailer-modal-header-action-size);
+    height: var(--retailer-modal-header-action-size);
+    border: none;
+    border-radius: var(--retailer-modal-header-action-radius);
+    background: var(--retailer-modal-header-action-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease;
+}
+
+.header_close:hover:not(:disabled) {
+    background: var(--retailer-modal-header-action-hover-bg);
+}
+
+.header_close:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.header_close img {
+    width: var(--retailer-modal-header-action-icon-size);
+    height: var(--retailer-modal-header-action-icon-size);
+}
+
+/* ── Body ────────────────────────────────────────────────────────── */
+/* Fills the panel under the header: text section (scrolls) + footer. */
+.body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--retailer-modal-body-gap);
+    padding: var(--retailer-modal-body-pad);
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Text section: retailer info + scrollable terms. */
+.text {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--retailer-modal-body-gap);
+}
+
+.retailer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--retailer-modal-retailer-gap);
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.logo {
+    width: var(--retailer-modal-logo-size);
+    height: var(--retailer-modal-logo-size);
+    border-radius: var(--retailer-modal-logo-radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fallback {
+    font-size: var(--retailer-modal-fallback-f-s);
+    font-weight: var(--retailer-modal-fallback-f-w);
+    color: var(--retailer-fallback-f-c);
+}
+
+.fallback_two {
+    font-size: calc(var(--retailer-modal-fallback-f-s) * 0.7);
+}
+
+.name {
+    font-size: var(--retailer-modal-name-f-s);
+    font-weight: var(--retailer-modal-name-f-w);
+    line-height: var(--retailer-modal-name-l-h);
+    color: var(--retailer-modal-name-f-c);
+    text-align: center;
+}
+
+.cashback_pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--retailer-modal-pill-gap, 6px);
+    height: var(--retailer-modal-pill-h);
+    padding: 0 var(--retailer-modal-pill-pad-x);
+    border-radius: var(--retailer-modal-pill-radius);
+    background: var(--retailer-modal-pill-bg);
+    font-size: var(--retailer-modal-pill-f-s);
+    line-height: var(--retailer-modal-pill-l-h);
+    white-space: nowrap;
+}
+
+.cashback_label {
+    color: var(--retailer-modal-pill-label-f-c);
+}
+
+.cashback_amount {
+    color: var(--retailer-modal-pill-amount-f-c);
+    font-weight: var(--retailer-modal-pill-amount-f-w);
+    letter-spacing: var(--retailer-modal-pill-amount-l-s);
+}
+
+/* ── Terms box ───────────────────────────────────────────────────── */
+.terms_box {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    border: 1px solid var(--retailer-modal-terms-border-c);
+    border-radius: var(--retailer-modal-terms-radius);
+    background: var(--retailer-modal-terms-bg);
+    padding: var(--retailer-modal-terms-pad-y) var(--retailer-modal-terms-pad-x);
+    box-shadow: var(--retailer-modal-terms-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--retailer-modal-terms-gap);
+    overflow: hidden;
+}
+
+.terms_title {
+    margin: 0;
+    padding: 0 12px;
+    font-size: var(--retailer-modal-terms-title-f-s);
+    font-weight: var(--retailer-modal-terms-title-f-w);
+    line-height: var(--retailer-modal-terms-title-l-h);
+    letter-spacing: var(--retailer-modal-terms-title-l-s);
+    color: var(--retailer-modal-terms-title-f-c);
+    flex-shrink: 0;
+}
+
+.terms_body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 10px;
+    font-size: var(--retailer-modal-terms-body-f-s);
+    line-height: var(--retailer-modal-terms-body-l-h);
+    color: var(--retailer-modal-terms-body-f-c);
+    text-align: justify;
+    /* Re-enable touch scrolling here (backdrop sets touch-action:none). */
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+    /* Hide native scrollbar; content still scrolls. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.terms_body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.terms_body ol,
+.terms_body ul {
+    margin: 0;
+    padding-inline-start: 18px;
+}
+
+.terms_body li {
+    margin-bottom: 4px;
+}
+
+.terms_body p {
+    margin: 0 0 4px;
+}
+
+.terms_loading {
+    color: var(--retailer-modal-terms-body-f-c);
+    opacity: 0.7;
+}
+
+.terms_fade {
+    position: absolute;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, var(--retailer-modal-terms-bg));
+    border-bottom-left-radius: var(--retailer-modal-terms-radius);
+    border-bottom-right-radius: var(--retailer-modal-terms-radius);
+}
+
+/* ── Footer (buttons + disclaimer) ───────────────────────────────── */
+/* Child of body; relies on body's padding for the gutter. */
+.footer {
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--retailer-modal-footer-gap);
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    width: 100%;
+    /* Lock the row to button height so it can't be flattened by the parent. */
+    height: var(--retailer-modal-btn-h);
+    flex-shrink: 0;
+    gap: var(--retailer-modal-actions-gap);
+}
+
+.cancel_btn,
+.shop_btn {
+    flex: 1;
+    height: var(--retailer-modal-btn-h);
+    border-radius: var(--retailer-modal-btn-radius);
+    border: none;
+    font-size: var(--retailer-modal-btn-f-s);
+    font-weight: var(--retailer-modal-btn-f-w);
+    line-height: var(--retailer-modal-btn-l-h);
+    color: var(--retailer-modal-btn-f-c);
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.cancel_btn {
+    background: var(--retailer-modal-cancel-bg);
+}
+
+.cancel_btn:hover:not(:disabled) {
+    background: var(--retailer-modal-cancel-hover-bg);
+}
+
+.shop_btn {
+    background: var(--retailer-modal-shop-bg);
+}
+
+.shop_btn:hover:not(:disabled) {
+    background: var(--retailer-modal-shop-hover-bg);
+}
+
+.cancel_btn:disabled,
+.shop_btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(247, 247, 247, 0.35);
+    border-top-color: var(--retailer-modal-btn-f-c);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.disclaimer {
+    margin: 0;
+    font-size: var(--retailer-modal-disclaimer-f-s);
+    line-height: var(--retailer-modal-disclaimer-l-h);
+    color: var(--retailer-modal-disclaimer-f-c);
+    text-align: center;
+}
+
+.disclaimer_link {
+    color: var(--retailer-modal-disclaimer-link-f-c);
+}

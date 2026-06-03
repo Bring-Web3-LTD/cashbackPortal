@@ -1,0 +1,449 @@
+/* NIGHTLY — Mobile portal, Dark mode.
+   Fully self-contained — does NOT rely on DEFAULT cascade. Mirror DEFAULT
+   mobile dark.css so future role-specific tweaks live in one place. */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap');
+
+:root {
+    /* Page chrome */
+    --bg: #0F0F1A;
+
+    /* Portal frame + content scroll area */
+    --mobile-portal-max-width: 360px;
+    --mobile-max-width: 360px;
+    --mobile-content-pad-x: 16px;
+    --mobile-content-pad-y: 16px;
+    --mobile-content-gap: 16px;
+
+    /* ── Hero "Cashback earned" card (Figma 1883:11460) ── */
+    --cashback-earned-h: 82px;
+    --cashback-earned-pad-x: 12px;
+    --cashback-earned-pad-y: 8px;
+    --cashback-earned-radius: 6px;
+    --cashback-earned-bg:
+        linear-gradient(90deg, rgba(135, 147, 255, 0.05) 0%, rgba(135, 147, 255, 0) 100%),
+        rgba(135, 147, 255, 0.2);
+    --cashback-earned-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+    --cashback-earned-body-gap: 8px;
+    --cashback-earned-amount-group-gap: 2px;
+    --cashback-earned-label-gap: 8px;
+    --cashback-earned-label-icon-size: 20px;
+    --cashback-earned-label-f-c: #AFBBFF;
+    --cashback-earned-label-f-s: 14px;
+    --cashback-earned-label-f-w: 400;
+    --cashback-earned-label-l-h: 20px;
+    --cashback-earned-amount-f-c: #F7F7F7;
+    --cashback-earned-amount-f-s: 24px;
+    --cashback-earned-amount-f-w: 700;
+    --cashback-earned-amount-l-h: 24px;
+    --cashback-earned-sub-f-c: #8793FF;
+    --cashback-earned-sub-f-s: 12px;
+    --cashback-earned-sub-f-w: 400;
+    --cashback-earned-sub-l-h: 16px;
+    --cashback-earned-deco-w: 110px;
+    --cashback-earned-deco-h: 76px;
+    --cashback-earned-deco-top: 3px;
+    --cashback-earned-deco-right: -8px;
+
+    /* ── Top bar (Header) ── */
+    --header-bg: #0F0F1A;
+    --header-border-c: #2B344D;
+    --header-border-w: 1px;
+    --header-h: 56px;
+    --header-pad-x: 16px;
+    --header-pad-y: 12px;
+
+    --header-title-f-s: 16px;
+    --header-title-f-w: 700;
+    --header-title-l-h: 22px;
+    --header-title-l-s: 0.32px;
+    --header-title-f-c: #F7F7F7;
+
+    --header-action-size: 32px;
+    --header-action-radius: 16px;
+    --header-action-bg: rgba(43, 52, 77, 0.5);
+    --header-action-hover-bg: rgba(43, 52, 77, 0.75);
+    --header-action-icon-size: 16px;
+    --header-action-icon-c: #F7F7F7;
+
+    /* ── Rewards / balance card (Claimable + Pending) ── */
+    --rewards-gap: 10px;
+    --rewards-card-gap: 8px;
+
+    --balance-card-bg:
+        linear-gradient(109.31deg, rgba(23, 28, 47, 0.2) 0%, rgba(135, 147, 255, 0.2) 100%),
+        #171C2F;
+    --balance-card-radius: 6px;
+    --balance-card-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+    --balance-card-pad-x: 12px;
+    --balance-card-pad-x-sm: 5px;
+    --balance-card-pad-y: 8px;
+    --balance-card-h: 60px;
+    --balance-body-gap: 4px;
+
+    --balance-deco-size: 82px;
+    --balance-deco-top: 0;
+    --balance-deco-left: 98px;
+    --balance-deco-opacity: 1;
+
+    --balance-label-f-s: 12px;
+    --balance-label-f-w: 400;
+    --balance-label-l-h: 16px;
+    --balance-label-f-c: #7685A0;
+
+    --balance-amount-f-s: 16px;
+    --balance-amount-f-w: 700;
+    --balance-amount-l-h: 22px;
+    --balance-amount-l-s: 0.32px;
+    --balance-amount-f-c: #F7F7F7;
+
+    --balance-claim-btn-bg: #6067F9;
+    --balance-claim-btn-hover-bg: #7079FF;
+    --balance-claim-btn-disabled-bg: #2B344D;
+    --balance-claim-btn-disabled-f-c: #7685A0;
+    --balance-claim-btn-f-c: #F7F7F7;
+    --balance-claim-btn-f-s: 12px;
+    --balance-claim-btn-f-w: 400;
+    --balance-claim-btn-radius: 4px;
+    --balance-claim-btn-pad-x: 8px;
+    --balance-claim-btn-h: 24px;
+
+    --balance-pending-btn-bg: #6067F9;
+    --balance-pending-btn-hover-bg: #7079FF;
+    --balance-pending-btn-icon-c: #F7F7F7;
+    --balance-pending-btn-icon-size: 16px;
+    --balance-pending-btn-radius: 4px;
+    --balance-pending-btn-pad-x: 8px;
+    --balance-pending-btn-h: 24px;
+    --balance-pending-btn-w: 32px;
+
+    /* ── Helper pill buttons (Need Help? / Missing a Reward?) ── */
+    --helper-btn-bg: #2B344D;
+    --helper-btn-hover-bg: #3A4663;
+    --helper-btn-f-c: #F7F7F7;
+    --helper-btn-f-s: 12px;
+    --helper-btn-f-w: 400;
+    --helper-btn-radius: 4px;
+    --helper-btn-pad-x: 8px;
+    --helper-btn-h: 24px;
+
+    /* ── Skeleton shimmer (Figma 1863:8000 loading state) ──
+       Tile bg + drop shadow match the loaded retailer card surface;
+       filler bars use the lighter Grey/600 tint that Figma uses for the
+       text/button placeholders inside each tile. */
+    --skeleton-bg: rgba(247, 247, 247, 0.08);
+    --skeleton-tile-bg: #1D2133;
+    --skeleton-tile-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+    --skeleton-fill: #262B3F;
+    --skeleton-bar-radius: 5px;
+
+    /* ── Category tabs row (Figma 1883:11493) ── */
+    --tabs-h: 32px;
+    --tabs-row-gap: 12px;
+    --tabs-gap: 0px;
+
+    --tab-bg: transparent;
+    --tab-f-c: #7685A0;
+    --tab-f-s: 12px;
+    --tab-f-w: 400;
+    --tab-l-h: 16px;
+    --tab-pad-x: 10px;
+    --tab-pad-y: 6px;
+    --tab-radius: 4px;
+
+    --tab-active-bg: var(--transparent-grey-40050, rgba(62, 72, 100, 0.50));
+    --tab-active-f-c: #F7F7F7;
+    --tab-active-pad-x: 8px;
+    --tab-active-pad-y: 4px;
+    /* Hover: purple text on transparent (no bg pill) — distinct from the
+       selected state which has both purple text AND a purple-tinted pill. */
+    --tab-hover-f-c: #8793FF;
+    --tab-hover-bg: var(--transparent-purple-30025, rgba(96, 103, 249, 0.25));
+
+    /* Bare 16px magnifying-glass icon flush at the row's right edge (Figma
+       1863:13297): no background, no border. Reserve = 16px glyph + 12px gap. */
+    --tabs-search-btn-size: 16px;
+    --tabs-search-reserve: 28px;
+    --tabs-search-btn-icon-size: 16px;
+
+    /* Right-edge fog (Figma 1863:13296 "Darken") — 24px fading to the page bg. */
+    --tabs-fog-w: 24px;
+    --tabs-fog-color: #0F0F1A;
+
+    /* ── Inline search bar (Figma 1863:3089) — Grey/900 + Grey/500 border ── */
+    --search-bar-h: 32px;
+    --search-bar-pad-x: 8px;
+    --search-bar-gap: 8px;
+    --search-bar-radius: 6px;
+    --search-bar-bg: #040407;
+    --search-bar-border-w: 1px;
+    --search-bar-border-c: #2B344D;
+    --search-bar-icon-size: 16px;
+    --search-bar-f-s: 14px;
+    --search-bar-l-h: 20px;
+    --search-bar-f-c: #F7F7F7;
+    --search-bar-placeholder-f-c: rgba(247, 247, 247, 0.25);
+    --search-bar-close-c: #F7F7F7;
+
+    /* Autocomplete dropdown — same Grey/900 surface as the input. */
+    --search-dropdown-bg: #040407;
+    --search-dropdown-border-w: 1px;
+    --search-dropdown-border-c: #2B344D;
+    --search-dropdown-radius: 6px;
+    --search-dropdown-pad-y: 4px;
+    --search-dropdown-hover-bg: rgba(43, 52, 77, 0.5);
+
+    /* ── Retailer card (Big_Button) ── */
+    --cards-list-gap: 8px;
+    --cards-fog-h: 24px;
+    --cards-fog-color: #0F0F1A;
+
+    --retailer-card-bg: #171C2F;
+    --retailer-card-radius: 6px;
+    --retailer-card-pad-x: 12px;
+    --retailer-card-pad-y: 8px;
+    --retailer-card-h: 66px;
+    --retailer-card-gap: 12px;
+    --retailer-name-max-w: 114px;
+    --retailer-name-shop-gap: 32px;
+
+    --retailer-icon-size: 40px;
+    --retailer-icon-radius: 4px;
+    --retailer-icon-bg: #FFFFFF;
+    --retailer-fallback-f-c: #171C2F;
+
+    --retailer-name-f-s: 16px;
+    --retailer-name-f-w: 400;
+    --retailer-name-l-h: 22px;
+    --retailer-name-f-c: #F7F7F7;
+
+    --retailer-sub-f-s: 12px;
+    --retailer-sub-l-h: 16px;
+    --retailer-sub-label-f-c: #8793FF;
+    --retailer-sub-amount-f-c: #AFBBFF;
+
+    /* ── Shop button on retailer card ── */
+    --shop-btn-bg: rgba(96, 103, 249, 0.25);
+    --shop-btn-radius: 4px;
+    --shop-btn-pad-x: 8px;
+    --shop-btn-h: 24px;
+    --shop-btn-f-s: 12px;
+    --shop-btn-l-h: 16px;
+    --shop-btn-f-c: #8793FF;
+    --shop-btn-icon-size: 12px;
+
+    /* ── T&C modal (Cashback Details) — Figma 1883:11808 ── */
+    --modal-backdrop-bg: rgba(4, 4, 7, 0.5);
+
+    --retailer-modal-top-gap: 88px;
+    --retailer-modal-bg: #0F0F1A;
+    --retailer-modal-border-c: #2B344D;
+    --retailer-modal-radius: 16px;
+    --retailer-modal-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
+
+    --retailer-modal-header-h: 56px;
+    --retailer-modal-header-pad-x: 16px;
+    --retailer-modal-header-pad-y: 12px;
+    --retailer-modal-header-border-c: #2B344D;
+    --retailer-modal-header-title-f-s: 16px;
+    --retailer-modal-header-title-f-w: 700;
+    --retailer-modal-header-title-l-h: 22px;
+    --retailer-modal-header-title-l-s: 0.32px;
+    --retailer-modal-header-title-f-c: #F7F7F7;
+    --retailer-modal-header-action-size: 32px;
+    --retailer-modal-header-action-radius: 16px;
+    --retailer-modal-header-action-bg: rgba(43, 52, 77, 0.5);
+    --retailer-modal-header-action-hover-bg: rgba(43, 52, 77, 0.75);
+    --retailer-modal-header-action-icon-size: 16px;
+
+    --retailer-modal-body-pad: 16px;
+    --retailer-modal-body-gap: 16px;
+    --retailer-modal-retailer-gap: 16px;
+
+    --retailer-modal-logo-size: 56px;
+    --retailer-modal-logo-radius: 4px;
+    --retailer-modal-fallback-f-s: 24px;
+    --retailer-modal-fallback-f-w: 700;
+
+    --retailer-modal-name-f-s: 22px;
+    --retailer-modal-name-f-w: 400;
+    --retailer-modal-name-l-h: 30px;
+    --retailer-modal-name-f-c: #F7F7F7;
+
+    --retailer-modal-pill-h: 32px;
+    --retailer-modal-pill-pad-x: 10px;
+    --retailer-modal-pill-radius: 4px;
+    --retailer-modal-pill-bg: rgba(96, 103, 249, 0.25);
+    --retailer-modal-pill-f-s: 14px;
+    --retailer-modal-pill-l-h: 20px;
+    --retailer-modal-pill-label-f-c: #8793FF;
+    --retailer-modal-pill-amount-f-c: #AFBBFF;
+    --retailer-modal-pill-amount-f-w: 700;
+    --retailer-modal-pill-amount-l-s: 0.28px;
+    --retailer-modal-pill-gap: 6px;
+
+    --retailer-modal-terms-bg: #090B12;
+    --retailer-modal-terms-border-c: #2B344D;
+    --retailer-modal-terms-radius: 8px;
+    --retailer-modal-terms-pad-x: 4px;
+    --retailer-modal-terms-pad-y: 12px;
+    --retailer-modal-terms-gap: 8px;
+    --retailer-modal-terms-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.25), inset 0 -16px 8px rgba(9, 11, 18, 0.25);
+    --retailer-modal-terms-title-f-s: 12px;
+    --retailer-modal-terms-title-f-w: 700;
+    --retailer-modal-terms-title-l-h: 16px;
+    --retailer-modal-terms-title-l-s: 0.24px;
+    --retailer-modal-terms-title-f-c: #F7F7F7;
+    --retailer-modal-terms-body-f-s: 10px;
+    --retailer-modal-terms-body-l-h: 13px;
+    --retailer-modal-terms-body-f-c: #B1BDD4;
+
+    --retailer-modal-footer-pad: 16px;
+    --retailer-modal-footer-gap: 8px;
+    --retailer-modal-actions-gap: 16px;
+
+    --retailer-modal-btn-h: 40px;
+    --retailer-modal-btn-radius: 8px;
+    --retailer-modal-btn-f-s: 16px;
+    --retailer-modal-btn-f-w: 400;
+    --retailer-modal-btn-l-h: 22px;
+    --retailer-modal-btn-f-c: #F7F7F7;
+    --retailer-modal-cancel-bg: #2B344D;
+    --retailer-modal-cancel-hover-bg: #3A4663;
+    --retailer-modal-shop-bg: #6067F9;
+    --retailer-modal-shop-hover-bg: #7079FF;
+
+    --retailer-modal-disclaimer-f-s: 10px;
+    --retailer-modal-disclaimer-l-h: 13px;
+    --retailer-modal-disclaimer-f-c: #3E4864;
+    --retailer-modal-disclaimer-link-f-c: #7685A0;
+
+    /* ── FAQ page (Figma 1883:13769) ── */
+    --faq-list-gap: 8px;
+
+    --faq-intro-f-s: 14px;
+    --faq-intro-f-w: 400;
+    --faq-intro-l-h: 20px;
+    --faq-intro-f-c: #7685A0;
+
+    --faq-item-bg: #171C2F;
+    --faq-item-hover-bg: #2B344D;
+    --faq-item-radius: 6px;
+    --faq-item-pad-l: 12px;
+    --faq-item-pad-r: 8px;
+    --faq-item-pad-y: 8px;
+    --faq-item-collapsed-h: 40px;
+
+    --faq-question-gap: 8px;
+    --faq-question-h: 24px;
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 400;
+    --faq-question-l-h: 22px;
+    --faq-question-f-c: #F7F7F7;
+
+    --faq-chevron-size: 16px;
+    --faq-chevron-f-c: #7685A0;
+    --faq-chevron-active-f-c: #F7F7F7;
+
+    --faq-answer-gap: 8px;
+    --faq-answer-line-gap: 4px;
+    --faq-answer-indent: 16px;
+    --faq-answer-f-s: 12px;
+    --faq-answer-f-w: 400;
+    --faq-answer-l-h: 16px;
+    --faq-answer-f-c: #7685A0;
+
+    --faq-divider-w: 1px;
+    --faq-divider-c: #2B344D;
+    --faq-divider-hover-c: #3A4663;
+
+    --faq-link-f-c: var(--faq-answer-f-c, #7685A0);
+
+    /* ── History page (Figma 1883:13769 modal offer line pattern) ── */
+    --history-list-gap: 8px;
+
+    /* History bottom-sheet overlay (Figma 1863:12581) */
+    --history-overlay-darken-bg: #040407;
+    --history-overlay-darken-opacity: 0.65;
+    --history-sheet-gap-top: 88px;
+    --history-sheet-bg: #0F0F1A;
+    --history-sheet-border-w: 1px;
+    --history-sheet-border-c: #2B344D;
+    --history-sheet-radius: 16px;
+    --history-sheet-shadow: 0px 4px 16px 0px rgba(4, 4, 7, 0.5);
+    --history-sheet-fade-h: 24px;
+    --history-sheet-fade-from: rgba(15, 15, 26, 0);
+    --history-sheet-fade-to: #0F0F1A;
+
+    --history-intro-f-s: 12px;
+    --history-intro-f-w: 400;
+    --history-intro-l-h: 16px;
+    --history-intro-f-c: #7685A0;
+
+    --history-item-bg: #171C2F;
+    --history-item-hover-bg: #2B344D;
+    --history-item-radius: 6px;
+    --history-item-pad-x: 12px;
+    --history-item-pad-y: 8px;
+    --history-row-h: 40px;
+    --history-row-gap: 12px;
+
+    --history-avatar-size: 40px;
+    --history-avatar-radius: 4px;
+    --history-avatar-bg: #2B344D;
+    --history-avatar-claim-bg: #6067F9;
+
+    --history-body-gap: 2px;
+    --history-name-max-w: 139px;
+    --history-name-f-s: 16px;
+    --history-name-f-w: 400;
+    --history-name-l-h: 22px;
+    --history-name-f-c: #F7F7F7;
+    --history-date-f-s: 14px;
+    --history-date-f-w: 400;
+    --history-date-l-h: 20px;
+    --history-date-f-c: #7685A0;
+
+    --history-right-gap: 4px;
+    --history-amount-pad-y: 6px;
+    --history-amount-pad-x: 10px;
+    --history-amount-radius: 6px;
+    --history-amount-bg: rgba(96, 103, 249, 0.25);
+    --history-amount-f-c: #8793FF;
+    --history-amount-f-s: 14px;
+    --history-amount-f-w: 700;
+    --history-amount-l-h: 20px;
+    --history-amount-l-s: 0.28px;
+    --history-amount-claimed-bg: rgba(90, 184, 139, 0.25);
+    --history-amount-claimed-f-c: #70D1A3;
+    --history-amount-completed-bg: rgba(234, 207, 65, 0.25);
+    --history-amount-completed-f-c: #FBE158;
+    --history-amount-cancelled-bg: rgba(210, 88, 88, 0.25);
+    --history-amount-cancelled-f-c: #F08282;
+    --history-amount-pending-bg: rgba(62, 72, 100, 0.5);
+    --history-amount-pending-f-c: #B1BDD4;
+
+    --history-status-f-s: 10px;
+    --history-status-f-w: 400;
+    --history-status-l-h: 13px;
+    --history-status-f-c: #7685A0;
+    --history-status-claimed-f-c: #5AB88B;
+    --history-status-completed-f-c: #EACF41;
+    --history-status-cancelled-f-c: #D25858;
+    --history-status-pending-f-c: #7685A0;
+
+    --history-panel-gap: 8px;
+    --history-divider-w: 1px;
+    --history-divider-c: #2B344D;
+    --history-divider-hover-c: #3A4663;
+    --history-description-gap: 4px;
+    --history-description-f-s: 12px;
+    --history-description-f-w: 400;
+    --history-description-l-h: 16px;
+    --history-description-f-c: #7685A0;
+
+    --history-skeleton-h: 56px;
+    --history-empty-f-s: 14px;
+    --history-empty-f-w: 400;
+    --history-empty-l-h: 20px;
+    --history-empty-f-c: #7685A0;
+}

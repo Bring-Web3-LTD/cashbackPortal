@@ -81,7 +81,7 @@ const Rewards = () => {
                 if (event.data.key) body.key = event.data.key
                 const res = await claimSubmit(body)
 
-                if (res.status === 202) {
+                if (res?.status === 202) {
                     setClaimStatus('success')
                     sendGaEvent('claim_accepted', {
                         category: 'system',
