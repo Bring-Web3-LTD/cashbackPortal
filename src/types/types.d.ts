@@ -38,6 +38,7 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    variant: string
 }
 
 
