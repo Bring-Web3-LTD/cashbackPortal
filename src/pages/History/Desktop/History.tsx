@@ -211,7 +211,7 @@ const HistoryDesktop = () => {
                     navigate(-1)
                 }}
             >
-                <Icon name="arrow-left-light.svg" fallbackName="arrow-left.svg" alt="" />
+                <Icon name="arrow-left.svg" alt="" />
                 <span className={styles.back_btn_text}>
                     {t('back')}
                 </span>

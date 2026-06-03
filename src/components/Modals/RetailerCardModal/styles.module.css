@@ -1,3 +1,16 @@
+.retailer_overlay {
+    --custom-modal-bg: var(--retailer-custom-modal-bg, var(--modal-bg));
+}
+
+.retailer_overlay_desktop {
+    --modal-pt: 40px;
+    --modal-px: 24px;
+    --modal-close-top: 16px;
+    --modal-close-right: 24px;
+    --modal-close-size: 24px;
+    --modal-close-pad: 0px;
+}
+
 .modal_container {
     width: 100%;
     overflow: hidden;

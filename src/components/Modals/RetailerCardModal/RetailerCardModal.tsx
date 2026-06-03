@@ -74,16 +74,10 @@ const RetailerCardModal = ({
             <Modal
                 showCloseBtn={!showingTerms}
                 xMarkPath='x-mark-light.svg'
+                className={`${styles.retailer_overlay} ${styles.retailer_overlay_desktop}`}
                 style={{
-                    '--custom-modal-bg': 'var(--retailer-custom-modal-bg,var(--modal-bg))',
                     '--modal-h': showingTerms ? 'calc(286px - 40px - 6px)' : 'calc(286px - 40px - 24px)',
-                    '--modal-pt': '40px',
-                    '--modal-px': '24px',
                     '--modal-pb': showingTerms ? '6px' : '24px',
-                    '--modal-close-top': '16px',
-                    '--modal-close-right': '24px',
-                    '--modal-close-size': '24px',
-                    '--modal-close-pad': '0px',
                 }}
                 open={open}
                 closeFn={onClose}
@@ -95,8 +89,7 @@ const RetailerCardModal = ({
                         onClick={() => setShowingTerms(false)}
                     >
                         <Icon
-                            name="arrow-left-light.svg"
-                            fallbackName="arrow-left.svg"
+                            name="arrow-left.svg"
                             alt="arrow-left"
                         />
                         <span>{t('back')}</span>
@@ -199,7 +192,7 @@ const RetailerCardModal = ({
 
     return (
         <Modal
-            style={{ '--custom-modal-bg': 'var(--retailer-custom-modal-bg,var(--modal-bg))' }}
+            className={styles.retailer_overlay}
             open={open}
             closeFn={onClose}
         >

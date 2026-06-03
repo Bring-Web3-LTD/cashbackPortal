@@ -80,18 +80,23 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         fontSize: "var(--search-f-s)",
         zIndex: 10,
     }),
-    option: (base, state) => ({
-        ...base,
-        ...optionRowStyle,
-        backgroundColor: state.isFocused
-            ? "var(--search-option-hover-bg)"
-            : state.isSelected
-                ? "var(--search-menu-bg, var(--search-bg))"
-                : "transparent",
-        "&:hover": { backgroundColor: "var(--search-option-hover-bg)" },
-        "&:active": { backgroundColor: "var(--search-option-hover-bg)" },
-        cursor: "pointer",
-    }),
+    option: (base, state) => {
+        const isSingleOption = (state.selectProps.options?.length ?? 0) <= 1
+        return {
+            ...base,
+            ...optionRowStyle,
+            backgroundColor: isSingleOption
+                ? "transparent"
+                : state.isFocused
+                    ? "var(--search-option-hover-bg)"
+                    : state.isSelected
+                        ? "var(--search-menu-bg, var(--search-bg))"
+                        : "transparent",
+            "&:hover": { backgroundColor: isSingleOption ? "transparent" : "var(--search-option-hover-bg)" },
+            "&:active": { backgroundColor: isSingleOption ? "transparent" : "var(--search-option-hover-bg)" },
+            cursor: "pointer",
+        }
+    },
     input: (base) => ({
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
