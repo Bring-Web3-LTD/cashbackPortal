@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { Link, useRouteLoaderData } from 'react-router-dom'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import { ENV } from '../../config'
-import { hasFeature } from '../../utils/ABTest/platform-variants'
 
 const Header = () => {
     const { t } = useTranslation()
-    const { platform, variant } = useRouteLoaderData('root') as LoaderData
+    const { platform } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
 
@@ -31,16 +30,14 @@ const Header = () => {
                 >
                     {t('needHelp')}
                 </Link>
-                {hasFeature(variant, 'show_missing_reward') && (
-                    <Link
-                        id="header-support-link"
-                        to={supportUrl}
-                        target='_blank'
-                        className={styles.btn}
-                    >
-                        {t('frequentlyAskedQuestion')}
-                    </Link>
-                )}
+                <Link
+                    id="header-support-link"
+                    to={supportUrl}
+                    target='_blank'
+                    className={styles.btn}
+                >
+                    {t('frequentlyAskedQuestion')}
+                </Link>
             </div>
         </div>
     )
