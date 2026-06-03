@@ -37,6 +37,21 @@ html, body {
     font-size: 11px;
 }
 
+.api-info {
+    margin: -6px 0 12px;
+    font-size: 10px;
+    color: #8a93a3;
+}
+
+.api-info code {
+    background: #1a1f27;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: #3ddc84;
+    font-weight: 700;
+}
+
 .wallet-btn {
     background: #3d5aeb;
     color: #fff;
@@ -60,6 +75,33 @@ html, body {
 }
 
 .wallet-btn[data-state="connected"]:hover { background: #1f2530; }
+
+.logout-btn {
+    margin-left: 4px;
+    padding-left: 16px;
+    border-left: 1px solid #2a313c;
+    background: transparent;
+    color: #8a93a3;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.logout-btn::before {
+    content: "⏻ ";
+    font-size: 12px;
+}
+
+.logout-btn:hover { color: #e7e9ee; }
+.logout-btn[hidden] { display: none; }
 
 .layout {
     position: relative;

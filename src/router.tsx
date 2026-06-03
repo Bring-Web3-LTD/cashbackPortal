@@ -10,6 +10,7 @@ import { DEV_MODE, ENV, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet } from './utils/loadStylesheet';
+import { selectVariant } from './utils/ABTest/platform-variants';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
@@ -47,15 +48,19 @@ const rootLoader = async () => {
             res.info.isTester = !!res.info.isTester
         }
 
+        const userId = getUserId(res.info.platform)
+        const variant = selectVariant(userId, platform)
+
         return {
             ...res.info,
             iconsPath: `/${platform}/icons/${theme}`,
             defaultIconsPath: `/DEFAULT/icons/${theme}`,
-            userId: getUserId(res.info.platform),
+            userId,
             extensionId,
             showTerms,
             autoclaim,
-            flowId
+            flowId,
+            variant
         }
     }
 
@@ -74,16 +79,19 @@ const rootLoader = async () => {
         loadStylesheet(theme, dev.platform.toUpperCase())
         await i18n.loadNamespaces(dev.platform.toUpperCase())
         i18n.setDefaultNamespace(dev.platform.toUpperCase())
+        const userId = getUserId(dev.platform)
+        const variant = selectVariant(userId, dev.platform)
         return {
             ...dev,
             iconsPath: `/${dev.platform.toUpperCase()}/icons/${theme}`,
             defaultIconsPath: `/DEFAULT/icons/${theme}`,
-            userId: getUserId(dev.platform),
+            userId,
             isTester: false,
             flowId,
             showTerms,
             autoclaim,
-            extensionId: urlExtensionId
+            extensionId: urlExtensionId,
+            variant
         }
     }
 

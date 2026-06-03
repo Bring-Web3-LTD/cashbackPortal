@@ -7,6 +7,7 @@ interface Retailer {
     id: string
     iconPath: string
     name: string
+    displayName: string
     section: string
     backgroundColor: string
     maxCashback: number
@@ -37,6 +38,7 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    variant: string
 }
 
 
