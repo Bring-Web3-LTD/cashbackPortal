@@ -155,12 +155,14 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
+    const isActive = props.isFocused || props.selectProps.menuIsOpen
     return (
         <components.Control {...props}>
             <Icon
                 height={24}
                 width={24}
-                name="magnifying-glass.svg"
+                name={isActive ? "magnifying-glass-focus.svg" : "magnifying-glass.svg"}
+                fallbackName="magnifying-glass.svg"
                 alt="magnifying-glass-icon"
             />
             {props.children}

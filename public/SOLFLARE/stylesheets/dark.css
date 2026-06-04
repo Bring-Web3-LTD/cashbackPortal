@@ -292,7 +292,7 @@
     --scrollbar-bg: #282B30;
     --scrollbar-w: 12px;
 
-    --search-bg: #1B1E24;
+    --search-bg: transparent;
     --search-menu-bg: #0C0F14;
     --search-f-s: 16px;
     --search-f-w: 400;
