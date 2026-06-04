@@ -161,15 +161,15 @@
     --loading-msg-f-w: 500;
     --loading-msg-f-c: #F5F8FF;
 
-    --filter-btn-f-s: 15px;
-    --filter-btn-f-w: 400;
-    --filter-btn-f-c: #B1B4BB;
-    --filter-btn-bg: #1B1E23;
+    --filter-btn-f-s: 14px;
+    --filter-btn-f-w: 500;
+    --filter-btn-f-c: #F5F8FF;
+    --filter-btn-bg: #1B1E24;
     --filter-btn-hover-bg: #282B30;
     --filter-btn-hover-f-c: #F5F8FF;
     --filter-btn-border-w: 0;
     --filter-btn-border-c: transparent;
-    --filter-btn-radius: 8px;
+    --filter-btn-radius: 10px;
 
     --category-btn-bg: #1B1E23;
     --category-btn-f-s: 15px;
@@ -258,6 +258,7 @@
 
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 700;
+    --modal-status-title-loading-f-c: #F5F8FF;
     --modal-status-title-success-f-c: #08C29D;
     --modal-status-title-failure-f-c: #DA493F;
 
@@ -281,13 +282,15 @@
     --modal-status-btn-hover-border-c: transparent;
     --modal-status-btn-hover-radius: 100px;
 
-    --modal-status-btn-disabled-bg: var(--primary-btn-disabled-bg);
-    --modal-status-btn-disabled-f-s: 18px;
+    --modal-status-btn-disabled-bg: rgba(245, 248, 255, 0.08);
+    --modal-status-btn-disabled-f-s: 17px;
     --modal-status-btn-disabled-f-w: 700;
-    --modal-status-btn-disabled-f-c: var(--primary-btn-disabled-f-c);
+    --modal-status-btn-disabled-f-c: #F5F8FF;
     --modal-status-btn-disabled-border-w: 0;
     --modal-status-btn-disabled-border-c: transparent;
     --modal-status-btn-disabled-radius: 100px;
+
+    --modal-status-loader-c: #FFEF46;
 
     --scrollbar-bg: #282B30;
     --scrollbar-w: 12px;
@@ -356,6 +359,8 @@
     --history-status-f-c: #71CC49;
     --history-status-pending-f-c: #F5F8FF;
     --history-status-canceled-f-c: #DA493F;
+    --history-status-claimed-f-c: #F5F8FF;
+    --history-status-claimed-f-w: 700;
 
     --history-description-f-s: 14px;
     --history-description-f-w: 400;

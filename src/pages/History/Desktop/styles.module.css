@@ -147,6 +147,11 @@
     color: var(--history-status-canceled-f-c);
 }
 
+.claimed {
+    color: var(--history-status-claimed-f-c, var(--history-status-f-c));
+    font-weight: var(--history-status-claimed-f-w, var(--history-status-f-w));
+}
+
 .pending {
     color: var(--history-status-pending-f-c, var(--history-status-f-c));
 }

@@ -6,11 +6,32 @@
     margin-bottom: 95px;
 }
 
+.loader {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--modal-status-loader-c, #4B6DDE);
+    background: conic-gradient(from 0deg, transparent 0%, currentColor 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    animation: status-modal-spin 0.7s linear infinite;
+}
+
+@keyframes status-modal-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .title {
     margin-top: 14px;
     font-size: var(--modal-status-title-f-s);
     font-weight: var(--modal-status-title-f-w);
     line-height: 40px;
+}
+
+.title_loading {
+    color: var(--modal-status-title-loading-f-c, inherit);
 }
 
 .title_success {

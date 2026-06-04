@@ -3,7 +3,6 @@ import { ComponentProps } from 'react'
 import Modal from '../../Modal/Modal'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
-import { Oval } from 'react-loader-spinner'
 import Icon from '../../Icon/Icon'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
@@ -17,17 +16,8 @@ const Loading = () => {
 
     return (
         <div className={styles.card}>
-            <Oval
-                height={40}
-                width={40}
-                color="#4B6DDE"
-                secondaryColor="#4B6DDE50"
-                wrapperStyle={{}}
-                wrapperClass=""
-                visible={true}
-                ariaLabel='oval-loading'
-            />
-            <div className={styles.title}>
+            <span className={styles.loader} role="status" aria-label="oval-loading" />
+            <div className={`${styles.title} ${styles.title_loading}`}>
                 Processing
             </div>
             <div className={styles.msg}>
