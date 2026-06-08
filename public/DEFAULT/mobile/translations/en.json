@@ -14,6 +14,7 @@
     "claimIntro": "This page ask you to claim rewards into your account. This transaction will impact your balance.",
     "claimWalletName": "WalletName",
     "networkFee": "Network fee",
+    "networkFeeWaived": "Waived",
     "minimalAmountClaim": "Minimal amount claim",
     "minimumClaimTitle": "Minimum Claim",
     "minimumClaimMsg": "Your cashback is on the way. Every purchase you make through Nightly earns you real crypto cashback. Once your earnings cross 0.1 SOL, you'll be able to send them straight to your wallet, fast, on-chain, and yours.",

@@ -6,22 +6,32 @@
  * up leaving an ~88px gap at the top so the darkened page peeks through.
  * Rounded top corners + 1px border per the design.
  */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import MobileHeader from '../components/MobileHeader/MobileHeader'
 import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
 import MobileHome from './MobileHome'
 import { useHistory } from '../hooks/useHistory'
+import { DEV_MODE } from '../../config'
 import styles from './MobileHistory.module.css'
 
-const SKELETON_COUNT = 5
+const SKELETON_COUNT = 8
 
 const MobileHistory = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { rows, isLoading } = useHistory()
+    const { rows, isLoading: historyLoading } = useHistory()
     const [openId, setOpenId] = useState<string | null>(null)
+
+    // DEV ONLY: force loading state for 20s to preview skeleton
+    const [devLoading, setDevLoading] = useState(DEV_MODE)
+    useEffect(() => {
+        if (!DEV_MODE) return
+        const t = setTimeout(() => setDevLoading(false), 20_000)
+        return () => clearTimeout(t)
+    }, [])
+    const isLoading = DEV_MODE ? devLoading || historyLoading : historyLoading
 
     const close = () => navigate(-1)
 
@@ -50,17 +60,26 @@ const MobileHistory = () => {
                         </div>
                     ) : (
                         <>
-                            <p className={styles.intro}>
-                                {t('rewardHistory') || 'Reward history'}
-                            </p>
-
                             {isLoading ? (
-                                <div className={styles.list} aria-hidden="true">
-                                    {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                                        <span key={i} className={styles.skeletonItem} />
-                                    ))}
-                                </div>
+                                <>
+                                    <div className={styles.list} aria-hidden="true">
+                                        {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+                                            <div key={i} className={styles.skeletonItem}>
+                                                <div className={styles.skeletonAvatar} />
+                                                <div className={styles.skeletonBody}>
+                                                    <div className={styles.skeletonBar1} />
+                                                    <div className={styles.skeletonBar2} />
+                                                </div>
+                                                <div className={styles.skeletonRight} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
                             ) : (
+                                <>
+                                <p className={styles.intro}>
+                                    {t('rewardHistory') || 'Reward history'}
+                                </p>
                                 <div className={styles.list}>
                                     {rows.map((row) => (
                                         <MobileHistoryItem
@@ -75,6 +94,7 @@ const MobileHistory = () => {
                                         />
                                     ))}
                                 </div>
+                                </>
                             )}
                         </>
                     )}

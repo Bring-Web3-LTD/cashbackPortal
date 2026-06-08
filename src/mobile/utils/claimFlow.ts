@@ -20,5 +20,3 @@ export const formatSignedAmount = (display: string, amount: number): string => {
     return amount > 0 && !display.startsWith('+') ? `+${display}` : display
 }
 
-export const formatNetworkFee = (tokenSymbol: string): string =>
-    `0.001 ${tokenSymbol}`.trim()

@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { AnimatePresence, motion } from 'framer-motion'
 import Icon from '../../../components/Icon/Icon'
-import TokenAmount from '../../../components/TokenAmount/TokenAmount'
 import message from '../../../utils/message'
 import {
-    formatNetworkFee,
     formatSignedAmount,
     MobileClaimModalState,
     shortenWalletAddress,
@@ -92,28 +89,17 @@ const MobileClaimModal = ({
                             : ''
 
     return createPortal(
-        <AnimatePresence>
-            <motion.div
-                key="claim-modal-backdrop"
-                className={styles.backdrop}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={onClose}
+        <div
+            className={styles.backdrop}
+            onClick={onClose}
+        >
+            <section
+                className={styles.panel}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="mobile-claim-modal-title"
+                onClick={(e) => e.stopPropagation()}
             >
-                <motion.section
-                    key="claim-modal-panel"
-                    className={styles.panel}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby="mobile-claim-modal-title"
-                    initial={{ y: '100%' }}
-                    animate={{ y: 0 }}
-                    exit={{ y: '100%' }}
-                    transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
-                    onClick={(e) => e.stopPropagation()}
-                >
                     {(state === 'confirm' || state === 'minimum' || state === 'success' || state === 'failure' || state === 'processing') && (
                         <header className={styles.header}>
                             <span className={styles.headerSpacer} aria-hidden="true" />
@@ -151,7 +137,7 @@ const MobileClaimModal = ({
                                     </span>
                                     <span className={styles.rowRight}>
                                         <span className={styles.amountPositive}>
-                                            <TokenAmount value={signedAmount} />
+                                            {signedAmount}
                                         </span>
                                         <span className={styles.badge}>{tokenSymbol}</span>
                                     </span>
@@ -173,7 +159,7 @@ const MobileClaimModal = ({
 
                                 <div className={styles.rowSecondary}>
                                     <span className={styles.rowLabel}>{t('networkFee') || 'Network fee'}</span>
-                                    <span className={styles.valueMuted}>{formatNetworkFee(tokenSymbol)}</span>
+                                    <span className={styles.valueMuted}>{t('networkFeeWaived') || 'Waived'}</span>
                                 </div>
 
                                 <div className={styles.rowSecondary}>
@@ -290,7 +276,7 @@ const MobileClaimModal = ({
                                         <Icon name="star-9462.svg" alt="" />
                                     </span>
                                     <h3 className={styles.successAmount}>
-                                        <TokenAmount value={tokenAmountDisplay} /> {tokenSymbol}
+                                        {tokenAmountDisplay} {tokenSymbol}
                                     </h3>
                                 </div>
                                 <span className={styles.successGlowLine} aria-hidden="true">
@@ -356,9 +342,8 @@ const MobileClaimModal = ({
                             </footer>
                         </>
                     )}
-                </motion.section>
-            </motion.div>
-        </AnimatePresence>,
+            </section>
+        </div>,
         document.body,
     )
 }

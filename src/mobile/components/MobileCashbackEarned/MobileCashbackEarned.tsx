@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useRive, Layout, Fit } from '@rive-app/react-canvas'
 import Icon from '../../../components/Icon/Icon'
-import TokenAmount from '../../../components/TokenAmount/TokenAmount'
 import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../hooks/useBalance'
 import styles from './styles.module.css'
 
@@ -92,7 +91,7 @@ const MobileCashbackEarned = () => {
                 </div>
                 <div className={styles.amountGroup}>
                     <p className={styles.amount}>
-                        <TokenAmount value={amountDisplay} />
+                        {amountDisplay}
                         {symbol ? ` ${symbol}` : null}
                     </p>
                     <p className={styles.sub}>

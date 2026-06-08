@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { AnimatePresence, motion } from 'framer-motion'
 import Markdown from 'react-markdown'
 import formatCashback from '../../../utils/formatCashback'
 import { getInitials } from '../../../utils/getInitials'
@@ -77,27 +76,17 @@ const MobileRetailerCardModal = ({
     // 360px-wide layout container instead of the viewport — which would
     // push the action buttons below the visible area.
     return createPortal(
-        <AnimatePresence>
+        <>
             {open && retailer ? (
-                <motion.div
-                    key="backdrop"
+                <div
                     className={styles.backdrop}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
                     onClick={onCancel}
                 >
-                    <motion.div
-                        key="panel"
+                    <div
                         className={styles.panel}
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby="mobile-retailer-modal-title"
-                        initial={{ y: '100%' }}
-                        animate={{ y: 0 }}
-                        exit={{ y: '100%' }}
-                        transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <header className={styles.header}>
@@ -169,7 +158,7 @@ const MobileRetailerCardModal = ({
                                 <div className={styles.actions}>
                                     <button
                                         type="button"
-                                        className={styles.cancel_btn}
+                                        className={`${styles.cancel_btn} ${(isNavigating || !(redirectLink && terms)) ? styles.cancel_btn_processing : ''}`}
                                         onClick={onCancel}
                                     >
                                         {t('cancel')}
@@ -198,17 +187,17 @@ const MobileRetailerCardModal = ({
                                             className={styles.shop_btn}
                                             disabled
                                         >
-                                            {t('goToShop')}
+                                            <span className={styles.spinner} aria-hidden="true" />
                                         </button>
                                     )}
                                 </div>
                                 <p className={styles.disclaimer}>{t('agreeTerms')}</p>
                             </div>
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </div>
+                </div>
             ) : null}
-        </AnimatePresence>,
+        </>,
         document.body,
     )
 }

@@ -10,8 +10,9 @@
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../components/Icon/Icon'
-import TokenAmount from '../../../components/TokenAmount/TokenAmount'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
+import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
+import { ENV } from '../../../config'
 import styles from './styles.module.css'
 
 interface Props {
@@ -22,16 +23,15 @@ interface Props {
 const MobileRewards = ({ onClaim }: Props) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
+    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)
 
-    // Token amounts are rendered from the backend-formatted `display` string
-    // (4 significant digits, Unicode subscripts) via <TokenAmount />. When
-    // there's no balance row yet (e.g. no wallet connected) the backend sends
-    // nothing, so we fall back to a plain "0.00" on the client.
+    // Fall back to "0.00" when no balance row yet (e.g. no wallet connected).
     const fallbackSymbol = cryptoSymbols?.[0] ?? ''
     const claimableDisplay = eligible?.tokenAmountDisplay ?? '0.00'
     const claimableSymbol = eligible?.tokenSymbol ?? fallbackSymbol
@@ -73,8 +73,7 @@ const MobileRewards = ({ onClaim }: Props) => {
                                 </>
                             ) : (
                                 <>
-                                    <span className={styles.amount}>
-                                        <TokenAmount value={claimableDisplay} />
+                                    <span className={styles.amount}>{claimableDisplay}
                                         {claimableSymbol ? ` ${claimableSymbol}` : null}
                                     </span>
                                     <button
@@ -115,7 +114,7 @@ const MobileRewards = ({ onClaim }: Props) => {
                             ) : (
                                 <>
                                     <span className={styles.amount}>
-                                        <TokenAmount value={pendingDisplay} />
+                                        {pendingDisplay}
                                         {pendingSymbol ? ` ${pendingSymbol}` : null}
                                     </span>
                                     <button
@@ -153,7 +152,7 @@ const MobileRewards = ({ onClaim }: Props) => {
                 <button
                     type="button"
                     className={`${styles.helperBtn} ${isLoading ? styles.helperBtnLoading : ''}`}
-                    onClick={() => navigate('/faq')}
+                    onClick={() => window.open(supportUrl, '_blank', 'noopener,noreferrer')}
                     disabled={isLoading}
                 >
                     {isLoading ? (

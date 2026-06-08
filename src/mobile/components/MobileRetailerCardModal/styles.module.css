@@ -316,10 +316,17 @@
     background: var(--retailer-modal-shop-hover-bg);
 }
 
-.cancel_btn:disabled,
-.shop_btn:disabled {
-    opacity: 0.6;
+.cancel_btn:disabled {
+    opacity: 0.5;
     cursor: not-allowed;
+}
+
+.shop_btn:disabled {
+    cursor: not-allowed;
+}
+
+.cancel_btn_processing {
+    opacity: 0.5;
 }
 
 .spinner {

@@ -115,14 +115,17 @@
 .claimBtn:disabled {
     background: var(--balance-claim-btn-disabled-bg, #2B344D);
     color: var(--balance-claim-btn-disabled-f-c, #7685A0);
-    cursor: not-allowed;
 }
 
 /* Below minimum threshold: disabled coloring, still clickable (opens minimum overlay). */
-.claimBtnDisabled,
-.claimBtnDisabled:not(:disabled):hover {
+.claimBtnDisabled {
     background: var(--balance-claim-btn-disabled-bg, #2B344D);
     color: var(--balance-claim-btn-disabled-f-c, #7685A0);
+}
+
+.claimBtn.claimBtnDisabled:not(:disabled):hover {
+    background: var(--balance-claim-btn-below-min-hover-bg, #3E4864);
+    color: var(--balance-claim-btn-below-min-hover-f-c, #F7F7F7);
 }
 
 .claimBtn:not(:disabled):hover {

@@ -58,26 +58,15 @@
     font-size: 14px;
 }
 
-/* Shop stays right-aligned; card `gap` keeps min spacing from the name. On
-   tiny screens (≤320px) the name column caps at 114px so Shop never clips. */
 .text {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2px;
-    min-width: 0;
-    flex: 0 1 var(--retailer-name-max-w, 139px);
-    max-width: var(--retailer-name-max-w, 139px);
-}
-
-@media (max-width: 320px) {
-    .text {
-        flex: 0 1 var(--retailer-name-max-w-sm, 114px);
-        max-width: var(--retailer-name-max-w-sm, 114px);
-    }
 }
 
 .name {
+    max-width: var(--retailer-name-max-w, 139px);
     font-size: var(--retailer-name-f-s);
     font-weight: var(--retailer-name-f-w);
     line-height: var(--retailer-name-l-h);
@@ -85,6 +74,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 320px) {
+    .name {
+        max-width: var(--retailer-name-max-w-sm, 114px);
+    }
 }
 
 .sub {
@@ -117,12 +112,22 @@
     background: var(--shop-btn-bg);
     border-radius: var(--shop-btn-radius);
     color: var(--shop-btn-f-c);
+    transition: background 0.15s ease;
+}
+
+.shop:hover {
+    background: var(--shop-btn-hover-bg, rgba(135, 147, 255, 0.25));
 }
 
 .shop_label {
     font-size: var(--shop-btn-f-s);
     line-height: var(--shop-btn-l-h);
     color: var(--shop-btn-f-c);
+    transition: color 0.15s ease;
+}
+
+.shop:hover .shop_label {
+    color: var(--shop-btn-hover-f-c, #AFBBFF);
 }
 
 .shop img {

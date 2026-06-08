@@ -13,13 +13,13 @@
     --mobile-portal-max-width: 360px;
     --mobile-max-width: 360px;
     --mobile-content-pad-x: 16px;
-    --mobile-content-pad-y: 16px;
+    --mobile-content-pad-y: 32px;
     --mobile-content-gap: 16px;
 
     /* ── Hero "Cashback earned" card (Figma 1883:11460) ── */
     --cashback-earned-h: 82px;
-    --cashback-earned-pad-x: 12px;
-    --cashback-earned-pad-y: 8px;
+    --cashback-earned-pad-x: 10px;
+    --cashback-earned-pad-y: 10px;
     --cashback-earned-radius: 6px;
     --cashback-earned-bg:
         linear-gradient(90deg, rgba(135, 147, 255, 0.05) 0%, rgba(135, 147, 255, 0) 100%),
@@ -81,6 +81,8 @@
     --balance-claim-btn-hover-bg: #7079FF;
     --balance-claim-btn-disabled-bg: #2B344D;
     --balance-claim-btn-disabled-f-c: #7685A0;
+    --balance-claim-btn-below-min-hover-bg: #3E4864;
+    --balance-claim-btn-below-min-hover-f-c: #F7F7F7;
     --balance-claim-btn-f-c: #F7F7F7;
     --balance-claim-btn-f-s: 12px;
     --balance-claim-btn-f-w: 400;
@@ -174,7 +176,7 @@
     --search-dropdown-hover-bg: rgba(43, 52, 77, 0.5);
 
     /* ── Retailer card (Big_Button) ── */
-    --cards-list-gap: 8px;
+    --cards-list-gap: 4px;
     --cards-fog-h: 24px;
     --cards-fog-color: #0F0F1A;
 
@@ -184,7 +186,8 @@
     --retailer-card-pad-y: 8px;
     --retailer-card-h: 66px;
     --retailer-card-gap: 12px;
-    --retailer-name-max-w: 114px;
+    --retailer-name-max-w: 139px;
+    --retailer-name-max-w-sm: 114px;
     --retailer-name-shop-gap: 32px;
 
     --retailer-icon-size: 40px;
@@ -211,11 +214,13 @@
     --shop-btn-l-h: 16px;
     --shop-btn-f-c: #8793FF;
     --shop-btn-icon-size: 12px;
+    --shop-btn-hover-bg: rgba(135, 147, 255, 0.25);
+    --shop-btn-hover-f-c: #AFBBFF;
 
     /* ── T&C modal (Cashback Details) — Figma 1883:11808 ── */
     --modal-backdrop-bg: rgba(4, 4, 7, 0.5);
 
-    --retailer-modal-top-gap: 88px;
+    --retailer-modal-top-gap: 32px;
     --retailer-modal-bg: #0F0F1A;
     --retailer-modal-border-c: #2B344D;
     --retailer-modal-radius: 16px;
@@ -289,7 +294,7 @@
     --retailer-modal-btn-l-h: 22px;
     --retailer-modal-btn-f-c: #F7F7F7;
     --retailer-modal-cancel-bg: #2B344D;
-    --retailer-modal-cancel-hover-bg: #3A4663;
+    --retailer-modal-cancel-hover-bg: #3E4864;
     --retailer-modal-shop-bg: #6067F9;
     --retailer-modal-shop-hover-bg: #4B52E0;
 
@@ -299,6 +304,18 @@
     --retailer-modal-disclaimer-hover-f-c: #7685A0;
 
     /* ── FAQ page (Figma 1883:13769) ── */
+    --faq-overlay-darken-bg: #040407;
+    --faq-overlay-darken-opacity: 0.65;
+    --faq-sheet-gap-top: 32px;
+    --faq-sheet-bg: #0F0F1A;
+    --faq-sheet-border-w: 1px;
+    --faq-sheet-border-c: #2B344D;
+    --faq-sheet-radius: 16px;
+    --faq-sheet-shadow: 0px 4px 16px 0px rgba(4, 4, 7, 0.5);
+    --faq-sheet-fade-h: 24px;
+    --faq-sheet-fade-from: rgba(15, 15, 26, 0);
+    --faq-sheet-fade-to: #0F0F1A;
+
     --faq-list-gap: 8px;
 
     --faq-intro-f-s: 14px;
@@ -349,12 +366,12 @@
     --faq-link-f-c: var(--faq-answer-f-c, #7685A0);
 
     /* ── History page (Figma 1883:13769 modal offer line pattern) ── */
-    --history-list-gap: 8px;
+    --history-list-gap: 4px;
 
     /* History bottom-sheet overlay (Figma 1863:12581) */
     --history-overlay-darken-bg: #040407;
     --history-overlay-darken-opacity: 0.65;
-    --history-sheet-gap-top: 88px;
+    --history-sheet-gap-top: 32px;
     --history-sheet-bg: #0F0F1A;
     --history-sheet-border-w: 1px;
     --history-sheet-border-c: #2B344D;
@@ -384,6 +401,7 @@
 
     --history-body-gap: 2px;
     --history-name-max-w: 139px;
+    --history-name-max-w-sm: 114px;
     --history-name-f-s: 16px;
     --history-name-f-w: 400;
     --history-name-l-h: 22px;
@@ -424,18 +442,22 @@
     --history-panel-gap: 8px;
     --history-divider-w: 1px;
     --history-divider-c: #2B344D;
-    --history-divider-hover-c: #3A4663;
+
     --history-description-gap: 4px;
     --history-description-f-s: 12px;
     --history-description-f-w: 400;
     --history-description-l-h: 16px;
     --history-description-f-c: #7685A0;
 
-    --history-skeleton-h: 56px;
+    --history-skeleton-h: 66px;
     --history-empty-f-s: 14px;
     --history-empty-f-w: 400;
     --history-empty-l-h: 20px;
     --history-empty-f-c: #7685A0;
+    --history-empty-pad-y: 12px;
+    --history-empty-pad-x: 16px;
+    --history-empty-radius: 6px;
+    --history-empty-bg: #0F0F1A;
 
     /* ── Claim Rewards modal (Figma 1863:9450 / 11781 / 13957) ──
        Bottom-sheet claim flow: confirm, minimum, processing, success,
@@ -449,7 +471,7 @@
     --claim-modal-panel-border-w: 1px;
     --claim-modal-panel-radius: 16px;
     --claim-modal-panel-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
-    --claim-modal-panel-top-gap: 88px;
+    --claim-modal-panel-top-gap: 32px;
 
     /* Header */
     --claim-modal-header-h: 56px;
@@ -511,6 +533,7 @@
     --claim-modal-btn-l-h: 22px;
     --claim-modal-btn-f-c: #F7F7F7;
     --claim-modal-btn-secondary-bg: #2B344D;
+    --claim-modal-btn-secondary-hover-bg: #3E4864;
     --claim-modal-btn-primary-bg: #6067F9;
 
     /* Minimum-claim screen */

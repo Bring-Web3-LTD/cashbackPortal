@@ -6,7 +6,6 @@ import { FC, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MobileHistoryRow } from '../../hooks/useHistory'
 import Icon from '../../../components/Icon/Icon'
-import TokenAmount from '../../../components/TokenAmount/TokenAmount'
 import styles from './styles.module.css'
 
 interface Props {
@@ -68,7 +67,7 @@ const MobileHistoryItem: FC<Props> = ({ row, isOpen, onToggle }) => {
                             styles[`amount_${row.rawStatus}`] ?? ''
                         }`}
                     >
-                        <TokenAmount value={row.amountDisplay} /> {row.tokenSymbol}
+                        {row.amountDisplay} {row.tokenSymbol}
                     </span>
                     <span
                         className={`${styles.status} ${
@@ -99,7 +98,7 @@ const MobileHistoryItem: FC<Props> = ({ row, isOpen, onToggle }) => {
                                     <p key={i} className={styles.descriptionLine}>
                                         {line[0] ? <span>{line[0]}</span> : null}
                                         {line[0] && line[1] ? ' — ' : null}
-                                        {line[1] ? <TokenAmount value={line[1]} /> : null}
+                                        {line[1] ? line[1] : null}
                                         {line[2] ? (
                                             <span className={styles.txid}>
                                                 TxID: {line[2]}

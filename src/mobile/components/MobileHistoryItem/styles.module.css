@@ -17,9 +17,6 @@
         background: var(--history-item-hover-bg, #2B344D);
     }
 
-    .itemOpen.itemExpandable:hover .divider {
-        background: var(--history-divider-hover-c, #3A4663);
-    }
 }
 
 /* Collapsed row — toggles the panel. */

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import MobileCashbackEarned from '../components/MobileCashbackEarned/MobileCashbackEarned'
-import MobileRewards from '../components/MobileRewards/MobileRewards'
+import MobileHeroSection from '../components/MobileHeroSection/MobileHeroSection'
 import MobileCategories, { MobileCategoriesItem } from '../components/MobileCategories/MobileCategories'
 import MobileSearchBar from '../components/MobileSearchBar/MobileSearchBar'
 import MobileFilterChip from '../components/MobileFilterChip/MobileFilterChip'
@@ -230,8 +229,7 @@ const MobileHome = () => {
     return (
         <div className={styles.root} data-testid="mobile-home">
             <main className={styles.content}>
-                <MobileCashbackEarned />
-                <MobileRewards onClaim={handleOpenClaim} />
+                <MobileHeroSection onClaim={handleOpenClaim} />
                 {renderFilterRow()}
                 <MobileCardsList
                     retailers={retailers}

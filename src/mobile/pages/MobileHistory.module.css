@@ -41,7 +41,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    top: var(--history-sheet-gap-top, 88px);
+    top: var(--history-sheet-gap-top, 32px);
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -73,39 +73,13 @@
     );
 }
 
-/* ── Header close (X) button — mirrors MobileHeader action. */
-.close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--header-action-size, 32px);
-    height: var(--header-action-size, 32px);
-    padding: 0;
-    border: none;
-    background: var(--header-action-bg, rgba(43, 52, 77, 0.5));
-    border-radius: var(--header-action-radius, 16px);
-    cursor: pointer;
-    color: var(--header-action-icon-c, currentColor);
-    box-sizing: border-box;
-}
-
-.close:hover {
-    background: var(--header-action-hover-bg, var(--header-action-bg, rgba(43, 52, 77, 0.5)));
-}
-
-.closeIcon {
-    width: var(--header-action-icon-size, 16px);
-    height: var(--header-action-icon-size, 16px);
-    display: block;
-}
-
 .content {
     flex: 1 1 auto;
     min-height: 0;
     padding: var(--mobile-content-pad-y, 16px) 0;
     display: flex;
     flex-direction: column;
-    gap: var(--history-list-gap, 8px);
+    gap: var(--history-list-gap, 4px);
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -121,7 +95,7 @@
 
 .intro {
     margin: 0;
-    padding: 0 var(--mobile-content-pad-x, 16px);
+    padding: 0 16px;
     font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--history-intro-f-s, 12px);
     font-weight: var(--history-intro-f-w, 400);
@@ -132,18 +106,59 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: var(--history-list-gap, 8px);
+    gap: var(--history-list-gap, 4px);
     padding: 0 var(--mobile-content-pad-x, 16px);
 }
 
-/* ── Loading skeleton: collapsed-height tiles ── */
+/* ── Loading skeleton ── */
 .skeletonItem {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
-    height: var(--history-skeleton-h, 56px);
+    box-sizing: border-box;
+    padding: var(--history-item-pad-y, 8px) var(--history-item-pad-x, 12px);
     border-radius: var(--history-item-radius, 6px);
     background: var(--skeleton-tile-bg, #1D2133);
     animation: mobileHistoryPulse 1.4s ease-in-out infinite;
+}
+
+.skeletonAvatar {
+    width: var(--history-avatar-size, 40px);
+    height: var(--history-avatar-size, 40px);
+    border-radius: var(--history-avatar-radius, 4px);
+    background: var(--skeleton-fill, #262B3F);
+    flex-shrink: 0;
+}
+
+.skeletonBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+.skeletonBar1 {
+    width: 87px;
+    height: 15px;
+    border-radius: 5px;
+    background: var(--skeleton-fill, #262B3F);
+}
+
+.skeletonBar2 {
+    width: 115px;
+    height: 15px;
+    border-radius: 5px;
+    background: var(--skeleton-fill, #262B3F);
+}
+
+.skeletonRight {
+    width: 92px;
+    height: 38px;
+    border-radius: 6px;
+    background: var(--skeleton-fill, #262B3F);
+    flex-shrink: 0;
 }
 
 @keyframes mobileHistoryPulse {
@@ -157,7 +172,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 var(--mobile-content-pad-x, 16px);
-    padding: var(--history-empty-pad-y, 6px) var(--history-empty-pad-x, 8px);
+    padding: var(--history-empty-pad-y, 12px) var(--history-empty-pad-x, 16px);
     border-radius: var(--history-empty-radius, 6px);
     background: var(--history-empty-bg, #0F0F1A);
     box-sizing: border-box;

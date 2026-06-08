@@ -11,8 +11,8 @@
 .panel {
     width: 100%;
     max-width: var(--mobile-max-width, 360px);
-    height: calc(100% - var(--claim-modal-panel-top-gap, 88px));
-    max-height: calc(100dvh - var(--claim-modal-panel-top-gap, 88px));
+    height: calc(100% - var(--claim-modal-panel-top-gap, 32px));
+    max-height: calc(100dvh - var(--claim-modal-panel-top-gap, 32px));
     background: var(--claim-modal-panel-bg, #0f0f1a);
     border: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-panel-border-c, #2b344d);
     border-bottom: none;
@@ -209,6 +209,10 @@
     background: var(--claim-modal-btn-secondary-bg, #2b344d);
 }
 
+.btnSecondary:hover:not(:disabled) {
+    background: var(--claim-modal-btn-secondary-hover-bg, #3e4864);
+}
+
 .btnPrimary {
     flex: 1;
     background: var(--claim-modal-btn-primary-bg, #6067f9);
@@ -266,6 +270,10 @@
 .btnSecondaryWide {
     width: 100%;
     background: var(--claim-modal-btn-secondary-bg, #2b344d);
+}
+
+.btnSecondaryWide:hover:not(:disabled) {
+    background: var(--claim-modal-btn-secondary-hover-bg, #3e4864);
 }
 
 .statusWrap {
