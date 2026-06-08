@@ -42,31 +42,10 @@
     --cashback-earned-sub-f-s: 12px;
     --cashback-earned-sub-f-w: 400;
     --cashback-earned-sub-l-h: 16px;
-    --cashback-earned-deco-w: 110px;
-    --cashback-earned-deco-h: 76px;
-    --cashback-earned-deco-top: 3px;
-    --cashback-earned-deco-right: -8px;
-
-    /* ── Top bar (Header) ── */
-    --header-bg: #0F0F1A;
-    --header-border-c: #2B344D;
-    --header-border-w: 1px;
-    --header-h: 56px;
-    --header-pad-x: 16px;
-    --header-pad-y: 12px;
-
-    --header-title-f-s: 16px;
-    --header-title-f-w: 700;
-    --header-title-l-h: 22px;
-    --header-title-l-s: 0.32px;
-    --header-title-f-c: #F7F7F7;
-
-    --header-action-size: 32px;
-    --header-action-radius: 16px;
-    --header-action-bg: rgba(43, 52, 77, 0.5);
-    --header-action-hover-bg: rgba(43, 52, 77, 0.75);
-    --header-action-icon-size: 16px;
-    --header-action-icon-c: #F7F7F7;
+    --cashback-earned-deco-w: 173.25px;
+    --cashback-earned-deco-h: 106px;
+    --cashback-earned-deco-top: 4px;
+    --cashback-earned-deco-right: -7px;
 
     /* ── Rewards / balance card (Claimable + Pending) ── */
     --rewards-gap: 10px;
@@ -313,12 +292,12 @@
     --retailer-modal-cancel-bg: #2B344D;
     --retailer-modal-cancel-hover-bg: #3A4663;
     --retailer-modal-shop-bg: #6067F9;
-    --retailer-modal-shop-hover-bg: #7079FF;
+    --retailer-modal-shop-hover-bg: #4B52E0;
 
     --retailer-modal-disclaimer-f-s: 10px;
     --retailer-modal-disclaimer-l-h: 13px;
     --retailer-modal-disclaimer-f-c: #3E4864;
-    --retailer-modal-disclaimer-link-f-c: #7685A0;
+    --retailer-modal-disclaimer-hover-f-c: #7685A0;
 
     /* ── FAQ page (Figma 1883:13769) ── */
     --faq-list-gap: 8px;
@@ -335,6 +314,16 @@
     --faq-item-pad-r: 8px;
     --faq-item-pad-y: 8px;
     --faq-item-collapsed-h: 40px;
+
+    --faq-skeleton-bg: rgba(43, 52, 77, 0.5);
+    --faq-skeleton-h: 40px;
+    --faq-skeleton-radius: 4px;
+    --faq-skeleton-pad-x: 8px;
+    --faq-skeleton-pad-y: 4px;
+    --faq-skeleton-bar-bg: #262B3F;
+    --faq-skeleton-bar-h: 11px;
+    --faq-skeleton-bar-w: 182px;
+    --faq-skeleton-bar-radius: 3px;
 
     --faq-question-gap: 8px;
     --faq-question-h: 24px;
@@ -357,7 +346,6 @@
 
     --faq-divider-w: 1px;
     --faq-divider-c: #2B344D;
-    --faq-divider-hover-c: #3A4663;
 
     --faq-link-f-c: var(--faq-answer-f-c, #7685A0);
 
@@ -449,4 +437,134 @@
     --history-empty-f-w: 400;
     --history-empty-l-h: 20px;
     --history-empty-f-c: #7685A0;
+
+    /* ── Claim Rewards modal (Figma 1863:9450 / 11781 / 13957) ──
+       Bottom-sheet claim flow: confirm, minimum, processing, success,
+       failure. Role-based tokens so a platform can re-skin the whole flow. */
+    --claim-modal-font: 'Prompt', system-ui, sans-serif;
+
+    /* Backdrop + panel frame */
+    --claim-modal-backdrop-bg: rgba(15, 15, 26, 0.75);
+    --claim-modal-panel-bg: #0F0F1A;
+    --claim-modal-panel-border-c: #2B344D;
+    --claim-modal-panel-border-w: 1px;
+    --claim-modal-panel-radius: 16px;
+    --claim-modal-panel-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
+    --claim-modal-panel-top-gap: 88px;
+
+    /* Header */
+    --claim-modal-header-h: 56px;
+    --claim-modal-header-border-c: #2B344D;
+    --claim-modal-header-pad-x: 16px;
+    --claim-modal-header-mb: 16px;
+    --claim-modal-header-title-f-s: 16px;
+    --claim-modal-header-title-f-w: 700;
+    --claim-modal-header-title-l-h: 22px;
+    --claim-modal-header-title-l-s: 0.32px;
+    --claim-modal-header-title-f-c: #F7F7F7;
+    --claim-modal-header-action-size: 32px;
+    --claim-modal-header-action-radius: 16px;
+    --claim-modal-header-action-bg: rgba(43, 52, 77, 0.5);
+    --claim-modal-header-action-icon-size: 16px;
+
+    /* Body + intro */
+    --claim-modal-body-pad: 16px;
+    --claim-modal-body-gap: 4px;
+    --claim-modal-intro-f-s: 14px;
+    --claim-modal-intro-f-w: 400;
+    --claim-modal-intro-l-h: 20px;
+    --claim-modal-intro-f-c: #7685A0;
+    --claim-modal-intro-mb: 12px;
+
+    /* Detail rows (token / wallet / fee / minimum) */
+    --claim-modal-row-h: 40px;
+    --claim-modal-row-radius: 6px;
+    --claim-modal-row-bg: #171C2F;
+    --claim-modal-row-pad-x: 12px;
+    --claim-modal-row-pad-y: 8px;
+    --claim-modal-row-gap: 8px;
+    --claim-modal-row-primary-mb: 12px;
+    --claim-modal-row-icon-size: 24px;
+    --claim-modal-row-label-f-s: 16px;
+    --claim-modal-row-label-f-w: 400;
+    --claim-modal-row-label-l-h: 22px;
+    --claim-modal-row-label-f-c: #F7F7F7;
+    --claim-modal-amount-positive-f-c: #5AB88B;
+    --claim-modal-badge-bg: #2B344D;
+    --claim-modal-badge-radius: 4px;
+    --claim-modal-badge-pad-x: 8px;
+    --claim-modal-badge-pad-y: 4px;
+    --claim-modal-badge-f-s: 12px;
+    --claim-modal-badge-l-h: 16px;
+    --claim-modal-badge-f-c: #F7F7F7;
+    --claim-modal-value-f-s: 16px;
+    --claim-modal-value-l-h: 22px;
+    --claim-modal-value-f-c: #7685A0;
+
+    /* Footer buttons */
+    --claim-modal-footer-pad-x: 16px;
+    --claim-modal-footer-pad-b: 16px;
+    --claim-modal-footer-gap: 16px;
+    --claim-modal-btn-h: 40px;
+    --claim-modal-btn-radius: 8px;
+    --claim-modal-btn-f-s: 16px;
+    --claim-modal-btn-f-w: 400;
+    --claim-modal-btn-l-h: 22px;
+    --claim-modal-btn-f-c: #F7F7F7;
+    --claim-modal-btn-secondary-bg: #2B344D;
+    --claim-modal-btn-primary-bg: #6067F9;
+
+    /* Minimum-claim screen */
+    --claim-modal-min-text-gap: 8px;
+    --claim-modal-min-title-f-s: 20px;
+    --claim-modal-min-title-f-w: 700;
+    --claim-modal-min-title-l-h: 26px;
+    --claim-modal-min-title-l-s: 0.4px;
+    --claim-modal-min-title-f-c: #F7F7F7;
+    --claim-modal-min-para-f-s: 16px;
+    --claim-modal-min-para-f-w: 400;
+    --claim-modal-min-para-l-h: 22px;
+    --claim-modal-min-para-f-c: #7685A0;
+    --claim-modal-min-hint-h: 56px;
+    --claim-modal-min-hint-f-s: 14px;
+    --claim-modal-min-hint-f-w: 400;
+    --claim-modal-min-hint-l-h: 20px;
+    --claim-modal-min-hint-f-c: #AFBBFF;
+
+    /* Status screens (success / failure / processing) shared layout */
+    --claim-modal-status-body-gap: 24px;
+    --claim-modal-status-design-h: 144px;
+    --claim-modal-status-text-w: 328px;
+    --claim-modal-status-text-gap: 8px;
+    --claim-modal-status-title-f-s: 22px;
+    --claim-modal-status-title-f-w: 700;
+    --claim-modal-status-title-l-h: 28px;
+    --claim-modal-status-title-l-s: 0.44px;
+    --claim-modal-status-title-f-c: #F7F7F7;
+    --claim-modal-status-msg-f-s: 16px;
+    --claim-modal-status-msg-f-w: 400;
+    --claim-modal-status-msg-l-h: 22px;
+    --claim-modal-status-msg-f-c: #7685A0;
+
+    /* Success amount + explorer link */
+    --claim-modal-success-amount-f-s: 40px;
+    --claim-modal-success-amount-f-w: 700;
+    --claim-modal-success-amount-l-h: 30px;
+    --claim-modal-success-amount-f-c: #F7F7F7;
+    --claim-modal-explorer-f-s: 14px;
+    --claim-modal-explorer-f-w: 400;
+    --claim-modal-explorer-l-h: 20px;
+    --claim-modal-explorer-f-c: #6067F9;
+    --claim-modal-explorer-gap: 6px;
+    --claim-modal-explorer-icon-size: 16px;
+
+    /* Failure icon badge */
+    --claim-modal-failure-circle-size: 112px;
+    --claim-modal-failure-circle-pad: 28px;
+    --claim-modal-failure-circle-bg: rgba(210, 88, 88, 0.25);
+    --claim-modal-failure-icon-size: 56px;
+
+    /* Processing spinner badge */
+    --claim-modal-spinner-circle-bg: rgba(135, 147, 255, 0.25);
+    --claim-modal-spinner-c: #F7F7F7;
 }

@@ -1,7 +1,7 @@
 /**
  * Category tabs row: horizontally scrollable pills + a fixed search button.
- * One category selected at a time (click active to clear). Shows skeleton
- * pills while loading.
+ * One category selected at a time (click active to clear). Shows a single
+ * placeholder bar while loading.
  */
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,8 +20,6 @@ interface Props {
     onSelect: (cat: MobileCategoriesItem | null) => void
     onSearchClick?: () => void
 }
-
-const SKELETON_COUNT = 5
 
 const MobileCategories = ({
     categories,
@@ -46,32 +44,32 @@ const MobileCategories = ({
         el.scrollLeft += delta
     }
 
+    if (isLoading) {
+        return (
+            <div className={`${styles.root} ${styles.rootLoading}`} aria-label={t('categories') || 'Categories'}>
+                <span className={styles.loadingBar} aria-hidden="true" />
+            </div>
+        )
+    }
+
     return (
         <div className={styles.root} role="tablist" aria-label={t('categories') || 'Categories'}>
             <div className={styles.scroller} ref={scrollerRef} onWheel={handleWheel}>
-                {isLoading
-                    ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                        <span
-                            key={`skeleton-${i}`}
-                            className={`${styles.tab} ${styles.skeleton}`}
-                            aria-hidden="true"
-                        />
-                    ))
-                    : categories.map((cat) => {
-                        const active = cat.id === selectedId
-                        return (
-                            <button
-                                key={cat.id}
-                                type="button"
-                                role="tab"
-                                aria-selected={active}
-                                className={`${styles.tab} ${active ? styles.tabActive : ''}`}
-                                onClick={() => onSelect(active ? null : cat)}
-                            >
-                                {cat.name}
-                            </button>
-                        )
-                    })}
+                {categories.map((cat) => {
+                    const active = cat.id === selectedId
+                    return (
+                        <button
+                            key={cat.id}
+                            type="button"
+                            role="tab"
+                            aria-selected={active}
+                            className={`${styles.tab} ${active ? styles.tabActive : ''}`}
+                            onClick={() => onSelect(active ? null : cat)}
+                        >
+                            {cat.name}
+                        </button>
+                    )
+                })}
             </div>
 
             <span className={styles.fog} aria-hidden="true" />

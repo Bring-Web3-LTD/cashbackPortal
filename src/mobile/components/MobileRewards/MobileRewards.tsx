@@ -38,10 +38,14 @@ const MobileRewards = ({ onClaim }: Props) => {
     const pendingDisplay = pending?.tokenAmountDisplay ?? '0.00'
     const pendingSymbol = pending?.tokenSymbol ?? fallbackSymbol
 
-    const canClaim =
+    const canOpenClaim = !!eligible && eligible.tokenAmount > 0
+
+    // Below minimum claim threshold → claim still opens (minimum overlay) but
+    // the button shows disabled coloring per design.
+    const belowMinimum =
         !!eligible &&
         eligible.tokenAmount > 0 &&
-        eligible.tokenAmount >= (eligible.minimumClaimThreshold ?? 0)
+        eligible.tokenAmount < (eligible.minimumClaimThreshold ?? 0)
 
     return (
         <section className={styles.root} aria-label={t('rewards') || 'Rewards'}>
@@ -75,9 +79,9 @@ const MobileRewards = ({ onClaim }: Props) => {
                                     </span>
                                     <button
                                         type="button"
-                                        className={styles.claimBtn}
+                                        className={`${styles.claimBtn} ${belowMinimum ? styles.claimBtnDisabled : ''}`}
                                         onClick={onClaim}
-                                        disabled={!canClaim}
+                                        disabled={!canOpenClaim}
                                     >
                                         {t('claim') || 'Claim'}
                                     </button>

@@ -341,8 +341,9 @@
     line-height: var(--retailer-modal-disclaimer-l-h);
     color: var(--retailer-modal-disclaimer-f-c);
     text-align: center;
+    transition: color 0.15s ease;
 }
 
-.disclaimer_link {
-    color: var(--retailer-modal-disclaimer-link-f-c);
+.disclaimer:hover {
+    color: var(--retailer-modal-disclaimer-hover-f-c, #7685A0);
 }

@@ -35,14 +35,25 @@
     gap: var(--faq-list-gap, 8px);
 }
 
-/* ── Loading skeleton: collapsed-height pills ── */
+/* ── Loading skeleton: translucent pill with inner bar (Figma 2453:5416) ── */
 .skeletonItem {
-    display: block;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
     width: 100%;
-    height: var(--faq-item-collapsed-h, 40px);
-    border-radius: var(--faq-item-radius, 6px);
-    background: var(--skeleton-tile-bg, #1D2133);
+    height: var(--faq-skeleton-h, 40px);
+    padding: var(--faq-skeleton-pad-y, 4px) var(--faq-skeleton-pad-x, 8px);
+    border-radius: var(--faq-skeleton-radius, 4px);
+    background: var(--faq-skeleton-bg, rgba(43, 52, 77, 0.5));
+    overflow: hidden;
     animation: mobileFaqPulse 1.4s ease-in-out infinite;
+}
+
+.skeletonBar {
+    height: var(--faq-skeleton-bar-h, 11px);
+    width: var(--faq-skeleton-bar-w, 182px);
+    border-radius: var(--faq-skeleton-bar-radius, 3px);
+    background: var(--faq-skeleton-bar-bg, #262B3F);
 }
 
 @keyframes mobileFaqPulse {

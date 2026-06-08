@@ -26,7 +26,12 @@ const Layout = () => {
     }
 
     return (
-        <WalletProvider initialWalletAddress={data.walletAddress} initIsTester={data.isTester}>
+        <WalletProvider
+            initialWalletAddress={data.walletAddress}
+            initIsTester={data.isTester}
+            initialWalletName={data.walletName}
+            initialWalletEmoji={data.walletEmoji}
+        >
             <GoogleAnalyticsProvider
                 measurementId={GA_MEASUREMENT_ID}
                 platform={platform}

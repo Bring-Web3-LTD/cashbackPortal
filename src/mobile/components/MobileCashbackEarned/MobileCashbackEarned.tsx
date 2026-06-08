@@ -1,6 +1,7 @@
 /** Mobile portal hero "Cashback earned" card: total earned amount + USD subtitle. */
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
+import { useRive, Layout, Fit } from '@rive-app/react-canvas'
 import Icon from '../../../components/Icon/Icon'
 import TokenAmount from '../../../components/TokenAmount/TokenAmount'
 import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../hooks/useBalance'
@@ -17,8 +18,14 @@ const formatUsd = (value: number): string => {
 
 const MobileCashbackEarned = () => {
     const { t } = useTranslation()
-    const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { data, isLoading } = useBalance()
+
+    const { RiveComponent } = useRive({
+        src: `${iconsPath}/fennec-fox.riv`,
+        autoplay: true,
+        layout: new Layout({ fit: Fit.Cover }),
+    })
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)
@@ -93,8 +100,7 @@ const MobileCashbackEarned = () => {
                     </p>
                 </div>
             </div>
-            <Icon
-                name="fennec-fox.png"
+            <RiveComponent
                 className={styles.deco}
                 aria-hidden="true"
             />

@@ -5,8 +5,8 @@
     gap: 8px;
     height: var(--header-h, 56px);
     padding: var(--header-pad-y, 12px) var(--header-pad-x, 16px);
-    background: var(--header-bg);
-    border-bottom: var(--header-border-w, 1px) solid var(--header-border-c, transparent);
+    background: var(--header-bg, #0F0F1A);
+    border-bottom: var(--header-border-w, 1px) solid var(--header-border-c, #2B344D);
     box-sizing: border-box;
 }
 
@@ -47,8 +47,10 @@
     box-sizing: border-box;
 }
 
-.action:hover {
-    background: var(--header-action-hover-bg, var(--header-action-bg, rgba(43, 52, 77, 0.5)));
+@media (hover: hover) {
+    .action:hover {
+        background: var(--header-action-hover-bg, rgba(43, 52, 77, 0.75));
+    }
 }
 
 .actionIcon {

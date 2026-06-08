@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next'
 import MobileHeader from '../components/MobileHeader/MobileHeader'
 import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
 import MobileHome from './MobileHome'
-import Icon from '../../components/Icon/Icon'
 import { useHistory } from '../hooks/useHistory'
 import styles from './MobileHistory.module.css'
 
@@ -40,17 +39,7 @@ const MobileHistory = () => {
             <div className={styles.sheet} role="dialog" aria-modal="true">
                 <MobileHeader
                     title={t('historyTitle') || 'History'}
-                    leftAction={null}
-                    rightAction={
-                        <button
-                            type="button"
-                            className={styles.close}
-                            onClick={close}
-                            aria-label={t('close') || 'Close'}
-                        >
-                            <Icon name="x-mark.svg" className={styles.closeIcon} />
-                        </button>
-                    }
+                    onClose={close}
                 />
                 <main className={styles.content}>
                     {!isLoading && rows.length === 0 ? (

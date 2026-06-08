@@ -12,17 +12,9 @@
     overflow: hidden;
 }
 
-/* Both collapsed and expanded cards turn Grey/500 on hover (hover-capable
-   pointers only, so touch devices don't get a stuck highlight). */
 @media (hover: hover) {
     .item:hover {
         background: var(--faq-item-hover-bg, #2B344D);
-    }
-
-    /* When an expanded card is hovered its surface matches the divider colour,
-       so lift the divider a shade to keep it visible. */
-    .itemOpen:hover .divider {
-        background: var(--faq-divider-hover-c, #3A4663);
     }
 }
 

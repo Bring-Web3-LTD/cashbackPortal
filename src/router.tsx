@@ -73,6 +73,10 @@ const rootLoader = async () => {
             platform: params.get('platform'),
             cryptoSymbols: params.get('cryptoSymbols')?.split(','),
             isCountryAvailable: true,
+            // Mobile Portal — wallet identity normally embedded in the JWT.
+            // In dev mode (no token) source them from URL params instead.
+            walletName: params.get('walletName') || undefined,
+            walletEmoji: params.get('walletEmoji') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()

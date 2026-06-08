@@ -8,6 +8,19 @@
     height: var(--tabs-h, 32px);
 }
 
+.rootLoading {
+    height: var(--tabs-loading-h, 16px);
+}
+
+.loadingBar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--tabs-loading-radius, 3px);
+    background: var(--skeleton-tile-bg, #1D2133);
+    animation: mobileCategoriesPulse 1.4s ease-in-out infinite;
+}
+
 /* Horizontal pill scroller; margin-right reserves the search-icon gutter. */
 .scroller {
     position: relative;
@@ -116,13 +129,6 @@
 }
 
 /* Skeleton pill */
-.skeleton {
-    width: 64px;
-    background: var(--skeleton-bg, rgba(247, 247, 247, 0.08));
-    animation: mobileCategoriesPulse 1.4s ease-in-out infinite;
-    pointer-events: none;
-}
-
 @keyframes mobileCategoriesPulse {
     0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }

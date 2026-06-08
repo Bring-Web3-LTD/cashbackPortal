@@ -7,13 +7,34 @@ interface WalletContextType {
     isTester: boolean
     walletAddress: string | null;
     setWalletAddress: (address: string) => void;
+    /** Wallet display name — from the JWT (verify) or dev URL params. */
+    walletName?: string;
+    /** Wallet emoji asset URL — from the JWT (verify) or dev URL params. */
+    walletEmoji?: string;
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
-export function WalletProvider({ children, initialWalletAddress, initIsTester }: { children: ReactNode, initialWalletAddress: string, initIsTester: boolean }) {
+export function WalletProvider({
+    children,
+    initialWalletAddress,
+    initIsTester,
+    initialWalletName,
+    initialWalletEmoji,
+}: {
+    children: ReactNode,
+    initialWalletAddress: string,
+    initIsTester: boolean,
+    initialWalletName?: string,
+    initialWalletEmoji?: string,
+}) {
     const [walletAddress, setWalletAddress] = useState<string | null>(initialWalletAddress);
     const [isTester, setIsTester] = useState(initIsTester)
+    // Wallet identity is seeded from the loader (JWT or dev URL params) and
+    // refreshed on SESSION_UPDATE whenever the new token carries it, so a
+    // wallet switch updates the name/emoji without a full reload.
+    const [walletName, setWalletName] = useState<string | undefined>(initialWalletName)
+    const [walletEmoji, setWalletEmoji] = useState<string | undefined>(initialWalletEmoji)
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
@@ -29,6 +50,11 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
                     const res = await fetchToken({ token })
                     setWalletAddress(res.info.walletAddress || null)
                     setIsTester(!!res.info.isTester && ENV !== 'prod')
+                    // Only overwrite when the new token actually carries the
+                    // field — otherwise keep the value seeded from the loader
+                    // (e.g. dev URL params the JWT doesn't echo).
+                    if (res.info.walletName) setWalletName(res.info.walletName)
+                    if (res.info.walletEmoji) setWalletEmoji(res.info.walletEmoji)
                     if (res.info.theme) {
                         loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT')
                     }
@@ -47,7 +73,7 @@ export function WalletProvider({ children, initialWalletAddress, initIsTester }:
     }, [])
 
     return (
-        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress }}>
+        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji }}>
             {children}
         </WalletContext.Provider>
     );

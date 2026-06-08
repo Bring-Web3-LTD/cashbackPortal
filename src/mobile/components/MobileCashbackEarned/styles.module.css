@@ -40,12 +40,13 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: var(--cashback-earned-bg-pattern-opacity, 0.18);
+    opacity: var(--cashback-earned-bg-pattern-opacity, 0.10);
     background-image: var(--cashback-earned-bg-pattern,
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'><g transform='translate(4 4) scale(0.7)'><path fill='%23AFBBFF' d='M15 9.0625a.94.94 0 1 1-.94-.94.94.94 0 0 1 .94.94ZM11.875 5H8.75a.625.625 0 0 0 0 1.25h3.125a.625.625 0 0 0 0-1.25Zm7.5 3.75v2.5a1.875 1.875 0 0 1-1.875 1.875h-.184l-1.266 3.545A1.25 1.25 0 0 1 14.872 17.5h-.994a1.25 1.25 0 0 1-1.178-.83l-.15-.42H8.074l-.15.42a1.25 1.25 0 0 1-1.177.83H5.753a1.25 1.25 0 0 1-1.177-.83l-.982-2.747A6.244 6.244 0 0 1 1.919 10.144a1.25 1.25 0 0 0-.669 1.106.625.625 0 1 1-1.25 0 2.503 2.503 0 0 1 1.897-2.422A6.252 6.252 0 0 1 8.75 2.5h8.125a.625.625 0 0 1 0 1.25h-1.671A6.247 6.247 0 0 1 17.66 6.875a1.875 1.875 0 0 1 1.715 1.875Zm-1.25 0a.625.625 0 0 0-.625-.625h-.286a.625.625 0 0 1-.594-.4375 5 5 0 0 0-4.745-3.4375h-2.5A5.001 5.001 0 0 0 4.6 13.175a.625.625 0 0 1 .131.211L5.753 16.25h.994l.298-.835a.625.625 0 0 1 .589-.415h5.358a.625.625 0 0 1 .589.415l.299.835h.994l1.415-3.96a.625.625 0 0 1 .588-.415H17.5a.625.625 0 0 0 .625-.625Z'/></g></svg>")
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'><g transform='translate(11 10) scale(1.47)'><path fill='%23AFBBFF' d='M15 9.0625a.94.94 0 1 1-.94-.94.94.94 0 0 1 .94.94ZM11.875 5H8.75a.625.625 0 0 0 0 1.25h3.125a.625.625 0 0 0 0-1.25Zm7.5 3.75v2.5a1.875 1.875 0 0 1-1.875 1.875h-.184l-1.266 3.545A1.25 1.25 0 0 1 14.872 17.5h-.994a1.25 1.25 0 0 1-1.178-.83l-.15-.42H8.074l-.15.42a1.25 1.25 0 0 1-1.177.83H5.753a1.25 1.25 0 0 1-1.177-.83l-.982-2.747A6.244 6.244 0 0 1 1.919 10.144a1.25 1.25 0 0 0-.669 1.106.625.625 0 1 1-1.25 0 2.503 2.503 0 0 1 1.897-2.422A6.252 6.252 0 0 1 8.75 2.5h8.125a.625.625 0 0 1 0 1.25h-1.671A6.247 6.247 0 0 1 17.66 6.875a1.875 1.875 0 0 1 1.715 1.875Zm-1.25 0a.625.625 0 0 0-.625-.625h-.286a.625.625 0 0 1-.594-.4375 5 5 0 0 0-4.745-3.4375h-2.5A5.001 5.001 0 0 0 4.6 13.175a.625.625 0 0 1 .131.211L5.753 16.25h.994l.298-.835a.625.625 0 0 1 .589-.415h5.358a.625.625 0 0 1 .589.415l.299.835h.994l1.415-3.96a.625.625 0 0 1 .588-.415H17.5a.625.625 0 0 0 .625-.625Z'/></g></svg>")
     );
     background-repeat: repeat;
-    background-size: var(--cashback-earned-bg-pattern-size, 50px 50px);
+    /* Figma: scale 110% of 50px base tile = 55px step */
+    background-size: var(--cashback-earned-bg-pattern-size, 55px 55px);
 }
 
 .body {
@@ -110,11 +111,9 @@
 .deco {
     position: absolute;
     top: var(--cashback-earned-deco-top, 4px);
-    right: var(--cashback-earned-deco-right, 0px);
-    width: var(--cashback-earned-deco-w, 173px);
+    right: var(--cashback-earned-deco-right, -7px);
+    width: var(--cashback-earned-deco-w, 173.25px);
     height: var(--cashback-earned-deco-h, 106px);
-    object-fit: contain;
-    object-position: right top;
     pointer-events: none;
     user-select: none;
 }

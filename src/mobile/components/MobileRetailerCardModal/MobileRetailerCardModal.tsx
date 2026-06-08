@@ -202,10 +202,7 @@ const MobileRetailerCardModal = ({
                                         </button>
                                     )}
                                 </div>
-                                <p className={styles.disclaimer}>
-                                    {t('agreeTermsPrefix')}{' '}
-                                    <span className={styles.disclaimer_link}>{t('termsLinkLabel')}</span>.
-                                </p>
+                                <p className={styles.disclaimer}>{t('agreeTerms')}</p>
                             </div>
                         </div>
                     </motion.div>
