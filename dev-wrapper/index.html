@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <title>Cashback Portal — dev wrapper</title>
+        <title>Cashback Portal - dev wrapper</title>
         <link rel="stylesheet" href="./style.css" />
     </head>
     <body>
@@ -19,6 +20,9 @@
             <button id="walletBtn" type="button" class="wallet-btn" data-state="disconnected">
                 Connect wallet
             </button>
+            <button id="logoutBtn" type="button" class="logout-btn" title="Clear CloudFront basic-auth credentials" hidden>
+                Log out
+            </button>
         </header>
 
         <main class="layout" id="layout">
@@ -26,6 +30,8 @@
                 <span class="toggle-icon" aria-hidden="true">‹</span>
             </button>
             <aside class="controls">
+                <p class="api-info">API path: <code id="apiStageInfo">—</code></p>
+
                 <fieldset>
                     <legend>Inputs</legend>
 
@@ -84,7 +90,7 @@
                         <select id="walletProvider">
                             <option value="mock">Mock (in-page)</option>
                             <option value="nightly">Nightly (Solana)</option>
-                            <option value="solflare">Solflare (Solana)</option>
+                            <option value="solflare">Solflare (USDC)</option>
                             <option value="yoroi">Yoroi (Cardano)</option>
                             <option value="casper">Casper Wallet (CSPR)</option>
                             <option value="ecko">Ecko (Kadena, connect only)</option>

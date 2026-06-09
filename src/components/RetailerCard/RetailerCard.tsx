@@ -34,6 +34,7 @@ const RetailerCard = ({
     id,
     iconPath,
     name,
+    displayName,
     section,
     backgroundColor,
     maxCashback,
@@ -61,27 +62,29 @@ const RetailerCard = ({
     const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
     const isCampaign = useMemo(() => Boolean(campaignId), [campaignId])
 
+    const label = displayName || name
+
     const offerName = useMemo(() => {
         // Long names (>26 chars) are always truncated to 24 + ".."
-        if (name.length > 26) return name.slice(0, 24) + '..'
+        if (label.length > 26) return label.slice(0, 24) + '..'
 
         // Search results with a section: show "name/section"
         // Truncate section to fit within 24 chars total, minimum 3 chars of section shown
         // If section can't fit 3 chars, show name only
         if (search && section) {
-            const full = `${name}/${section}`
+            const full = `${label}/${section}`
             if (full.length <= 24) return full
-            const availableForSection = 24 - name.length - 1 - 2 // 1 for "/", 2 for ".."
-            if (availableForSection >= 3) return `${name}/${section.slice(0, availableForSection)}..`
-            return name
+            const availableForSection = 24 - label.length - 1 - 2 // 1 for "/", 2 for ".."
+            if (availableForSection >= 3) return `${label}/${section.slice(0, availableForSection)}..`
+            return label
         }
 
         // Search results without a section: show name (already truncated above if >26)
-        if (search) return name
+        if (search) return label
 
         // Default (non-search): show "/section" if available, otherwise name
-        return section ? `/${section}` : name
-    }, [name, search, section])
+        return section ? `/${section}` : label
+    }, [label, search, section])
 
     const activateDeal = async () => {
         if (!walletAddress) return
@@ -119,7 +122,7 @@ const RetailerCard = ({
         sendGaEvent('retailer_open', {
             category: 'user_action',
             action: 'click',
-            details: name,
+            details: label,
             process: 'activate'
         })
     }
@@ -160,8 +163,8 @@ const RetailerCard = ({
                             className={styles.logo}
                             loading='eager'
                             src={iconPath}
-                            alt={`${name} logo`}
-                            onError={() => setFallbackLogo(getInitials(name))}
+                            alt={`${label} logo`}
+                            onError={() => setFallbackLogo(getInitials(label))}
                         />
                     }
                 </div>
@@ -180,7 +183,7 @@ const RetailerCard = ({
                 }}
                 {...(!fallbackLogo && { backgroundColor })}
                 iconPath={iconPath}
-                name={name}
+                name={label}
                 cashback={cashback}
                 terms={terms}
                 redirectLink={redirectLink}

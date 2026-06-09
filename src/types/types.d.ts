@@ -50,6 +50,7 @@ interface LoaderData {
     walletEmoji?: string
     walletName?: string
     useMobilePortal?: boolean
+    variant: string
 }
 
 

@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "bash deploy.sh",
+    "deploy:portal": "bash deploy.sh portal",
+    "deploy:wrapper": "bash deploy.sh wrapper"
   },
   "devDependencies": {
     "typescript": "^5.5.4",

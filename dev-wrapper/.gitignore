@@ -1,0 +1,5 @@
+# Environment files — keep .env.example as the tracked template
+.env
+.env.*
+!.env.example
+!.env.deploy.example

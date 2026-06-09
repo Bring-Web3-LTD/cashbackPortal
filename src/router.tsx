@@ -8,6 +8,7 @@ import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_T
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet } from './utils/loadStylesheet';
+import { selectVariant } from './utils/ABTest/platform-variants';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
@@ -52,16 +53,20 @@ const rootLoader = async () => {
         const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
 
+        const userId = getUserId(res.info.platform)
+        const variant = selectVariant(userId, platform)
+
         return {
             ...res.info,
             iconsPath: `${iconsBase}/${theme}`,
             defaultIconsPath: `${defaultIconsBase}/${theme}`,
-            userId: getUserId(res.info.platform),
+            userId,
             extensionId,
             showTerms,
             autoclaim,
             useMobilePortal,
-            flowId
+            flowId,
+            variant
         }
     }
 
@@ -94,17 +99,21 @@ const rootLoader = async () => {
         const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
 
+        const userId = getUserId(dev.platform)
+        const variant = selectVariant(userId, dev.platform)
+
         return {
             ...dev,
             iconsPath: `${iconsBase}/${theme}`,
             defaultIconsPath: `${defaultIconsBase}/${theme}`,
-            userId: getUserId(dev.platform),
+            userId,
             isTester: false,
             flowId,
             showTerms,
             autoclaim,
             useMobilePortal,
-            extensionId: urlExtensionId
+            extensionId: urlExtensionId,
+            variant
         }
     }
 
