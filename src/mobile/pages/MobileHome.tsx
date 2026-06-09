@@ -6,10 +6,9 @@ import MobileSearchBar from '../components/MobileSearchBar/MobileSearchBar'
 import MobileFilterChip from '../components/MobileFilterChip/MobileFilterChip'
 import MobileCardsList from '../components/MobileCardsList/MobileCardsList'
 import MobileClaimModal from '../components/MobileClaimModal/MobileClaimModal'
-import { useCategories, selectCategories } from '../hooks/useCategories'
+import { useCategories, selectCategories, selectSearchTerms } from '../hooks/useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../hooks/useRetailers'
 import { useBalance, selectEligible } from '../hooks/useBalance'
-import { computeSuggestions } from '../../utils/computeSuggestions'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import message from '../../utils/message'
@@ -43,6 +42,7 @@ const MobileHome = () => {
 
     const { data: filters, isLoading: isLoadingCategories } = useCategories()
     const categories = selectCategories(filters)
+    const searchTerms = selectSearchTerms(filters)
     const { data: balance } = useBalance()
     const eligible = selectEligible(balance)
     const currentCryptoSymbol = eligible?.tokenSymbol ?? cryptoSymbols?.[0] ?? ''
@@ -69,16 +69,19 @@ const MobileHome = () => {
     const retailers = selectRetailers(retailersData)
     const metadata = selectRetailersMetadata(retailersData)
 
-    // Autocomplete suggestions: two-pass local filter — first names that
-    // start with the query, then word-boundary matches (so "express" still
-    // surfaces "AliExpress"). De-duped, case-insensitive.
-    const suggestions = computeSuggestions(retailers, searchOpen ? trimmedTyping : '')
+    const needle = trimmedTyping.toLowerCase()
+    const suggestions = (searchOpen && needle)
+        ? searchTerms
+            .filter(t => {
+                const l = t.toLowerCase()
+                return l.startsWith(needle) || l.split(/\s+/).some(w => w.startsWith(needle))
+            })
+            .map(t => ({ id: t, name: t }))
+        : []
 
     const showDropdown = searchOpen && trimmedTyping.length > 0
-    // Only show the empty state once retailers have loaded AND no local match
-    // was found — otherwise we'd flash "No matches" before the list arrives.
     const showNoResults =
-        showDropdown && !isLoadingRetailers && retailers.length > 0 && suggestions.length === 0
+        showDropdown && !isLoadingCategories && searchTerms.length > 0 && suggestions.length === 0
 
     const handleCloseSearch = () => {
         setSearchTyping('')

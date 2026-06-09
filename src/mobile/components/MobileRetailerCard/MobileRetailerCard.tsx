@@ -51,13 +51,13 @@ const MobileRetailerCard = ({ retailer, iconPath, onClick }: Props) => {
                             className={styles.logo_img}
                             loading="lazy"
                             src={iconPath}
-                            alt={`${retailer.name} logo`}
-                            onError={() => setFallbackLogo(getInitials(retailer.name))}
+                            alt={`${retailer.displayName} logo`}
+                            onError={() => setFallbackLogo(getInitials(retailer.displayName))}
                         />
                     )}
                 </div>
                 <div className={styles.text}>
-                    <span className={styles.name}>{retailer.name}</span>
+                    <span className={styles.name}>{retailer.displayName}</span>
                     <span className={styles.sub}>
                         <span className={styles.sub_label}>{t('upTo')} </span>
                         <span className={styles.sub_amount}>{cashback}</span>

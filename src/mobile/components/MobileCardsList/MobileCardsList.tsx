@@ -142,7 +142,7 @@ const MobileCardsList = ({
         sendGaEvent('retailer_open', {
             category: 'user_action',
             action: 'click',
-            details: retailer.name,
+            details: retailer.displayName,
             process: 'view_terms',
         })
         setActiveTerms('')
@@ -161,7 +161,7 @@ const MobileCardsList = ({
         sendGaEvent('retailer_shop', {
             category: 'user_action',
             action: 'click',
-            details: activeRetailer.name,
+            details: activeRetailer.displayName,
         })
         setActiveRetailer(null)
         setActiveTerms('')

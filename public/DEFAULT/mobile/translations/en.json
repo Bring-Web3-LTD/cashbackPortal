@@ -12,7 +12,7 @@
     "showInExplorer": "Show in explorer",
     "claimRewardsTitle": "Claim Rewards",
     "claimIntro": "This page ask you to claim rewards into your account. This transaction will impact your balance.",
-    "claimWalletName": "WalletName",
+    "address": "Address",
     "networkFee": "Network fee",
     "networkFeeWaived": "Waived",
     "minimalAmountClaim": "Minimal amount claim",

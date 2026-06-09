@@ -6,14 +6,13 @@
  * up leaving an ~88px gap at the top so the darkened page peeks through.
  * Rounded top corners + 1px border per the design.
  */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import MobileHeader from '../components/MobileHeader/MobileHeader'
 import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
 import MobileHome from './MobileHome'
 import { useHistory } from '../hooks/useHistory'
-import { DEV_MODE } from '../../config'
 import styles from './MobileHistory.module.css'
 
 const SKELETON_COUNT = 8
@@ -24,14 +23,7 @@ const MobileHistory = () => {
     const { rows, isLoading: historyLoading } = useHistory()
     const [openId, setOpenId] = useState<string | null>(null)
 
-    // DEV ONLY: force loading state for 20s to preview skeleton
-    const [devLoading, setDevLoading] = useState(DEV_MODE)
-    useEffect(() => {
-        if (!DEV_MODE) return
-        const t = setTimeout(() => setDevLoading(false), 20_000)
-        return () => clearTimeout(t)
-    }, [])
-    const isLoading = DEV_MODE ? devLoading || historyLoading : historyLoading
+    const isLoading = historyLoading
 
     const close = () => navigate(-1)
 

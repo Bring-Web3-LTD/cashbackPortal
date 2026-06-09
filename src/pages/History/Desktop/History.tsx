@@ -186,7 +186,7 @@ const HistoryDesktop = () => {
             tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
             status: formatStatus(deal.status, deal.eligibleDate),
-            retailerName: deal.retailerName,
+            retailerName: deal.retailerDisplayName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,
             description: deal.history?.map(history => createDescription(history)) || [['']]

@@ -127,12 +127,12 @@ const MobileRetailerCardModal = ({
                                             <img
                                                 className={styles.logo_img}
                                                 src={iconPath}
-                                                alt={`${retailer.name} logo`}
-                                                onError={() => setFallbackLogo(getInitials(retailer.name))}
+                                                alt={`${retailer.displayName} logo`}
+                                                onError={() => setFallbackLogo(getInitials(retailer.displayName))}
                                             />
                                         )}
                                     </div>
-                                    <span className={styles.name}>{retailer.name}</span>
+                                    <span className={styles.name}>{retailer.displayName}</span>
                                     <span className={styles.cashback_pill}>
                                         <span className={styles.cashback_label}>{t('upTo')}</span>
                                         <span className={styles.cashback_amount}>

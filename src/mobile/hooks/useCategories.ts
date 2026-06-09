@@ -39,3 +39,7 @@ export const selectCategories = (
     data: FiltersResponse | undefined,
 ): { id: number; name: string }[] =>
     data?.categories?.items ?? []
+
+/** Convenience selector: backend search term strings. */
+export const selectSearchTerms = (data: FiltersResponse | undefined): string[] =>
+    data?.searchTerms?.items ?? []

@@ -113,7 +113,7 @@ export const useHistory = (): UseHistoryResult => {
         const formatted = formatStatus(deal.status, deal.eligibleDate)
         rows.push({
             id: `deal-${deal.retailerName ?? 'deal'}-${i}`,
-            retailerName: deal.retailerName,
+            retailerName: deal.retailerDisplayName,
             date: rawDate ? formatRowDate(rawDate) : '',
             iconSrc: retailerIconBasePath
                 ? `${retailerIconBasePath}${deal.retailerIconPath}`
@@ -126,7 +126,7 @@ export const useHistory = (): UseHistoryResult => {
             rawStatus: statusKey(deal.status, formatted),
             description:
                 deal.history?.map((h) =>
-                    createDescription({ ...h, retailerName: deal.retailerName }),
+                    createDescription({ ...h, retailerName: deal.retailerDisplayName }),
                 ) || [],
         })
     })

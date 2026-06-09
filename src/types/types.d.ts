@@ -7,6 +7,7 @@ interface Retailer {
     id: string
     iconPath: string
     name: string
+    displayName: string
     section: string
     backgroundColor: string
     maxCashback: number
@@ -24,10 +25,17 @@ interface Category {
     name: string
 }
 
+interface CryptoToken {
+    symbol: string
+    name: string
+    icon: string
+}
+
 interface LoaderData {
     walletAddress: string
     platform: string
     cryptoSymbols: string[]
+    cryptoTokens?: CryptoToken[]
     isCountryAvailable: boolean
     iconsPath: string
     defaultIconsPath: string
@@ -88,6 +96,7 @@ interface Deal {
     status: string
     tokenName: string
     retailerName: string
+    retailerDisplayName: string
     retailerIconPath: string
     retailerBackgroundColor: string
     history: HistoryItem[]

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
 import Icon from '../../../components/Icon/Icon'
 import message from '../../../utils/message'
 import {
@@ -46,6 +47,8 @@ const MobileClaimModal = ({
     onDevSetState,
 }: Props) => {
     const { t } = useTranslation()
+    const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
+    const cryptoToken = cryptoTokens?.find(ct => ct.symbol === tokenSymbol)
     const open = !!state
     // Fall back to the default emoji icon if the provided emoji URL fails to load.
     const [emojiFailed, setEmojiFailed] = useState(false)
@@ -131,9 +134,9 @@ const MobileClaimModal = ({
                                 <div className={styles.rowPrimary}>
                                     <span className={styles.rowLeft}>
                                         <span className={styles.coinIcon}>
-                                            <Icon name="solana.svg" alt="" />
+                                            <img src={cryptoToken?.icon} alt={cryptoToken?.name} />
                                         </span>
-                                        <span className={styles.rowLabel}>{tokenSymbol || 'Token'}</span>
+                                        <span className={styles.rowLabel}>{cryptoToken?.name || tokenSymbol}</span>
                                     </span>
                                     <span className={styles.rowRight}>
                                         <span className={styles.amountPositive}>
@@ -145,14 +148,14 @@ const MobileClaimModal = ({
 
                                 <div className={styles.rowSecondary}>
                                     <span className={styles.rowLeft}>
-                                        <span className={styles.walletEmoji} aria-hidden="true">
-                                            {walletEmoji && !emojiFailed ? (
+                                        {(walletEmoji && !emojiFailed) && (
+                                            <span className={styles.walletEmoji} aria-hidden="true">
                                                 <img src={walletEmoji} alt="" onError={() => setEmojiFailed(true)} />
-                                            ) : (
-                                                <Icon name="smiling-face-3-hearts.svg" alt="" />
-                                            )}
+                                            </span>
+                                        )}
+                                        <span className={styles.rowLabel}>
+                                            {walletName || t('address') || 'Address'}
                                         </span>
-                                        <span className={styles.rowLabel}>{walletName || t('claimWalletName') || 'WalletName'}</span>
                                     </span>
                                     <span className={styles.valueMuted}>{shortAddress}</span>
                                 </div>
