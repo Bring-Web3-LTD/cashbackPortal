@@ -112,7 +112,7 @@ const MobileSearchBar = ({
                     aria-expanded={showDropdown}
                     aria-controls={showDropdown ? listboxId : undefined}
                     aria-activedescendant={
-                        activeIndex >= 0 ? optionId(suggestions[activeIndex].id) : undefined
+                        activeIndex >= 0 && activeIndex < suggestions.length ? optionId(suggestions[activeIndex].id) : undefined
                     }
                 />
                 <button

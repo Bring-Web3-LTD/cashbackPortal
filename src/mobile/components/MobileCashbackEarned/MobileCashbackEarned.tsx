@@ -1,4 +1,5 @@
 /** Mobile portal hero "Cashback earned" card: total earned amount + USD subtitle. */
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useRive, Layout, Fit } from '@rive-app/react-canvas'
@@ -20,10 +21,12 @@ const MobileCashbackEarned = () => {
     const { cryptoSymbols, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { data, isLoading } = useBalance()
 
+    const [riveFailed, setRiveFailed] = useState(false)
     const { RiveComponent } = useRive({
         src: `${iconsPath}/fennec-fox.riv`,
         autoplay: true,
         layout: new Layout({ fit: Fit.Cover }),
+        onLoadError: () => setRiveFailed(true),
     })
 
     const eligible = selectEligible(data)
@@ -99,10 +102,12 @@ const MobileCashbackEarned = () => {
                     </p>
                 </div>
             </div>
-            <RiveComponent
-                className={styles.deco}
-                aria-hidden="true"
-            />
+            {!riveFailed && (
+                <RiveComponent
+                    className={styles.deco}
+                    aria-hidden="true"
+                />
+            )}
         </section>
     )
 }

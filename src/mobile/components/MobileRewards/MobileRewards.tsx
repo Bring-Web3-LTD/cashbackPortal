@@ -26,7 +26,7 @@ const MobileRewards = ({ onClaim }: Props) => {
     const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress ?? ''}&env=${ENV}`
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)

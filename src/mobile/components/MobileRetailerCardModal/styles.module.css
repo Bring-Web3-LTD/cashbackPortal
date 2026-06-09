@@ -81,7 +81,6 @@
 
 .header_close:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
 }
 
 .header_close img {
@@ -318,11 +317,9 @@
 
 .cancel_btn:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
 }
 
 .shop_btn:disabled {
-    cursor: not-allowed;
 }
 
 .cancel_btn_processing {
@@ -352,5 +349,5 @@
 }
 
 .disclaimer:hover {
-    color: var(--retailer-modal-disclaimer-hover-f-c, #7685A0);
+    color: var(--retailer-modal-disclaimer-hover-f-c);
 }

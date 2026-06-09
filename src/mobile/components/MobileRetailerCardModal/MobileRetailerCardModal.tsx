@@ -40,7 +40,7 @@ const MobileRetailerCardModal = ({
     useEffect(() => {
         setFallbackLogo('')
         setIsNavigating(false)
-    }, [retailer?.id])
+    }, [retailer?.id, open])
 
     // Lock background page scroll while the modal is open so the only
     // scrollbar that ever appears is the (hidden) one inside the T&C box.
@@ -159,6 +159,7 @@ const MobileRetailerCardModal = ({
                                     <button
                                         type="button"
                                         className={`${styles.cancel_btn} ${(isNavigating || !(redirectLink && terms)) ? styles.cancel_btn_processing : ''}`}
+                                        disabled={isNavigating}
                                         onClick={onCancel}
                                     >
                                         {t('cancel')}

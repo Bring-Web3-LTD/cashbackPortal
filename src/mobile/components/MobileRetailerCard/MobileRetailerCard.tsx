@@ -31,7 +31,8 @@ const MobileRetailerCard = ({ retailer, iconPath, onClick }: Props) => {
     return (
         <button
             type="button"
-            id={`mobile-retailer-card-${retailer.name}`}
+            id={`mobile-retailer-card-${retailer.id}`}
+            aria-label={retailer.displayName}
             className={styles.card}
             onClick={() => onClick(retailer)}
         >

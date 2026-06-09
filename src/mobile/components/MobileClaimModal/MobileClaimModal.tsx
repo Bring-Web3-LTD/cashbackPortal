@@ -48,6 +48,7 @@ const MobileClaimModal = ({
     const open = !!state
     // Fall back to the default emoji icon if the provided emoji URL fails to load.
     const [emojiFailed, setEmojiFailed] = useState(false)
+    useEffect(() => { setEmojiFailed(false) }, [walletEmoji])
 
     useEffect(() => {
         if (!open) return
@@ -70,20 +71,14 @@ const MobileClaimModal = ({
     const signedAmount = formatSignedAmount(tokenAmountDisplay, tokenAmount)
     const shortAddress = shortenWalletAddress(walletAddress)
 
-    const resolvedExplorerLink = explorerLink
-
-    const title =
-        state === 'confirm'
-            ? t('claimRewardsTitle') || 'Claim Rewards'
-            : state === 'minimum'
-                ? t('minimumClaimTitle') || 'Minimum Claim'
-                : state === 'success'
-                    ? t('rewardClaimedHeader') || 'Reward claimed'
-                    : state === 'failure'
-                        ? t('claimRewardsTitle') || 'Claim Rewards'
-                        : state === 'processing'
-                            ? t('claimingHeader') || 'Claiming'
-                            : ''
+    const titles: Record<MobileClaimModalState, string> = {
+        confirm: t('claimRewardsTitle') || 'Claim Rewards',
+        minimum: t('minimumClaimTitle') || 'Minimum Claim',
+        success: t('rewardClaimedHeader') || 'Reward claimed',
+        failure: t('claimRewardsTitle') || 'Claim Rewards',
+        processing: t('claimingHeader') || 'Claiming',
+    }
+    const title = titles[state]
 
     return createPortal(
         <div
@@ -127,9 +122,11 @@ const MobileClaimModal = ({
 
                                 <div className={styles.rowPrimary}>
                                     <span className={styles.rowLeft}>
-                                        <span className={styles.coinIcon}>
-                                            <img src={cryptoToken?.icon} alt={cryptoToken?.name} />
-                                        </span>
+                                        {cryptoToken && (
+                                            <span className={styles.coinIcon}>
+                                                <img src={cryptoToken.icon} alt={cryptoToken.name} />
+                                            </span>
+                                        )}
                                         <span className={styles.rowLabel}>{cryptoToken?.name || tokenSymbol}</span>
                                     </span>
                                     <span className={styles.rowRight}>
@@ -217,9 +214,9 @@ const MobileClaimModal = ({
                                     <br />
                                     {t('claimProcessingMsg2') || 'Please wait...'}
                                 </p>
-                                {resolvedExplorerLink ? (
+                                {explorerLink ? (
                                     <a
-                                        href={resolvedExplorerLink}
+                                        href={explorerLink}
                                         target="_blank"
                                         rel="noreferrer"
                                         className={styles.successExplorer}
@@ -268,9 +265,9 @@ const MobileClaimModal = ({
                                     <p className={styles.successMsg}>
                                         {t('rewardClaimedMsg', { address: shortAddress || walletName || 'Address' })}
                                     </p>
-                                    {resolvedExplorerLink ? (
+                                    {explorerLink ? (
                                         <a
-                                            href={resolvedExplorerLink}
+                                            href={explorerLink}
                                             target="_blank"
                                             rel="noreferrer"
                                             className={styles.successExplorer}
@@ -301,9 +298,9 @@ const MobileClaimModal = ({
                                     <p className={styles.failureMsg}>
                                         {t('claimFailedMsg') || 'Something went wrong while claiming your reward. Make sure you have stable internet connection and try again.'}
                                     </p>
-                                    {resolvedExplorerLink ? (
+                                    {explorerLink ? (
                                         <a
-                                            href={resolvedExplorerLink}
+                                            href={explorerLink}
                                             target="_blank"
                                             rel="noreferrer"
                                             className={styles.successExplorer}

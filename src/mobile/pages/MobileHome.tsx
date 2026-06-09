@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import MobileHeroSection from '../components/MobileHeroSection/MobileHeroSection'
 import MobileCategories, { MobileCategoriesItem } from '../components/MobileCategories/MobileCategories'
@@ -39,6 +39,8 @@ const MobileHome = () => {
         return null
     })
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
+    const claimExplorerLinkRef = useRef(claimExplorerLink)
+    useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
 
     const { data: filters, isLoading: isLoadingCategories } = useCategories()
     const categories = selectCategories(filters)
@@ -172,13 +174,13 @@ const MobileHome = () => {
             const submitted = await claimSubmit(body)
 
             if (submitted?.status === 202) {
-                setClaimExplorerLink(submitted.explorerLink ?? claimExplorerLink)
+                setClaimExplorerLink(submitted.explorerLink ?? claimExplorerLinkRef.current)
                 setClaimState('success')
                 queryClient.invalidateQueries({ queryKey: ['balance', walletAddress] })
                 return
             }
 
-            setClaimExplorerLink(submitted?.explorerLink ?? claimExplorerLink)
+            setClaimExplorerLink(submitted?.explorerLink ?? claimExplorerLinkRef.current)
             setClaimState('failure')
         }
 
@@ -186,7 +188,6 @@ const MobileHome = () => {
         return () => window.removeEventListener('message', handleMessage)
     }, [
         claimAmount,
-        claimExplorerLink,
         currentCryptoSymbol,
         eligible,
         flowId,
