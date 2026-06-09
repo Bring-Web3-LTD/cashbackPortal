@@ -794,10 +794,12 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         } catch { /* iframe not ready / bad src */ }
     }
 
-    // Our own overlay chrome shouldn't be pickable.
+    // Our own overlay chrome shouldn't be pickable. (A locked *element* stays
+    // pickable so clicking it again unlocks it — only the lock boxes are
+    // chrome.)
     const isOwnUi = (el: Element): boolean =>
         el === hoverBox || el === panel || panel.contains(el) || el === img || el === grid ||
-        wrapperLocks.has(el) || [...wrapperLocks.values()].some(b => b === el) ||
+        [...wrapperLocks.values()].some(b => b === el) ||
         [...guideEls.values()].some(g => g === el)
 
     const describeEl = (el: Element): string => {
