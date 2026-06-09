@@ -9,7 +9,6 @@ import {
     MobileClaimModalState,
     shortenWalletAddress,
 } from '../../utils/claimFlow'
-import { DEV_MODE } from '../../../config'
 import styles from './styles.module.css'
 
 interface Props {
@@ -27,8 +26,6 @@ interface Props {
     onClose: () => void
     onConfirm: () => void
     onTryAgain: () => void
-    /** DEV ONLY: jump to a modal state without a real claim. */
-    onDevSetState?: (state: MobileClaimModalState) => void
 }
 
 const MobileClaimModal = ({
@@ -44,7 +41,6 @@ const MobileClaimModal = ({
     onClose,
     onConfirm,
     onTryAgain,
-    onDevSetState,
 }: Props) => {
     const { t } = useTranslation()
     const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
@@ -74,9 +70,7 @@ const MobileClaimModal = ({
     const signedAmount = formatSignedAmount(tokenAmountDisplay, tokenAmount)
     const shortAddress = shortenWalletAddress(walletAddress)
 
-    // DEV ONLY: fallback so "Show in explorer" renders when jumping states without a real claim.
-    const resolvedExplorerLink =
-        explorerLink || (DEV_MODE ? 'https://solscan.io/' : null)
+    const resolvedExplorerLink = explorerLink
 
     const title =
         state === 'confirm'
@@ -180,22 +174,6 @@ const MobileClaimModal = ({
                                 </button>
                             </footer>
 
-                            {DEV_MODE && onDevSetState && (
-                                <div className={styles.devButtons}>
-                                    <button type="button" onClick={() => onDevSetState('processing')}>
-                                        DEV: Processing
-                                    </button>
-                                    <button type="button" onClick={() => onDevSetState('success')}>
-                                        DEV: Success
-                                    </button>
-                                    <button type="button" onClick={() => onDevSetState('failure')}>
-                                        DEV: Fail
-                                    </button>
-                                    <button type="button" onClick={() => onDevSetState('minimum')}>
-                                        DEV: Minimum
-                                    </button>
-                                </div>
-                            )}
                         </>
                     )}
 

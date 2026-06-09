@@ -35,6 +35,7 @@
     overflow-y: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    cursor: grab;
 }
 
 .scroller::-webkit-scrollbar {

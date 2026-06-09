@@ -3,7 +3,7 @@
  * One category selected at a time (click active to clear). Shows a single
  * placeholder bar while loading.
  */
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../components/Icon/Icon'
 import styles from './styles.module.css'
@@ -30,19 +30,40 @@ const MobileCategories = ({
 }: Props) => {
     const { t } = useTranslation()
     const scrollerRef = useRef<HTMLDivElement>(null)
+    const dragRef = useRef({ active: false, startX: 0, startScrollLeft: 0, moved: false })
 
-    // Map vertical wheel to horizontal scroll, but let the page scroll at the ends.
-    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    useEffect(() => {
         const el = scrollerRef.current
         if (!el) return
-        const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX
-        if (delta === 0) return
-        const atStart = el.scrollLeft <= 0
-        const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1
-        if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return
-        e.preventDefault()
-        el.scrollLeft += delta
-    }
+
+        const onMouseDown = (e: MouseEvent) => {
+            dragRef.current = { active: true, startX: e.clientX, startScrollLeft: el.scrollLeft, moved: false }
+            el.style.cursor = 'grabbing'
+            el.style.userSelect = 'none'
+        }
+
+        const onMouseMove = (e: MouseEvent) => {
+            if (!dragRef.current.active) return
+            const dx = e.clientX - dragRef.current.startX
+            if (Math.abs(dx) > 3) dragRef.current.moved = true
+            el.scrollLeft = dragRef.current.startScrollLeft - dx
+        }
+
+        const onMouseUp = () => {
+            dragRef.current.active = false
+            el.style.cursor = ''
+            el.style.userSelect = ''
+        }
+
+        el.addEventListener('mousedown', onMouseDown)
+        window.addEventListener('mousemove', onMouseMove)
+        window.addEventListener('mouseup', onMouseUp)
+        return () => {
+            el.removeEventListener('mousedown', onMouseDown)
+            window.removeEventListener('mousemove', onMouseMove)
+            window.removeEventListener('mouseup', onMouseUp)
+        }
+    }, [isLoading])
 
     if (isLoading) {
         return (
@@ -54,7 +75,7 @@ const MobileCategories = ({
 
     return (
         <div className={styles.root} role="tablist" aria-label={t('categories') || 'Categories'}>
-            <div className={styles.scroller} ref={scrollerRef} onWheel={handleWheel}>
+            <div className={styles.scroller} ref={scrollerRef}>
                 {categories.map((cat) => {
                     const active = cat.id === selectedId
                     return (
@@ -64,7 +85,7 @@ const MobileCategories = ({
                             role="tab"
                             aria-selected={active}
                             className={`${styles.tab} ${active ? styles.tabActive : ''}`}
-                            onClick={() => onSelect(active ? null : cat)}
+                            onClick={() => { if (!dragRef.current.moved) onSelect(active ? null : cat) }}
                         >
                             {cat.name}
                         </button>

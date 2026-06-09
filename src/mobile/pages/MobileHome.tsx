@@ -256,7 +256,6 @@ const MobileHome = () => {
                 onClose={handleCloseClaim}
                 onConfirm={handleConfirmClaim}
                 onTryAgain={handleConfirmClaim}
-                onDevSetState={setClaimState}
             />
         </div>
     )
