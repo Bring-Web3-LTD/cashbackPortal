@@ -1,12 +1,8 @@
 /**
  * Mobile portal root layout. Rendered by `src/layout/Layout.tsx` when
  * `useMobilePortal` is true. Provides the same providers as the desktop
- * layout (Wallet, GA, framer-motion fade) but renders the mobile chrome
- * and mobile-specific <Outlet /> children.
- *
- * Real chrome (top bar, footer nav) is added in Step 6 alongside the
- * mobile Home page. For now this is just a thin shell so the routing
- * branch compiles and runs.
+ * layout (Wallet, GA, framer-motion fade) and renders the mobile-specific
+ * <Outlet /> children. Per-page chrome (header/back) lives in the pages.
  */
 import { motion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
