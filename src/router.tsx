@@ -32,8 +32,10 @@ const rootLoader = async () => {
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
+        // styleAs overrides CSS/icons only — data still comes from real platform.
+        const stylePlatform = (params.get('styleAs') || platform).toUpperCase()
 
-        loadStylesheet(theme, platform, useMobilePortal ? 'mobile' : 'desktop')
+        loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         // Make sure the platform translation bundle is fetched before we
         // switch to it as the default namespace; missing keys fall back
         // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
@@ -47,7 +49,7 @@ const rootLoader = async () => {
             res.info.isTester = !!res.info.isTester
         }
 
-        const iconsBase = useMobilePortal ? `/${platform}/mobile/icons` : `/${platform}/icons`
+        const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
 
         return {
@@ -80,13 +82,16 @@ const rootLoader = async () => {
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()
+        // styleAs=PLATFORM lets you preview a different platform's CSS/icons
+        // while still loading data via devPlatform (dev-only, never sent to API).
+        const stylePlatform = (params.get('styleAs') || devPlatform).toUpperCase()
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
-        loadStylesheet(theme, devPlatform, useMobilePortal ? 'mobile' : 'desktop')
+        loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform
         await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', devPlatform] : [devPlatform])
         i18n.setDefaultNamespace(activeNs)
 
-        const iconsBase = useMobilePortal ? `/${devPlatform}/mobile/icons` : `/${devPlatform}/icons`
+        const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
 
         return {

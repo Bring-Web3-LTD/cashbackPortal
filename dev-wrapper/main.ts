@@ -42,6 +42,7 @@ const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const frameEl = $<HTMLElement>('frame')
 const viewModeEl = $<HTMLSelectElement>('viewMode')
+const styleAsEl = $<HTMLSelectElement>('styleAs')
 const lastUrlEl = $<HTMLTextAreaElement>('lastUrl')
 const lastTokenRawEl = $<HTMLTextAreaElement>('lastTokenRaw')
 const lastTokenDecodedEl = $<HTMLDivElement>('lastTokenDecoded')
@@ -78,6 +79,15 @@ viewModeEl.addEventListener('change', () => {
     localStorage.setItem(VIEW_MODE_KEY, mode)
     applyViewMode(mode)
     // Re-bootstrap so the portal re-evaluates useMobilePortal at the new width.
+    void refresh()
+})
+
+const STYLE_AS_KEY = 'bring-dev-wrapper:style-as'
+styleAsEl.value = localStorage.getItem(STYLE_AS_KEY) || ''
+styleAsEl.addEventListener('change', () => {
+    localStorage.setItem(STYLE_AS_KEY, styleAsEl.value)
+    // CSS loads at init time — must fully reload the iframe.
+    isFirstLoad = true
     void refresh()
 })
 
@@ -501,7 +511,10 @@ async function refresh() {
 
     if (isFirstLoad) {
         // First load: token is embedded in portalUrl's query string.
-        iframeEl.src = buildIframeSrc(portalUrl!, token)
+        const src = buildIframeSrc(portalUrl!, token)
+        const u = new URL(src)
+        if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
+        iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')
     } else {
