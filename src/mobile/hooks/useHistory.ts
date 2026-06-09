@@ -20,7 +20,7 @@ export interface MobileHistoryRow {
     id: string
     /** Display name. Claims aggregate as "Total Claims". */
     retailerName: string
-    /** Formatted date string ("MMM d, yyyy"); empty for the claims aggregate. */
+    /** Formatted date string ("MM/DD/YYYY"); empty for the claims aggregate. */
     date: string
     /** Resolved <img src> for the leading round icon. */
     iconSrc: string

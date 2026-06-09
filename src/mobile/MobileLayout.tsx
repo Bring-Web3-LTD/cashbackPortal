@@ -25,6 +25,7 @@ const MobileLayout = ({ data }: Props) => {
             initIsTester={data.isTester}
             initialWalletName={data.walletName}
             initialWalletEmoji={data.walletEmoji}
+            mode="mobile"
         >
             <GoogleAnalyticsProvider
                 measurementId={GA_MEASUREMENT_ID}

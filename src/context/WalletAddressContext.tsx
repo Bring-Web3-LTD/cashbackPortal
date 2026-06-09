@@ -2,6 +2,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import fetchToken from '../api/fetchToken';
 import { ENV } from '../config';
 import { loadStylesheet } from '../utils/loadStylesheet';
+import type { StylesheetMode } from '../utils/loadStylesheet';
 
 interface WalletContextType {
     isTester: boolean
@@ -21,12 +22,16 @@ export function WalletProvider({
     initIsTester,
     initialWalletName,
     initialWalletEmoji,
+    mode = 'desktop',
 }: {
     children: ReactNode,
     initialWalletAddress: string,
     initIsTester: boolean,
     initialWalletName?: string,
     initialWalletEmoji?: string,
+    // Current portal mode — preserved when a SESSION_UPDATE re-themes, so the
+    // mobile stylesheet tags aren't stripped by a default 'desktop' call.
+    mode?: StylesheetMode,
 }) {
     const [walletAddress, setWalletAddress] = useState<string | null>(initialWalletAddress);
     const [isTester, setIsTester] = useState(initIsTester)
@@ -56,7 +61,7 @@ export function WalletProvider({
                     if (res.info.walletName) setWalletName(res.info.walletName)
                     if (res.info.walletEmoji) setWalletEmoji(res.info.walletEmoji)
                     if (res.info.theme) {
-                        loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT')
+                        loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT', mode)
                     }
                 }
                 else if (ENV === 'development') {
@@ -70,7 +75,7 @@ export function WalletProvider({
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [])
+    }, [mode])
 
     return (
         <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji }}>

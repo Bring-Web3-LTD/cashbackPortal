@@ -7,7 +7,7 @@ import fetchToken from './api/fetchToken';
 import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
-import { loadStylesheet } from './utils/loadStylesheet';
+import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
 import { selectVariant } from './utils/ABTest/platform-variants';
 
 const rootLoader = async () => {
@@ -34,7 +34,9 @@ const rootLoader = async () => {
         const autoclaim = !!res.info.autoclaim
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
         // styleAs overrides CSS/icons only — data still comes from real platform.
-        const stylePlatform = (params.get('styleAs') || platform).toUpperCase()
+        // Sanitize: it's interpolated into stylesheet + icon URLs, so restrict
+        // to a safe charset (falls back to DEFAULT) to prevent path traversal.
+        const stylePlatform = normalizePlatform(params.get('styleAs') || platform)
 
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         // Make sure the platform translation bundle is fetched before we
@@ -89,7 +91,8 @@ const rootLoader = async () => {
         const devPlatform = dev.platform.toUpperCase()
         // styleAs=PLATFORM lets you preview a different platform's CSS/icons
         // while still loading data via devPlatform (dev-only, never sent to API).
-        const stylePlatform = (params.get('styleAs') || devPlatform).toUpperCase()
+        // Sanitize before it's interpolated into stylesheet + icon URLs.
+        const stylePlatform = normalizePlatform(params.get('styleAs') || devPlatform)
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform

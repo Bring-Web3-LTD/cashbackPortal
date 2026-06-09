@@ -84,5 +84,7 @@ export const parseTokenDisplay = (display: string | null | undefined): TokenAmou
  */
 export const hasSubscript = (display: string | null | undefined): boolean => {
     if (!display) return false
-    return SUBSCRIPT_RUN_REGEX.test(display)
+    // Non-global, stateless test — a global regex's `lastIndex` would persist
+    // between calls and corrupt the `matchAll` scan in parseTokenDisplay.
+    return /[₀-₉]/.test(display)
 }

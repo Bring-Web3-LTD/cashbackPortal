@@ -19,7 +19,7 @@ const normalizeTheme = (theme: string): Theme =>
         ? (theme.toLowerCase() as Theme)
         : 'light'
 
-const normalizePlatform = (platform: string): string => {
+export const normalizePlatform = (platform: string): string => {
     const upper = platform?.toUpperCase() ?? ''
     return SAFE_PLATFORM.test(upper) ? upper : 'DEFAULT'
 }
