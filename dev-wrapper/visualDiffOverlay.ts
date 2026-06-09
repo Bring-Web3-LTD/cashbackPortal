@@ -946,6 +946,15 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     // hover/pick readout, and the iframe's locked-box count (so our button can
     // show the combined total). The portal draws its own boxes.
     window.addEventListener('message', (e: MessageEvent) => {
+        // Only trust messages from the portal iframe itself (right window and
+        // origin), so another frame can't spoof picker events.
+        const frame = portalFrame()
+        if (frame?.contentWindow && e.source !== frame.contentWindow) return
+        if (frame?.src) {
+            let expectedOrigin: string | null = null
+            try { expectedOrigin = new URL(frame.src).origin } catch { /* bad src */ }
+            if (expectedOrigin && e.origin !== expectedOrigin) return
+        }
         const d = e.data as { from?: string; action?: string; tag?: string; id?: string; count?: number; rect?: { x: number; y: number; width: number; height: number } } | null
         if (!d || d.from !== PICK_TAG) return
         if (d.action === 'LOCKS') {

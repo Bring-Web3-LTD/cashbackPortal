@@ -172,6 +172,8 @@ export const mountDevElementPicker = () => {
     }
 
     window.addEventListener('message', (e: MessageEvent) => {
+        // Only the embedding wrapper (our parent) may drive the picker.
+        if (e.source !== window.parent) return
         const d = e.data as { to?: string; action?: string; enabled?: boolean } | null
         if (!d || d.to !== TAG) return
         if (d.action === 'SET_PICK') setEnabled(!!d.enabled)
