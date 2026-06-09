@@ -8,7 +8,7 @@
     /* Cap to the portal width (360px) and center, mirroring MobileLayout so
        the overlay (behind Home + darken + sheet) never stretches on wider
        viewports — only the surrounding gutters grow. */
-    max-width: var(--mobile-portal-max-width, 360px);
+    max-width: 360px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -31,7 +31,7 @@
     inset: 0;
     z-index: 1;
     background: var(--history-overlay-darken-bg, #040407);
-    opacity: var(--history-overlay-darken-opacity, 0.65);
+    opacity: 0.65;
 }
 
 /* Bottom sheet: anchored to the bottom,
@@ -41,7 +41,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    top: var(--history-sheet-gap-top, 32px);
+    top: 32px;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -64,7 +64,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: var(--history-sheet-fade-h, 24px);
+    height: 24px;
     pointer-events: none;
     background: linear-gradient(
         to bottom,
@@ -76,10 +76,10 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: var(--mobile-content-pad-y, 16px) 0;
+    padding: 32px 0;
     display: flex;
     flex-direction: column;
-    gap: var(--history-list-gap, 4px);
+    gap: 4px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -106,8 +106,8 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: var(--history-list-gap, 4px);
-    padding: 0 var(--mobile-content-pad-x, 16px);
+    gap: 4px;
+    padding: 0 16px;
 }
 
 /* ── Loading skeleton ── */
@@ -117,15 +117,15 @@
     gap: 12px;
     width: 100%;
     box-sizing: border-box;
-    padding: var(--history-item-pad-y, 8px) var(--history-item-pad-x, 12px);
+    padding: 8px 12px;
     border-radius: var(--history-item-radius, 6px);
     background: var(--skeleton-tile-bg, #1D2133);
     animation: mobileHistoryPulse 1.4s ease-in-out infinite;
 }
 
 .skeletonAvatar {
-    width: var(--history-avatar-size, 40px);
-    height: var(--history-avatar-size, 40px);
+    width: 40px;
+    height: 40px;
     border-radius: var(--history-avatar-radius, 4px);
     background: var(--skeleton-fill, #262B3F);
     flex-shrink: 0;
@@ -171,8 +171,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 var(--mobile-content-pad-x, 16px);
-    padding: var(--history-empty-pad-y, 12px) var(--history-empty-pad-x, 16px);
+    margin: 0 16px;
+    padding: 12px 16px;
     border-radius: var(--history-empty-radius, 6px);
     background: var(--history-empty-bg, #0F0F1A);
     box-sizing: border-box;

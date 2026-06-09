@@ -12,10 +12,10 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: var(--mobile-content-pad-y, 16px) var(--mobile-content-pad-x, 16px);
+    padding: 32px 16px;
     display: flex;
     flex-direction: column;
-    gap: var(--mobile-content-gap, 16px);
+    gap: 16px;
     box-sizing: border-box;
     overflow: hidden;
 }

@@ -4,12 +4,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--retailer-name-shop-gap, 32px);
+    gap: 32px;
     width: 100%;
     background: var(--retailer-card-bg);
     border: none;
     border-radius: var(--retailer-card-radius);
-    padding: var(--retailer-card-pad-y) var(--retailer-card-pad-x);
+    padding: 8px 12px;
     cursor: pointer;
     text-align: left;
     font-family: 'Prompt', sans-serif;
@@ -23,15 +23,15 @@
 .left {
     display: flex;
     align-items: center;
-    gap: var(--retailer-card-gap);
+    gap: 12px;
     flex: 0 0 auto;
     min-width: 0;
 }
 
 .logo {
     flex: 0 0 auto;
-    width: var(--retailer-icon-size);
-    height: var(--retailer-icon-size);
+    width: 40px;
+    height: 40px;
     border-radius: var(--retailer-icon-radius);
     overflow: hidden;
     background: var(--retailer-icon-bg);
@@ -66,7 +66,7 @@
 }
 
 .name {
-    max-width: var(--retailer-name-max-w, 139px);
+    max-width: 139px;
     font-size: var(--retailer-name-f-s);
     font-weight: var(--retailer-name-f-w);
     line-height: var(--retailer-name-l-h);
@@ -78,7 +78,7 @@
 
 @media (max-width: 320px) {
     .name {
-        max-width: var(--retailer-name-max-w-sm, 114px);
+        max-width: 114px;
     }
 }
 
@@ -107,8 +107,8 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    height: var(--shop-btn-h);
-    padding: 0 var(--shop-btn-pad-x);
+    height: 24px;
+    padding: 0 8px;
     background: var(--shop-btn-bg);
     border-radius: var(--shop-btn-radius);
     color: var(--shop-btn-f-c);
@@ -131,6 +131,6 @@
 }
 
 .shop img {
-    width: var(--shop-btn-icon-size);
-    height: var(--shop-btn-icon-size);
+    width: 12px;
+    height: 12px;
 }

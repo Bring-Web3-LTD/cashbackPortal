@@ -7,7 +7,7 @@
     flex-direction: column;
     background: var(--faq-item-bg, #171C2F);
     border-radius: var(--faq-item-radius, 6px);
-    padding: var(--faq-item-pad-y, 8px) var(--faq-item-pad-r, 8px) var(--faq-item-pad-y, 8px) var(--faq-item-pad-l, 12px);
+    padding: 8px 8px 8px 12px;
     transition: background 0.15s ease;
     overflow: hidden;
 }
@@ -23,9 +23,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--faq-question-gap, 8px);
+    gap: 8px;
     width: 100%;
-    min-height: var(--faq-question-h, 24px);
+    min-height: 24px;
     margin: 0;
     padding: 0;
     border: none;
@@ -50,8 +50,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--faq-chevron-size, 16px);
-    height: var(--faq-chevron-size, 16px);
+    width: 16px;
+    height: 16px;
     /* Default: Grey/300. Turns Grey/100 on hover or when expanded. */
     color: var(--faq-chevron-f-c, #7685A0);
     transition: transform 0.2s ease, color 0.15s ease;
@@ -67,8 +67,8 @@
 }
 
 .chevronIcon {
-    width: var(--faq-chevron-size, 16px);
-    height: var(--faq-chevron-size, 16px);
+    width: 16px;
+    height: 16px;
     display: block;
 }
 
@@ -81,12 +81,12 @@
     display: block;
     width: 100%;
     height: var(--faq-divider-w, 1px);
-    margin-top: var(--faq-answer-gap, 8px);
+    margin-top: 8px;
     background: var(--faq-divider-c, #2B344D);
 }
 
 .answerBody {
-    margin-top: var(--faq-answer-gap, 8px);
+    margin-top: 8px;
 }
 
 .answerLine {
@@ -100,11 +100,11 @@
 }
 
 .answerLine + .answerLine {
-    margin-top: var(--faq-answer-line-gap, 4px);
+    margin-top: 4px;
 }
 
 .answerIndented {
-    padding-left: var(--faq-answer-indent, 16px);
+    padding-left: 16px;
 }
 
 .link {

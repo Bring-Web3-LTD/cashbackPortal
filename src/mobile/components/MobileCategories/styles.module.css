@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: var(--tabs-h, 32px);
+    height: 32px;
 }
 
 .rootLoading {
@@ -28,9 +28,9 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    gap: var(--tabs-gap, 4px);
+    gap: 0px;
     height: 100%;
-    margin-right: var(--tabs-search-reserve, 28px);
+    margin-right: 28px;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
@@ -46,8 +46,8 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    right: var(--tabs-search-reserve, 28px);
-    width: var(--tabs-fog-w, 24px);
+    right: 28px;
+    width: 24px;
     pointer-events: none;
     background: linear-gradient(90deg, transparent 0%, var(--tabs-fog-color, var(--bg, #0F0F1A)) 100%);
 }
@@ -59,7 +59,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: var(--tab-pad-y, 6px) var(--tab-pad-x, 10px);
+    padding: 6px 10px;
     border: none;
     border-radius: var(--tab-radius, 6px);
     background: var(--tab-bg, transparent);
@@ -75,13 +75,13 @@
 .tab:hover:not(.tabActive) {
     color: var(--tab-hover-f-c, var(--tab-f-c, #7685A0));
     background: var(--tab-hover-bg, transparent);
-    padding: var(--tab-active-pad-y, 4px) var(--tab-active-pad-x, 8px);
+    padding: 4px 8px;
 }
 
 .tabActive {
     background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
     color: var(--tab-active-f-c, #8793FF);
-    padding: var(--tab-active-pad-y, 4px) var(--tab-active-pad-x, 8px);
+    padding: 4px 8px;
 }
 
 /* Trailing search icon — bare 16px glyph, overlaid flush right. Default and
@@ -96,8 +96,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--tabs-search-btn-size, 16px);
-    height: var(--tabs-search-btn-size, 16px);
+    width: 16px;
+    height: 16px;
     padding: 0;
     border: none;
     border-radius: 0;
@@ -108,8 +108,8 @@
 .searchBtnIcon {
     position: absolute;
     inset: 0;
-    width: var(--tabs-search-btn-icon-size, 16px);
-    height: var(--tabs-search-btn-icon-size, 16px);
+    width: 16px;
+    height: 16px;
     display: block;
     transition: opacity 0.15s ease;
 }

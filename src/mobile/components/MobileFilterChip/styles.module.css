@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: var(--tabs-h, 32px);
+    height: 32px;
 }
 
 .chip {
@@ -13,7 +13,7 @@
     align-items: center;
     gap: var(--filter-chip-gap, 6px);
     height: auto;
-    padding: var(--tab-active-pad-y, 4px) var(--tab-active-pad-x, 8px);
+    padding: 4px 8px;
     border-radius: var(--tab-radius, 4px);
     background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
     color: var(--tab-active-f-c, #8793FF);

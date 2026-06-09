@@ -10,9 +10,9 @@
 
 .panel {
     width: 100%;
-    max-width: var(--mobile-max-width, 360px);
-    height: calc(100% - var(--claim-modal-panel-top-gap, 32px));
-    max-height: calc(100dvh - var(--claim-modal-panel-top-gap, 32px));
+    max-width: 360px;
+    height: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
     background: var(--claim-modal-panel-bg, #0f0f1a);
     border: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-panel-border-c, #2b344d);
     border-bottom: none;
@@ -25,26 +25,26 @@
 }
 
 .header {
-    height: var(--claim-modal-header-h, 56px);
+    height: 56px;
     border-bottom: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-header-border-c, #2b344d);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--claim-modal-header-pad-x, 16px);
+    padding: 0 16px;
     flex-shrink: 0;
-    margin-bottom: var(--claim-modal-header-mb, 16px);
+    margin-bottom: 16px;
 }
 
 .headerSpacer {
-    width: var(--claim-modal-header-action-size, 32px);
-    height: var(--claim-modal-header-action-size, 32px);
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
 }
 
 .headerClose {
     box-sizing: border-box;
-    width: var(--claim-modal-header-action-size, 32px);
-    height: var(--claim-modal-header-action-size, 32px);
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -58,8 +58,8 @@
 
 .headerClose img {
     display: block;
-    width: var(--claim-modal-header-action-icon-size, 16px);
-    height: var(--claim-modal-header-action-icon-size, 16px);
+    width: 16px;
+    height: 16px;
 }
 
 .headerTitle {
@@ -69,20 +69,20 @@
     font-size: var(--claim-modal-header-title-f-s, 16px);
     font-weight: var(--claim-modal-header-title-f-w, 700);
     line-height: var(--claim-modal-header-title-l-h, 22px);
-    letter-spacing: var(--claim-modal-header-title-l-s, 0.32px);
+    letter-spacing: 0.32px;
     text-align: center;
     flex: 1;
 }
 
 .body {
-    padding: var(--claim-modal-body-pad, 16px);
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: var(--claim-modal-body-gap, 4px);
+    gap: 4px;
 }
 
 .intro {
-    margin: 0 0 var(--claim-modal-intro-mb, 12px);
+    margin: 0 0 12px;
     color: var(--claim-modal-intro-f-c, #7685a0);
     font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
     font-size: var(--claim-modal-intro-f-s, 14px);
@@ -93,52 +93,52 @@
 .rowPrimary,
 .rowSecondary {
     box-sizing: border-box;
-    height: var(--claim-modal-row-h, 40px);
+    height: 40px;
     border-radius: var(--claim-modal-row-radius, 6px);
     background: var(--claim-modal-row-bg, #171c2f);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--claim-modal-row-pad-y, 8px) var(--claim-modal-row-pad-x, 12px);
-    gap: var(--claim-modal-row-gap, 8px);
+    padding: 8px 12px;
+    gap: 8px;
 }
 
 .rowPrimary {
-    margin-bottom: var(--claim-modal-row-primary-mb, 12px);
+    margin-bottom: 12px;
 }
 
 .rowLeft,
 .rowRight {
     display: inline-flex;
     align-items: center;
-    gap: var(--claim-modal-row-gap, 8px);
+    gap: 8px;
     min-width: 0;
 }
 
 .coinIcon {
-    width: var(--claim-modal-row-icon-size, 24px);
-    height: var(--claim-modal-row-icon-size, 24px);
+    width: 24px;
+    height: 24px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .coinIcon img {
-    width: var(--claim-modal-row-icon-size, 24px);
-    height: var(--claim-modal-row-icon-size, 24px);
+    width: 24px;
+    height: 24px;
 }
 
 .walletEmoji {
-    width: var(--claim-modal-row-icon-size, 24px);
-    height: var(--claim-modal-row-icon-size, 24px);
+    width: 24px;
+    height: 24px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .walletEmoji img {
-    width: var(--claim-modal-row-icon-size, 24px);
-    height: var(--claim-modal-row-icon-size, 24px);
+    width: 24px;
+    height: 24px;
 }
 
 .rowLabel {
@@ -165,7 +165,7 @@
     justify-content: center;
     border-radius: var(--claim-modal-badge-radius, 4px);
     background: var(--claim-modal-badge-bg, #2b344d);
-    padding: var(--claim-modal-badge-pad-y, 4px) var(--claim-modal-badge-pad-x, 8px);
+    padding: 4px 8px;
     color: var(--claim-modal-badge-f-c, #f7f7f7);
     font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
     font-size: var(--claim-modal-badge-f-s, 12px);
@@ -185,15 +185,15 @@
 
 .footerTwoButtons {
     margin-top: auto;
-    padding: 0 var(--claim-modal-footer-pad-x, 16px) var(--claim-modal-footer-pad-b, 16px);
+    padding: 0 16px 16px;
     display: flex;
-    gap: var(--claim-modal-footer-gap, 16px);
+    gap: 16px;
 }
 
 .btnSecondary,
 .btnPrimary,
 .btnSecondaryWide {
-    height: var(--claim-modal-btn-h, 40px);
+    height: 40px;
     border: none;
     border-radius: var(--claim-modal-btn-radius, 8px);
     color: var(--claim-modal-btn-f-c, #f7f7f7);
@@ -223,13 +223,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: var(--claim-modal-body-pad, 16px) var(--claim-modal-body-pad, 16px) 0;
+    padding: 16px 16px 0;
 }
 
 .minimumText {
     display: flex;
     flex-direction: column;
-    gap: var(--claim-modal-min-text-gap, 8px);
+    gap: 8px;
 }
 
 .minimumTitle {
@@ -239,7 +239,7 @@
     font-size: var(--claim-modal-min-title-f-s, 20px);
     font-weight: var(--claim-modal-min-title-f-w, 700);
     line-height: var(--claim-modal-min-title-l-h, 26px);
-    letter-spacing: var(--claim-modal-min-title-l-s, 0.4px);
+    letter-spacing: 0.4px;
 }
 
 .minimumPara {
@@ -253,7 +253,7 @@
 
 .minimumHint {
     margin: 0;
-    height: var(--claim-modal-min-hint-h, 56px);
+    height: 56px;
     display: flex;
     align-items: center;
     color: var(--claim-modal-min-hint-f-c, #AFBBFF);
@@ -264,7 +264,7 @@
 }
 
 .footerOneButton {
-    padding: 0 var(--claim-modal-footer-pad-x, 16px) var(--claim-modal-footer-pad-b, 16px);
+    padding: 0 16px 16px;
 }
 
 .btnSecondaryWide {
@@ -316,15 +316,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-body-gap, 24px);
-    padding: var(--claim-modal-body-pad, 16px) var(--claim-modal-body-pad, 16px) 0;
+    gap: 24px;
+    padding: 16px 16px 0;
     position: relative;
 }
 
 .successDesign {
     position: relative;
     width: 100%;
-    height: var(--claim-modal-status-design-h, 144px);
+    height: 144px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,8 +493,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-text-gap, 8px);
-    width: var(--claim-modal-status-text-w, 328px);
+    gap: 8px;
+    width: 328px;
     max-width: 100%;
 }
 
@@ -505,7 +505,7 @@
     font-size: var(--claim-modal-status-title-f-s, 22px);
     font-weight: var(--claim-modal-status-title-f-w, 700);
     line-height: var(--claim-modal-status-title-l-h, 28px);
-    letter-spacing: var(--claim-modal-status-title-l-s, 0.44px);
+    letter-spacing: 0.44px;
     text-align: center;
 }
 
@@ -529,12 +529,12 @@
     line-height: var(--claim-modal-explorer-l-h, 20px);
     display: inline-flex;
     align-items: center;
-    gap: var(--claim-modal-explorer-gap, 6px);
+    gap: 6px;
 }
 
 .successExplorer img {
-    width: var(--claim-modal-explorer-icon-size, 16px);
-    height: var(--claim-modal-explorer-icon-size, 16px);
+    width: 16px;
+    height: 16px;
 }
 
 /* Failure screen (Figma node 1863:11781) */
@@ -543,8 +543,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-body-gap, 24px);
-    padding: var(--claim-modal-body-pad, 16px) var(--claim-modal-body-pad, 16px) 0;
+    gap: 24px;
+    padding: 16px 16px 0;
 }
 
 .failureIconWrap {
@@ -552,15 +552,15 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: var(--claim-modal-status-design-h, 144px);
+    height: 144px;
 }
 
 .failureCircle {
     box-sizing: border-box;
-    width: var(--claim-modal-failure-circle-size, 112px);
-    height: var(--claim-modal-failure-circle-size, 112px);
+    width: 112px;
+    height: 112px;
     flex-shrink: 0;
-    padding: var(--claim-modal-failure-circle-pad, 28px);
+    padding: 28px;
     border-radius: 1000px;
     background: var(--claim-modal-failure-circle-bg, rgba(210, 88, 88, 0.25));
     display: inline-flex;
@@ -569,16 +569,16 @@
 }
 
 .failureCircle img {
-    width: var(--claim-modal-failure-icon-size, 56px);
-    height: var(--claim-modal-failure-icon-size, 56px);
+    width: 56px;
+    height: 56px;
 }
 
 .failureText {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-text-gap, 8px);
-    width: var(--claim-modal-status-text-w, 328px);
+    gap: 8px;
+    width: 328px;
     max-width: 100%;
 }
 
@@ -589,7 +589,7 @@
     font-size: var(--claim-modal-status-title-f-s, 22px);
     font-weight: var(--claim-modal-status-title-f-w, 700);
     line-height: var(--claim-modal-status-title-l-h, 28px);
-    letter-spacing: var(--claim-modal-status-title-l-s, 0.44px);
+    letter-spacing: 0.44px;
     text-align: center;
 }
 
@@ -609,8 +609,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-body-gap, 24px);
-    padding: var(--claim-modal-body-pad, 16px) var(--claim-modal-body-pad, 16px) 0;
+    gap: 24px;
+    padding: 16px 16px 0;
 }
 
 .statusIconWrap {
@@ -618,15 +618,15 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: var(--claim-modal-status-design-h, 144px);
+    height: 144px;
 }
 
 .spinnerCircle {
     box-sizing: border-box;
-    width: var(--claim-modal-failure-circle-size, 112px);
-    height: var(--claim-modal-failure-circle-size, 112px);
+    width: 112px;
+    height: 112px;
     flex-shrink: 0;
-    padding: var(--claim-modal-failure-circle-pad, 28px);
+    padding: 28px;
     border-radius: 1000px;
     background: var(--claim-modal-spinner-circle-bg, rgba(135, 147, 255, 0.25));
     display: inline-flex;
@@ -638,8 +638,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--claim-modal-status-text-gap, 8px);
-    width: var(--claim-modal-status-text-w, 328px);
+    gap: 8px;
+    width: 328px;
     max-width: 100%;
 }
 
@@ -650,7 +650,7 @@
     font-size: var(--claim-modal-status-title-f-s, 22px);
     font-weight: var(--claim-modal-status-title-f-w, 700);
     line-height: var(--claim-modal-status-title-l-h, 28px);
-    letter-spacing: var(--claim-modal-status-title-l-s, 0.44px);
+    letter-spacing: 0.44px;
     text-align: center;
 }
 
@@ -668,9 +668,9 @@
     margin-top: auto;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 var(--claim-modal-footer-pad-x, 16px) var(--claim-modal-footer-pad-b, 16px);
+    padding: 0 16px 16px;
     display: flex;
-    gap: var(--claim-modal-footer-gap, 16px);
+    gap: 16px;
 }
 
 @keyframes spin {

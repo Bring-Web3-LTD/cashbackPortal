@@ -5,13 +5,13 @@
 .root {
     display: flex;
     flex-direction: column;
-    gap: var(--rewards-gap, 10px);
+    gap: 10px;
     width: 100%;
 }
 
 .row {
     display: flex;
-    gap: var(--rewards-card-gap, 8px);
+    gap: 8px;
     width: 100%;
 }
 
@@ -24,16 +24,16 @@
     background: var(--balance-card-bg);
     border-radius: var(--balance-card-radius, 6px);
     box-shadow: var(--balance-card-shadow, 0 2px 6px rgba(4, 4, 7, 0.5));
-    padding: var(--balance-card-pad-y, 8px) var(--balance-card-pad-x, 12px);
+    padding: 8px 12px;
     box-sizing: border-box;
-    min-height: var(--balance-card-h, 60px);
+    min-height: 60px;
 }
 
 /* Small screens (≤320px): tighter card padding so amount + button still fit. */
 @media (max-width: 320px) {
     .card {
-        padding-left: var(--balance-card-pad-x-sm, 5px);
-        padding-right: var(--balance-card-pad-x-sm, 5px);
+        padding-left: 5px;
+        padding-right: 5px;
     }
 }
 
@@ -46,11 +46,11 @@
 /* Decorative icon clipped on the right of the card */
 .decoIcon {
     position: absolute;
-    top: var(--balance-deco-top, 0);
-    left: var(--balance-deco-left, 98px);
-    width: var(--balance-deco-size, 82px);
-    height: var(--balance-deco-size, 82px);
-    opacity: var(--balance-deco-opacity, 1);
+    top: 0;
+    left: 98px;
+    width: 82px;
+    height: 82px;
+    opacity: 1;
     pointer-events: none;
     display: block;
 }
@@ -59,7 +59,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--balance-body-gap, 4px);
+    gap: 4px;
     z-index: 1;
 }
 
@@ -98,8 +98,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: var(--balance-claim-btn-h, 24px);
-    padding: 0 var(--balance-claim-btn-pad-x, 8px);
+    height: 24px;
+    padding: 0 8px;
     border: none;
     border-radius: var(--balance-claim-btn-radius, 4px);
     background: var(--balance-claim-btn-bg, #6067F9);
@@ -138,9 +138,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--balance-pending-btn-w, 32px);
-    height: var(--balance-pending-btn-h, 24px);
-    padding: 0 var(--balance-pending-btn-pad-x, 8px);
+    width: 32px;
+    height: 24px;
+    padding: 0 8px;
     border: none;
     border-radius: var(--balance-pending-btn-radius, 4px);
     background: var(--balance-pending-btn-bg, #6067F9);
@@ -153,15 +153,15 @@
 }
 
 .pendingBtnIcon {
-    width: var(--balance-pending-btn-icon-size, 16px);
-    height: var(--balance-pending-btn-icon-size, 16px);
+    width: 16px;
+    height: 16px;
     display: block;
 }
 
 /* ── Helper pill buttons row ── */
 .helperRow {
     display: flex;
-    gap: var(--rewards-card-gap, 8px);
+    gap: 8px;
     width: 100%;
 }
 
@@ -171,8 +171,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: var(--helper-btn-h, 24px);
-    padding: 0 var(--helper-btn-pad-x, 8px);
+    height: 24px;
+    padding: 0 8px;
     border: none;
     border-radius: var(--helper-btn-radius, 4px);
     background: var(--helper-btn-bg, #2B344D);

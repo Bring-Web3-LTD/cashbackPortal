@@ -3,7 +3,7 @@
 .root {
     position: fixed;
     inset: 0;
-    max-width: var(--mobile-portal-max-width, 360px);
+    max-width: 360px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -22,7 +22,7 @@
     inset: 0;
     z-index: 1;
     background: var(--faq-overlay-darken-bg, #040407);
-    opacity: var(--faq-overlay-darken-opacity, 0.65);
+    opacity: 0.65;
 }
 
 .sheet {
@@ -30,7 +30,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    top: var(--faq-sheet-gap-top, 32px);
+    top: 32px;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -50,7 +50,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: var(--faq-sheet-fade-h, 24px);
+    height: 24px;
     pointer-events: none;
     background: linear-gradient(
         to bottom,
@@ -62,10 +62,10 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: var(--mobile-content-pad-y, 16px) var(--mobile-content-pad-x, 16px);
+    padding: 32px 16px;
     display: flex;
     flex-direction: column;
-    gap: var(--faq-list-gap, 8px);
+    gap: 8px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -91,7 +91,7 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: var(--faq-list-gap, 8px);
+    gap: 8px;
 }
 
 .skeletonItem {
@@ -99,8 +99,8 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: var(--faq-skeleton-h, 40px);
-    padding: var(--faq-skeleton-pad-y, 4px) var(--faq-skeleton-pad-x, 8px);
+    height: 40px;
+    padding: 4px 8px;
     border-radius: var(--faq-skeleton-radius, 4px);
     background: var(--faq-skeleton-bg, rgba(43, 52, 77, 0.5));
     overflow: hidden;
@@ -108,8 +108,8 @@
 }
 
 .skeletonBar {
-    height: var(--faq-skeleton-bar-h, 11px);
-    width: var(--faq-skeleton-bar-w, 182px);
+    height: 11px;
+    width: 182px;
     border-radius: var(--faq-skeleton-bar-radius, 3px);
     background: var(--faq-skeleton-bar-bg, #262B3F);
 }

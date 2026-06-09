@@ -7,9 +7,9 @@
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
-    height: var(--cashback-earned-h, 82px);
+    height: 82px;
     flex-shrink: 0;
-    padding: var(--cashback-earned-pad-y, 8px) var(--cashback-earned-pad-x, 12px);
+    padding: 10px 10px;
     border-radius: var(--cashback-earned-radius, 6px);
     background: var(--cashback-earned-bg,
         linear-gradient(90deg, rgba(135, 147, 255, 0.05) 0%, rgba(135, 147, 255, 0) 100%),
@@ -31,7 +31,7 @@
 .loading .body {
     padding-right: 0;
     justify-content: center;
-    gap: var(--cashback-earned-body-gap, 8px);
+    gap: 8px;
 }
 
 /* Low-opacity piggy-bank watermark (inline SVG, repeated as texture). */
@@ -57,7 +57,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--cashback-earned-body-gap, 8px);
+    gap: 8px;
     flex: 1 1 auto;
     min-width: 0;    
     padding-right: var(--cashback-earned-body-reserve, 150px);
@@ -66,19 +66,19 @@
 .labelRow {
     display: flex;
     align-items: center;
-    gap: var(--cashback-earned-label-gap, 8px);
+    gap: 8px;
 }
 
 .amountGroup {
     display: flex;
     flex-direction: column;
-    gap: var(--cashback-earned-amount-group-gap, 2px);
+    gap: 2px;
     min-width: 0;
 }
 
 .labelIcon {
-    width: var(--cashback-earned-label-icon-size, 20px);
-    height: var(--cashback-earned-label-icon-size, 20px);
+    width: 20px;
+    height: 20px;
     flex: 0 0 auto;
 }
 
@@ -114,10 +114,10 @@
 
 .deco {
     position: absolute;
-    top: var(--cashback-earned-deco-top, 4px);
-    right: var(--cashback-earned-deco-right, -7px);
-    width: var(--cashback-earned-deco-w, 173.25px);
-    height: var(--cashback-earned-deco-h, 106px);
+    top: 4px;
+    right: -7px;
+    width: 173.25px;
+    height: 106px;
     pointer-events: none;
     user-select: none;
 }
@@ -141,7 +141,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--cashback-earned-body-gap, 8px);
+    gap: 8px;
     width: 100%;
 }
 
@@ -163,7 +163,7 @@
 .skeletonDeco {
     position: absolute;
     top: 50%;
-    right: var(--cashback-earned-pad-x, 12px);
+    right: 10px;
     transform: translateY(-50%);
     width: 55px;
     height: 53px;
