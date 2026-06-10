@@ -65,16 +65,33 @@
     position: absolute;
     display: flex;
     align-items: center;
+    padding: 0;
     gap: 4px;
     top: 16px;
-    left: 24px;
-    padding: 0;
+    left: 20px;
     background: none;
     border: none;
     cursor: pointer;
+    line-height: 22px;
+    height: fit-content;
     font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
     font-weight: var(--history-back-f-w);
     color: var(--modal-deal-back-f-c, var(--modal-deal-name-f-c));
+    letter-spacing: 0.5px;
+}
+
+.back_icon_container{
+    display: flex;
+    min-width: 24px;
+    min-width: 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+.back_txt_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .full {
@@ -92,7 +109,8 @@
 }
 
 .markdown {
-    --padding: 16px;
+    --padding: 10px;
+    --scrollbar-gap: 5px;
     color: var(--modal-deal-markdown-f-c);
     background: var(--modal-deal-markdown-bg);
     border-radius: var(--modal-deal-markdown-radius);
@@ -115,21 +133,21 @@
 
 .markdown::-webkit-scrollbar {
     background: transparent;
-    width: var(--modal-deal-markdown-scrollbar-w, var(--scrollbar-w));
+    width: calc(3px + var(--scrollbar-gap));
 }
 
 .markdown::-webkit-scrollbar-thumb {
-    border: var(--modal-deal-markdown-scrollbar-pad, 4px) solid rgba(0, 0, 0, 0);
+    border-right: var(--scrollbar-gap) solid transparent;
+    border-top: 6px solid transparent;
     background-clip: padding-box;
     border-radius: 9999px;
     background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
-    min-height: var(--modal-deal-markdown-scrollbar-thumb-h, auto);
+    min-height: 36px;
 }
 
 .markdown p {
-    margin-top: 10px;
-    margin-bottom: 10px;
     line-height: 18px;
+    margin: 0px;
 }
 
 .markdown ul,
@@ -138,11 +156,17 @@
     font-size: var(--modal-deal-markdown-list-f-s, var(--modal-deal-markdown-f-s));
 }
 
-.markdown p strong,
-.markdown h3 {
+.markdown p strong {
     font-size: var(--modal-deal-markdown-title-f-s, var(--modal-deal-markdown-f-s));
     font-weight: var(--modal-deal-markdown-bold-f-w);
     color: var(--modal-deal-markdown-bold-f-c);
+}
+
+.markdown h3,
+.markdown h3 strong {
+    font-size: var(--modal-deal-markdown-title-f-s, var(--modal-deal-markdown-f-s));
+    font-weight: var(--modal-deal-markdown-h3-f-w, var(--modal-deal-markdown-bold-f-w));
+    color: var(--modal-deal-markdown-h3-f-c, var(--modal-deal-markdown-bold-f-c));
 }
 
 .markdown h3 {

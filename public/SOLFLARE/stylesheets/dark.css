@@ -244,12 +244,12 @@
     --modal-deal-markdown-f-s: 13px;
     --modal-deal-markdown-list-f-s: 12px;
     --modal-deal-markdown-f-w: 400;
-    --modal-deal-markdown-f-c: rgba(245, 248, 255, 0.5);
-    --modal-deal-markdown-bold-f-w: 400;
-    --modal-deal-markdown-bold-f-c: #F5F8FF;
+    --modal-deal-markdown-f-c: #8A8E94;
+    --modal-deal-markdown-bold-f-w: 700;
+    --modal-deal-markdown-bold-f-c: #8A8E94;
+    --modal-deal-markdown-h3-f-w: 700;
+    --modal-deal-markdown-h3-f-c: #F5F8FF;
     --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.10);
-    --modal-deal-markdown-scrollbar-w: 11px;
-    --modal-deal-markdown-scrollbar-thumb-h: 30px;
     --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #636772;

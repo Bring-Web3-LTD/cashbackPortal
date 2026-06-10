@@ -88,11 +88,21 @@ const RetailerCardModal = ({
                         className={styles.back_btn}
                         onClick={() => setShowingTerms(false)}
                     >
+                    <div 
+                        id="back_icon_container"
+                        className={styles.back_icon_container}
+                    >
                         <Icon
                             name="arrow-left.svg"
                             alt="arrow-left"
                         />
+                    </div>
+                    <div
+                        id="back_txt_container"
+                        className={styles.back_txt_container}
+                    >
                         <span>{t('back')}</span>
+                    </div>
                     </button>
                 )}
                 <div className={styles.modal_container}>
