@@ -57,18 +57,14 @@
     transition: transform 0.2s ease, color 0.15s ease;
 }
 
+/* Collapsed default = Grey/300; hover or expanded = Grey/100. The open state
+   swaps to the up-chevron SVG (no rotation needed). */
 .item:hover .chevron,
 .chevronOpen {
     color: var(--faq-chevron-active-f-c, #F7F7F7);
 }
 
-.chevronOpen {
-    transform: rotate(180deg);
-}
-
 .chevronIcon {
-    width: 16px;
-    height: 16px;
     display: block;
 }
 

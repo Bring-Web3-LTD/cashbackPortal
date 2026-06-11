@@ -63,6 +63,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
+    height: 50px;
 }
 
 .name {
@@ -131,6 +132,8 @@
 }
 
 .shop img {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    box-sizing: border-box;
 }

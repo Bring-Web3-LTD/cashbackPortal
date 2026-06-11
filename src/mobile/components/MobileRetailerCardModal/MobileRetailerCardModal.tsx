@@ -81,13 +81,15 @@ const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
                                             />
                                         )}
                                     </div>
-                                    <span className={styles.name}>{retailer.displayName}</span>
-                                    <span className={styles.cashback_pill}>
-                                        <span className={styles.cashback_label}>{t('upTo')}</span>
-                                        <span className={styles.cashback_amount}>
-                                            {cashback} {t('in')} {tokenSymbol}
+                                    <div className={styles.retailer_info}>
+                                        <span className={styles.name}>{retailer.displayName}</span>
+                                        <span className={styles.cashback_pill}>
+                                            <span className={styles.cashback_label}>{t('upTo')}</span>
+                                            <span className={styles.cashback_amount}>
+                                                {cashback} {t('in')} {tokenSymbol}
+                                            </span>
                                         </span>
-                                    </span>
+                                    </div>
                                 </div>
 
                                 <section className={styles.terms_box}>

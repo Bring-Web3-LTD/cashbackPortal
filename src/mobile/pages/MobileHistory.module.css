@@ -79,7 +79,7 @@
     padding: 32px 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -117,6 +117,7 @@
     gap: 12px;
     width: 100%;
     box-sizing: border-box;
+    min-height: 66px;
     padding: 8px 12px;
     border-radius: var(--history-item-radius, 6px);
     background: var(--skeleton-tile-bg, #1D2133);
@@ -172,7 +173,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 16px;
-    padding: 12px 16px;
+    padding: 6px 8px;
     border-radius: var(--history-empty-radius, 6px);
     background: var(--history-empty-bg, #0F0F1A);
     box-sizing: border-box;

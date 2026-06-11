@@ -31,11 +31,14 @@
     box-shadow: var(--retailer-modal-shadow);
     display: flex;
     flex-direction: column;
+    gap: 8px;
     overflow: hidden;
+    font-family: 'Prompt', sans-serif;
 }
 
 /* ── Header (Cashback Details + X) ───────────────────────────────── */
 .header {
+    box-sizing: border-box;
     height: 56px;
     padding: 12px 16px;
     display: flex;
@@ -86,6 +89,8 @@
 .header_close img {
     width: 16px;
     height: 16px;
+    padding: 2px;
+    box-sizing: border-box;
 }
 
 /* ── Body ────────────────────────────────────────────────────────── */
@@ -119,6 +124,13 @@
     gap: 16px;
     width: 100%;
     flex-shrink: 0;
+}
+
+.retailer_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
 .logo {
@@ -182,6 +194,7 @@
 /* ── Terms box ───────────────────────────────────────────────────── */
 .terms_box {
     position: relative;
+    box-sizing: border-box;
     flex: 1;
     min-height: 0;
     width: 100%;
@@ -233,11 +246,11 @@
 .terms_body ol,
 .terms_body ul {
     margin: 0;
-    padding-inline-start: 18px;
+    padding-inline-start: 15px;
 }
 
 .terms_body li {
-    margin-bottom: 4px;
+    margin-bottom: 0;
 }
 
 .terms_body p {
@@ -345,6 +358,7 @@
     line-height: var(--retailer-modal-disclaimer-l-h);
     color: var(--retailer-modal-disclaimer-f-c);
     text-align: center;
+    white-space: nowrap;
     transition: color 0.15s ease;
 }
 

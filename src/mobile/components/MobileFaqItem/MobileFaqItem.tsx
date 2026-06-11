@@ -100,20 +100,37 @@ const MobileFaqItem: FC<Props> = ({
             >
                 <span className={styles.questionText}>{question}</span>
                 <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>
-                    <svg
-                        className={styles.chevronIcon}
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                    >
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
+                    {isOpen ? (
+                        <svg
+                            className={styles.chevronIcon}
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M8 3.81445L14.7803 10.5948C15.0732 10.8877 15.0732 11.3625 14.7803 11.6554C14.4874 11.9483 14.0126 11.9483 13.7197 11.6554L8 5.93577L2.28033 11.6554C1.98744 11.9483 1.51256 11.9483 1.21967 11.6554C0.926777 11.3625 0.926777 10.8877 1.21967 10.5948L8 3.81445Z"
+                            />
+                        </svg>
+                    ) : (
+                        <svg
+                            className={styles.chevronIcon}
+                            width="14"
+                            height="9"
+                            viewBox="0 0 14 9"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M7 8.06055L0.219672 1.28022C-0.0732216 0.987323 -0.0732215 0.51245 0.219672 0.219557C0.512564 -0.0733369 0.987438 -0.0733368 1.28033 0.219557L7 5.93923L12.7197 0.219558C13.0126 -0.0733357 13.4874 -0.0733357 13.7803 0.219558C14.0732 0.512451 14.0732 0.987325 13.7803 1.28022L7 8.06055Z"
+                            />
+                        </svg>
+                    )}
                 </span>
             </button>
             <AnimatePresence initial={false}>

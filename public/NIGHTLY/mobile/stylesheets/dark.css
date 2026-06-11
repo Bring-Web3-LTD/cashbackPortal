@@ -124,12 +124,14 @@
     --search-bar-f-c: #F7F7F7;
     --search-bar-placeholder-f-c: rgba(247, 247, 247, 0.25);
     --search-bar-close-c: #F7F7F7;
+    /* No-matches message — Grey/300 (solid, unlike the faint placeholder). */
+    --search-empty-f-c: #7685A0;
 
-    /* Autocomplete dropdown — same Grey/900 surface as the input. */
-    --search-dropdown-bg: #040407;
+    /* Autocomplete dropdown — Grey/700 surface (Figma 1863:2765). */
+    --search-dropdown-bg: #0F0F1A;
     --search-dropdown-border-w: 1px;
     --search-dropdown-border-c: #2B344D;
-    --search-dropdown-radius: 6px;
+    --search-dropdown-radius: 8px;
     --search-dropdown-hover-bg: rgba(43, 52, 77, 0.5);
 
     /* ── Retailer card (Big_Button) ── */
