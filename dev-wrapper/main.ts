@@ -93,11 +93,14 @@ const lastTokenRawEl = $<HTMLTextAreaElement>('lastTokenRaw')
 const lastTokenDecodedEl = $<HTMLDivElement>('lastTokenDecoded')
 const statusEl = $<HTMLParagraphElement>('status')
 
-const STARTED_DISCONNECTED_KEY = 'bring-dev-wrapper:start-disconnected'
-const startDisconnectedDefault = localStorage.getItem(STARTED_DISCONNECTED_KEY) !== '0'
+const START_CONNECTED_KEY = 'bring-dev-wrapper:start-connected'
+const startConnected = localStorage.getItem(START_CONNECTED_KEY) === '1'
 
 extensionEl.value = DEFAULT_EXT_ID
-walletEl.value = startDisconnectedDefault ? '' : DEFAULT_WALLET
+// Wallet starts empty; if "Start connected" is on and the provider is mock, we
+// pre-fill the default address below (once the active provider is known) so the
+// first bootstrap logs the portal in.
+walletEl.value = ''
 themeEl.value = DEFAULT_THEME === 'dark' || DEFAULT_THEME === 'light' ? DEFAULT_THEME : ''
 apiStageInfoEl.textContent = apiStage || '(default)'
 
@@ -110,12 +113,10 @@ toggleBtn.addEventListener('click', () => {
     localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0')
 })
 
-const autoConnectEl = $<HTMLInputElement>('autoConnect')
-const autoSignEl = $<HTMLInputElement>('autoSign')
-const startDisconnectedEl = $<HTMLInputElement>('startDisconnected')
-startDisconnectedEl.checked = startDisconnectedDefault
-startDisconnectedEl.addEventListener('change', () => {
-    localStorage.setItem(STARTED_DISCONNECTED_KEY, startDisconnectedEl.checked ? '1' : '0')
+const startConnectedEl = $<HTMLInputElement>('startConnected')
+startConnectedEl.checked = startConnected
+startConnectedEl.addEventListener('change', () => {
+    localStorage.setItem(START_CONNECTED_KEY, startConnectedEl.checked ? '1' : '0')
 })
 const manualConnectBtn = $<HTMLButtonElement>('manualConnect')
 const manualAbortBtn = $<HTMLButtonElement>('manualAbort')
@@ -315,8 +316,8 @@ const bridge = createPortalBridge({
     iframe: iframeEl,
     wallet: walletProxy,
     log: appendLog,
-    shouldAutoConnect: () => autoConnectEl.checked,
-    shouldAutoSign: () => autoSignEl.checked,
+    // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
+    // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
         const data = await bootstrap(address)
         return data?.token ?? null
@@ -328,12 +329,22 @@ const bridge = createPortalBridge({
     },
 })
 
-// If the wrapper started with a wallet pre-filled ("start disconnected" off)
-// AND the mock provider is active, pre-connect the mock wallet so its
-// internal state matches the UI. External providers (e.g. nightly) drive
-// the address themselves on connect, so we never auto-poke them here.
-if (activeProvider === 'mock' && walletEl.value.trim()) {
-    void mockAdapter.connect(walletEl.value.trim())
+// "Start connected": bring the wallet up on load.
+//  - mock: pre-fill the default address so the first bootstrap logs the portal
+//    in, and sync the mock adapter's internal state to match.
+//  - external: the extension owns the address, so we can't fill it in up front;
+//    instead connect once the portal iframe has loaded, which prompts the
+//    extension if it's available ("if possible").
+if (startConnected) {
+    if (activeProvider === 'mock') {
+        if (DEFAULT_WALLET.trim()) {
+            walletEl.value = DEFAULT_WALLET
+            setWalletButton(DEFAULT_WALLET.trim())
+            void mockAdapter.connect(DEFAULT_WALLET.trim())
+        }
+    } else {
+        iframeEl.addEventListener('load', () => { void bridge.connect() }, { once: true })
+    }
 }
 
 manualConnectBtn.addEventListener('click', () => {

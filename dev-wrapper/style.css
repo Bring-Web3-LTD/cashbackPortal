@@ -14,6 +14,9 @@ html, body {
     display: flex;
     align-items: center;
     gap: 16px;
+    /* Slightly lighter slate than the body/sidebar (#0f1115) so the header reads
+       as its own element. Stays in normal flow (under the overlay layers). */
+    background: #181d25;
 }
 
 .bar-text { flex: 1; min-width: 0; }
@@ -80,6 +83,11 @@ html, body {
     margin-left: 4px;
     padding-left: 16px;
     border-left: 1px solid #2a313c;
+    /* Dev-only control (clears hosted basic-auth) — keep it above the visual-
+       diff overlay layers like the side panel, even though the rest of the
+       header sits under them as page content. See Z_LAYER in visualDiffOverlay.ts. */
+    position: relative;
+    z-index: 2147483640;
     background: transparent;
     color: #8a93a3;
     border-top: 0;
@@ -127,7 +135,9 @@ html, body {
     top: 12px;
     left: 320px;
     transform: translateX(-50%);
-    z-index: 10;
+    /* Above the sidebar (and the overlay layers) so the collapse tab is always
+       clickable; still below the overlay's control panel. */
+    z-index: 2147483641;
     width: 22px;
     height: 36px;
     border: 1px solid #2a313c;
@@ -159,6 +169,50 @@ html, body {
     padding: 16px;
     overflow: auto;
     border-right: 1px solid #1f242c;
+    /* Sit above the visual-diff overlay layers so the dev controls are never
+       covered by the design image / grid / guides / rulers. Only the sidebar is
+       raised — NOT .layout — so the overlay still renders over the portal
+       iframe. The opaque background is what actually OCCLUDES the overlay; a
+       raised z-index alone shows through (the panel was transparent before).
+       See Z_LAYER in visualDiffOverlay.ts. */
+    position: relative;
+    z-index: 2147483640;
+    background: #0f1115;
+}
+
+/* Slim, theme-matched scrollbar for the sidebar and any scrollable panes inside
+   it (event log, JSON previews), replacing the chunky default OS bar. Firefox
+   uses scrollbar-*; Chromium/WebKit uses ::-webkit-scrollbar. The thumb floats
+   with a transparent border via background-clip so it reads as a thin pill. */
+.controls,
+.controls * {
+    scrollbar-width: thin;
+    scrollbar-color: #353c47 transparent;
+}
+.controls::-webkit-scrollbar,
+.controls *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.controls::-webkit-scrollbar-track,
+.controls *::-webkit-scrollbar-track {
+    background: transparent;
+}
+.controls::-webkit-scrollbar-thumb,
+.controls *::-webkit-scrollbar-thumb {
+    background: #353c47;
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+.controls::-webkit-scrollbar-thumb:hover,
+.controls *::-webkit-scrollbar-thumb:hover {
+    background: #454e5d;
+    background-clip: padding-box;
+}
+.controls::-webkit-scrollbar-corner,
+.controls *::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 .controls fieldset {
