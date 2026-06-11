@@ -4,28 +4,19 @@
  * Presented as a modal sheet anchored to the bottom: the previous page
  * (Home) renders behind a darkening layer, and the History sheet slides
  * up leaving an ~88px gap at the top so the darkened page peeks through.
- * Rounded top corners + 1px border per the design.
+ * Rounded top corners + 1px border per the design. Pure UI — logic in
+ * useMobileHistory.
  */
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import MobileHeader from '../components/MobileHeader/MobileHeader'
 import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
 import MobileHome from './MobileHome'
-import { useHistory } from '../hooks/useHistory'
+import { useMobileHistory } from '../hooks/useMobileHistory'
 import styles from './MobileHistory.module.css'
 
 const SKELETON_COUNT = 8
 
 const MobileHistory = () => {
-    const { t } = useTranslation()
-    const navigate = useNavigate()
-    const { rows, isLoading: historyLoading } = useHistory()
-    const [openId, setOpenId] = useState<string | null>(null)
-
-    const isLoading = historyLoading
-
-    const close = () => navigate(-1)
+    const { t, rows, isLoading, openId, close, onToggle } = useMobileHistory()
 
     return (
         <div className={styles.root} data-testid="mobile-history">
@@ -78,11 +69,7 @@ const MobileHistory = () => {
                                             key={row.id}
                                             row={row}
                                             isOpen={openId === row.id}
-                                            onToggle={() =>
-                                                setOpenId((cur) =>
-                                                    cur === row.id ? null : row.id,
-                                                )
-                                            }
+                                            onToggle={() => onToggle(row.id)}
                                         />
                                     ))}
                                 </div>
@@ -97,4 +84,3 @@ const MobileHistory = () => {
 }
 
 export default MobileHistory
-

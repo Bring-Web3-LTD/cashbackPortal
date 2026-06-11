@@ -1,27 +1,16 @@
 /*
- * Mobile FAQ
+ * Mobile FAQ — bottom-sheet overlay. Pure UI — logic in useMobileFaq.
  */
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import MobileHeader from '../components/MobileHeader/MobileHeader'
 import MobileFaqItem from '../components/MobileFaqItem/MobileFaqItem'
 import MobileHome from './MobileHome'
-import { useFaq } from '../hooks/useFaq'
+import { useMobileFaq } from '../hooks/useMobileFaq'
 import styles from './MobileFaq.module.css'
 
 const SKELETON_COUNT = 7
 
 const MobileFaq = () => {
-    const navigate = useNavigate()
-    const { t } = useTranslation()
-    const { data, isLoading } = useFaq()
-    const [openOrder, setOpenOrder] = useState<number | null>(null)
-
-    const close = () => navigate(-1)
-
-    const faq = data?.faq ?? []
-    const indentationMark = data?.indentationMark ?? ''
+    const { t, faq, indentationMark, isLoading, openOrder, close, onToggle } = useMobileFaq()
 
     return (
         <div className={styles.root} data-testid="mobile-faq">
@@ -55,11 +44,7 @@ const MobileFaq = () => {
                                     links={item.links ?? []}
                                     indentationMark={indentationMark}
                                     isOpen={openOrder === item.itemOrder}
-                                    onToggle={() =>
-                                        setOpenOrder((cur) =>
-                                            cur === item.itemOrder ? null : item.itemOrder,
-                                        )
-                                    }
+                                    onToggle={() => onToggle(item.itemOrder)}
                                 />
                             ))}
                         </div>

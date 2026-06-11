@@ -1,99 +1,31 @@
 /**
  * Inline search bar with autocomplete combobox. Replaces MobileCategories
- * while active.
+ * while active. Pure UI — all state/logic lives in useMobileSearchBar.
  */
-import {
-    KeyboardEvent,
-    useCallback,
-    useEffect,
-    useId,
-    useRef,
-    useState,
-} from 'react'
-import { useTranslation } from 'react-i18next'
 import Icon from '../../../components/Icon/Icon'
+import { useMobileSearchBar, MobileSearchBarProps } from '../../hooks/useMobileSearchBar'
 import styles from './styles.module.css'
 
-export interface MobileSearchSuggestion {
-    id: string
-    name: string
-}
+export type { MobileSearchSuggestion } from '../../hooks/useMobileSearchBar'
 
-interface Props {
-    value: string
-    onChange: (value: string) => void
-    onClose: () => void
-    suggestions?: MobileSearchSuggestion[]
-    onSelectSuggestion?: (name: string) => void
-    showNoResults?: boolean
-    showDropdown?: boolean
-}
-
-const MobileSearchBar = ({
-    value,
-    onChange,
-    onClose,
-    suggestions = [],
-    onSelectSuggestion,
-    showNoResults = false,
-    showDropdown = false,
-}: Props) => {
-    const { t } = useTranslation()
-    const inputRef = useRef<HTMLInputElement>(null)
-    const listboxId = useId()
-
-    // -1 = no row highlighted; Enter then commits suggestions[0] or value.
-    const [activeIndex, setActiveIndex] = useState(-1)
-
-    useEffect(() => setActiveIndex(-1), [suggestions])
-    useEffect(() => inputRef.current?.focus(), [])
-
-    const optionId = useCallback(
-        (id: string) => `${listboxId}-opt-${id}`,
-        [listboxId],
-    )
-
-    const commit = useCallback(
-        (name: string) => {
-            const trimmed = name.trim()
-            if (!trimmed) return
-            onSelectSuggestion?.(trimmed)
-        },
-        [onSelectSuggestion],
-    )
-
-    const handleSubmit = useCallback(
-        (e: React.FormEvent) => {
-            e.preventDefault()
-            const picked = suggestions[activeIndex]?.name ?? suggestions[0]?.name ?? value
-            commit(picked)
-        },
-        [activeIndex, suggestions, value, commit],
-    )
-
-    // Empty input → trailing icon doubles as a close affordance.
-    const handleIconClick = useCallback(() => {
-        if (!value.trim()) onClose()
-    }, [value, onClose])
-
-    const handleKeyDown = useCallback(
-        (e: KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Escape') {
-                e.preventDefault()
-                onClose()
-                return
-            }
-            if (!suggestions.length) return
-            if (e.key === 'ArrowDown') {
-                e.preventDefault()
-                setActiveIndex((i) => (i + 1) % suggestions.length)
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault()
-                setActiveIndex((i) => (i <= 0 ? suggestions.length - 1 : i - 1))
-            }
-        },
-        [suggestions.length, onClose],
-    )
+const MobileSearchBar = (props: MobileSearchBarProps) => {
+    const {
+        t,
+        inputRef,
+        listboxId,
+        activeIndex,
+        activeDescendant,
+        optionId,
+        commit,
+        value,
+        onChange,
+        suggestions,
+        showDropdown,
+        showNoResults,
+        handleSubmit,
+        handleIconClick,
+        handleKeyDown,
+    } = useMobileSearchBar(props)
 
     return (
         <div className={styles.wrapper}>
@@ -111,9 +43,7 @@ const MobileSearchBar = ({
                     aria-autocomplete="list"
                     aria-expanded={showDropdown}
                     aria-controls={showDropdown ? listboxId : undefined}
-                    aria-activedescendant={
-                        activeIndex >= 0 && activeIndex < suggestions.length ? optionId(suggestions[activeIndex].id) : undefined
-                    }
+                    aria-activedescendant={activeDescendant}
                 />
                 <button
                     type="submit"

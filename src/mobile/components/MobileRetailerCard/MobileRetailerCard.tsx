@@ -1,32 +1,15 @@
 /**
  * Retailer card: logo, name + cashback rate, Shop pill. Tap runs onClick
- * (activate flow). Logo failure falls back to initials.
+ * (activate flow). Logo failure falls back to initials. Pure UI — logic in
+ * useMobileRetailerCard.
  */
-import { useMemo, useState } from 'react'
-import { useRouteLoaderData } from 'react-router-dom'
-import formatCashback from '../../../utils/formatCashback'
-import { getInitials } from '../../../utils/getInitials'
 import Icon from '../../../components/Icon/Icon'
-import { useTranslation } from 'react-i18next'
+import { useMobileRetailerCard, MobileRetailerCardProps } from '../../hooks/useMobileRetailerCard'
 import styles from './styles.module.css'
 
-interface Props {
-    retailer: Retailer
-    iconPath: string
-    onClick: (retailer: Retailer) => void
-}
-
-const MobileRetailerCard = ({ retailer, iconPath, onClick }: Props) => {
-    const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
-    const { t } = useTranslation()
-    const [fallbackLogo, setFallbackLogo] = useState('')
-
-    const cashback = useMemo(
-        () => formatCashback(retailer.maxCashback, retailer.cashbackSymbol, retailer.cashbackCurrency),
-        [retailer.maxCashback, retailer.cashbackSymbol, retailer.cashbackCurrency],
-    )
-
-    const tokenSymbol = cryptoSymbols?.[0] ?? ''
+const MobileRetailerCard = (props: MobileRetailerCardProps) => {
+    const { retailer, iconPath, onClick } = props
+    const { t, cashback, tokenSymbol, fallbackLogo, onLogoError } = useMobileRetailerCard(props)
 
     return (
         <button
@@ -53,7 +36,7 @@ const MobileRetailerCard = ({ retailer, iconPath, onClick }: Props) => {
                             loading="lazy"
                             src={iconPath}
                             alt={`${retailer.displayName} logo`}
-                            onError={() => setFallbackLogo(getInitials(retailer.displayName))}
+                            onError={onLogoError}
                         />
                     )}
                 </div>

@@ -1,30 +1,18 @@
 /**
  * History row. Collapsed: logo, name + date, amount pill, status text.
- * Expanded: divider + per-step deal history. Visuals from CSS vars.
+ * Expanded: divider + per-step deal history. Pure UI — logic in
+ * useMobileHistoryItem.
  */
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { MobileHistoryRow } from '../../hooks/useHistory'
 import Icon from '../../../components/Icon/Icon'
+import { useMobileHistoryItem, MobileHistoryItemProps } from '../../hooks/useMobileHistoryItem'
 import styles from './styles.module.css'
 
-interface Props {
-    row: MobileHistoryRow
-    isOpen: boolean
-    onToggle: () => void
-}
-
-const MobileHistoryItem: FC<Props> = ({ row, isOpen, onToggle }) => {
-    const panelId = `mobile-history-panel-${row.id}`
-    const buttonId = `mobile-history-btn-${row.id}`
-    const [imgFailed, setImgFailed] = useState(false)
-
-    const hasDescription = row.description.some((d) => d[0] || d[1])
-    const expandable = hasDescription
-
-    const handleClick = () => {
-        if (expandable) onToggle()
-    }
+const MobileHistoryItem: FC<MobileHistoryItemProps> = (props) => {
+    const { row, isOpen } = props
+    const { panelId, buttonId, imgFailed, onImgError, expandable, handleClick } =
+        useMobileHistoryItem(props)
 
     return (
         <div
@@ -53,7 +41,7 @@ const MobileHistoryItem: FC<Props> = ({ row, isOpen, onToggle }) => {
                             className={styles.avatarImg}
                             src={row.iconSrc}
                             alt=""
-                            onError={() => setImgFailed(true)}
+                            onError={onImgError}
                         />
                     ) : null}
                 </span>

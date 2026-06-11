@@ -6,9 +6,9 @@
  */
 import { motion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
-import { GoogleAnalyticsProvider } from '../context/GoogleAnalyticsContext'
-import { WalletProvider } from '../context/WalletAddressContext'
-import { GA_MEASUREMENT_ID } from '../config'
+import { GoogleAnalyticsProvider } from '../../context/GoogleAnalyticsContext'
+import { WalletProvider } from '../../context/WalletAddressContext'
+import { GA_MEASUREMENT_ID } from '../../config'
 import styles from './MobileLayout.module.css'
 
 interface Props {

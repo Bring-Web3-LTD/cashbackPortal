@@ -1,48 +1,12 @@
-/** Mobile portal hero "Cashback earned" card: total earned amount + USD subtitle. */
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
-import { useRive, Layout, Fit } from '@rive-app/react-canvas'
+/** Mobile portal hero "Cashback earned" card: total earned amount + USD
+ * subtitle. Pure UI — logic in useMobileCashbackEarned. */
 import Icon from '../../../components/Icon/Icon'
-import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../hooks/useBalance'
+import { useMobileCashbackEarned } from '../../hooks/useMobileCashbackEarned'
 import styles from './styles.module.css'
 
-const formatUsd = (value: number): string => {
-    // Always render two decimals so the zero state reads "$0.00", not "$0".
-    if (!Number.isFinite(value) || value <= 0) return '$0.00'
-    return `$${value.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    })}`
-}
-
 const MobileCashbackEarned = () => {
-    const { t } = useTranslation()
-    const { cryptoSymbols, iconsPath } = useRouteLoaderData('root') as LoaderData
-    const { data, isLoading } = useBalance()
-
-    const [riveFailed, setRiveFailed] = useState(false)
-    const { RiveComponent } = useRive({
-        src: `${iconsPath}/fennec-fox.riv`,
-        autoplay: true,
-        layout: new Layout({ fit: Fit.Cover }),
-        onLoadError: () => setRiveFailed(true),
-    })
-
-    const eligible = selectEligible(data)
-    const pending = selectPending(data)
-    const totalEarned = selectTotalEarned(data)
-
-    // Hero number = backend's aggregate totalEarned; fall back to "0.00".
-    const amountDisplay = totalEarned?.tokenAmountDisplay ?? '0.00'
-    const symbol =
-        totalEarned?.tokenSymbol ??
-        eligible?.tokenSymbol ??
-        pending?.tokenSymbol ??
-        cryptoSymbols?.[0] ??
-        ''
-    // USD subtitle from backend's aggregate value; fall back to 0 (eligible + pending would miss the claimed portion).
-    const usdTotal = totalEarned?.totalEstimatedUsd ?? 0
+    const { t, isLoading, RiveComponent, riveFailed, amountDisplay, symbol, usdDisplay } =
+        useMobileCashbackEarned()
 
     // Loading skeleton: neutral tile, placeholder bars, no fox.
     if (isLoading) {
@@ -98,7 +62,7 @@ const MobileCashbackEarned = () => {
                         {symbol ? ` ${symbol}` : null}
                     </p>
                     <p className={styles.sub}>
-                        {t('currentValue') || 'Current value'}: {formatUsd(usdTotal)}
+                        {t('currentValue') || 'Current value'}: {usdDisplay}
                     </p>
                 </div>
             </div>

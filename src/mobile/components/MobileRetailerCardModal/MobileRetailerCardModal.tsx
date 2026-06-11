@@ -1,75 +1,24 @@
 /** Mobile T&C modal: retailer logo, cashback pill, terms, then Cancel + Go to shop (a target="_blank" anchor to the pre-fetched redirect URL so it opens a top-level tab). */
-import { useEffect, useMemo, useState } from 'react'
+/** Mobile T&C modal: retailer logo, cashback pill, terms, then Cancel + Go to
+ * shop (a target="_blank" anchor to the pre-fetched redirect URL so it opens a
+ * top-level tab). Pure UI — logic in useMobileRetailerCardModal. */
 import { createPortal } from 'react-dom'
-import { useRouteLoaderData } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
-import formatCashback from '../../../utils/formatCashback'
-import { getInitials } from '../../../utils/getInitials'
 import Icon from '../../../components/Icon/Icon'
+import { useMobileRetailerCardModal, MobileRetailerCardModalProps } from '../../hooks/useMobileRetailerCardModal'
 import styles from './styles.module.css'
 
-interface Props {
-    open: boolean
-    retailer: Retailer | null
-    iconPath: string
-    terms: string
-    /** Pre-fetched retailer redirect URL. Empty until activate() resolves. */
-    redirectLink: string
-    onCancel: () => void
-    onGoToShop: () => void
-}
-
-const MobileRetailerCardModal = ({
-    open,
-    retailer,
-    iconPath,
-    terms,
-    redirectLink,
-    onCancel,
-    onGoToShop,
-}: Props) => {
-    const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
-    const { t } = useTranslation()
-    const [fallbackLogo, setFallbackLogo] = useState('')
-    // Spinner state set only after tapping "Go to shop"; reset on retailer change.
-    const [isNavigating, setIsNavigating] = useState(false)
-
-    // Reset logo fallback whenever the retailer changes so a new icon attempts
-    // a fresh load instead of inheriting the previous retailer's failure state.
-    useEffect(() => {
-        setFallbackLogo('')
-        setIsNavigating(false)
-    }, [retailer?.id, open])
-
-    // Lock background page scroll while the modal is open so the only
-    // scrollbar that ever appears is the (hidden) one inside the T&C box.
-    // Some mobile browsers scroll <html>, others <body>, so lock both.
-    useEffect(() => {
-        if (!open) return
-        const { documentElement: html, body } = document
-        const prevHtml = html.style.overflow
-        const prevBody = body.style.overflow
-        const prevTouch = body.style.touchAction
-        html.style.overflow = 'hidden'
-        body.style.overflow = 'hidden'
-        body.style.touchAction = 'none'
-        return () => {
-            html.style.overflow = prevHtml
-            body.style.overflow = prevBody
-            body.style.touchAction = prevTouch
-        }
-    }, [open])
-
-    const cashback = useMemo(
-        () =>
-            retailer
-                ? formatCashback(retailer.maxCashback, retailer.cashbackSymbol, retailer.cashbackCurrency)
-                : '',
-        [retailer],
-    )
-
-    const tokenSymbol = cryptoSymbols?.[0] ?? ''
+const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
+    const { open, retailer, iconPath, terms, redirectLink, onCancel } = props
+    const {
+        t,
+        fallbackLogo,
+        onLogoError,
+        isNavigating,
+        onGoToShopClick,
+        cashback,
+        tokenSymbol,
+    } = useMobileRetailerCardModal(props)
 
     // Portal to <body> so ancestor `transform`s (framer-motion on the
     // MobileLayout root) don't make `position: fixed` resolve against the
@@ -128,7 +77,7 @@ const MobileRetailerCardModal = ({
                                                 className={styles.logo_img}
                                                 src={iconPath}
                                                 alt={`${retailer.displayName} logo`}
-                                                onError={() => setFallbackLogo(getInitials(retailer.displayName))}
+                                                onError={onLogoError}
                                             />
                                         )}
                                     </div>
@@ -171,10 +120,7 @@ const MobileRetailerCardModal = ({
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             aria-busy={isNavigating}
-                                            onClick={() => {
-                                                setIsNavigating(true)
-                                                onGoToShop()
-                                            }}
+                                            onClick={onGoToShopClick}
                                         >
                                             {isNavigating ? (
                                                 <span className={styles.spinner} aria-hidden="true" />

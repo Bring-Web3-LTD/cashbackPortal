@@ -1,84 +1,35 @@
-import { useEffect, useState } from 'react'
+/** Mobile claim flow modal (confirm / minimum / processing / success /
+ * failure). Pure UI — logic in useMobileClaimModal. */
 import { createPortal } from 'react-dom'
-import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
 import Icon from '../../../components/Icon/Icon'
-import message from '../../../utils/message'
-import {
-    formatSignedAmount,
-    MobileClaimModalState,
-    shortenWalletAddress,
-} from '../../utils/claimFlow'
+import { useMobileClaimModal, MobileClaimModalProps } from '../../hooks/useMobileClaimModal'
 import styles from './styles.module.css'
 
-interface Props {
-    state: MobileClaimModalState | null
-    tokenSymbol: string
-    tokenAmountDisplay: string
-    tokenAmount: number
-    minimumClaimThreshold: number
-    walletAddress: string | null
-    /** Wallet display name from the backend token (verify response). */
-    walletName?: string
-    /** Wallet emoji asset URL from the backend token (verify response). */
-    walletEmoji?: string
-    explorerLink: string | null
-    onClose: () => void
-    onConfirm: () => void
-    onTryAgain: () => void
-}
-
-const MobileClaimModal = ({
-    state,
-    tokenSymbol,
-    tokenAmountDisplay,
-    tokenAmount,
-    minimumClaimThreshold,
-    walletAddress,
-    walletName,
-    walletEmoji,
-    explorerLink,
-    onClose,
-    onConfirm,
-    onTryAgain,
-}: Props) => {
-    const { t } = useTranslation()
-    const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
-    const cryptoToken = cryptoTokens?.find(ct => ct.symbol === tokenSymbol)
-    const open = !!state
-    // Fall back to the default emoji icon if the provided emoji URL fails to load.
-    const [emojiFailed, setEmojiFailed] = useState(false)
-    useEffect(() => { setEmojiFailed(false) }, [walletEmoji])
-
-    useEffect(() => {
-        if (!open) return
-        const { documentElement: html, body } = document
-        const prevHtml = html.style.overflow
-        const prevBody = body.style.overflow
-        html.style.overflow = 'hidden'
-        body.style.overflow = 'hidden'
-        message({ action: 'POPUP_OPENED', overlayBgColor: 'rgba(15, 15, 26, 0.75)' })
-
-        return () => {
-            html.style.overflow = prevHtml
-            body.style.overflow = prevBody
-            message({ action: 'POPUP_CLOSED' })
-        }
-    }, [open])
+const MobileClaimModal = (props: MobileClaimModalProps) => {
+    const {
+        state,
+        tokenSymbol,
+        tokenAmountDisplay,
+        minimumClaimThreshold,
+        walletName,
+        walletEmoji,
+        explorerLink,
+        onClose,
+        onConfirm,
+        onTryAgain,
+    } = props
+    const {
+        t,
+        open,
+        cryptoToken,
+        emojiFailed,
+        onEmojiError,
+        signedAmount,
+        shortAddress,
+        title,
+    } = useMobileClaimModal(props)
 
     if (!open) return null
-
-    const signedAmount = formatSignedAmount(tokenAmountDisplay, tokenAmount)
-    const shortAddress = shortenWalletAddress(walletAddress)
-
-    const titles: Record<MobileClaimModalState, string> = {
-        confirm: t('claimRewardsTitle') || 'Claim Rewards',
-        minimum: t('minimumClaimTitle') || 'Minimum Claim',
-        success: t('rewardClaimedHeader') || 'Reward claimed',
-        failure: t('claimRewardsTitle') || 'Claim Rewards',
-        processing: t('claimingHeader') || 'Claiming',
-    }
-    const title = titles[state]
 
     return createPortal(
         <div
@@ -141,7 +92,7 @@ const MobileClaimModal = ({
                                     <span className={styles.rowLeft}>
                                         {(walletEmoji && !emojiFailed) && (
                                             <span className={styles.walletEmoji} aria-hidden="true">
-                                                <img src={walletEmoji} alt="" onError={() => setEmojiFailed(true)} />
+                                                <img src={walletEmoji} alt="" onError={onEmojiError} />
                                             </span>
                                         )}
                                         <span className={styles.rowLabel}>
