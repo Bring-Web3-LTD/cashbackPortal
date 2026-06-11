@@ -157,14 +157,14 @@
 }
 
 .markdown p strong {
-    font-size: var(--modal-deal-markdown-title-f-s, var(--modal-deal-markdown-f-s));
+    font-size: var(--modal-deal-markdown-f-s);
     font-weight: var(--modal-deal-markdown-bold-f-w);
     color: var(--modal-deal-markdown-bold-f-c);
 }
 
 .markdown h3,
 .markdown h3 strong {
-    font-size: var(--modal-deal-markdown-title-f-s, var(--modal-deal-markdown-f-s));
+    font-size: var(--modal-deal-markdown-h3-f-s, var(--modal-deal-markdown-f-s));
     font-weight: var(--modal-deal-markdown-h3-f-w, var(--modal-deal-markdown-bold-f-w));
     color: var(--modal-deal-markdown-h3-f-c, var(--modal-deal-markdown-bold-f-c));
 }
