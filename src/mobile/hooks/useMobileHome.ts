@@ -178,7 +178,7 @@ export const useMobileHome = () => {
 
             const submitted = await claimSubmit(body)
 
-            if (submitted?.status === 202) {
+            if (submitted?.ok) {
                 setClaimExplorerLink(submitted.explorerLink ?? claimExplorerLinkRef.current)
                 setClaimState('success')
                 queryClient.invalidateQueries({ queryKey: ['balance', walletAddress] })
