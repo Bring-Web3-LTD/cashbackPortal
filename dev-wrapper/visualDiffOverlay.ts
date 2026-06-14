@@ -70,7 +70,9 @@ const FIGMA_TOKEN_KEY = 'bring.visualDiff.figmaToken'
 // band down uniformly, preserving the layers' relative order. The matching
 // chrome z-index lives in style.css (.bar / .controls / .toggle).
 const Z_LAYER = '2147483600'
-const Z_DROP_HINT = '2147483599'
+// Above the overlay layers (so the dimmer/affordance is never hidden behind an
+// active image/grid/guides while dragging) but below the panel (kept usable).
+const Z_DROP_HINT = '2147483639'
 const Z_PANEL = '2147483647'
 
 // Pull the file key + node id out of a Figma URL (design/file/board/proto).
@@ -775,7 +777,15 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     // `reset` never moves it.
     const PANEL_POS_KEY = 'bring.visualDiff.panelPos'
     const loadPanelPos = (): { left: number; top: number } | null => {
-        try { const raw = localStorage.getItem(PANEL_POS_KEY); return raw ? JSON.parse(raw) : null } catch { return null }
+        try {
+            const raw = localStorage.getItem(PANEL_POS_KEY)
+            if (!raw) return null
+            const p = JSON.parse(raw)
+            // Reject malformed/partial values - otherwise NaN flows into
+            // applyPanelPos and writes `NaNpx`, losing the panel off-screen.
+            if (p && Number.isFinite(p.left) && Number.isFinite(p.top)) return { left: p.left, top: p.top }
+            return null
+        } catch { return null }
     }
     let panelPos = loadPanelPos()
     const savePanelPos = () => {
