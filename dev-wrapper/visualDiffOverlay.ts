@@ -63,12 +63,15 @@ const STORAGE_KEY = 'bring.visualDiff.wrapper.v1'
 const FIGMA_TOKEN_KEY = 'bring.visualDiff.figmaToken'
 
 // Stacking bands. The overlay's own layers (design image, grid, guides, rulers,
-// pick boxes) sit just below the very top so the dev wrapper's chrome (header +
-// sidebar) can be raised ABOVE them — that chrome is tooling, not page content,
-// so it shouldn't be covered by the design/guides/grid. The draggable control
-// panel stays at the very top, above everything. These shift the whole overlay
-// band down uniformly, preserving the layers' relative order. The matching
-// chrome z-index lives in style.css (.bar / .controls / .toggle).
+// pick boxes) sit just below the very top so the dev wrapper's interactive chrome
+// can be raised ABOVE them — those controls are tooling, not page content, so
+// they shouldn't be covered by the design/guides/grid. Only the controls that
+// need to stay usable are lifted out (the sidebar and its toggle, plus the
+// logout button); the header bar itself deliberately stays UNDER the overlay as
+// page-content backdrop. The draggable control panel stays at the very top,
+// above everything. These shift the whole overlay band down uniformly,
+// preserving the layers' relative order. The matching chrome z-index lives in
+// style.css (.controls / .toggle / .logout-btn).
 const Z_LAYER = '2147483600'
 // Above the overlay layers (so the dimmer/affordance is never hidden behind an
 // active image/grid/guides while dragging) but below the panel (kept usable).
