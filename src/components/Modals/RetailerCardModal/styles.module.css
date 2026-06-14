@@ -1,3 +1,16 @@
+.retailer_overlay {
+    --custom-modal-bg: var(--retailer-custom-modal-bg, var(--modal-bg));
+}
+
+.retailer_overlay_desktop {
+    --modal-pt: 40px;
+    --modal-px: 24px;
+    --modal-close-top: 16px;
+    --modal-close-right: 24px;
+    --modal-close-size: 24px;
+    --modal-close-pad: 0px;
+}
+
 .modal_container {
     width: 100%;
     overflow: hidden;
@@ -12,19 +25,73 @@
     width: 100%;
 }
 
+.go_shop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+}
+
+.go_shop_top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.go_shop_top .logo_container {
+    margin-bottom: 0;
+}
+
+.go_shop_top .retailer_name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    line-height: 1.2;
+}
+
+.go_shop_bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+}
+
 .back_btn {
     position: absolute;
     display: flex;
     align-items: center;
-    gap: 6px;
+    padding: 0;
+    gap: 4px;
     top: 16px;
-    left: 16px;
+    left: 20px;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: var(--history-back-f-s);
+    line-height: 22px;
+    height: fit-content;
+    font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
     font-weight: var(--history-back-f-w);
-    color: var(--modal-deal-name-f-c);
+    color: var(--modal-deal-back-f-c, var(--modal-deal-name-f-c));
+    letter-spacing: 0.5px;
+}
+
+.back_icon_container{
+    display: flex;
+    min-width: 24px;
+    min-width: 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+.back_txt_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .full {
@@ -42,7 +109,8 @@
 }
 
 .markdown {
-    --padding: 16px;
+    --padding: 10px;
+    --scrollbar-gap: 5px;
     color: var(--modal-deal-markdown-f-c);
     background: var(--modal-deal-markdown-bg);
     border-radius: var(--modal-deal-markdown-radius);
@@ -50,42 +118,55 @@
     border-style: solid;
     border-color: var(--modal-deal-markdown-border-c);
     height: calc(300px - var(--padding) * 2);
-    width: calc(100% - var(--padding) * 2);
+    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w, 0px) * 2);
     padding: var(--padding);
     overflow-y: auto;
     font-size: var(--modal-deal-markdown-f-s);
 }
 
 .markdown_short {
+    --padding: 10px;
     margin-top: 12px;
     margin-bottom: 12px;
-    height: 151px;
-    border: none;
+    height: calc(216px - var(--padding) * 2);
 }
 
 .markdown::-webkit-scrollbar {
     background: transparent;
-    width: var(--scrollbar-w);
+    width: calc(3px + var(--scrollbar-gap));
 }
 
 .markdown::-webkit-scrollbar-thumb {
-    border: 4px solid rgba(0, 0, 0, 0);
+    border-right: var(--scrollbar-gap) solid transparent;
+    border-top: 6px solid transparent;
     background-clip: padding-box;
     border-radius: 9999px;
-    background-color: var(--scrollbar-bg);
+    background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
+    min-height: 36px;
 }
 
 .markdown p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    line-height: 20px;
+    line-height: 18px;
+    margin: 0px;
 }
 
-.markdown p strong,
-.markdown h3 {
+.markdown ul,
+.markdown ol,
+.markdown li {
+    font-size: var(--modal-deal-markdown-list-f-s, var(--modal-deal-markdown-f-s));
+}
+
+.markdown p strong {
     font-size: var(--modal-deal-markdown-f-s);
     font-weight: var(--modal-deal-markdown-bold-f-w);
     color: var(--modal-deal-markdown-bold-f-c);
+}
+
+.markdown h3,
+.markdown h3 strong {
+    font-size: var(--modal-deal-markdown-h3-f-s, var(--modal-deal-markdown-f-s));
+    font-weight: var(--modal-deal-markdown-h3-f-w, var(--modal-deal-markdown-bold-f-w));
+    color: var(--modal-deal-markdown-h3-f-c, var(--modal-deal-markdown-bold-f-c));
 }
 
 .markdown h3 {
@@ -104,10 +185,10 @@
     justify-content: center;
     width: 100%;
     background: var(--primary-btn-bg);
-    font-size: var(--primary-btn-f-s);
+    font-size: var(--modal-deal-btn-f-s, var(--primary-btn-f-s));
     font-weight: var(--primary-btn-f-w);
     color: var(--primary-btn-f-c);
-    height: 48px;
+    height: 50px;
     border-width: var(--primary-btn-border-w);
     border-style: solid;
     border-color: var(--primary-btn-border-c);
@@ -124,6 +205,29 @@
 .start_btn:disabled {
     background: var(--primary-btn-disabled-bg);
     color: var(--primary-btn-disabled-f-c);
+}
+
+.loading_btn:disabled {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-f-c);
+    opacity: 1;
+    cursor: default;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0%, currentColor 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    animation: go-shop-spin 0.7s linear infinite;
+}
+
+@keyframes go-shop-spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .consent_txt {
@@ -145,7 +249,7 @@
 }
 
 .retailer_name {
-    color: var(--modal-deal-name-f-s);
+    font-size: var(--modal-deal-name-f-s);
     font-weight: var(--modal-deal-name-f-w);
     color: var(--modal-deal-name-f-c);
     white-space: nowrap;
@@ -171,8 +275,8 @@
 }
 
 .logo_big {
-    width: 70px;
-    height: 70px;
+    width: 68px;
+    height: 68px;
 }
 
 .fallback_logo {
@@ -199,7 +303,7 @@
     border: none;
     margin: 0;
     padding: 0;
-    color: var(--modal-deal-consent-f-c);
+    color: var(--modal-deal-terms-btn-f-c, var(--modal-deal-consent-f-c));
     font-size: var(--modal-deal-consent-f-s);
     font-weight: var(--modal-deal-consent-f-w);
     text-decoration: underline;

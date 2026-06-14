@@ -28,7 +28,7 @@
     text-decoration: none;
     font-size: var(--history-back-f-s);
     font-weight: var(--history-back-f-w);
-    color: var(--history-back-f-c);
+    color: var(--history-page-back-f-c, var(--history-back-f-c));
     transition: .2s;
 }
 
@@ -113,7 +113,7 @@
     .back_btn:hover {
         font-size: var(--history-back-hover-f-s);
         font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c);
+        color: var(--history-page-back-f-c, var(--history-back-hover-f-c));
     }
 }
 

@@ -19,10 +19,12 @@
 
 .card:hover {
     border-color: var(--retailer-card--hover-border-color);
+    background: var(--retailer-card-hover-bg, var(--retailer-card-bg));
 }
 
 .card:active {
     border-color: var(--retailer-card--hover-border-color);
+    background: var(--retailer-card-hover-bg, var(--retailer-card-bg));
 }
 
 .logo_container {
@@ -111,14 +113,16 @@
     position: absolute;
     top: 16px;
     right: 0;
-    width: 50px;
-    height: 12px;
+    min-width: 37px;
+    max-width: 56px;
+    width: fit-content;
+    height: fit-content;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
     line-height: 12px;
     vertical-align: middle;
     text-align: center;
-    padding: 5px 0;
+    padding: 5px 8px;
     color: var(--retailer-card-flag-f-c);
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);
@@ -132,7 +136,6 @@
     font-weight: var(--retailer-card-flag-campaign-f-w, var(--retailer-card-flag-f-w));
 }
 
-.skeleton,
 .skeleton_logo,
 .skeleton_retailer_name,
 .skeleton_cashback_rate {
@@ -140,21 +143,30 @@
 }
 
 .skeleton_logo {
-    width: 62px;
-    height: 62px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
 }
 
+.skeleton_text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+}
+
 .skeleton_retailer_name {
-    width: 55px;
-    height: 19px;
-    border-radius: 20px;
+    width: 90px;
+    height: 14px;
+    border-radius: 100px;
 }
 
 .skeleton_cashback_rate {
-    width: 117px;
-    height: 25px;
-    border-radius: 20px;
+    width: 150px;
+    height: 16px;
+    border-radius: 100px;
 }
 
 @media screen and (max-width: 768px) {

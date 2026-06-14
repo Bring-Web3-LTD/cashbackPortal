@@ -1,6 +1,6 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, MouseEvent, useEffect, useId, useState } from "react"
+import { Fragment, MouseEvent, useEffect, useId, useRef, useState } from "react"
 
 // components
 import Select, {
@@ -11,6 +11,7 @@ import Select, {
     ControlProps,
     NoticeProps,
     SingleValueProps,
+    SelectInstance,
 } from "react-select"
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
@@ -23,25 +24,33 @@ interface Props {
     onChangeFn: (value: ReactSelectOptionType) => void
 }
 
+const optionRowStyle = {
+    fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
+    fontSize: "var(--search-option-f-s, 15px)",
+    lineHeight: "22px",
+    height: "33px",
+    color: "var(--search-option-f-c)",
+    padding: "5px 20px 5px 39px",
+} as const
+
 const customStyles: StylesConfig<ReactSelectOptionType> = {
-    control: (base, state) => ({
+    control: (base, state) => {
+        const borderColor = state.isFocused
+            ? "var(--search-border-focus-c, var(--search-border-c))"
+            : "var(--search-border-c)"
+        return {
         ...base,
-        border: "var(--search-border-w) solid var(--search-border-c)",
-        borderBottom: state.menuIsOpen ? "none" : "1px solid var(--search-border-c)",
-        borderRadius: "var(--search-radius)",
-        borderBottomLeftRadius: state.menuIsOpen ? 0 : "var(--search-radius)",
-        borderBottomRightRadius: state.menuIsOpen ? 0 : "var(--search-radius)",
+        border: `var(--search-border-w) solid ${borderColor}`,
+        borderRadius: "var(--search-radius, 10px)",
         alignContent: "center",
         "&:hover": {
-            border: "var(--search-border-w) solid var(--search-border-c)",
-            borderBottom: state.menuIsOpen ?
-                "none" :
-                "var(--search-border-w) solid var(--search-border-c)",
+            border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
         width: "438px",
-        height: "48px",
-        padding: "4px 8px 4px 12px",
+        height: "46px",
+        padding: "8px 8px 8px 17px",
+        gap: "6px",
         fontSize: "var(--search-f-s)",
         fontWeight: "var(--search-f-w)",
         cursor: "text",
@@ -50,56 +59,50 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         "@media only screen and (max-width: 1280px)": {
             width: "342px",
         }
-    }),
+        }
+    },
     menuList: (base) => ({
         ...base,
         paddingTop: 0,
         paddingBottom: 0,
-        "&:last-child": {
-            borderBottomLeftRadius: "var(--search-radius)",
-            borderBottomRightRadius: "var(--search-radius)",
-        },
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+        scrollbarWidth: "none",
         "::-webkit-scrollbar": {
-            width: "10px",
+            display: "none",
         },
-        "::-webkit-scrollbar-track": {
-            background: "transparent",
-        },
-        "::-webkit-scrollbar-thumb": {
-            background: "var(--search-scrollbar-bg)",
-            backgroundClip: "padding-box",
-            border: "4px solid rgba(7, 19, 23, 0)",
-            borderRadius: "10px",
-        },
-        // "::-webkit-scrollbar-thumb:hover": {
-        //     background: "#555",
-        // },
     }),
     menu: (base) => ({
         ...base,
-        marginTop: 0,
-        backgroundColor: "var(--search-bg)",
-        border: "var(--search-border-w) solid var(--search-border-c)",
-        borderTop: "0",
-        boxShadow: 'none',
-        borderBottomLeftRadius: "var(--search-radius)",
-        borderBottomRightRadius: "var(--search-radius)",
+        marginTop: "6px",
+        backgroundColor: "var(--search-menu-bg, var(--search-bg))",
+        border: "var(--search-menu-border-w, 0) solid var(--search-menu-border-c, transparent)",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
+        borderRadius: "var(--search-menu-radius, 12px)",
+        overflow: "hidden",
+        paddingTop: "10px",
+        paddingBottom: "15px",
         fontSize: "var(--search-f-s)",
         zIndex: 10,
     }),
-    option: (base, state) => ({
-        ...base,
-        fontWeight: "var(--search-f-w)",
-        backgroundColor: state.isFocused
-            ? "var(--search-option-hover-bg)"
-            : state.isSelected
-                ? "var(--search-bg)"
-                : base.backgroundColor,
-        "&:active": { backgroundColor: "var(--search-option-hover-bg)" },
-        color: "var(--search-option-f-c)",
-        cursor: "pointer",
-        paddingLeft: '40px',
-    }),
+    option: (base, state) => {
+        const isSingleOption = (state.selectProps.options?.length ?? 0) <= 1
+        return {
+            ...base,
+            ...optionRowStyle,
+            backgroundColor: isSingleOption
+                ? "transparent"
+                : state.isFocused
+                    ? "var(--search-option-hover-bg)"
+                    : state.isSelected
+                        ? "var(--search-menu-bg, var(--search-bg))"
+                        : "transparent",
+            "&:hover": { backgroundColor: isSingleOption ? "transparent" : "var(--search-option-hover-bg)" },
+            "&:active": { backgroundColor: isSingleOption ? "transparent" : "var(--search-option-hover-bg)" },
+            cursor: "pointer",
+        }
+    },
     input: (base) => ({
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
@@ -112,6 +115,16 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     singleValue: (base) => ({
         ...base,
         color: 'var(--search-f-c)',
+    }),
+    valueContainer: (base) => ({
+        ...base,
+        padding: 0,
+    }),
+    noOptionsMessage: (base) => ({
+        ...base,
+        padding: "5px 20px 5px 39px",
+        textAlign: "left",
+        color: "var(--search-option-f-c)",
     }),
 }
 
@@ -131,18 +144,25 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 
     return (
         <components.NoOptionsMessage {...props}>
-            No options
+            <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
+                No results.
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-option-f-c)" }}>
+                Try a different search term
+            </div>
         </components.NoOptionsMessage>
     )
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
+    const isActive = props.isFocused || props.selectProps.menuIsOpen
     return (
         <components.Control {...props}>
             <Icon
-                height={20}
-                width={20}
-                name="magnifying-glass.svg"
+                height={24}
+                width={24}
+                name={isActive ? "magnifying-glass-focus.svg" : "magnifying-glass.svg"}
+                fallbackName="magnifying-glass.svg"
                 alt="magnifying-glass-icon"
             />
             {props.children}
@@ -157,7 +177,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
-    const [msg, setMsg] = useState("")
+    const selectRef = useRef<SelectInstance<ReactSelectOptionType> | null>(null)
     const { sendGaEvent } = useGoogleAnalytics()
     const { t } = useTranslation()
 
@@ -188,26 +208,21 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
         })
 
         onChangeFn({ value, label: value })
-        setIsFocused(false)
+        // Blurring fires the Select's onBlur, which sets isFocused(false) –
+        // keep focus state driven by a single source (the blur event).
+        selectRef.current?.blur()
     }
 
     const handleInputChange = (inputValue: string) => {
         setInput(inputValue)
         // eslint-disable-next-line no-unsafe-optional-chaining
         if (!inputValue || (inputValue?.trim()).length < 2) {
-            // eslint-disable-next-line no-unsafe-optional-chaining
-            if ((inputValue?.trim()).length == 1) {
-                setMsg("Keep typing...")
-            } else if (msg.length) {
-                setMsg("")
-            }
             if (isMenuOpen) setIsMenuOpen(false)
             if (filteredOptions.length) {
                 setFilteredOptions([])
             }
         } else {
             const input = inputValue.trimStart().toLowerCase()
-            if (msg.length) setMsg("")
             if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
 
             // if (input.length === 3) {
@@ -255,6 +270,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             className={styles.search}>
             <Select
                 id="search-select"
+                ref={selectRef}
                 instanceId={id}
                 placeholder={t('searchPlaceholder')}
                 styles={customStyles}
@@ -273,11 +289,6 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 value={value}
                 onBlur={() => setIsFocused(false)}
             />
-            {msg.length ? (
-                <div className={styles.msg}>
-                    {msg}
-                </div>
-            ) : null}
         </div>
     )
 }

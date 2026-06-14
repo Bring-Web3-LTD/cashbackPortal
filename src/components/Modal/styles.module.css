@@ -13,11 +13,12 @@
     --padding: 32px;
     margin-top: var(--modal-offset-top);
     position: relative;
+    height: var(--modal-h, auto);
     max-height: calc(621px - var(--padding) * 2);
-    width: calc(512px - var(--padding) * 2);
+    width: calc(512px - var(--modal-px, var(--padding)) * 2);
     display: flex;
     justify-content: center;
-    padding: var(--padding);
+    padding: var(--modal-pt, var(--padding)) var(--modal-px, var(--padding)) var(--modal-pb, var(--padding));
     background: var(--_modal-bg);
     border-width: var(--modal-border-w);
     border-style: solid;
@@ -30,13 +31,19 @@
 .close_btn {
     --corner: 32px;
     position: absolute;
-    top: 32px;
-    right: 32px;
+    top: var(--modal-close-top, 32px);
+    right: var(--modal-close-right, 32px);
+    padding: var(--modal-close-pad, 1px 6px);
     z-index: 11;
     cursor: pointer;
     background: transparent;
     border: none;
     outline: none;
+}
+
+.close_btn img {
+    width: var(--modal-close-size, 20px);
+    height: var(--modal-close-size, 20px);
 }
 
 @media screen and (max-width: 768px) {

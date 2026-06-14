@@ -194,14 +194,17 @@
     --modal-deal-name-f-s: 22px;
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #1A1919;
+    --modal-deal-back-f-c: #0A2EBF;
     --modal-deal-markdown-bg: transparent;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: var(--Content-Light-contentDisabled, #BCBDC1);
     --modal-deal-markdown-radius: 12px;
-    --modal-deal-markdown-f-s: 14px;
+    --modal-deal-markdown-f-s: 12px;
     --modal-deal-markdown-f-w: 400;
     --modal-deal-markdown-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --modal-deal-markdown-bold-f-w: 600;
+    --modal-deal-markdown-h3-f-s: 13px;
+    --modal-deal-markdown-h3-f-w: 700;
+    --modal-deal-markdown-h3-f-c: var(--Content-Light-contentPrimary, #1A1919);    --modal-deal-markdown-bold-f-w: 600;
     --modal-deal-markdown-bold-f-c: var(--Content-Light-contentPrimary, #1A1919);
     --modal-deal-consent-f-s: 13px;
     --modal-deal-consent-f-w: 400;
@@ -219,13 +222,19 @@
     --scrollbar-w: 10px;
 
     --search-bg: #FFFFFF;
+    --search-menu-bg: #FFFFFF;
     --search-f-s: 15px;
     --search-f-w: 400;
     /* Here */
     --search-f-c: var(--Content-Light-contentSecondary, #84868C);
-    --search-option-f-c: #d41313;/**/
-    --search-option-hover-bg: #1F232E;/**/
+    --search-option-f-c: #1A1919;
+    --search-option-f-s: 16px;
+    --search-option-f-w: 400;
+    --search-option-hover-bg: #F5F6F7;
     --search-radius: 6px;
+    --search-menu-radius: 6px;
+    --search-menu-border-w: 0;
+    --search-menu-border-c: transparent;
     --search-border-w: 1px;
     --search-border-c: #E1E1E1;
     --search-placeholder-f-c: #8C8C8C;

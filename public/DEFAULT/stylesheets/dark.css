@@ -253,12 +253,18 @@
     --scrollbar-w: 12px;
 
     --search-bg: #252B33;
+    --search-menu-bg: #252B33;
     --search-f-s: 14px;
     --search-f-w: 400;
     --search-f-c: #F3F4F6;
     --search-option-f-c: #F3F4F6;
+    --search-option-f-s: 15px;
+    --search-option-f-w: 400;
     --search-option-hover-bg: #2A3038;
     --search-radius: 8px;
+    --search-menu-radius: 8px;
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: rgba(255, 255, 255, 0.1);
     --search-border-w: 1px;
     --search-border-c: #2A3038;
     --search-placeholder-f-c: #9CA3AF;
@@ -274,7 +280,7 @@
 
     --history-back-hover-f-s: 14px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #7B9AEB;
+    --history-back-hover-f-c: var(--history-back-f-c);
 
     --history-back-x-location: 64px;
 
