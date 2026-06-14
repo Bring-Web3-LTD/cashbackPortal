@@ -20,6 +20,12 @@
     overflow: hidden;
 }
 
+/* While the hero card (first child) is loading, sit tighter to the top
+   (16px vs 32px). Driven off the skeleton's own aria-busy. */
+.content:has(> :first-child[aria-busy='true']) {
+    padding-top: 16px;
+}
+
 /* All fixed top sections (hero, rewards, helper buttons, tabs row) keep
    their natural height; only the cards list (last child) flexes to fill
    the remaining space and scroll. */

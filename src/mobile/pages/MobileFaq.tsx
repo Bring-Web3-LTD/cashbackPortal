@@ -21,10 +21,6 @@ const MobileFaq = () => {
             <div className={styles.sheet} role="dialog" aria-modal="true">
                 <MobileHeader title={t('faq') || 'FAQ'} onBack={close} />
                 <main className={styles.content}>
-                    <p className={styles.intro}>
-                        {t('faqIntro') || 'If you have any question, please read the FAQ below:'}
-                    </p>
-
                     {isLoading ? (
                         <div className={styles.list} aria-hidden="true">
                             {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
@@ -34,6 +30,10 @@ const MobileFaq = () => {
                             ))}
                         </div>
                     ) : (
+                        <>
+                        <p className={styles.intro}>
+                            {t('faqIntro') || 'If you have any question, please read the FAQ below:'}
+                        </p>
                         <div className={styles.list}>
                             {faq.map((item) => (
                                 <MobileFaqItem
@@ -48,6 +48,7 @@ const MobileFaq = () => {
                                 />
                             ))}
                         </div>
+                        </>
                     )}
                 </main>
             </div>
