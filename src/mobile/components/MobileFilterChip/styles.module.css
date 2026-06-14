@@ -5,22 +5,21 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 32px;
 }
 
 .chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--filter-chip-gap, 6px);
+    gap: 4px;
     height: auto;
     padding: 4px 8px;
-    border-radius: var(--tab-radius, 4px);
-    background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
-    color: var(--tab-active-f-c, #8793FF);
+    border-radius: var(--filter-chip-radius, 4px);
+    background: var(--filter-chip-bg, rgba(62, 72, 100, 0.50));
+    color: var(--filter-chip-f-c, #F7F7F7);
     font-family: 'Prompt', system-ui, sans-serif;
-    font-size: var(--tab-f-s, 12px);
-    font-weight: var(--tab-f-w, 400);
-    line-height: var(--tab-l-h, 16px);
+    font-size: var(--filter-chip-f-s, 14px);
+    font-weight: 400;
+    line-height: var(--filter-chip-l-h, 20px);
     max-width: 100%;
     min-width: 0;
 }

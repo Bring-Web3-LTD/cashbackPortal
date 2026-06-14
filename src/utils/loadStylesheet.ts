@@ -1,10 +1,11 @@
 /**
  * Append (or replace) the portal's theme stylesheets in <head>.
  *
- * The DEFAULT sheet is always loaded first; the platform-specific sheet is
- * layered on top via normal CSS source order. Calling this function again
- * with a different `theme` swaps the existing tags so the UI re-paints with
- * the new variables (used by `SESSION_UPDATE` re-syncs).
+ * Desktop and mobile are fully separate cascades:
+ *   - desktop mode → DEFAULT/stylesheets + platform/stylesheets
+ *   - mobile  mode → DEFAULT/mobile/stylesheets + platform/mobile/stylesheets
+   Calling again with a different `theme` swaps the tags so the
+ * UI re-paints (used by `SESSION_UPDATE` re-syncs).
  */
 const ALLOWED_THEMES = ['light', 'dark'] as const
 type Theme = (typeof ALLOWED_THEMES)[number]
@@ -42,26 +43,31 @@ export const loadStylesheet = (theme: string, platform: string, mode: Stylesheet
         document.head.appendChild(link)
     }
 
-    set('bring-portal-theme-default', `/DEFAULT/stylesheets/${safeTheme}.css`)
+    const remove = (id: string) => document.getElementById(id)?.remove()
 
-    if (safePlatform !== 'DEFAULT') {
-        set('bring-portal-theme-platform', `/${safePlatform}/stylesheets/${safeTheme}.css`)
-    } else {
-        document.getElementById('bring-portal-theme-platform')?.remove()
-    }
-
-    // Mobile portal overlay: DEFAULT mobile sheet first, then platform mobile
-    // sheet layered on top. Both are removed when switching back to desktop
-    // so the same call can flip the UI between modes.
     if (mode === 'mobile') {
+        // Mobile is fully self-contained — load ONLY the mobile sheets and tear
+        // down any desktop sheet so no desktop variable or global rule leaks in.
+        remove('bring-portal-theme-default')
+        remove('bring-portal-theme-platform')
+
         set('bring-portal-theme-default-mobile', `/DEFAULT/mobile/stylesheets/${safeTheme}.css`)
         if (safePlatform !== 'DEFAULT') {
             set('bring-portal-theme-platform-mobile', `/${safePlatform}/mobile/stylesheets/${safeTheme}.css`)
         } else {
-            document.getElementById('bring-portal-theme-platform-mobile')?.remove()
+            remove('bring-portal-theme-platform-mobile')
         }
+        return
+    }
+
+    // Desktop: load the desktop sheets and tear down any mobile sheet.
+    remove('bring-portal-theme-default-mobile')
+    remove('bring-portal-theme-platform-mobile')
+
+    set('bring-portal-theme-default', `/DEFAULT/stylesheets/${safeTheme}.css`)
+    if (safePlatform !== 'DEFAULT') {
+        set('bring-portal-theme-platform', `/${safePlatform}/stylesheets/${safeTheme}.css`)
     } else {
-        document.getElementById('bring-portal-theme-default-mobile')?.remove()
-        document.getElementById('bring-portal-theme-platform-mobile')?.remove()
+        remove('bring-portal-theme-platform')
     }
 }

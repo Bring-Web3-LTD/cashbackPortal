@@ -3,9 +3,12 @@
 .wrapper {
     position: relative;
     width: 100%;
+    /* Figma: 8px gap below the open search bar, not the page's 16px. */
+    margin-bottom: -8px;
 }
 
 .root {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -66,7 +69,7 @@
     outline: none;
     padding: 0;
     color: var(--search-bar-f-c, #F7F7F7);
-    font-size: var(--search-bar-f-s, 14px);
+    font-size: var(--search-input-f-s, 13px);
     line-height: var(--search-bar-l-h, 20px);
     font-family: inherit;
 }
@@ -107,18 +110,19 @@
     border: none;
     background: transparent;
     text-align: left;
-    padding: 10px 16px;
+    padding: 6px 8px;
+    border-radius: 6px;
     font-family: inherit;
     font-size: var(--search-bar-f-s, 14px);
     line-height: var(--search-bar-l-h, 20px);
-    color: var(--search-bar-f-c, #F7F7F7);
+    color: var(--search-suggestion-f-c, #7685A0);
     cursor: pointer;
 }
 
 .suggestion:hover,
 .suggestion:focus-visible,
 .suggestionActive {
-    background: var(--search-dropdown-hover-bg, rgba(43, 52, 77, 0.5));
+    color: var(--search-bar-f-c, #F7F7F7);
     outline: none;
 }
 

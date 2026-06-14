@@ -5,9 +5,15 @@
    hardcoded directly in component CSS modules. */
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap');
 
+* {
+    font-family: 'Prompt', system-ui, sans-serif;
+}
+
 :root {
     /* Page chrome */
     --bg: #0F172A;
+    --scrollbar-w: 12px;
+    --scrollbar-bg: #334155;
 
     /* ── Hero "Cashback earned" card ── */
     --cashback-earned-radius: 6px;
@@ -122,6 +128,7 @@
     --search-bar-close-c: #F8FAFC;
     /* No-matches message — Grey/300 (solid, unlike the faint placeholder). */
     --search-empty-f-c: #7685A0;
+    --search-suggestion-f-c: #94A3B8;
 
     --search-dropdown-bg: #0F172A;
     --search-dropdown-border-w: 1px;
