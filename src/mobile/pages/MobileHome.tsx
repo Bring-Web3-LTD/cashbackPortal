@@ -4,7 +4,7 @@ import MobileHeroSection from '../components/MobileHeroSection/MobileHeroSection
 import MobileCategories from '../components/MobileCategories/MobileCategories'
 import MobileSearchBar from '../components/MobileSearchBar/MobileSearchBar'
 import MobileFilterChip from '../components/MobileFilterChip/MobileFilterChip'
-import MobileCardsList from '../components/MobileCardsList/MobileCardsList'
+import MobileCardsList from '../../components/CardsList/CardsList.mobile'
 import MobileClaimModal from '../components/MobileClaimModal/MobileClaimModal'
 import { useMobileHome } from '../hooks/useMobileHome'
 import styles from './MobileHome.module.css'

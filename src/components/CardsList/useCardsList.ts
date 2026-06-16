@@ -1,8 +1,9 @@
 /**
- * Logic hook for MobileCardsList. Owns the infinite-scroll observer, the
- * cached general/top terms, the T&C modal flow (active retailer, its terms,
- * pre-fetched redirect URL) and the card/cancel/go-to-shop handlers so the
- * .tsx is pure UI.
+ * Logic hook for the CardsList feature (mobile flow). Owns the infinite-scroll
+ * observer, the cached general/top terms, the T&C modal flow (active retailer,
+ * its terms, pre-fetched redirect URL) and the card/cancel/go-to-shop handlers
+ * so the view stays pure UI. Platform-agnostic — desktop can adopt it later in
+ * place of its per-card duplication.
  */
 import { useEffect, useRef, useState } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
@@ -10,9 +11,9 @@ import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
-import type { RetailersMetadata } from './useRetailers'
+import type { RetailersMetadata } from '../../mobile/hooks/useRetailers'
 
-export interface MobileCardsListProps {
+export interface CardsListProps {
     retailers: Retailer[]
     metadata: RetailersMetadata | undefined
     isLoading: boolean
@@ -21,13 +22,13 @@ export interface MobileCardsListProps {
     onFetchNextPage: () => void
 }
 
-export const useMobileCardsList = ({
+export const useCardsList = ({
     retailers,
     metadata,
     isFetchingNextPage,
     hasNextPage,
     onFetchNextPage,
-}: MobileCardsListProps) => {
+}: CardsListProps) => {
     const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendGaEvent } = useGoogleAnalytics()

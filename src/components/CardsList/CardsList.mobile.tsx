@@ -1,13 +1,13 @@
 /** Mobile retailer list + infinite scroll + T&C modal flow. Pure UI — logic
- * in useMobileCardsList. */
-import MobileRetailerCard from '../MobileRetailerCard/MobileRetailerCard'
-import MobileRetailerCardModal from '../MobileRetailerCardModal/MobileRetailerCardModal'
-import { useMobileCardsList, MobileCardsListProps } from '../../hooks/useMobileCardsList'
-import styles from './styles.module.css'
+ * in useCardsList. */
+import MobileRetailerCard from '../../mobile/components/MobileRetailerCard/MobileRetailerCard'
+import MobileRetailerCardModal from '../../mobile/components/MobileRetailerCardModal/MobileRetailerCardModal'
+import { useCardsList, CardsListProps } from './useCardsList'
+import styles from './styles.mobile.module.css'
 
 const SKELETON_ROWS = 8
 
-const MobileCardsList = (props: MobileCardsListProps) => {
+const CardsList = (props: CardsListProps) => {
     const { retailers, metadata, isLoading, hasNextPage } = props
     const {
         sentinelRef,
@@ -18,7 +18,7 @@ const MobileCardsList = (props: MobileCardsListProps) => {
         handleCardClick,
         handleCancel,
         handleGoToShop,
-    } = useMobileCardsList(props)
+    } = useCardsList(props)
 
     if (isLoading || !metadata) {
         return (
@@ -71,4 +71,4 @@ const MobileCardsList = (props: MobileCardsListProps) => {
     )
 }
 
-export default MobileCardsList
+export default CardsList
