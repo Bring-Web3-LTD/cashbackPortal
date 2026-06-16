@@ -13,7 +13,7 @@ import Select, {
     SingleValueProps,
     SelectInstance,
 } from "react-select"
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
 import Icon from '../Icon/Icon'

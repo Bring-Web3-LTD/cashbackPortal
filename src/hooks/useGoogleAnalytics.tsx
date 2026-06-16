@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GoogleAnalyticsContext } from "../../context/GoogleAnalyticsContext";
+import { GoogleAnalyticsContext } from "../context/GoogleAnalyticsContext";
 
 export const useGoogleAnalytics = (): GoogleAnalyticsContextType => {
     const context = useContext(GoogleAnalyticsContext);

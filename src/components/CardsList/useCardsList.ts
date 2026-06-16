@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 import type { RetailersMetadata } from '../../hooks/useRetailers'
 
 export interface CardsListProps {

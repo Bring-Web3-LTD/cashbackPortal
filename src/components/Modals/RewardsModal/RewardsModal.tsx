@@ -10,7 +10,7 @@ import claimInitiate from '../../../api/claim/initiate';
 import message from '../../../utils/message';
 import { useTranslation } from 'react-i18next';
 import claimSubmit from '../../../api/claim/submit';
-import { useWalletAddress } from '../../../utils/hooks/useWalletAddress';
+import { useWalletAddress } from '../../../hooks/useWalletAddress';
 import Icon from '../../Icon/Icon';
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {

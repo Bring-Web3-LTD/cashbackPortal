@@ -5,9 +5,9 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
 import Icon from '../../components/Icon/Icon'
 
 interface HistoryMobile {

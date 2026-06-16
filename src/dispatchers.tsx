@@ -9,7 +9,7 @@ import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import MobileHome from './pages/Home/Home.mobile'
 import MobileHistory from './pages/History/History.mobile'
-import MobileFaq from './pages/Faq/Faq.mobile'
+import MobileFaq from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion.mobile'
 
 export const HomeDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData

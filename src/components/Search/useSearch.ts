@@ -13,7 +13,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 
 export interface SearchSuggestion {
     id: string

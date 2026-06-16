@@ -1,7 +1,7 @@
 import { FC, createContext, useEffect, ReactNode, useCallback, useRef } from 'react';
 import ReactGA from 'react-ga4';
 import analytics from '../api/analytics';
-import { useWalletAddress } from '../utils/hooks/useWalletAddress';
+import { useWalletAddress } from '../hooks/useWalletAddress';
 
 type EventName =
     | "retailer_open"

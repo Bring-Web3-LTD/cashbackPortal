@@ -5,7 +5,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
-import { useDragScroll } from '../../utils/hooks/useDragScroll'
+import { useDragScroll } from '../../hooks/useDragScroll'
 import styles from './styles.mobile.module.css'
 
 export interface CategoriesItem {

@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import { useTranslation } from 'react-i18next'
 import { Link, useRouteLoaderData } from 'react-router-dom'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { ENV } from '../../config'
 
 const Header = () => {

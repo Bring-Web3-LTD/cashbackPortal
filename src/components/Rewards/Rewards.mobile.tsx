@@ -11,7 +11,7 @@ import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { ENV } from '../../config'
 import styles from './styles.mobile.module.css'
 
