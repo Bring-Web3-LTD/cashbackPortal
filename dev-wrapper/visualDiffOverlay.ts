@@ -13,12 +13,27 @@
  *   - Drag the overlay image to position it (arrow keys nudge 1px,
  *     shift+arrows 10px)
  *   - `diff` toggles `mix-blend-mode: difference` (matching pixels go black)
+ *   - `invert` toggles `filter: invert(1)` (flip the overlay's colors)
+ *   - `grid` toggles a full-page pixel ruler grid (adjustable cell size/color)
+ *   - `+ vert` / `+ horz` drop draggable guide lines (double-click one to
+ *     remove it, `clear` removes all); each shows a live px readout
+ *   - `ruler` arms a measuring tape: press-drag between two dots to read the
+ *     pixel distance; both dots stay draggable (double-click / Delete removes)
  *   - `hide` / `lock` / `reset`
  *
  * Note: this overlays the dev-wrapper page itself, NOT the portal rendered
  * inside the iframe (the portal is served from a separate origin in the
  * iframe, so it can't be overlaid from here).
  */
+
+// A draggable ruler guide. `axis: 'x'` is a vertical line movable horizontally
+// (pos = its left/x coordinate); `axis: 'y'` is a horizontal line movable
+// vertically (pos = its top/y coordinate). Coordinates are viewport CSS px.
+type Guide = { id: string; axis: 'x' | 'y'; pos: number }
+
+// A free-angle measuring tape between two viewport points (CSS px). The label
+// shows the straight-line distance between them.
+type Ruler = { id: string; x1: number; y1: number; x2: number; y2: number }
 
 type State = {
     src: string
@@ -27,10 +42,16 @@ type State = {
     scale: number
     opacity: number
     diff: boolean
+    invert: boolean
     visible: boolean
     locked: boolean
     collapsed: boolean
     border: boolean
+    grid: boolean
+    gridSize: number
+    gridColor: string
+    guides: Guide[]
+    rulers: Ruler[]
 }
 
 const STORAGE_KEY = 'bring.visualDiff.wrapper.v1'
@@ -40,6 +61,22 @@ const STORAGE_KEY = 'bring.visualDiff.wrapper.v1'
 // REST API (used when the dev-only `/__figma-image` proxy isn't available,
 // e.g. on the static hosted build).
 const FIGMA_TOKEN_KEY = 'bring.visualDiff.figmaToken'
+
+// Stacking bands. The overlay's own layers (design image, grid, guides, rulers,
+// pick boxes) sit just below the very top so the dev wrapper's interactive chrome
+// can be raised ABOVE them — those controls are tooling, not page content, so
+// they shouldn't be covered by the design/guides/grid. Only the controls that
+// need to stay usable are lifted out (the sidebar and its toggle, plus the
+// logout button); the header bar itself deliberately stays UNDER the overlay as
+// page-content backdrop. The draggable control panel stays at the very top,
+// above everything. These shift the whole overlay band down uniformly,
+// preserving the layers' relative order. The matching chrome z-index lives in
+// style.css (.controls / .toggle / .logout-btn).
+const Z_LAYER = '2147483600'
+// Above the overlay layers (so the dimmer/affordance is never hidden behind an
+// active image/grid/guides while dragging) but below the panel (kept usable).
+const Z_DROP_HINT = '2147483639'
+const Z_PANEL = '2147483647'
 
 // Pull the file key + node id out of a Figma URL (design/file/board/proto).
 const parseFigmaUrl = (url: string): { fileKey: string; nodeId: string } | null => {
@@ -55,10 +92,16 @@ const DEFAULTS: State = {
     scale: 1,
     opacity: 0.5,
     diff: false,
+    invert: false,
     visible: true,
     locked: false,
     collapsed: false,
     border: false,
+    grid: false,
+    gridSize: 8,
+    gridColor: '#FF2D9B',
+    guides: [],
+    rulers: [],
 }
 
 const loadState = (): State => {
@@ -127,7 +170,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         top: '0',
         left: '0',
         transformOrigin: 'top left',
-        zIndex: '2147483646',
+        zIndex: Z_LAYER,
         userSelect: 'none',
     } as CSSStyleDeclaration)
     document.body.appendChild(img)
@@ -144,6 +187,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         img.style.transform = `scale(${state.scale})`
         img.style.opacity = String(state.opacity)
         img.style.mixBlendMode = state.diff ? 'difference' : 'normal'
+        img.style.filter = state.invert ? 'invert(1)' : 'none'
         // Outline (not border) so toggling it never shifts the image's size/pos.
         img.style.outline = state.border ? '2px solid #FF2D9B' : 'none'
         img.style.outlineOffset = state.border ? '-1px' : '0'
@@ -180,13 +224,339 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         img.addEventListener('pointercancel', up)
     })
 
+    // --- pixel grid --------------------------------------------------------
+    // Full-viewport ruler grid for eyeballing pixel alignment. Minor lines
+    // every `gridSize` px, with a stronger major line every 8th cell. Sits
+    // above the overlay image but below the panel, and never eats pointer
+    // events so dragging the image/page still works through it.
+    const grid = document.createElement('div')
+    Object.assign(grid.style, {
+        position: 'fixed',
+        inset: '0',
+        zIndex: Z_LAYER,
+        pointerEvents: 'none',
+        display: 'none',
+    } as CSSStyleDeclaration)
+    document.body.appendChild(grid)
+
+    const applyGrid = () => {
+        if (!state.grid) {
+            grid.style.display = 'none'
+            return
+        }
+        const g = Math.max(1, state.gridSize)
+        const major = g * 8
+        // Both tiers share the chosen hue; alpha is appended as #RRGGBBAA
+        // (73 ≈ 0.45 for major lines, 24 ≈ 0.14 for minor lines). Fall back to
+        // the default pink if the stored value isn't a 6-digit hex.
+        const hex = /^#[0-9a-fA-F]{6}$/.test(state.gridColor) ? state.gridColor : '#FF2D9B'
+        grid.style.display = ''
+        grid.style.backgroundImage = [
+            `linear-gradient(to right, ${hex}73 1px, transparent 1px)`,
+            `linear-gradient(to bottom, ${hex}73 1px, transparent 1px)`,
+            `linear-gradient(to right, ${hex}24 1px, transparent 1px)`,
+            `linear-gradient(to bottom, ${hex}24 1px, transparent 1px)`,
+        ].join(',')
+        grid.style.backgroundSize = `${major}px ${major}px, ${major}px ${major}px, ${g}px ${g}px, ${g}px ${g}px`
+    }
+
+    // --- guide lines -------------------------------------------------------
+    // Draggable full-screen ruler guides (like a design tool). Each guide is a
+    // 9px-wide hit strip with a 1px line drawn down its center; it's dragged
+    // along its perpendicular axis and shows a live px readout. Double-click a
+    // guide to remove it. Guides live in STATE so they persist across reloads.
+    const GUIDE_COLOR = '#00E5FF'
+    const guideEls = new Map<string, HTMLDivElement>()
+    // Monotonic id source. Seed past any persisted ids so a reload + add never
+    // reuses an existing id.
+    let guideSeq = state.guides.reduce((m, g) => {
+        const n = Number(g.id.replace(/^g/, ''))
+        return Number.isFinite(n) ? Math.max(m, n + 1) : m
+    }, 1)
+    // The guide the pointer is currently hovering, so the Delete/Backspace key
+    // knows which one to remove.
+    let hoveredGuideId: string | null = null
+
+    const removeGuide = (id: string) => {
+        state = { ...state, guides: state.guides.filter(g => g.id !== id) }
+        if (hoveredGuideId === id) hoveredGuideId = null
+        renderGuides()
+        save()
+    }
+
+    const positionGuide = (id: string) => {
+        const el = guideEls.get(id)
+        const guide = state.guides.find(g => g.id === id)
+        if (!el || !guide) return
+        const vertical = guide.axis === 'x'
+        if (vertical) {
+            Object.assign(el.style, { left: `${guide.pos - 4}px`, top: '0', bottom: '0', right: '', width: '9px', height: '' })
+        } else {
+            Object.assign(el.style, { top: `${guide.pos - 4}px`, left: '0', right: '0', bottom: '', height: '9px', width: '' })
+        }
+        const label = el.firstElementChild as HTMLElement | null
+        if (label) label.textContent = String(guide.pos)
+    }
+
+    const makeGuideEl = (guide: Guide): HTMLDivElement => {
+        const el = document.createElement('div')
+        const vertical = guide.axis === 'x'
+        Object.assign(el.style, {
+            position: 'fixed',
+            zIndex: Z_LAYER,
+            background: vertical
+                ? `linear-gradient(to right, transparent 4px, ${GUIDE_COLOR} 4px, ${GUIDE_COLOR} 5px, transparent 5px)`
+                : `linear-gradient(to bottom, transparent 4px, ${GUIDE_COLOR} 4px, ${GUIDE_COLOR} 5px, transparent 5px)`,
+            cursor: vertical ? 'ew-resize' : 'ns-resize',
+            touchAction: 'none',
+        } as CSSStyleDeclaration)
+        el.title = 'Drag to move · double-click or Delete to remove'
+
+        el.addEventListener('pointerenter', () => { hoveredGuideId = guide.id })
+        el.addEventListener('pointerleave', () => { if (hoveredGuideId === guide.id) hoveredGuideId = null })
+
+        const label = document.createElement('span')
+        Object.assign(label.style, {
+            position: 'absolute',
+            background: GUIDE_COLOR,
+            color: '#04222a',
+            font: '10px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
+            padding: '1px 3px',
+            borderRadius: '3px',
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+        } as CSSStyleDeclaration)
+        // Pin the readout to the start of the line, just off the line itself.
+        label.style[vertical ? 'top' : 'left'] = '2px'
+        label.style[vertical ? 'left' : 'top'] = '6px'
+        el.appendChild(label)
+
+        el.addEventListener('pointerdown', (e: PointerEvent) => {
+            e.preventDefault()
+            e.stopPropagation()
+            el.setPointerCapture(e.pointerId)
+            const start = vertical ? e.clientX : e.clientY
+            const cur = state.guides.find(g => g.id === guide.id)
+            const base = cur ? cur.pos : guide.pos
+            const move = (ev: PointerEvent) => {
+                const pos = Math.round(base + ((vertical ? ev.clientX : ev.clientY) - start))
+                state = { ...state, guides: state.guides.map(g => g.id === guide.id ? { ...g, pos } : g) }
+                positionGuide(guide.id)
+            }
+            const up = (ev: PointerEvent) => {
+                el.removeEventListener('pointermove', move)
+                el.removeEventListener('pointerup', up)
+                el.removeEventListener('pointercancel', up)
+                try { el.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
+                save()
+            }
+            el.addEventListener('pointermove', move)
+            el.addEventListener('pointerup', up)
+            el.addEventListener('pointercancel', up)
+        })
+
+        el.addEventListener('dblclick', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            removeGuide(guide.id)
+        })
+
+        return el
+    }
+
+    // Reconcile guide DOM elements to state.guides (add new, drop removed,
+    // reposition the rest). Cheap enough to run on every state change.
+    const renderGuides = () => {
+        const ids = new Set(state.guides.map(g => g.id))
+        for (const [id, el] of guideEls) {
+            if (!ids.has(id)) { el.remove(); guideEls.delete(id) }
+        }
+        for (const guide of state.guides) {
+            if (!guideEls.has(guide.id)) {
+                const el = makeGuideEl(guide)
+                guideEls.set(guide.id, el)
+                document.body.appendChild(el)
+            }
+            positionGuide(guide.id)
+        }
+    }
+
+    const addGuide = (axis: 'x' | 'y') => {
+        const id = `g${guideSeq++}`
+        const pos = axis === 'x'
+            ? Math.round(window.innerWidth / 2)
+            : Math.round(window.innerHeight / 2)
+        state = { ...state, guides: [...state.guides, { id, axis, pos }] }
+        renderGuides()
+        save()
+    }
+
+    // --- distance rulers ---------------------------------------------------
+    // Free-angle measuring tapes. Arm with the "ruler" button, then press-drag
+    // anywhere to stretch a line between two dots; the label shows its pixel
+    // length. Both endpoints stay draggable afterward (pointer capture keeps the
+    // drag alive over the cross-origin iframe). Double-click a dot or press
+    // Delete while hovering one to remove it; "clear" removes all. Rulers live
+    // in STATE so they persist across reloads. `rulerArmed` is transient (draw
+    // mode), driven by the catcher set up after the panel is built.
+    const RULER_COLOR = '#FFB020'
+    const SVG_NS = 'http://www.w3.org/2000/svg'
+    const rulerEls = new Map<string, HTMLDivElement>()
+    let rulerSeq = state.rulers.reduce((m, r) => {
+        const n = Number(r.id.replace(/^r/, ''))
+        return Number.isFinite(n) ? Math.max(m, n + 1) : m
+    }, 1)
+    let hoveredRulerId: string | null = null
+    let rulerArmed = false
+
+    // With Shift held, snap a stretched endpoint to a pure horizontal or
+    // vertical line relative to the anchor (whichever axis the drag favours),
+    // so the ruler stays axis-aligned instead of diagonal.
+    const constrainToAxis = (ax: number, ay: number, bx: number, by: number, shift: boolean) =>
+        !shift ? { x: bx, y: by }
+            : Math.abs(bx - ax) >= Math.abs(by - ay) ? { x: bx, y: ay } : { x: ax, y: by }
+
+    const removeRuler = (id: string) => {
+        state = { ...state, rulers: state.rulers.filter(r => r.id !== id) }
+        if (hoveredRulerId === id) hoveredRulerId = null
+        renderRulers()
+        save()
+    }
+
+    const positionRuler = (id: string) => {
+        const el = rulerEls.get(id)
+        const r = state.rulers.find(rr => rr.id === id)
+        if (!el || !r) return
+        const line = el.querySelector('line') as SVGLineElement | null
+        if (line) {
+            line.setAttribute('x1', String(r.x1)); line.setAttribute('y1', String(r.y1))
+            line.setAttribute('x2', String(r.x2)); line.setAttribute('y2', String(r.y2))
+        }
+        const h1 = el.querySelector('[data-h="1"]') as HTMLElement | null
+        const h2 = el.querySelector('[data-h="2"]') as HTMLElement | null
+        if (h1) { h1.style.left = `${r.x1}px`; h1.style.top = `${r.y1}px` }
+        if (h2) { h2.style.left = `${r.x2}px`; h2.style.top = `${r.y2}px` }
+        const dx = r.x2 - r.x1, dy = r.y2 - r.y1
+        const dist = Math.hypot(dx, dy)
+        const len = Math.round(dist)
+        const label = el.querySelector('[data-el="rulerLabel"]') as HTMLElement | null
+        if (label) {
+            label.textContent = `${len}px`
+            label.title = `Δx ${Math.abs(dx)} · Δy ${Math.abs(dy)}`
+            // Sit the label OFF the line (perpendicular to it), biased to the
+            // upper side, so short rulers stay readable instead of being squashed
+            // onto the endpoint dots. Falls back to the midpoint for zero length.
+            const off = 14
+            let ox = dist ? (-dy / dist) * off : 0
+            let oy = dist ? (dx / dist) * off : -off
+            if (oy > 0) { ox = -ox; oy = -oy }
+            label.style.left = `${(r.x1 + r.x2) / 2 + ox}px`
+            label.style.top = `${(r.y1 + r.y2) / 2 + oy}px`
+        }
+    }
+
+    const makeRulerEl = (ruler: Ruler): HTMLDivElement => {
+        // Full-viewport container; only the endpoint dots take pointer events so
+        // the rest of the page stays clickable through it.
+        const container = document.createElement('div')
+        Object.assign(container.style, {
+            position: 'fixed', inset: '0', zIndex: Z_LAYER, pointerEvents: 'none',
+        } as CSSStyleDeclaration)
+
+        const svg = document.createElementNS(SVG_NS, 'svg')
+        Object.assign(svg.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', overflow: 'visible' } as CSSStyleDeclaration)
+        const line = document.createElementNS(SVG_NS, 'line')
+        line.setAttribute('stroke', RULER_COLOR)
+        line.setAttribute('stroke-width', '1')
+        line.setAttribute('stroke-dasharray', '4 3')
+        svg.appendChild(line)
+        container.appendChild(svg)
+
+        const label = document.createElement('div')
+        label.setAttribute('data-el', 'rulerLabel')
+        Object.assign(label.style, {
+            position: 'absolute', background: RULER_COLOR, color: '#1F2018',
+            font: '10px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
+            padding: '1px 4px', borderRadius: '3px', whiteSpace: 'nowrap',
+            pointerEvents: 'none', transform: 'translate(-50%, -50%)',
+        } as CSSStyleDeclaration)
+        container.appendChild(label)
+
+        const mkHandle = (which: 1 | 2): HTMLDivElement => {
+            const h = document.createElement('div')
+            h.setAttribute('data-h', String(which))
+            Object.assign(h.style, {
+                position: 'absolute', width: '11px', height: '11px',
+                marginLeft: '-6px', marginTop: '-6px', borderRadius: '50%',
+                background: RULER_COLOR, border: '1px solid #1F2018', boxSizing: 'border-box',
+                pointerEvents: 'auto', cursor: 'grab', touchAction: 'none',
+            } as CSSStyleDeclaration)
+            h.title = 'Drag to move · double-click or Delete to remove'
+            h.addEventListener('pointerenter', () => { hoveredRulerId = ruler.id })
+            h.addEventListener('pointerleave', () => { if (hoveredRulerId === ruler.id) hoveredRulerId = null })
+            h.addEventListener('pointerdown', (e: PointerEvent) => {
+                e.preventDefault(); e.stopPropagation()
+                h.setPointerCapture(e.pointerId)
+                const kx = which === 1 ? 'x1' : 'x2'
+                const ky = which === 1 ? 'y1' : 'y2'
+                const move = (ev: PointerEvent) => {
+                    // Anchor on the opposite endpoint so Shift keeps the line
+                    // horizontal/vertical relative to the fixed end.
+                    const cur = state.rulers.find(r => r.id === ruler.id)
+                    const ax = which === 1 ? (cur?.x2 ?? ev.clientX) : (cur?.x1 ?? ev.clientX)
+                    const ay = which === 1 ? (cur?.y2 ?? ev.clientY) : (cur?.y1 ?? ev.clientY)
+                    const p = constrainToAxis(ax, ay, ev.clientX, ev.clientY, ev.shiftKey)
+                    state = { ...state, rulers: state.rulers.map(r => r.id === ruler.id ? { ...r, [kx]: Math.round(p.x), [ky]: Math.round(p.y) } : r) }
+                    positionRuler(ruler.id)
+                }
+                const up = (ev: PointerEvent) => {
+                    h.removeEventListener('pointermove', move)
+                    h.removeEventListener('pointerup', up)
+                    h.removeEventListener('pointercancel', up)
+                    try { h.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
+                    save()
+                }
+                h.addEventListener('pointermove', move)
+                h.addEventListener('pointerup', up)
+                h.addEventListener('pointercancel', up)
+            })
+            h.addEventListener('dblclick', (e) => { e.preventDefault(); e.stopPropagation(); removeRuler(ruler.id) })
+            return h
+        }
+        container.append(mkHandle(1), mkHandle(2))
+        return container
+    }
+
+    // Reconcile ruler DOM to state.rulers (add new, drop removed, reposition).
+    function renderRulers() {
+        const ids = new Set(state.rulers.map(r => r.id))
+        for (const [id, el] of rulerEls) {
+            if (!ids.has(id)) { el.remove(); rulerEls.delete(id) }
+        }
+        for (const ruler of state.rulers) {
+            if (!rulerEls.has(ruler.id)) {
+                const el = makeRulerEl(ruler)
+                rulerEls.set(ruler.id, el)
+                document.body.appendChild(el)
+            }
+            positionRuler(ruler.id)
+        }
+    }
+
+    const addRuler = (x1: number, y1: number, x2: number, y2: number): string => {
+        const id = `r${rulerSeq++}`
+        state = { ...state, rulers: [...state.rulers, { id, x1, y1, x2, y2 }] }
+        renderRulers()
+        return id
+    }
+
     // --- control panel -----------------------------------------------------
     const panel = document.createElement('div')
     Object.assign(panel.style, {
         position: 'fixed',
         top: '64px',
         right: '8px',
-        zIndex: '2147483647',
+        zIndex: Z_PANEL,
         background: 'rgba(20,22,28,0.92)',
         color: '#F5F8FF',
         font: '12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace',
@@ -206,6 +576,32 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         #bring-visual-diff-panel button { transition: filter 0.12s, transform 0.05s; }
         #bring-visual-diff-panel button:hover { filter: brightness(1.25); }
         #bring-visual-diff-panel button:active { transform: translateY(1px); }
+        #bring-visual-diff-panel input[type="text"],
+        #bring-visual-diff-panel input[type="password"],
+        #bring-visual-diff-panel input[type="number"] {
+            transition: border-color 0.12s, box-shadow 0.12s, background 0.12s;
+            outline: none;
+        }
+        #bring-visual-diff-panel input[type="text"]:focus:not([data-el="url"]),
+        #bring-visual-diff-panel input[type="password"]:focus,
+        #bring-visual-diff-panel input[type="number"]:focus {
+            border-color: #FFEF46;
+            box-shadow: 0 0 0 2px rgba(255,239,70,0.18);
+            background: #11151c;
+        }
+        #bring-visual-diff-panel input::placeholder { color: #5b6068; }
+        /* The URL field is a styled wrapper around a borderless input, so the
+           focus ring lives on the wrapper via :focus-within. */
+        #bring-visual-diff-panel [data-el="urlField"] {
+            transition: border-color 0.12s, box-shadow 0.12s, background 0.12s;
+        }
+        #bring-visual-diff-panel [data-el="urlField"]:focus-within {
+            border-color: #FFEF46;
+            box-shadow: 0 0 0 2px rgba(255,239,70,0.18);
+            background: #11151c;
+        }
+        #bring-visual-diff-panel [data-act="clearUrl"] { opacity: 0.6; }
+        #bring-visual-diff-panel [data-act="clearUrl"]:hover { opacity: 1; }
     `
     document.head.appendChild(styleTag)
 
@@ -226,11 +622,18 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
             <input type="password" data-el="figmaToken" placeholder="Figma token (stored in this browser only)" autocomplete="off" style="flex:1;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
         </div>
         <div data-el="figmaStatus" style="margin-top:4px;color:#9aa0a6;font-size:11px;min-height:14px"></div>
-        <div style="margin-top:6px"><input type="file" data-el="file" accept="image/png,image/jpeg,image/webp" style="font:inherit;color:#9aa0a6"></div>
-        <div data-el="dropzone" style="margin-top:6px;border:2px dashed #2a2d33;border-radius:6px;padding:10px;text-align:center;color:#9aa0a6;cursor:copy;font-size:11px">Drop image / Figma asset here</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+            <input type="file" data-el="file" accept="image/png,image/jpeg,image/webp" style="flex:1;min-width:0;font:inherit;color:#9aa0a6">
+            <button data-act="paste" title="Paste an image from the clipboard (or press Ctrl/⌘+V anywhere)" style="flex:0 0 auto;background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">paste</button>
+        </div>
+        <div data-el="dropzone" style="margin-top:6px;border:2px dashed #2a2d33;border-radius:6px;padding:10px;text-align:center;color:#9aa0a6;cursor:copy;font-size:11px">Drop image / Figma asset here · or paste (Ctrl/⌘+V)</div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">URL</span>
-            <input type="text" data-el="url" placeholder="https://… or data:…" style="width:160px;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <div data-el="urlField" style="flex:1;min-width:0;display:flex;align-items:center;gap:4px;background:#0e1116;border:1px solid #2a2d33;border-radius:6px;padding:0 4px 0 7px">
+                <span style="color:#66686E;flex:0 0 auto;line-height:1" aria-hidden="true">🔗</span>
+                <input type="text" data-el="url" placeholder="https://… or data:…" style="flex:1;min-width:0;background:transparent;color:#F5F8FF;border:0;padding:5px 0;font:inherit;outline:none;text-overflow:ellipsis">
+                <button data-act="clearUrl" title="Clear URL" style="flex:0 0 auto;background:transparent;color:#9aa0a6;border:0;cursor:pointer;font:inherit;padding:2px 3px;line-height:1">✕</button>
+            </div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">X / Y</span>
@@ -248,11 +651,39 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         </div>
         <div style="display:flex;align-items:center;gap:4px;margin-top:6px;flex-wrap:wrap">
             <button data-act="diff" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">diff</button>
+            <button data-act="invert" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit" title="Invert the overlay image's colors">invert</button>
             <button data-act="border" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit" title="Outline the overlay image so its bounds are visible">border</button>
             <button data-act="fit" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit" title="Scale to iframe width and center">fit</button>
             <button data-act="center" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit" title="Center horizontally (keep scale)">center</button>
             <button data-act="visible" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">hide</button>
             <button data-act="locked" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">lock</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+            <span style="width:56px;color:#9aa0a6">Grid</span>
+            <button data-act="grid" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit" title="Toggle a pixel ruler grid over the page">grid</button>
+            <input type="number" min="1" step="1" data-el="gridSize" title="Minor cell size in px (major line every 8th)" style="width:64px;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <span style="color:#66686E;font-size:11px">px</span>
+            <input type="color" data-el="gridColor" title="Grid line color" style="width:28px;height:24px;padding:0;background:#0e1116;border:1px solid #2a2d33;border-radius:4px;cursor:pointer">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+            <span style="width:56px;color:#9aa0a6">Guides</span>
+            <button data-act="addGuideV" title="Add a vertical guide (drag it horizontally)" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">+ vert</button>
+            <button data-act="addGuideH" title="Add a horizontal guide (drag it vertically)" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">+ horz</button>
+            <button data-act="clearGuides" title="Remove all guides" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">clear</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+            <span style="width:56px;color:#9aa0a6">Measure</span>
+            <button data-act="ruler" title="Measure a distance: click this, then press-drag between two points. Drag the dots to adjust; double-click a dot or press Delete to remove." style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">ruler</button>
+            <button data-act="clearRulers" title="Remove all measuring lines" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">clear</button>
+        </div>
+        <div data-el="inspectRow">
+            <div style="display:flex;align-items:center;gap:4px;margin-top:6px;flex-wrap:wrap">
+                <span style="width:56px;color:#9aa0a6">Inspect</span>
+                <button data-act="pick" title="Highlight elements under the cursor (works inside the portal iframe too); click to lock — Esc to stop / clear" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">pick</button>
+                <button data-act="alignPick" title="Move the overlay image's top-left onto the last picked element (keeps scale)" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">align</button>
+                <button data-act="measurePicks" title="Measure the distance between the two most-recently picked elements (draws a ruler between their nearest edges)" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">↔ measure</button>
+            </div>
+            <div data-el="pickInfo" style="margin-top:4px;color:#9aa0a6;font-size:11px;min-height:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
         </div>
         <div style="margin-top:6px;color:#66686E;font-size:11px">arrows = 1px · shift+arrows = 10px</div>
         </div>
@@ -271,7 +702,21 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     const opacityInput = q<HTMLInputElement>('[data-el="opacity"]')
     const opacityVal = q<HTMLSpanElement>('[data-el="opacityVal"]')
     const diffBtn = q<HTMLButtonElement>('[data-act="diff"]')
+    const invertBtn = q<HTMLButtonElement>('[data-act="invert"]')
     const borderBtn = q<HTMLButtonElement>('[data-act="border"]')
+    const gridBtn = q<HTMLButtonElement>('[data-act="grid"]')
+    const gridSizeInput = q<HTMLInputElement>('[data-el="gridSize"]')
+    const gridColorInput = q<HTMLInputElement>('[data-el="gridColor"]')
+    const rulerBtn = q<HTMLButtonElement>('[data-act="ruler"]')
+    const pickBtn = q<HTMLButtonElement>('[data-act="pick"]')
+    const pickInfo = q<HTMLElement>('[data-el="pickInfo"]')
+    const inspectRow = q<HTMLDivElement>('[data-el="inspectRow"]')
+    // The element inspector only works locally: it needs the portal-side picker
+    // running inside the iframe, which is mounted only in DEV_MODE on the local
+    // portal. On the hosted wrapper the iframe loads a prod portal without it,
+    // so hide the row entirely rather than offer a control that can't work.
+    const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'].includes(location.hostname)
+    if (!isLocalHost) inspectRow.style.display = 'none'
     const fitBtn = q<HTMLButtonElement>('[data-act="fit"]')
     const visibleBtn = q<HTMLButtonElement>('[data-act="visible"]')
     const lockedBtn = q<HTMLButtonElement>('[data-act="locked"]')
@@ -279,6 +724,139 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     const resetBtn = q<HTMLButtonElement>('[data-el="resetBtn"]')
     const titleEl = q<HTMLElement>('[data-el="title"]')
     const body = q<HTMLDivElement>('[data-el="body"]')
+
+    // --- ruler draw mode ---------------------------------------------------
+    // While armed, a transparent full-viewport catcher (above the iframe, below
+    // the panel) captures a press-drag to stretch a new ruler. Pointer capture
+    // keeps the drag tracking even over the cross-origin portal iframe. Stays
+    // armed after a draw so several measurements are quick; Esc / the button
+    // disarm it.
+    const rulerCatcher = document.createElement('div')
+    Object.assign(rulerCatcher.style, {
+        position: 'fixed', inset: '0', zIndex: Z_LAYER,
+        cursor: 'crosshair', display: 'none', touchAction: 'none',
+    } as CSSStyleDeclaration)
+    document.body.appendChild(rulerCatcher)
+
+    const setRulerArmed = (on: boolean) => {
+        rulerArmed = on
+        rulerCatcher.style.display = on ? '' : 'none'
+        rulerBtn.textContent = on ? 'drawing… (Esc)' : 'ruler'
+        rulerBtn.style.background = on ? '#FFEF46' : '#2a2d33'
+        rulerBtn.style.color = on ? '#1F2018' : '#F5F8FF'
+    }
+
+    rulerCatcher.addEventListener('pointerdown', (e: PointerEvent) => {
+        e.preventDefault()
+        rulerCatcher.setPointerCapture(e.pointerId)
+        const x = Math.round(e.clientX), y = Math.round(e.clientY)
+        const id = addRuler(x, y, x, y)
+        const move = (ev: PointerEvent) => {
+            // Anchor on the press point so Shift constrains to H/V from there.
+            const p = constrainToAxis(x, y, ev.clientX, ev.clientY, ev.shiftKey)
+            state = { ...state, rulers: state.rulers.map(r => r.id === id ? { ...r, x2: Math.round(p.x), y2: Math.round(p.y) } : r) }
+            positionRuler(id)
+        }
+        const up = (ev: PointerEvent) => {
+            rulerCatcher.removeEventListener('pointermove', move)
+            rulerCatcher.removeEventListener('pointerup', up)
+            rulerCatcher.removeEventListener('pointercancel', up)
+            try { rulerCatcher.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
+            // A plain click (no real drag) leaves a degenerate ruler — drop it.
+            const r = state.rulers.find(rr => rr.id === id)
+            if (r && Math.hypot(r.x2 - r.x1, r.y2 - r.y1) < 3) removeRuler(id)
+            else save()
+        }
+        rulerCatcher.addEventListener('pointermove', move)
+        rulerCatcher.addEventListener('pointerup', up)
+        rulerCatcher.addEventListener('pointercancel', up)
+    })
+
+    // --- movable panel -----------------------------------------------------
+    // Drag the title bar to reposition the whole panel (e.g. to the left when
+    // you're working on the right of the screen). Double-click the title to snap
+    // it back to the default top-right dock. The position lives under its own
+    // localStorage key — a UI preference, independent of the diff STATE, so
+    // `reset` never moves it.
+    const PANEL_POS_KEY = 'bring.visualDiff.panelPos'
+    const loadPanelPos = (): { left: number; top: number } | null => {
+        try {
+            const raw = localStorage.getItem(PANEL_POS_KEY)
+            if (!raw) return null
+            const p = JSON.parse(raw)
+            // Reject malformed/partial values - otherwise NaN flows into
+            // applyPanelPos and writes `NaNpx`, losing the panel off-screen.
+            if (p && Number.isFinite(p.left) && Number.isFinite(p.top)) return { left: p.left, top: p.top }
+            return null
+        } catch { return null }
+    }
+    let panelPos = loadPanelPos()
+    const savePanelPos = () => {
+        if (panelPos) localStorage.setItem(PANEL_POS_KEY, JSON.stringify(panelPos))
+        else localStorage.removeItem(PANEL_POS_KEY)
+    }
+    // Place the panel at its dragged position, clamped so the title bar always
+    // stays on-screen. When collapsed, the slim tab still docks to the NEARER
+    // vertical edge (keeping its height) rather than floating mid-screen at the
+    // dragged spot. When unset, restore the default top-right dock.
+    function applyPanelPos() {
+        if (!panelPos) {
+            panel.style.left = 'auto'
+            panel.style.top = '64px'
+            return
+        }
+        const top = Math.min(Math.max(0, panelPos.top), Math.max(0, window.innerHeight - 24))
+        panel.style.top = `${top}px`
+        if (state.collapsed) {
+            // Dock the tab to whichever edge the panel is closer to (~240px wide
+            // expanded, so its centre is left + 120).
+            const dockLeft = panelPos.left + 120 < window.innerWidth / 2
+            if (dockLeft) {
+                panel.style.left = '0'; panel.style.right = 'auto'
+                panel.style.borderRadius = '0 8px 8px 0'
+            } else {
+                panel.style.left = 'auto'; panel.style.right = '0'
+                panel.style.borderRadius = '8px 0 0 8px'
+            }
+        } else {
+            const left = Math.min(Math.max(0, panelPos.left), Math.max(0, window.innerWidth - 60))
+            panel.style.left = `${left}px`; panel.style.right = 'auto'
+            panel.style.borderRadius = '8px'
+        }
+    }
+    titleEl.style.cursor = 'move'
+    titleEl.title = 'Drag to move the panel · double-click to reset position'
+    titleEl.addEventListener('pointerdown', (e: PointerEvent) => {
+        e.preventDefault()
+        titleEl.setPointerCapture(e.pointerId)
+        // Base off the live rect so the first drag from the docked position
+        // converts seamlessly to left/top coordinates.
+        const rect = panel.getBoundingClientRect()
+        const startX = e.clientX, startY = e.clientY
+        const baseLeft = rect.left, baseTop = rect.top
+        const move = (ev: PointerEvent) => {
+            panelPos = { left: Math.round(baseLeft + (ev.clientX - startX)), top: Math.round(baseTop + (ev.clientY - startY)) }
+            applyPanelPos()
+        }
+        const up = (ev: PointerEvent) => {
+            titleEl.removeEventListener('pointermove', move)
+            titleEl.removeEventListener('pointerup', up)
+            titleEl.removeEventListener('pointercancel', up)
+            try { titleEl.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
+            savePanelPos()
+        }
+        titleEl.addEventListener('pointermove', move)
+        titleEl.addEventListener('pointerup', up)
+        titleEl.addEventListener('pointercancel', up)
+    })
+    titleEl.addEventListener('dblclick', (e) => {
+        e.preventDefault()
+        panelPos = null
+        savePanelPos()
+        syncUi()
+    })
+    // Keep the panel on-screen if the window shrinks under it.
+    window.addEventListener('resize', () => { if (panelPos) applyPanelPos() })
 
     // Restore the saved Figma token (if any) and persist edits as they happen.
     figmaTokenInput.value = localStorage.getItem(FIGMA_TOKEN_KEY) ?? ''
@@ -303,8 +881,14 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         opacityVal.textContent = `${Math.round(state.opacity * 100)}%`
         diffBtn.style.background = state.diff ? '#FFEF46' : '#2a2d33'
         diffBtn.style.color = state.diff ? '#1F2018' : '#F5F8FF'
+        invertBtn.style.background = state.invert ? '#FFEF46' : '#2a2d33'
+        invertBtn.style.color = state.invert ? '#1F2018' : '#F5F8FF'
         borderBtn.style.background = state.border ? '#FFEF46' : '#2a2d33'
         borderBtn.style.color = state.border ? '#1F2018' : '#F5F8FF'
+        gridBtn.style.background = state.grid ? '#FFEF46' : '#2a2d33'
+        gridBtn.style.color = state.grid ? '#1F2018' : '#F5F8FF'
+        if (gridSizeInput !== document.activeElement) gridSizeInput.value = String(state.gridSize)
+        if (gridColorInput.value.toLowerCase() !== state.gridColor.toLowerCase()) gridColorInput.value = state.gridColor
         // Highlight "fit" while fitted; clicking again restores the prior size.
         fitBtn.style.background = preFit ? '#FFEF46' : '#2a2d33'
         fitBtn.style.color = preFit ? '#1F2018' : '#F5F8FF'
@@ -347,7 +931,13 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
             panel.style.right = '8px'
             panel.style.borderRadius = '8px'
         }
+        // Apply a user-dragged position last so it overrides the default
+        // right-edge docking above (no-op until the panel has been moved).
+        applyPanelPos()
         applyImg()
+        applyGrid()
+        renderGuides()
+        renderRulers()
         save()
     }
 
@@ -394,6 +984,39 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         resetScaleAndCenter()
         return true
     }
+    // Pull an image off the clipboard via the async Clipboard API (used by the
+    // "paste" button). The Ctrl+V `paste` event path below is preferred when
+    // available; this is the click fallback and needs clipboard-read permission.
+    const pasteFromClipboard = async () => {
+        if (!navigator.clipboard?.read) {
+            figmaStatus.textContent = 'Clipboard API unavailable — press Ctrl+V instead'
+            return
+        }
+        try {
+            const items = await navigator.clipboard.read()
+            for (const item of items) {
+                const type = item.types.find(t => t.startsWith('image/'))
+                if (type) {
+                    const blob = await item.getType(type)
+                    loadFromFile(new File([blob], 'pasted-image', { type }))
+                    figmaStatus.textContent = 'Pasted from clipboard'
+                    return
+                }
+            }
+            const text = (await navigator.clipboard.readText().catch(() => '')).trim()
+            if (/^(https?:|data:)/i.test(text)) {
+                state = { ...state, src: text, visible: true }
+                syncUi()
+                resetScaleAndCenter()
+                figmaStatus.textContent = 'Pasted image URL'
+                return
+            }
+            figmaStatus.textContent = 'Clipboard has no image'
+        } catch (err) {
+            figmaStatus.textContent = `Paste failed: ${err instanceof Error ? err.message : String(err)} (try Ctrl+V)`
+        }
+    }
+
     const dzOver = (e: DragEvent) => {
         if (!dragEnabled()) return
         e.preventDefault()
@@ -424,7 +1047,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
             resetScaleAndCenter()
         }
     })
-    const onNumberInput = (el: HTMLInputElement, key: 'x' | 'y' | 'scale' | 'opacity', fallback: number) => {
+    const onNumberInput = (el: HTMLInputElement, key: 'x' | 'y' | 'scale' | 'opacity' | 'gridSize', fallback: number) => {
         el.addEventListener('input', () => {
             // Skip while the field is mid-edit (e.g. just `-` or empty) so we
             // don't replace the caret content; commit on blur instead.
@@ -445,15 +1068,287 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     onNumberInput(yInput, 'y', 0)
     onNumberInput(scaleInput, 'scale', 1)
     onNumberInput(opacityInput, 'opacity', 0.5)
+    onNumberInput(gridSizeInput, 'gridSize', 8)
+    gridColorInput.addEventListener('input', () => {
+        state = { ...state, gridColor: gridColorInput.value }
+        syncUi()
+    })
+
+    // --- element inspector (pick mode) -------------------------------------
+    // Highlights the element under the cursor and shows `tag · W×H`. Clicking an
+    // element LOCKS it: a persistent magenta box that stays put even after you
+    // exit pick mode or click elsewhere (click a locked element again to
+    // unlock; Esc clears all locks when not picking).
+    //
+    // On the wrapper page we read the DOM directly; inside the (cross-origin)
+    // portal iframe we can't, so the portal-side picker
+    // (src/utils/devElementPicker) draws its own hover/locked boxes there and
+    // reports geometry + lock count back over postMessage.
+    const PICK_TAG = 'bringweb3-devpick'
+    const HOVER_COLOR = '#00E5FF'
+    const LOCK_COLOR = '#FF2D9B'
+    let pickActive = false
+    let portalLockCount = 0
+    // The most recently picked element, used as the target for "align". Wrapper
+    // picks keep the element (recomputed live); portal picks keep the reported
+    // iframe-local rect (re-offset by the iframe's live position at align time).
+    type PickTarget =
+        | { kind: 'wrapper'; el: Element }
+        | { kind: 'portal'; rect: { x: number; y: number; width: number; height: number } }
+    let lastPick: PickTarget | null = null
+    // The pick before `lastPick`, so "measure" can span the two most-recently
+    // clicked elements (wrapper or portal). Updated on every committed pick.
+    let prevPick: PickTarget | null = null
+
+    const mkBox = (color: string, alpha: string) => {
+        const b = document.createElement('div')
+        Object.assign(b.style, {
+            position: 'fixed', zIndex: Z_LAYER, pointerEvents: 'none',
+            border: `1px solid ${color}`, background: alpha, boxSizing: 'border-box', display: 'none',
+        } as CSSStyleDeclaration)
+        document.body.appendChild(b)
+        return b
+    }
+    // Single hover box (follows the cursor) + a persistent box per locked
+    // wrapper-page element.
+    const hoverBox = mkBox(HOVER_COLOR, 'rgba(0,229,255,0.12)')
+    const wrapperLocks = new Map<Element, HTMLDivElement>()
+
+    const portalFrame = () => document.getElementById('portal') as HTMLIFrameElement | null
+    const postToPortal = (data: Record<string, unknown>) => {
+        const frame = portalFrame()
+        if (!frame?.contentWindow || !frame.src) return
+        try {
+            frame.contentWindow.postMessage({ ...data, to: PICK_TAG }, new URL(frame.src).origin)
+        } catch { /* iframe not ready / bad src */ }
+    }
+
+    // Our own overlay chrome shouldn't be pickable. (A locked *element* stays
+    // pickable so clicking it again unlocks it — only the lock boxes are
+    // chrome.)
+    const isOwnUi = (el: Element): boolean =>
+        el === hoverBox || el === panel || panel.contains(el) || el === img || el === grid ||
+        el === rulerCatcher ||
+        [...wrapperLocks.values()].some(b => b === el) ||
+        [...guideEls.values()].some(g => g === el) ||
+        [...rulerEls.values()].some(c => c === el || c.contains(el))
+
+    const describeEl = (el: Element): string => {
+        const r = el.getBoundingClientRect()
+        const id = (el as HTMLElement).id ? `#${(el as HTMLElement).id}` : ''
+        return `${el.tagName.toLowerCase()}${id} · ${Math.round(r.width)}×${Math.round(r.height)}`
+    }
+    const placeBox = (box: HTMLDivElement, el: Element) => {
+        const r = el.getBoundingClientRect()
+        Object.assign(box.style, {
+            display: '', left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`,
+        })
+    }
+
+    const totalLocks = () => wrapperLocks.size + portalLockCount
+    const updatePickButton = () => {
+        const n = totalLocks()
+        if (pickActive) {
+            pickBtn.textContent = 'picking… (Esc)'
+            pickBtn.style.background = '#FFEF46'; pickBtn.style.color = '#1F2018'
+        } else if (n > 0) {
+            pickBtn.textContent = `picked ${n} (Esc clears)`
+            pickBtn.style.background = LOCK_COLOR; pickBtn.style.color = '#1F2018'
+        } else {
+            pickBtn.textContent = 'pick'
+            pickBtn.style.background = '#2a2d33'; pickBtn.style.color = '#F5F8FF'
+        }
+    }
+
+    // Keep locked boxes pinned to their elements as the page scrolls/resizes.
+    let reposAttached = false
+    const repositionLocks = () => {
+        for (const [el, box] of wrapperLocks) {
+            if (!el.isConnected) { box.remove(); wrapperLocks.delete(el); continue }
+            placeBox(box, el)
+        }
+        if (wrapperLocks.size === 0) detachReposition()
+    }
+    const attachReposition = () => {
+        if (reposAttached) return
+        reposAttached = true
+        window.addEventListener('scroll', repositionLocks, true)
+        window.addEventListener('resize', repositionLocks)
+    }
+    function detachReposition() {
+        if (!reposAttached) return
+        reposAttached = false
+        window.removeEventListener('scroll', repositionLocks, true)
+        window.removeEventListener('resize', repositionLocks)
+    }
+
+    const toggleWrapperLock = (el: Element) => {
+        const existing = wrapperLocks.get(el)
+        if (existing) {
+            existing.remove(); wrapperLocks.delete(el)
+            if (wrapperLocks.size === 0) detachReposition()
+            if (lastPick?.kind === 'wrapper' && lastPick.el === el) lastPick = null
+        } else {
+            const box = mkBox(LOCK_COLOR, 'rgba(255,45,155,0.12)')
+            placeBox(box, el)
+            wrapperLocks.set(el, box)
+            attachReposition()
+            prevPick = lastPick
+            lastPick = { kind: 'wrapper', el }
+        }
+        updatePickButton()
+    }
+
+    const clearAllLocks = () => {
+        for (const box of wrapperLocks.values()) box.remove()
+        wrapperLocks.clear()
+        detachReposition()
+        portalLockCount = 0
+        lastPick = null
+        prevPick = null
+        postToPortal({ action: 'CLEAR_LOCKS' })
+        updatePickButton()
+    }
+
+    // A pick target's box in page (viewport) coordinates. For portal picks we
+    // add the iframe's current position so it tracks the iframe even if the
+    // wrapper layout shifted since the pick.
+    type PageRect = { x: number; y: number; width: number; height: number }
+    const pageRectOf = (pick: PickTarget | null): PageRect | null => {
+        if (!pick) return null
+        if (pick.kind === 'wrapper') {
+            if (!pick.el.isConnected) return null
+            const r = pick.el.getBoundingClientRect()
+            return { x: r.left, y: r.top, width: r.width, height: r.height }
+        }
+        const fr = portalFrame()?.getBoundingClientRect()
+        const ox = fr ? fr.left : 0
+        const oy = fr ? fr.top : 0
+        const r = pick.rect
+        return { x: ox + r.x, y: oy + r.y, width: r.width, height: r.height }
+    }
+    const pickTargetPageRect = () => pageRectOf(lastPick)
+
+    // Measure between the two most-recently picked elements: draw a ruler
+    // between their NEAREST points, so side-by-side boxes give the horizontal
+    // gap, stacked ones the vertical gap, and diagonal ones the corner span.
+    // (Where the boxes overlap on an axis, that end sits at the overlap centre.)
+    const nearestPoints = (a: PageRect, b: PageRect) => {
+        const aR = a.x + a.width, aB = a.y + a.height
+        const bR = b.x + b.width, bB = b.y + b.height
+        let ax: number, bx: number
+        if (aR < b.x) { ax = aR; bx = b.x }            // A entirely left of B
+        else if (bR < a.x) { ax = a.x; bx = bR }       // B entirely left of A
+        else { ax = bx = (Math.max(a.x, b.x) + Math.min(aR, bR)) / 2 } // x overlap
+        let ay: number, by: number
+        if (aB < b.y) { ay = aB; by = b.y }            // A entirely above B
+        else if (bB < a.y) { ay = a.y; by = bB }       // B entirely above A
+        else { ay = by = (Math.max(a.y, b.y) + Math.min(aB, bB)) / 2 } // y overlap
+        return { ax, ay, bx, by }
+    }
+    const measureBetweenPicks = () => {
+        const a = pageRectOf(prevPick)
+        const b = pageRectOf(lastPick)
+        if (!a || !b) { pickInfo.textContent = 'Pick two elements first (click two in pick mode)'; return }
+        const { ax, ay, bx, by } = nearestPoints(a, b)
+        addRuler(Math.round(ax), Math.round(ay), Math.round(bx), Math.round(by))
+        save()
+        pickInfo.textContent = `Measured ${Math.round(Math.hypot(bx - ax, by - ay))}px between picks`
+    }
+
+    // Align the overlay image's top-left onto the last picked element, keeping
+    // the current scale (use "fit" or the scale field to resize).
+    const alignToPick = () => {
+        const rect = pickTargetPageRect()
+        if (!rect) { pickInfo.textContent = 'Pick an element first (click one in pick mode)'; return }
+        if (!state.src) { pickInfo.textContent = 'Load an image first'; return }
+        preFit = null
+        state = { ...state, x: Math.round(rect.x), y: Math.round(rect.y), visible: true }
+        syncUi()
+        pickInfo.textContent = `Aligned to ${Math.round(rect.width)}×${Math.round(rect.height)}`
+    }
+
+    const onPickMove = (e: PointerEvent) => {
+        const el = e.target as Element | null
+        // Over the iframe, the portal-side picker handles the highlight.
+        if (!el || el === portalFrame() || isOwnUi(el)) { hoverBox.style.display = 'none'; return }
+        placeBox(hoverBox, el)
+        pickInfo.textContent = describeEl(el)
+    }
+    const onPickClick = (e: MouseEvent) => {
+        const el = e.target as Element | null
+        // Let panel buttons (incl. the pick button itself) work normally;
+        // clicks inside the iframe never reach us (the portal handles them).
+        if (!el || el === portalFrame() || isOwnUi(el)) return
+        e.preventDefault()
+        e.stopPropagation()
+        toggleWrapperLock(el)
+    }
+
+    const setPickActive = (on: boolean) => {
+        if (on === pickActive) return
+        pickActive = on
+        postToPortal({ action: 'SET_PICK', enabled: on })
+        if (on) {
+            document.addEventListener('pointermove', onPickMove, true)
+            document.addEventListener('click', onPickClick, true)
+        } else {
+            document.removeEventListener('pointermove', onPickMove, true)
+            document.removeEventListener('click', onPickClick, true)
+            hoverBox.style.display = 'none'
+            pickInfo.textContent = ''
+        }
+        updatePickButton()
+    }
+
+    // Reports from the portal-side picker for elements inside the iframe: a
+    // hover/pick readout, and the iframe's locked-box count (so our button can
+    // show the combined total). The portal draws its own boxes.
+    window.addEventListener('message', (e: MessageEvent) => {
+        // Only trust messages from the portal iframe itself (right window and
+        // origin), so another frame can't spoof picker events.
+        const frame = portalFrame()
+        if (frame?.contentWindow && e.source !== frame.contentWindow) return
+        if (frame?.src) {
+            let expectedOrigin: string | null = null
+            try { expectedOrigin = new URL(frame.src).origin } catch { /* bad src */ }
+            if (expectedOrigin && e.origin !== expectedOrigin) return
+        }
+        const d = e.data as { from?: string; action?: string; tag?: string; id?: string; count?: number; rect?: { x: number; y: number; width: number; height: number } } | null
+        if (!d || d.from !== PICK_TAG) return
+        if (d.action === 'LOCKS') {
+            portalLockCount = d.count ?? 0
+            updatePickButton()
+        } else if ((d.action === 'HOVER' || d.action === 'PICK') && pickActive) {
+            const id = d.id ? `#${d.id}` : ''
+            const size = d.rect ? ` · ${Math.round(d.rect.width)}×${Math.round(d.rect.height)}` : ''
+            pickInfo.textContent = `${d.tag ?? '?'}${id}${size}`
+            // Remember a committed pick (click) inside the iframe as the align
+            // target. rect is iframe-local; pickTargetPageRect() re-offsets it.
+            if (d.action === 'PICK' && d.rect) { prevPick = lastPick; lastPick = { kind: 'portal', rect: d.rect } }
+        }
+    })
 
     panel.addEventListener('click', (e) => {
         const t = e.target as HTMLElement
         const act = t.getAttribute('data-act')
         if (!act) return
         if (act === 'reset') { state = { ...DEFAULTS }; preFit = null; syncUi() }
+        else if (act === 'clearUrl') { state = { ...state, src: '' }; urlInput.value = ''; syncUi(); urlInput.focus() }
+        else if (act === 'paste') { void pasteFromClipboard() }
+        else if (act === 'pick') { setPickActive(!pickActive) }
+        else if (act === 'alignPick') { alignToPick() }
+        else if (act === 'measurePicks') { measureBetweenPicks() }
         else if (act === 'collapse') { state = { ...state, collapsed: !state.collapsed }; syncUi() }
         else if (act === 'diff') { state = { ...state, diff: !state.diff }; syncUi() }
+        else if (act === 'invert') { state = { ...state, invert: !state.invert }; syncUi() }
         else if (act === 'border') { state = { ...state, border: !state.border }; syncUi() }
+        else if (act === 'grid') { state = { ...state, grid: !state.grid }; syncUi() }
+        else if (act === 'addGuideV') { addGuide('x') }
+        else if (act === 'addGuideH') { addGuide('y') }
+        else if (act === 'clearGuides') { state = { ...state, guides: [] }; renderGuides(); save() }
+        else if (act === 'ruler') { setRulerArmed(!rulerArmed) }
+        else if (act === 'clearRulers') { state = { ...state, rulers: [] }; renderRulers(); save() }
         else if (act === 'fit') {
             if (preFit) {
                 // Second click: un-fit, restoring the size/position from before.
@@ -513,8 +1408,26 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     })
 
     window.addEventListener('keydown', (e) => {
+        // Esc exits pick mode; a second Esc (or Esc when not picking) clears
+        // any locked highlights. Allowed even when a field is focused.
+        if (e.key === 'Escape') {
+            if (rulerArmed) { e.preventDefault(); setRulerArmed(false); return }
+            if (pickActive) { e.preventDefault(); setPickActive(false); return }
+            if (totalLocks() > 0) { e.preventDefault(); clearAllLocks(); return }
+        }
         const tgt = e.target as HTMLElement | null
         if (tgt && /^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName)) return
+        // Delete/Backspace removes the guide or ruler the pointer is hovering.
+        if ((e.key === 'Delete' || e.key === 'Backspace') && hoveredGuideId) {
+            e.preventDefault()
+            removeGuide(hoveredGuideId)
+            return
+        }
+        if ((e.key === 'Delete' || e.key === 'Backspace') && hoveredRulerId) {
+            e.preventDefault()
+            removeRuler(hoveredRulerId)
+            return
+        }
         const step = e.shiftKey ? 10 : 1
         if (e.key === 'ArrowLeft') state = { ...state, x: state.x - step }
         else if (e.key === 'ArrowRight') state = { ...state, x: state.x + step }
@@ -523,6 +1436,16 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         else return
         e.preventDefault()
         syncUi()
+    })
+
+    // Ctrl/⌘+V anywhere pastes an image (or copied Figma frame) onto the
+    // overlay. Reuses the drag&drop extractor since a ClipboardEvent's
+    // clipboardData is a DataTransfer. Ignored while typing in a field so
+    // normal text paste still works there.
+    window.addEventListener('paste', (e: ClipboardEvent) => {
+        const tgt = e.target as HTMLElement | null
+        if (tgt && /^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName)) return
+        if (loadFromDataTransfer(e.clipboardData)) e.preventDefault()
     })
 
     syncUi()
@@ -544,7 +1467,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     Object.assign(dropHint.style, {
         position: 'fixed',
         inset: '0',
-        zIndex: '2147483645',
+        zIndex: Z_DROP_HINT,
         display: 'none',
         alignItems: 'center',
         justifyContent: 'center',

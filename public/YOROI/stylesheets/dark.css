@@ -145,6 +145,7 @@
     --category-btn-hover-border-w: 0;
     --category-btn-hover-border-c: #A0B3F2;
     --category-btn-hover-radius: 8px;
+    --category-skeleton-bg: #262B36;
 
     --modal-bg: #15171F;
     --modal-overlay-bg: rgba(31, 35, 46, 0.80);
@@ -193,16 +194,19 @@
     --modal-deal-name-f-s: 16px;
     --modal-deal-name-f-w: 500;
     --modal-deal-name-f-c: #E1E6F5;
-    --modal-deal-markdown-bg: #15171F;
+    --modal-deal-markdown-bg: rgba(9, 12, 17, 0.10);
     --modal-deal-markdown-border-w: 1px;
-    --modal-deal-markdown-border-c: #262A38;
-    --modal-deal-markdown-radius: 12px;
-    --modal-deal-markdown-f-s: 14px;
-    --modal-deal-markdown-f-w: 500;
-    --modal-deal-markdown-f-c: #E1E6F5;
-    --modal-deal-markdown-bold-f-w: 500;
-    --modal-deal-markdown-bold-f-c: #E1E6F5;
-    --modal-deal-consent-f-s: 12px;
+    --modal-deal-markdown-border-c: #3E4457;
+    --modal-deal-markdown-radius: 8px;
+    --modal-deal-markdown-f-s: 12px;
+    --modal-deal-markdown-f-w: 400;
+    --modal-deal-markdown-f-c: #7C85A3;
+    --modal-deal-markdown-bold-f-w: 700;
+    --modal-deal-markdown-bold-f-c: #7C85A3;
+    --modal-deal-markdown-h3-f-s: 13px;
+    --modal-deal-markdown-h3-f-w: 600;
+    --modal-deal-markdown-h3-f-c: #E1E6F5;
+    --modal-deal-markdown-scrollbar-bg: #7C85A3;    --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #E1E6F5;
     --modal-deal-terms-btn-hover-f-c: #4B6DDE;
@@ -244,13 +248,19 @@
     --scrollbar-w: 14px;
 
     --search-bg: #15171F;
+    --search-menu-bg: #15171F;
     --search-f-s: 14px;
     --search-f-w: 400;
     /* Here */
     --search-f-c: #E1E6F5;
     --search-option-f-c: #E1E6F5;
+    --search-option-f-s: 15px;
+    --search-option-f-w: 400;
     --search-option-hover-bg: #1F232E;
     --search-radius: 8px;
+    --search-menu-radius: 8px;
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: rgba(75, 82, 102, 0.2);
     --search-border-w: 1px;
     --search-border-c: #A7AFC0;
     --search-placeholder-f-c: #7C85A3;

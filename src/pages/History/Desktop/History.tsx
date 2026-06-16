@@ -78,7 +78,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                         <span>{tokenAmount}</span>
                     }
                 </div>
-                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
+                <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
                 <button
                     id="history-desktop-details-btn"
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}

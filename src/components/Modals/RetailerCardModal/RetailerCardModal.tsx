@@ -74,7 +74,11 @@ const RetailerCardModal = ({
             <Modal
                 showCloseBtn={!showingTerms}
                 xMarkPath='x-mark-light.svg'
-                style={{ '--custom-modal-bg': 'var(--retailer-custom-modal-bg,var(--modal-bg))' }}
+                className={`${styles.retailer_overlay} ${styles.retailer_overlay_desktop}`}
+                style={{
+                    '--modal-h': showingTerms ? 'calc(286px - 40px - 6px)' : 'calc(286px - 40px - 24px)',
+                    '--modal-pb': showingTerms ? '6px' : '24px',
+                }}
                 open={open}
                 closeFn={onClose}
             >
@@ -84,12 +88,21 @@ const RetailerCardModal = ({
                         className={styles.back_btn}
                         onClick={() => setShowingTerms(false)}
                     >
+                    <div 
+                        id="back_icon_container"
+                        className={styles.back_icon_container}
+                    >
                         <Icon
-                            name="arrow-left-light.svg"
-                            fallbackName="arrow-left.svg"
+                            name="arrow-left.svg"
                             alt="arrow-left"
                         />
+                    </div>
+                    <div
+                        id="back_txt_container"
+                        className={styles.back_txt_container}
+                    >
                         <span>{t('back')}</span>
+                    </div>
                     </button>
                 )}
                 <div className={styles.modal_container}>
@@ -106,7 +119,6 @@ const RetailerCardModal = ({
                                     ease: "easeInOut"
                                 }}
                                 className={styles.modal}
-                                style={{ width: '100%' }}
                             >
                                 {terms ? (
                                     <Markdown className={`${styles.markdown} ${styles.markdown_short}`}>
@@ -129,51 +141,56 @@ const RetailerCardModal = ({
                                     duration: 0.2,
                                     ease: "easeInOut"
                                 }}
-                                className={styles.modal}
-                                style={{ width: '100%' }}
+                                className={styles.go_shop}
                             >
-                                <div
-                                    className={styles.logo_container}
-                                    style={{ backgroundColor: backgroundColor || 'white' }}
-                                >
-                                    {fallbackLogo ?
-                                        <div className={styles.fallback_logo}>{fallbackLogo}</div>
-                                        :
-                                        <img
-                                            className={`${styles.logo} ${styles.logo_big}`}
-                                            loading='eager'
-                                            src={iconPath}
-                                            alt={`${name} logo`}
-                                            onError={() => setFallbackLogo(getInitials(name))}
-                                        />
-                                    }
+                                <div className={styles.go_shop_top}>
+                                    <div
+                                        className={styles.logo_container}
+                                        style={{ backgroundColor: backgroundColor || 'white' }}
+                                    >
+                                        {fallbackLogo ?
+                                            <div className={styles.fallback_logo}>{fallbackLogo}</div>
+                                            :
+                                            <img
+                                                className={`${styles.logo} ${styles.logo_big}`}
+                                                loading='eager'
+                                                src={iconPath}
+                                                alt={`${name} logo`}
+                                                onError={() => setFallbackLogo(getInitials(name))}
+                                            />
+                                        }
+                                    </div>
+                                    <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} cashback</div>
                                 </div>
-                                <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} cashback</div>
-                                {redirectLink && terms ?
-                                    <a
-                                        id="retailer-modal-start-shopping-btn"
-                                        className={styles.start_btn}
-                                        onClick={activate}
-                                        href={redirectLink}
-                                        target='_blank'
-                                    >
-                                        {t('startShopping')}
-                                    </a>
-                                    :
-                                    <button
-                                        id="retailer-modal-loading-btn"
-                                        className={styles.start_btn}
-                                        disabled={true}
-                                    >
-                                        {t('loadingBtn')}
-                                    </button>
-                                }
-                                <div className={styles.consent_txt}>
-                                    By clicking Go Shopping, you accept the <button
-                                        id="retailer-modal-terms-btn"
-                                        className={styles.terms_btn}
-                                        onClick={() => setShowingTerms(true)}
-                                    >Terms and Exclusions</button>
+                                <div className={styles.go_shop_bottom}>
+                                    {redirectLink && terms ?
+                                        <a
+                                            id="retailer-modal-start-shopping-btn"
+                                            className={styles.start_btn}
+                                            onClick={activate}
+                                            href={redirectLink}
+                                            target='_blank'
+                                            rel="noopener noreferrer"
+                                        >
+                                            {t('startShopping')}
+                                        </a>
+                                        :
+                                        <button
+                                            id="retailer-modal-loading-btn"
+                                            className={`${styles.start_btn} ${styles.loading_btn}`}
+                                            disabled={true}
+                                            aria-label={t('loadingBtn')}
+                                        >
+                                            <span className={styles.loader} />
+                                        </button>
+                                    }
+                                    <div className={styles.consent_txt}>
+                                        By clicking Go Shopping, you accept the <button
+                                            id="retailer-modal-terms-btn"
+                                            className={styles.terms_btn}
+                                            onClick={() => setShowingTerms(true)}
+                                        >{t('termsAndExclusions')}</button>
+                                    </div>
                                 </div>
                             </motion.div>
                         )}
@@ -185,7 +202,7 @@ const RetailerCardModal = ({
 
     return (
         <Modal
-            style={{ '--custom-modal-bg': 'var(--retailer-custom-modal-bg,var(--modal-bg))' }}
+            className={styles.retailer_overlay}
             open={open}
             closeFn={onClose}
         >
@@ -243,7 +260,7 @@ const RetailerCardModal = ({
                     </button>
                 }
                 <div className={styles.consent_txt}>
-                    By clicking Go Shopping, you accept the Terms and Exclusions above.
+                    By clicking Go Shopping, you accept the {t('termsAndExclusions')} above.
                 </div>
             </div>
         </Modal>

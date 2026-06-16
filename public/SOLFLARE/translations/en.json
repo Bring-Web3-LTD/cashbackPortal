@@ -1,0 +1,21 @@
+{
+  "title": "Solflare Cashback",
+  "subtitle": "Shop online with any card. Get cashback in USDC.",
+  "claimCashback": "Claim Cashback",
+  "viewRewards": "Cashback History",
+  "frequentlyAskedQuestion": "Missing a reward?",
+  "searchPlaceholder": "Brand, product, destination...",
+  "signNow": "Sign Now",
+  "startShopping": "Go Shopping",
+  "loading": "Loading...",
+  "loadingBtn": "Loading",
+  "claimToYourWallet": "Claim to your wallet",
+  "doneBtn": "Done",
+  "back": "Back",
+  "historyTitle": "Cashback history",
+  "emptyHistory": "No cashback history",
+  "needHelp": "Need help?",
+  "connectYourWallet": "Connect your wallet",
+  "connect": "Connect",
+  "termsAndExclusions": "Terms"
+}

@@ -80,7 +80,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
             <hr className={styles.breakline} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 20px' }}>
                 <div>Status:</div>
-                <div className={`${styles.status} ${styles[status.toLowerCase()]}`}>{status}</div>
+                <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
             </div>
             <AnimatePresence>
                 {isActive && <motion.div

@@ -70,7 +70,7 @@
 } */
 
 .skeleton {
-    background: var(--retailer-card-bg);
+    background: var(--category-skeleton-bg, var(--retailer-card-amount-bg));
     border: none;
 }
 
