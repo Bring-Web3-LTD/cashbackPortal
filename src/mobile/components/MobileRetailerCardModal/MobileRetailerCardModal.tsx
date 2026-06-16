@@ -21,7 +21,7 @@ const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
     } = useMobileRetailerCardModal(props)
 
     // Portal to <body> so ancestor `transform`s (framer-motion on the
-    // MobileLayout root) don't make `position: fixed` resolve against the
+    // MobileOutlet root) don't make `position: fixed` resolve against the
     // 360px-wide layout container instead of the viewport — which would
     // push the action buttons below the visible area.
     return createPortal(
