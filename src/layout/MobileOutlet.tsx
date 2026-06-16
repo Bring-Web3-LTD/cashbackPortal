@@ -5,7 +5,7 @@
  */
 import { motion } from 'framer-motion'
 import { Outlet } from 'react-router-dom'
-import styles from './MobileLayout.module.css'
+import styles from './MobileOutlet.module.css'
 
 interface Props {
     pathname: string

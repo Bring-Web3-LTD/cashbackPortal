@@ -18,6 +18,6 @@ export const useFaq = (): UseQueryResult<FaqResponse> => {
 
     return useQuery({
         queryKey: ['faq', walletAddress, platform],
-        queryFn: () => fetchFaq({ walletAddress, platform, userId, flowId }),
+        queryFn: () => fetchFaq({ walletAddress: walletAddress ?? undefined, platform, userId, flowId }),
     })
 }

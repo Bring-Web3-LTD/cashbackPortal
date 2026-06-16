@@ -11,7 +11,7 @@ import {
     formatSignedAmount,
     MobileClaimModalState,
     shortenWalletAddress,
-} from '../../mobile/utils/claimFlow'
+} from '../../utils/claimFlow'
 
 export interface ClaimModalProps {
     state: MobileClaimModalState | null

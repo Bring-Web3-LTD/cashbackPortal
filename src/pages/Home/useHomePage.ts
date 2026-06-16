@@ -15,7 +15,7 @@ import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
-import { MobileClaimModalState } from '../../mobile/utils/claimFlow'
+import { MobileClaimModalState } from '../../utils/claimFlow'
 import { DEV_MODE } from '../../config'
 
 // Min chars before the autocomplete filters/shows — a single char matches

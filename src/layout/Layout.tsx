@@ -5,7 +5,7 @@ import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
 import DesktopOutlet from './DesktopOutlet';
-import MobileOutlet from '../mobile/layout/MobileOutlet';
+import MobileOutlet from './MobileOutlet';
 
 /**
  * Root layout. Hosts the shared providers (Wallet, GA) once for both
