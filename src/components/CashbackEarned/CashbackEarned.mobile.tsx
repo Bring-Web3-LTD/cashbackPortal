@@ -1,12 +1,12 @@
 /** Mobile portal hero "Cashback earned" card: total earned amount + USD
- * subtitle. Pure UI — logic in useMobileCashbackEarned. */
-import Icon from '../../../components/Icon/Icon'
-import { useMobileCashbackEarned } from '../../hooks/useMobileCashbackEarned'
-import styles from './styles.module.css'
+ * subtitle. Pure UI — logic in useCashbackEarned. */
+import Icon from '../Icon/Icon'
+import { useCashbackEarned } from './useCashbackEarned'
+import styles from './styles.mobile.module.css'
 
-const MobileCashbackEarned = () => {
+const CashbackEarned = () => {
     const { t, isLoading, RiveComponent, riveFailed, amountDisplay, symbol, usdDisplay } =
-        useMobileCashbackEarned()
+        useCashbackEarned()
 
     // Loading skeleton: neutral tile, placeholder bars, no fox.
     if (isLoading) {
@@ -76,4 +76,4 @@ const MobileCashbackEarned = () => {
     )
 }
 
-export default MobileCashbackEarned
+export default CashbackEarned

@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
-import { MobileCategoriesItem } from '../components/MobileCategories/MobileCategories'
+import { CategoriesItem } from '../../components/Categories/Categories.mobile'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from './useRetailers'
 import { useBalance, selectEligible } from './useBalance'
@@ -27,7 +27,7 @@ export const useMobileHome = () => {
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
-    const [category, setCategory] = useState<MobileCategoriesItem | null>(null)
+    const [category, setCategory] = useState<CategoriesItem | null>(null)
     const [searchOpen, setSearchOpen] = useState(false)
     // Text currently typed in the input — drives the autocomplete dropdown only.
     const [searchTyping, setSearchTyping] = useState('')

@@ -4,24 +4,24 @@
  * placeholder bar while loading.
  */
 import { useTranslation } from 'react-i18next'
-import Icon from '../../../components/Icon/Icon'
-import { useDragScroll } from '../../../utils/hooks/useDragScroll'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useDragScroll } from '../../utils/hooks/useDragScroll'
+import styles from './styles.mobile.module.css'
 
-export interface MobileCategoriesItem {
+export interface CategoriesItem {
     id: number
     name: string
 }
 
 interface Props {
-    categories: MobileCategoriesItem[]
+    categories: CategoriesItem[]
     selectedId?: number | null
     isLoading?: boolean
-    onSelect: (cat: MobileCategoriesItem | null) => void
+    onSelect: (cat: CategoriesItem | null) => void
     onSearchClick?: () => void
 }
 
-const MobileCategories = ({
+const Categories = ({
     categories,
     selectedId,
     isLoading,
@@ -80,4 +80,4 @@ const MobileCategories = ({
     )
 }
 
-export default MobileCategories
+export default Categories

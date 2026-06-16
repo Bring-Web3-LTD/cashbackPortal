@@ -1,11 +1,11 @@
 /** Mobile portal home page: hero + filter row (categories / search / chip) +
  * retailer list + claim modal. Pure UI — logic in useMobileHome. */
-import MobileHeroSection from '../components/MobileHeroSection/MobileHeroSection'
-import MobileCategories from '../components/MobileCategories/MobileCategories'
+import MobileHeroSection from '../../components/HeroSection/HeroSection.mobile'
+import MobileCategories from '../../components/Categories/Categories.mobile'
 import MobileSearchBar from '../../components/Search/Search.mobile'
-import MobileFilterChip from '../components/MobileFilterChip/MobileFilterChip'
+import MobileFilterChip from '../../components/FilterChip/FilterChip.mobile'
 import MobileCardsList from '../../components/CardsList/CardsList.mobile'
-import MobileClaimModal from '../components/MobileClaimModal/MobileClaimModal'
+import MobileClaimModal from '../../components/ClaimModal/ClaimModal.mobile'
 import { useMobileHome } from '../hooks/useMobileHome'
 import styles from './MobileHome.module.css'
 

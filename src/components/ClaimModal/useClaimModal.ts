@@ -1,7 +1,7 @@
 /**
- * Logic hook for MobileClaimModal. Owns the emoji-fallback state, the
+ * Logic hook for the ClaimModal. Owns the emoji-fallback state, the
  * body-scroll-lock + popup-message effect, and derives the resolved token /
- * formatted amount / short address / per-state title so the .tsx is pure UI.
+ * formatted amount / short address / per-state title so the view is pure UI.
  */
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,9 +11,9 @@ import {
     formatSignedAmount,
     MobileClaimModalState,
     shortenWalletAddress,
-} from '../utils/claimFlow'
+} from '../../mobile/utils/claimFlow'
 
-export interface MobileClaimModalProps {
+export interface ClaimModalProps {
     state: MobileClaimModalState | null
     tokenSymbol: string
     tokenAmountDisplay: string
@@ -30,14 +30,14 @@ export interface MobileClaimModalProps {
     onTryAgain: () => void
 }
 
-export const useMobileClaimModal = ({
+export const useClaimModal = ({
     state,
     tokenSymbol,
     tokenAmountDisplay,
     tokenAmount,
     walletAddress,
     walletEmoji,
-}: MobileClaimModalProps) => {
+}: ClaimModalProps) => {
     const { t } = useTranslation()
     const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
     const cryptoToken = cryptoTokens?.find(ct => ct.symbol === tokenSymbol)

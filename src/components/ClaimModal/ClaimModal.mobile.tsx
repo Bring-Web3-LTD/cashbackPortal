@@ -1,11 +1,11 @@
 /** Mobile claim flow modal (confirm / minimum / processing / success /
- * failure). Pure UI — logic in useMobileClaimModal. */
+ * failure). Pure UI — logic in useClaimModal. */
 import { createPortal } from 'react-dom'
-import Icon from '../../../components/Icon/Icon'
-import { useMobileClaimModal, MobileClaimModalProps } from '../../hooks/useMobileClaimModal'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useClaimModal, ClaimModalProps } from './useClaimModal'
+import styles from './styles.mobile.module.css'
 
-const MobileClaimModal = (props: MobileClaimModalProps) => {
+const ClaimModal = (props: ClaimModalProps) => {
     const {
         state,
         tokenSymbol,
@@ -27,7 +27,7 @@ const MobileClaimModal = (props: MobileClaimModalProps) => {
         signedAmount,
         shortAddress,
         title,
-    } = useMobileClaimModal(props)
+    } = useClaimModal(props)
 
     if (!open) return null
 
@@ -277,4 +277,4 @@ const MobileClaimModal = (props: MobileClaimModalProps) => {
     )
 }
 
-export default MobileClaimModal
+export default ClaimModal

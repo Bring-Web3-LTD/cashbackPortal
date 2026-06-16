@@ -1,18 +1,18 @@
 /**
  * History row. Collapsed: logo, name + date, amount pill, status text.
  * Expanded: divider + per-step deal history. Pure UI — logic in
- * useMobileHistoryItem.
+ * useHistoryItem.
  */
 import { FC } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Icon from '../../../components/Icon/Icon'
-import { useMobileHistoryItem, MobileHistoryItemProps } from '../../hooks/useMobileHistoryItem'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useHistoryItem, HistoryItemProps } from './useHistoryItem'
+import styles from './styles.mobile.module.css'
 
-const MobileHistoryItem: FC<MobileHistoryItemProps> = (props) => {
+const HistoryItem: FC<HistoryItemProps> = (props) => {
     const { row, isOpen } = props
     const { panelId, buttonId, imgFailed, onImgError, expandable, handleClick } =
-        useMobileHistoryItem(props)
+        useHistoryItem(props)
 
     return (
         <div
@@ -103,4 +103,4 @@ const MobileHistoryItem: FC<MobileHistoryItemProps> = (props) => {
     )
 }
 
-export default MobileHistoryItem
+export default HistoryItem

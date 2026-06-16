@@ -1,13 +1,13 @@
 /**
- * Logic hook for MobileCashbackEarned. Owns the Rive canvas + load-error
+ * Logic hook for the CashbackEarned card. Owns the Rive canvas + load-error
  * state, pulls the balance aggregate and derives the display strings so the
- * .tsx is pure UI.
+ * view is pure UI.
  */
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useRive, Layout, Fit } from '@rive-app/react-canvas'
-import { useBalance, selectEligible, selectPending, selectTotalEarned } from './useBalance'
+import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../mobile/hooks/useBalance'
 
 const formatUsd = (value: number): string => {
     // Always render two decimals so the zero state reads "$0.00", not "$0".
@@ -18,7 +18,7 @@ const formatUsd = (value: number): string => {
     })}`
 }
 
-export const useMobileCashbackEarned = () => {
+export const useCashbackEarned = () => {
     const { t } = useTranslation()
     const { cryptoSymbols, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { data, isLoading } = useBalance()

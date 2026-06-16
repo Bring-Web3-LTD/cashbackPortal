@@ -8,7 +8,7 @@
  * useMobileHistory.
  */
 import MobileHeader from '../../components/Header/Header.mobile'
-import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
+import MobileHistoryItem from '../../components/HistoryItem/HistoryItem.mobile'
 import MobileHome from './MobileHome'
 import { useMobileHistory } from '../hooks/useMobileHistory'
 import styles from './MobileHistory.module.css'

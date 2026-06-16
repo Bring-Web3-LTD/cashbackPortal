@@ -3,8 +3,8 @@
  * suggestion is committed: a pill with the label and a clear (X) button.
  */
 import { useTranslation } from 'react-i18next'
-import Icon from '../../../components/Icon/Icon'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import styles from './styles.mobile.module.css'
 
 interface Props {
     label: string
@@ -13,7 +13,7 @@ interface Props {
     maxWidth?: number
 }
 
-const MobileFilterChip = ({ label, onClear, maxWidth }: Props) => {
+const FilterChip = ({ label, onClear, maxWidth }: Props) => {
     const { t } = useTranslation()
     const style = maxWidth ? { maxWidth: `${maxWidth}px` } : undefined
 
@@ -36,4 +36,4 @@ const MobileFilterChip = ({ label, onClear, maxWidth }: Props) => {
     )
 }
 
-export default MobileFilterChip
+export default FilterChip

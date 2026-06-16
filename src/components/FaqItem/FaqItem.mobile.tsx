@@ -4,7 +4,7 @@
  */
 import { FC, JSX } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import styles from './styles.module.css'
+import styles from './styles.mobile.module.css'
 
 interface Link {
     href: string
@@ -76,7 +76,7 @@ const renderAnswer = (
     )
 }
 
-const MobileFaqItem: FC<Props> = ({
+const FaqItem: FC<Props> = ({
     id,
     question,
     answer,
@@ -156,4 +156,4 @@ const MobileFaqItem: FC<Props> = ({
     )
 }
 
-export default MobileFaqItem
+export default FaqItem
