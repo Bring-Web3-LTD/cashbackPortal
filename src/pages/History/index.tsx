@@ -1,5 +1,5 @@
-import HistoryDesktop from './Desktop/History'
-import HistoryMobile from './Mobile/History'
+import HistoryDesktop from './History'
+import HistoryMobile from './History.oldMobile'
 
 const History = () => {
     return (

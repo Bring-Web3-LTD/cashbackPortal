@@ -5,18 +5,18 @@
  * (Home) renders behind a darkening layer, and the History sheet slides
  * up leaving an ~88px gap at the top so the darkened page peeks through.
  * Rounded top corners + 1px border per the design. Pure UI — logic in
- * useMobileHistory.
+ * useHistoryPage.
  */
 import MobileHeader from '../../components/Header/Header.mobile'
 import MobileHistoryItem from '../../components/HistoryItem/HistoryItem.mobile'
-import MobileHome from './MobileHome'
-import { useMobileHistory } from '../hooks/useMobileHistory'
-import styles from './MobileHistory.module.css'
+import MobileHome from '../Home/Home.mobile'
+import { useHistoryPage } from './useHistoryPage'
+import styles from './styles.mobile.module.css'
 
 const SKELETON_COUNT = 8
 
 const MobileHistory = () => {
-    const { t, rows, isLoading, openId, close, onToggle } = useMobileHistory()
+    const { t, rows, isLoading, openId, close, onToggle } = useHistoryPage()
 
     return (
         <div className={styles.root} data-testid="mobile-history">

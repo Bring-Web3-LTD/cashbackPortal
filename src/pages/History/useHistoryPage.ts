@@ -1,14 +1,14 @@
 /**
- * Logic hook for the MobileHistory page. Owns the open-row state and the
+ * Logic hook for the History page. Owns the open-row state and the
  * close/toggle handlers; surfaces the history rows + loading flag so the
- * page .tsx is pure UI.
+ * page view is pure UI.
  */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from './useHistory'
+import { useHistory } from '../../mobile/hooks/useHistory'
 
-export const useMobileHistory = () => {
+export const useHistoryPage = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { rows, isLoading } = useHistory()

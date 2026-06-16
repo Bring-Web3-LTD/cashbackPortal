@@ -1,14 +1,14 @@
-import styles from './styles.module.css'
+import styles from './styles.oldMobile.module.css'
 import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import fetchCache from '../../../api/fetchCache'
-import { createDescription, formatCurrency, formatDate, formatStatus } from '../helpers'
-import { useGoogleAnalytics } from '../../../utils/hooks/useGoogleAnalytics'
+import fetchCache from '../../api/fetchCache'
+import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
+import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
-import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
-import Icon from '../../../components/Icon/Icon'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import Icon from '../../components/Icon/Icon'
 
 interface HistoryMobile {
     status: string

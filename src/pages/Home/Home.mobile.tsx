@@ -1,13 +1,13 @@
 /** Mobile portal home page: hero + filter row (categories / search / chip) +
- * retailer list + claim modal. Pure UI — logic in useMobileHome. */
+ * retailer list + claim modal. Pure UI — logic in useHomePage. */
 import MobileHeroSection from '../../components/HeroSection/HeroSection.mobile'
 import MobileCategories from '../../components/Categories/Categories.mobile'
 import MobileSearchBar from '../../components/Search/Search.mobile'
 import MobileFilterChip from '../../components/FilterChip/FilterChip.mobile'
 import MobileCardsList from '../../components/CardsList/CardsList.mobile'
 import MobileClaimModal from '../../components/ClaimModal/ClaimModal.mobile'
-import { useMobileHome } from '../hooks/useMobileHome'
-import styles from './MobileHome.module.css'
+import { useHomePage } from './useHomePage'
+import styles from './styles.mobile.module.css'
 
 const MobileHome = () => {
     const {
@@ -44,7 +44,7 @@ const MobileHome = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
-    } = useMobileHome()
+    } = useHomePage()
 
     // Decide what occupies the tabs-row slot. Priority: open input >
     // committed search chip > category chip > full categories row.

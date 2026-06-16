@@ -8,21 +8,21 @@ import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import { CategoriesItem } from '../../components/Categories/Categories.mobile'
-import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
-import { useRetailers, selectRetailers, selectRetailersMetadata } from './useRetailers'
-import { useBalance, selectEligible } from './useBalance'
+import { useCategories, selectCategories, selectSearchTerms } from '../../mobile/hooks/useCategories'
+import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../mobile/hooks/useRetailers'
+import { useBalance, selectEligible } from '../../mobile/hooks/useBalance'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
-import { MobileClaimModalState } from '../utils/claimFlow'
+import { MobileClaimModalState } from '../../mobile/utils/claimFlow'
 import { DEV_MODE } from '../../config'
 
 // Min chars before the autocomplete filters/shows — a single char matches
 // too much to be useful.
 const SEARCH_MIN_CHARS = 2
 
-export const useMobileHome = () => {
+export const useHomePage = () => {
     const { platform, userId, flowId, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()

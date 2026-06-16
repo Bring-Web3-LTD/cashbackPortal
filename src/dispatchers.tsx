@@ -1,15 +1,15 @@
 /**
  * Per-route dispatchers — pick the mobile or desktop page based on the
- * `useMobilePortal` loader flag. Keeps the existing desktop pages
- * untouched and isolates the mobile portal entirely under `src/mobile/`.
+ * `useMobilePortal` loader flag. Mobile pages are the `.mobile` views
+ * colocated with their desktop counterparts under `src/pages/`.
  */
 import { useRouteLoaderData } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
-import MobileHome from './mobile/pages/MobileHome'
-import MobileHistory from './mobile/pages/MobileHistory'
-import MobileFaq from './mobile/pages/MobileFaq'
+import MobileHome from './pages/Home/Home.mobile'
+import MobileHistory from './pages/History/History.mobile'
+import MobileFaq from './pages/Faq/Faq.mobile'
 
 export const HomeDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData

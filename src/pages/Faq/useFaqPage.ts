@@ -1,14 +1,14 @@
 /**
- * Logic hook for the MobileFaq page. Owns the open-entry state and the
+ * Logic hook for the FAQ page. Owns the open-entry state and the
  * close/toggle handlers; surfaces the faq list + indentation mark + loading
- * flag so the page .tsx is pure UI.
+ * flag so the page view is pure UI.
  */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useFaq } from './useFaq'
+import { useFaq } from '../../mobile/hooks/useFaq'
 
-export const useMobileFaq = () => {
+export const useFaqPage = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { data, isLoading } = useFaq()

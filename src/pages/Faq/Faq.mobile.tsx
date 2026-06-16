@@ -1,16 +1,16 @@
 /*
- * Mobile FAQ — bottom-sheet overlay. Pure UI — logic in useMobileFaq.
+ * Mobile FAQ — bottom-sheet overlay. Pure UI — logic in useFaqPage.
  */
 import MobileHeader from '../../components/Header/Header.mobile'
 import MobileFaqItem from '../../components/FaqItem/FaqItem.mobile'
-import MobileHome from './MobileHome'
-import { useMobileFaq } from '../hooks/useMobileFaq'
-import styles from './MobileFaq.module.css'
+import MobileHome from '../Home/Home.mobile'
+import { useFaqPage } from './useFaqPage'
+import styles from './styles.mobile.module.css'
 
 const SKELETON_COUNT = 7
 
 const MobileFaq = () => {
-    const { t, faq, indentationMark, isLoading, openOrder, close, onToggle } = useMobileFaq()
+    const { t, faq, indentationMark, isLoading, openOrder, close, onToggle } = useFaqPage()
 
     return (
         <div className={styles.root} data-testid="mobile-faq">
