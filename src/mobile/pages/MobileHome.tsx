@@ -2,7 +2,7 @@
  * retailer list + claim modal. Pure UI — logic in useMobileHome. */
 import MobileHeroSection from '../components/MobileHeroSection/MobileHeroSection'
 import MobileCategories from '../components/MobileCategories/MobileCategories'
-import MobileSearchBar from '../components/MobileSearchBar/MobileSearchBar'
+import MobileSearchBar from '../../components/Search/Search.mobile'
 import MobileFilterChip from '../components/MobileFilterChip/MobileFilterChip'
 import MobileCardsList from '../../components/CardsList/CardsList.mobile'
 import MobileClaimModal from '../components/MobileClaimModal/MobileClaimModal'

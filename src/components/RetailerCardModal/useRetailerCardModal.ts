@@ -1,7 +1,7 @@
 /**
- * Logic hook for MobileRetailerCardModal. Owns the logo-fallback + navigating
+ * Logic hook for the RetailerCardModal. Owns the logo-fallback + navigating
  * state, the reset-on-open and body-scroll-lock effects, and derives the
- * formatted cashback + token symbol so the .tsx is pure UI.
+ * formatted cashback + token symbol so the view is pure UI.
  */
 import { useEffect, useMemo, useState } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import formatCashback from '../../utils/formatCashback'
 import { getInitials } from '../../utils/getInitials'
 
-export interface MobileRetailerCardModalProps {
+export interface RetailerCardModalProps {
     open: boolean
     retailer: Retailer | null
     iconPath: string
@@ -20,11 +20,11 @@ export interface MobileRetailerCardModalProps {
     onGoToShop: () => void
 }
 
-export const useMobileRetailerCardModal = ({
+export const useRetailerCardModal = ({
     open,
     retailer,
     onGoToShop,
-}: MobileRetailerCardModalProps) => {
+}: RetailerCardModalProps) => {
     const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
     const [fallbackLogo, setFallbackLogo] = useState('')

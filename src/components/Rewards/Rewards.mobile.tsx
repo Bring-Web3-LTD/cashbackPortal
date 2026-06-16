@@ -9,18 +9,18 @@
  */
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import Icon from '../../../components/Icon/Icon'
-import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
-import { useWalletAddress } from '../../../utils/hooks/useWalletAddress'
-import { ENV } from '../../../config'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useBalance, selectEligible, selectPending } from '../../mobile/hooks/useBalance'
+import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { ENV } from '../../config'
+import styles from './styles.mobile.module.css'
 
 interface Props {
     /** Override the Claimable card's "Claim" click handler. */
     onClaim?: () => void
 }
 
-const MobileRewards = ({ onClaim }: Props) => {
+const Rewards = ({ onClaim }: Props) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
@@ -166,4 +166,4 @@ const MobileRewards = ({ onClaim }: Props) => {
     )
 }
 
-export default MobileRewards
+export default Rewards

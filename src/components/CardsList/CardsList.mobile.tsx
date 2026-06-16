@@ -1,7 +1,7 @@
 /** Mobile retailer list + infinite scroll + T&C modal flow. Pure UI — logic
  * in useCardsList. */
-import MobileRetailerCard from '../../mobile/components/MobileRetailerCard/MobileRetailerCard'
-import MobileRetailerCardModal from '../../mobile/components/MobileRetailerCardModal/MobileRetailerCardModal'
+import MobileRetailerCard from '../RetailerCard/RetailerCard.mobile'
+import MobileRetailerCardModal from '../RetailerCardModal/RetailerCardModal.mobile'
 import { useCardsList, CardsListProps } from './useCardsList'
 import styles from './styles.mobile.module.css'
 

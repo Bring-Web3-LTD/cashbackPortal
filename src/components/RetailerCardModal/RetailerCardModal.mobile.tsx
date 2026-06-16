@@ -1,14 +1,14 @@
 /** Mobile T&C modal: retailer logo, cashback pill, terms, then Cancel + Go to shop (a target="_blank" anchor to the pre-fetched redirect URL so it opens a top-level tab). */
 /** Mobile T&C modal: retailer logo, cashback pill, terms, then Cancel + Go to
  * shop (a target="_blank" anchor to the pre-fetched redirect URL so it opens a
- * top-level tab). Pure UI — logic in useMobileRetailerCardModal. */
+ * top-level tab). Pure UI — logic in useRetailerCardModal. */
 import { createPortal } from 'react-dom'
 import Markdown from 'react-markdown'
-import Icon from '../../../components/Icon/Icon'
-import { useMobileRetailerCardModal, MobileRetailerCardModalProps } from '../../hooks/useMobileRetailerCardModal'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useRetailerCardModal, RetailerCardModalProps } from './useRetailerCardModal'
+import styles from './styles.mobile.module.css'
 
-const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
+const RetailerCardModal = (props: RetailerCardModalProps) => {
     const { open, retailer, iconPath, terms, redirectLink, onCancel } = props
     const {
         t,
@@ -18,7 +18,7 @@ const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
         onGoToShopClick,
         cashback,
         tokenSymbol,
-    } = useMobileRetailerCardModal(props)
+    } = useRetailerCardModal(props)
 
     // Portal to <body> so ancestor `transform`s (framer-motion on the
     // MobileOutlet root) don't make `position: fixed` resolve against the
@@ -151,4 +151,4 @@ const MobileRetailerCardModal = (props: MobileRetailerCardModalProps) => {
     )
 }
 
-export default MobileRetailerCardModal
+export default RetailerCardModal

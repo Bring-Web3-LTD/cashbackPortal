@@ -1,5 +1,5 @@
 import MobileCashbackEarned from '../MobileCashbackEarned/MobileCashbackEarned'
-import MobileRewards from '../MobileRewards/MobileRewards'
+import MobileRewards from '../../../components/Rewards/Rewards.mobile'
 
 interface Props {
     onClaim?: () => void

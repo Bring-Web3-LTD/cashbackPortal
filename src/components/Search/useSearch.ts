@@ -1,5 +1,5 @@
 /**
- * Logic hook for MobileSearchBar. Owns all state, refs, ids, effects and
+ * Logic hook for the Search bar. Owns all state, refs, ids, effects and
  * handlers; returns a flat view-model the .tsx renders verbatim. Keeps the
  * component file free of state/logic so it is pure UI.
  */
@@ -15,22 +15,22 @@ import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
 
-export interface MobileSearchSuggestion {
+export interface SearchSuggestion {
     id: string
     name: string
 }
 
-export interface MobileSearchBarProps {
+export interface SearchProps {
     value: string
     onChange: (value: string) => void
     onClose: () => void
-    suggestions?: MobileSearchSuggestion[]
+    suggestions?: SearchSuggestion[]
     onSelectSuggestion?: (name: string) => void
     showNoResults?: boolean
     showDropdown?: boolean
 }
 
-export const useMobileSearchBar = ({
+export const useSearch = ({
     value,
     onChange,
     onClose,
@@ -38,7 +38,7 @@ export const useMobileSearchBar = ({
     onSelectSuggestion,
     showNoResults = false,
     showDropdown = false,
-}: MobileSearchBarProps) => {
+}: SearchProps) => {
     const { t } = useTranslation()
     const { sendGaEvent } = useGoogleAnalytics()
     const inputRef = useRef<HTMLInputElement>(null)

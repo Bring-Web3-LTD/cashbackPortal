@@ -1,14 +1,14 @@
 /**
- * Inline search bar with autocomplete combobox. Replaces MobileCategories
- * while active. Pure UI — all state/logic lives in useMobileSearchBar.
+ * Inline search bar with autocomplete combobox. Replaces the categories row
+ * while active. Pure UI — all state/logic lives in useSearch.
  */
-import Icon from '../../../components/Icon/Icon'
-import { useMobileSearchBar, MobileSearchBarProps } from '../../hooks/useMobileSearchBar'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useSearch, SearchProps } from './useSearch'
+import styles from './styles.mobile.module.css'
 
-export type { MobileSearchSuggestion } from '../../hooks/useMobileSearchBar'
+export type { SearchSuggestion } from './useSearch'
 
-const MobileSearchBar = (props: MobileSearchBarProps) => {
+const Search = (props: SearchProps) => {
     const {
         t,
         inputRef,
@@ -25,7 +25,7 @@ const MobileSearchBar = (props: MobileSearchBarProps) => {
         handleSubmit,
         handleIconClick,
         handleKeyDown,
-    } = useMobileSearchBar(props)
+    } = useSearch(props)
 
     return (
         <div className={styles.wrapper}>
@@ -93,4 +93,4 @@ const MobileSearchBar = (props: MobileSearchBarProps) => {
     )
 }
 
-export default MobileSearchBar
+export default Search

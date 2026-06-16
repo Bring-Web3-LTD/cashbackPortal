@@ -1,7 +1,7 @@
 /*
  * Mobile FAQ — bottom-sheet overlay. Pure UI — logic in useMobileFaq.
  */
-import MobileHeader from '../components/MobileHeader/MobileHeader'
+import MobileHeader from '../../components/Header/Header.mobile'
 import MobileFaqItem from '../components/MobileFaqItem/MobileFaqItem'
 import MobileHome from './MobileHome'
 import { useMobileFaq } from '../hooks/useMobileFaq'

@@ -1,5 +1,5 @@
-import Icon from '../../../components/Icon/Icon'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import styles from './styles.mobile.module.css'
 
 interface Props {
     title: string
@@ -9,7 +9,7 @@ interface Props {
     onClose?: () => void
 }
 
-const MobileHeader = ({ title, onBack, onClose }: Props) => (
+const Header = ({ title, onBack, onClose }: Props) => (
     <header className={styles.header}>
         <div className={styles.side}>
             {onBack ? (
@@ -33,4 +33,4 @@ const MobileHeader = ({ title, onBack, onClose }: Props) => (
     </header>
 )
 
-export default MobileHeader
+export default Header

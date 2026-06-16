@@ -1,15 +1,15 @@
 /**
  * Retailer card: logo, name + cashback rate, Shop pill. Tap runs onClick
  * (activate flow). Logo failure falls back to initials. Pure UI — logic in
- * useMobileRetailerCard.
+ * useRetailerCard.
  */
-import Icon from '../../../components/Icon/Icon'
-import { useMobileRetailerCard, MobileRetailerCardProps } from '../../hooks/useMobileRetailerCard'
-import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
+import { useRetailerCard, RetailerCardProps } from './useRetailerCard'
+import styles from './styles.mobile.module.css'
 
-const MobileRetailerCard = (props: MobileRetailerCardProps) => {
+const RetailerCard = (props: RetailerCardProps) => {
     const { retailer, iconPath, onClick } = props
-    const { t, cashback, tokenSymbol, fallbackLogo, onLogoError } = useMobileRetailerCard(props)
+    const { t, cashback, tokenSymbol, fallbackLogo, onLogoError } = useRetailerCard(props)
 
     return (
         <button
@@ -58,4 +58,4 @@ const MobileRetailerCard = (props: MobileRetailerCardProps) => {
     )
 }
 
-export default MobileRetailerCard
+export default RetailerCard

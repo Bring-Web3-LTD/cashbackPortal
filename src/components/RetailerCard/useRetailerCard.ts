@@ -1,6 +1,6 @@
 /**
- * Logic hook for MobileRetailerCard. Owns the logo-fallback state and derives
- * the formatted cashback + token symbol + logo-error handler so the .tsx is
+ * Logic hook for the RetailerCard. Owns the logo-fallback state and derives
+ * the formatted cashback + token symbol + logo-error handler so the view is
  * pure UI.
  */
 import { useMemo, useState } from 'react'
@@ -9,13 +9,13 @@ import { useTranslation } from 'react-i18next'
 import formatCashback from '../../utils/formatCashback'
 import { getInitials } from '../../utils/getInitials'
 
-export interface MobileRetailerCardProps {
+export interface RetailerCardProps {
     retailer: Retailer
     iconPath: string
     onClick: (retailer: Retailer) => void
 }
 
-export const useMobileRetailerCard = ({ retailer }: MobileRetailerCardProps) => {
+export const useRetailerCard = ({ retailer }: RetailerCardProps) => {
     const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
     const [fallbackLogo, setFallbackLogo] = useState('')

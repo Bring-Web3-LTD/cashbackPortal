@@ -7,7 +7,7 @@
  * Rounded top corners + 1px border per the design. Pure UI — logic in
  * useMobileHistory.
  */
-import MobileHeader from '../components/MobileHeader/MobileHeader'
+import MobileHeader from '../../components/Header/Header.mobile'
 import MobileHistoryItem from '../components/MobileHistoryItem/MobileHistoryItem'
 import MobileHome from './MobileHome'
 import { useMobileHistory } from '../hooks/useMobileHistory'
