@@ -8,8 +8,8 @@
  */
 import { useInfiniteQuery, type UseInfiniteQueryResult, type InfiniteData } from '@tanstack/react-query'
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
-import fetchRetailers from '../../api/fetchRetailers'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import fetchRetailers from '../api/fetchRetailers'
+import { useWalletAddress } from '../utils/hooks/useWalletAddress'
 
 type RetailersPage = Awaited<ReturnType<typeof fetchRetailers>>
 

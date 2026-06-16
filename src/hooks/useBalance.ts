@@ -7,8 +7,8 @@
  */
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
-import fetchCache from '../../api/fetchCache'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import fetchCache from '../api/fetchCache'
+import { useWalletAddress } from '../utils/hooks/useWalletAddress'
 
 type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
 

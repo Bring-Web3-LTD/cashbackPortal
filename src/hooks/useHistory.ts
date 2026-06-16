@@ -6,7 +6,7 @@
  * into a single normalized list ready for `<MobileHistoryItem />`.
  *
  * Mirrors the desktop/legacy mobile History list logic in
- * `src/pages/History/Mobile/History.tsx` but adapted to a React-Query
+ * `src/pages/History/History.oldMobile.tsx` but adapted to a React-Query
  * selector pattern so the page component stays presentation-only.
  */
 import { useBalance } from './useBalance'
@@ -14,7 +14,7 @@ import {
     createDescription,
     formatDate,
     formatStatus,
-} from '../../pages/History/helpers'
+} from '../pages/History/helpers'
 
 export interface MobileHistoryRow {
     id: string

@@ -11,7 +11,7 @@ import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
 import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
 import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
-import type { RetailersMetadata } from '../../mobile/hooks/useRetailers'
+import type { RetailersMetadata } from '../../hooks/useRetailers'
 
 export interface CardsListProps {
     retailers: Retailer[]

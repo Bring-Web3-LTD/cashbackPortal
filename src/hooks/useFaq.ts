@@ -7,8 +7,8 @@
  */
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
-import fetchFaq from '../../api/fetchFaq'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import fetchFaq from '../api/fetchFaq'
+import { useWalletAddress } from '../utils/hooks/useWalletAddress'
 
 type FaqResponse = Awaited<ReturnType<typeof fetchFaq>>
 

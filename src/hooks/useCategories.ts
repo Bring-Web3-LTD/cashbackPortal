@@ -8,8 +8,8 @@
  */
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
-import getFilters from '../../api/getFilters'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import getFilters from '../api/getFilters'
+import { useWalletAddress } from '../utils/hooks/useWalletAddress'
 
 type FiltersResponse = Awaited<ReturnType<typeof getFilters>>
 

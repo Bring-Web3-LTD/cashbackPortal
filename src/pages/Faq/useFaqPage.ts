@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useFaq } from '../../mobile/hooks/useFaq'
+import { useFaq } from '../../hooks/useFaq'
 
 export const useFaqPage = () => {
     const { t } = useTranslation()

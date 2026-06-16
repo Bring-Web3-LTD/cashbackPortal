@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useRive, Layout, Fit } from '@rive-app/react-canvas'
-import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../mobile/hooks/useBalance'
+import { useBalance, selectEligible, selectPending, selectTotalEarned } from '../../hooks/useBalance'
 
 const formatUsd = (value: number): string => {
     // Always render two decimals so the zero state reads "$0.00", not "$0".

@@ -3,7 +3,7 @@
  * the ids / expandable flag / click guard so the view is pure UI.
  */
 import { useState } from 'react'
-import { MobileHistoryRow } from '../../mobile/hooks/useHistory'
+import { MobileHistoryRow } from '../../hooks/useHistory'
 
 export interface HistoryItemProps {
     row: MobileHistoryRow
