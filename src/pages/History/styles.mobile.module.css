@@ -121,7 +121,6 @@
     padding: 8px 12px;
     border-radius: var(--history-item-radius, 6px);
     background: var(--skeleton-tile-bg, #1D2133);
-    animation: mobileHistoryPulse 1.4s ease-in-out infinite;
 }
 
 .skeletonAvatar {
@@ -162,10 +161,6 @@
     flex-shrink: 0;
 }
 
-@keyframes mobileHistoryPulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
 
 /* ── Empty state — centered message tile. */
 .empty {

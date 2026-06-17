@@ -55,7 +55,6 @@
     background: var(--skeleton-tile-bg, #1D2133);
     border-radius: var(--retailer-card-radius);
     box-shadow: var(--skeleton-tile-shadow, 0 2px 6px rgba(4, 4, 7, 0.5));
-    animation: pulse 1.4s ease-in-out infinite;
 }
 
 .skeleton_left {
@@ -114,7 +113,3 @@
     width: 100%;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.85; }
-    50%      { opacity: 1; }
-}

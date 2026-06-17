@@ -201,7 +201,6 @@
     display: inline-block;
     background: var(--skeleton-fill, #262B3F);
     border-radius: var(--skeleton-bar-radius, 5px);
-    animation: mobileRewardsPulse 1.4s ease-in-out infinite;
 }
 
 /* Card label bar. */
@@ -234,7 +233,3 @@
     border-radius: 3px;
 }
 
-@keyframes mobileRewardsPulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}

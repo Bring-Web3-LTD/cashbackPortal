@@ -129,7 +129,6 @@
     display: inline-block;
     border-radius: var(--skeleton-bar-radius, 5px);
     background: var(--skeleton-fill, #262B3F);
-    animation: pulse 1.4s ease-in-out infinite;
 }
 
 /* Title placeholder bar. */
@@ -173,7 +172,3 @@
     border-radius: var(--skeleton-bar-radius, 5px);
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.55; }
-}

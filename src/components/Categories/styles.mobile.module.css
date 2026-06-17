@@ -18,7 +18,6 @@
     height: 100%;
     border-radius: var(--tabs-loading-radius, 3px);
     background: var(--skeleton-tile-bg, #1D2133);
-    animation: mobileCategoriesPulse 1.4s ease-in-out infinite;
 }
 
 /* Horizontal pill scroller; margin-right reserves the search-icon gutter. */
@@ -130,7 +129,3 @@
 }
 
 /* Skeleton pill */
-@keyframes mobileCategoriesPulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}

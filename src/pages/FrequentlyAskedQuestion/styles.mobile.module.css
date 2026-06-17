@@ -104,7 +104,6 @@
     border-radius: var(--faq-skeleton-radius, 4px);
     background: var(--faq-skeleton-bg, rgba(43, 52, 77, 0.5));
     overflow: hidden;
-    animation: mobileFaqPulse 1.4s ease-in-out infinite;
 }
 
 .skeletonBar {
@@ -114,7 +113,3 @@
     background: var(--faq-skeleton-bar-bg, #262B3F);
 }
 
-@keyframes mobileFaqPulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
