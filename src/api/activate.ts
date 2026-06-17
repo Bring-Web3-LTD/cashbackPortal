@@ -1,4 +1,4 @@
-import { API_KEY, API_URL_PLATFORMS } from "../config"
+import { API_KEY, API_URL } from "../config"
 
 interface Body extends BackendRequestBody {
     itemId: string
@@ -18,7 +18,7 @@ interface Response {
 }
 
 const activate = async (body: Body): Promise<Response> => {
-    const res = await fetch(`${API_URL_PLATFORMS}activate`, {
+    const res = await fetch(`${API_URL}activate`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {

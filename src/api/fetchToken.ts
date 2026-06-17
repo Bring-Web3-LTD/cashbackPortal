@@ -1,4 +1,4 @@
-import { API_URL_PORTAL, API_KEY } from "../config"
+import { API_URL, API_KEY } from "../config"
 
 interface Body {
     token: string
@@ -21,7 +21,7 @@ interface Response {
 }
 
 const fetchToken = async (body: Body): Promise<Response> => {
-    const res = await fetch(`${API_URL_PORTAL}verify`, {
+    const res = await fetch(`${API_URL}verify`, {
         method: "POST",
         headers: {
             "x-api-key": API_KEY,

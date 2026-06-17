@@ -1,4 +1,4 @@
-import { API_URL_PLATFORMS, API_KEY } from "../config"
+import { API_URL, API_KEY } from "../config"
 
 interface Options extends BackendRequestParams {
     country?: string
@@ -36,7 +36,7 @@ const getFilters = async (options: Options): Promise<Response> => {
     }
 
     const params = new URLSearchParams(searchParams)
-    const endpoint = `${API_URL_PLATFORMS}categories-search?${params.toString()}`
+    const endpoint = `${API_URL}categories-search?${params.toString()}`
 
     const res = await fetch(endpoint, {
         method: "GET",
