@@ -1,4 +1,4 @@
-export type MobileClaimModalState =
+export type ClaimModalState =
     | 'confirm'
     | 'processing'
     | 'success'

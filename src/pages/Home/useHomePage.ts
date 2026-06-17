@@ -15,7 +15,7 @@ import { useWalletAddress } from '../../hooks/useWalletAddress'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
-import { MobileClaimModalState } from '../../utils/claimFlow'
+import { ClaimModalState } from '../../utils/claimFlow'
 import { DEV_MODE } from '../../config'
 
 // Min chars before the autocomplete filters/shows — a single char matches
@@ -33,12 +33,12 @@ export const useHomePage = () => {
     const [searchTyping, setSearchTyping] = useState('')
     // Committed search value — drives the API filter and the chip display.
     const [searchChip, setSearchChip] = useState<string | null>(null)
-    const [claimState, setClaimState] = useState<MobileClaimModalState | null>(() => {
+    const [claimState, setClaimState] = useState<ClaimModalState | null>(() => {
         // DEV ONLY: force a claim modal state via ?claimState=failure|success|processing|minimum|confirm
         if (DEV_MODE) {
             const forced = new URLSearchParams(window.location.search).get('claimState')
             const valid = ['confirm', 'processing', 'success', 'failure', 'minimum']
-            if (forced && valid.includes(forced)) return forced as MobileClaimModalState
+            if (forced && valid.includes(forced)) return forced as ClaimModalState
         }
         return null
     })

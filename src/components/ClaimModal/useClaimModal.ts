@@ -9,12 +9,12 @@ import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
 import {
     formatSignedAmount,
-    MobileClaimModalState,
+    ClaimModalState,
     shortenWalletAddress,
 } from '../../utils/claimFlow'
 
 export interface ClaimModalProps {
-    state: MobileClaimModalState | null
+    state: ClaimModalState | null
     tokenSymbol: string
     tokenAmountDisplay: string
     tokenAmount: number
@@ -66,7 +66,7 @@ export const useClaimModal = ({
     const signedAmount = formatSignedAmount(tokenAmountDisplay, tokenAmount)
     const shortAddress = shortenWalletAddress(walletAddress)
 
-    const titles: Record<MobileClaimModalState, string> = {
+    const titles: Record<ClaimModalState, string> = {
         confirm: t('claimRewardsTitle') || 'Claim Rewards',
         minimum: t('minimumClaimTitle') || 'Minimum Claim',
         success: t('rewardClaimedHeader') || 'Reward claimed',
