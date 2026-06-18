@@ -3,9 +3,8 @@
  * One category selected at a time (click active to clear). Shows a single
  * placeholder bar while loading.
  */
-import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
-import { useDragScroll } from '../../hooks/useDragScroll'
+import { useCategories } from './useCategories'
 import styles from './styles.mobile.module.css'
 
 export interface CategoriesItem {
@@ -28,19 +27,18 @@ const Categories = ({
     onSelect,
     onSearchClick,
 }: Props) => {
-    const { t } = useTranslation()
-    const { ref: scrollerRef, didDrag } = useDragScroll<HTMLDivElement>(!isLoading)
+    const { scrollerRef, didDrag, labels } = useCategories(isLoading)
 
     if (isLoading) {
         return (
-            <div className={`${styles.root} ${styles.rootLoading}`} aria-label={t('categories') || 'Categories'}>
+            <div className={`${styles.root} ${styles.rootLoading}`} aria-label={labels.categories}>
                 <span className={styles.loadingBar} aria-hidden="true" />
             </div>
         )
     }
 
     return (
-        <div className={styles.root} role="tablist" aria-label={t('categories') || 'Categories'}>
+        <div className={styles.root} role="tablist" aria-label={labels.categories}>
             <div className={styles.scroller} ref={scrollerRef}>
                 {categories.map((cat) => {
                     const active = cat.id === selectedId
@@ -65,7 +63,7 @@ const Categories = ({
                 type="button"
                 className={styles.searchBtn}
                 onClick={onSearchClick}
-                aria-label={t('search') || 'Search'}
+                aria-label={labels.search}
             >
                 <Icon
                     name="magnifying-glass.svg"

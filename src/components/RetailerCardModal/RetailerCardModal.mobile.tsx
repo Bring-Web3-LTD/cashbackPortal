@@ -11,7 +11,7 @@ import styles from './styles.mobile.module.css'
 const RetailerCardModal = (props: RetailerCardModalProps) => {
     const { open, retailer, iconPath, terms, redirectLink, onCancel } = props
     const {
-        t,
+        labels,
         fallbackLogo,
         onLogoError,
         isNavigating,
@@ -41,13 +41,13 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                         <header className={styles.header}>
                             <span className={styles.header_spacer} aria-hidden="true" />
                             <h2 id="mobile-retailer-modal-title" className={styles.header_title}>
-                                {t('cashbackDetails')}
+                                {labels.title}
                             </h2>
                             <button
                                 type="button"
                                 className={styles.header_close}
                                 onClick={onCancel}
-                                aria-label={t('close')}
+                                aria-label={labels.close}
                             >
                                 <Icon name="x-mark.svg" alt="" />
                             </button>
@@ -84,21 +84,21 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                     <div className={styles.retailer_info}>
                                         <span className={styles.name}>{retailer.displayName}</span>
                                         <span className={styles.cashback_pill}>
-                                            <span className={styles.cashback_label}>{t('upTo')}</span>
+                                            <span className={styles.cashback_label}>{labels.upTo}</span>
                                             <span className={styles.cashback_amount}>
-                                                {cashback} {t('in')} {tokenSymbol}
+                                                {cashback} {labels.in} {tokenSymbol}
                                             </span>
                                         </span>
                                     </div>
                                 </div>
 
                                 <section className={styles.terms_box}>
-                                    <h3 className={styles.terms_title}>{t('cashbackTermsTitle')}</h3>
+                                    <h3 className={styles.terms_title}>{labels.termsTitle}</h3>
                                     <div className={styles.terms_body}>
                                         {terms ? (
                                             <Markdown>{terms}</Markdown>
                                         ) : (
-                                            <span className={styles.terms_loading}>{t('loading')}</span>
+                                            <span className={styles.terms_loading}>{labels.loading}</span>
                                         )}
                                     </div>
                                     <span className={styles.terms_fade} aria-hidden="true" />
@@ -113,7 +113,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                         disabled={isNavigating}
                                         onClick={onCancel}
                                     >
-                                        {t('cancel')}
+                                        {labels.cancel}
                                     </button>
                                     {redirectLink && terms ? (
                                         <a
@@ -127,7 +127,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                             {isNavigating ? (
                                                 <span className={styles.spinner} aria-hidden="true" />
                                             ) : (
-                                                t('goToShop')
+                                                labels.goToShop
                                             )}
                                         </a>
                                     ) : (
@@ -140,7 +140,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                         </button>
                                     )}
                                 </div>
-                                <p className={styles.disclaimer}>{t('agreeTerms')}</p>
+                                <p className={styles.disclaimer}>{labels.agreeTerms}</p>
                             </div>
                         </div>
                     </div>

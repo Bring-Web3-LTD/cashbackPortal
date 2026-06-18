@@ -18,5 +18,11 @@ export const useHistoryPage = () => {
     const onToggle = (id: string) =>
         setOpenId((cur) => (cur === id ? null : id))
 
-    return { t, rows, isLoading, openId, close, onToggle }
+    const labels = {
+        title: t('historyTitle'),
+        empty: t('emptyHistory'),
+        rewardHistory: t('rewardHistory'),
+    }
+
+    return { labels, rows, isLoading, openId, close, onToggle }
 }

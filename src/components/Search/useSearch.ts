@@ -121,8 +121,14 @@ export const useSearch = ({
             ? optionId(suggestions[activeIndex].id)
             : undefined
 
+    const labels = {
+        placeholder: t('searchPlaceholder'),
+        search: t('search'),
+        noMatches: t('searchNoMatches'),
+    }
+
     return {
-        t,
+        labels,
         inputRef,
         listboxId,
         activeIndex,

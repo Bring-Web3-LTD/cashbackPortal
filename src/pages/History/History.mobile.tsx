@@ -16,7 +16,7 @@ import styles from './styles.mobile.module.css'
 const SKELETON_COUNT = 8
 
 const MobileHistory = () => {
-    const { t, rows, isLoading, openId, close, onToggle } = useHistoryPage()
+    const { labels, rows, isLoading, openId, close, onToggle } = useHistoryPage()
 
     return (
         <div className={styles.root} data-testid="mobile-history">
@@ -31,14 +31,14 @@ const MobileHistory = () => {
             {/* Bottom-sheet overlay. */}
             <div className={styles.sheet} role="dialog" aria-modal="true">
                 <MobileHeader
-                    title={t('historyTitle') || 'History'}
+                    title={labels.title}
                     onClose={close}
                 />
                 <main className={styles.content}>
                     {!isLoading && rows.length === 0 ? (
                         <div className={styles.empty}>
                             <p className={styles.emptyText}>
-                                {t('emptyHistory') || 'No reward history found.'}
+                                {labels.empty}
                             </p>
                         </div>
                     ) : (
@@ -61,7 +61,7 @@ const MobileHistory = () => {
                             ) : (
                                 <>
                                 <p className={styles.intro}>
-                                    {t('rewardHistory') || 'Reward history'}
+                                    {labels.rewardHistory}
                                 </p>
                                 <div className={styles.list}>
                                     {rows.map((row) => (

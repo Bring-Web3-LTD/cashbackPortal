@@ -10,7 +10,7 @@ export type { SearchSuggestion } from './useSearch'
 
 const Search = (props: SearchProps) => {
     const {
-        t,
+        labels,
         inputRef,
         listboxId,
         activeIndex,
@@ -38,8 +38,8 @@ const Search = (props: SearchProps) => {
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder={t('searchPlaceholder')}
-                    aria-label={t('search')}
+                    placeholder={labels.placeholder}
+                    aria-label={labels.search}
                     aria-autocomplete="list"
                     aria-expanded={showDropdown}
                     aria-controls={showDropdown ? listboxId : undefined}
@@ -49,7 +49,7 @@ const Search = (props: SearchProps) => {
                     type="submit"
                     className={styles.iconBtn}
                     onClick={handleIconClick}
-                    aria-label={t('search')}
+                    aria-label={labels.search}
                 >
                     <Icon
                         name="magnifying-glass.svg"
@@ -65,7 +65,7 @@ const Search = (props: SearchProps) => {
             {showDropdown && (
                 <div id={listboxId} className={styles.dropdown} role="listbox">
                     {showNoResults ? (
-                        <div className={styles.empty}>{t('searchNoMatches')}</div>
+                        <div className={styles.empty}>{labels.noMatches}</div>
                     ) : (
                         suggestions.map((s, i) => (
                             <button

@@ -10,7 +10,7 @@ import styles from './styles.mobile.module.css'
 const SKELETON_COUNT = 7
 
 const MobileFaq = () => {
-    const { t, faq, indentationMark, isLoading, openOrder, close, onToggle } = useFaqPage()
+    const { labels, faq, indentationMark, isLoading, openOrder, close, onToggle } = useFaqPage()
 
     return (
         <div className={styles.root} data-testid="mobile-faq">
@@ -19,7 +19,7 @@ const MobileFaq = () => {
             </div>
             <div className={styles.darken} aria-hidden="true" onClick={close} />
             <div className={styles.sheet} role="dialog" aria-modal="true">
-                <MobileHeader title={t('faq') || 'FAQ'} onBack={close} />
+                <MobileHeader title={labels.title} onBack={close} />
                 <main className={styles.content}>
                     {isLoading ? (
                         <div className={styles.list} aria-hidden="true">
@@ -32,7 +32,7 @@ const MobileFaq = () => {
                     ) : (
                         <>
                         <p className={styles.intro}>
-                            {t('faqIntro') || 'If you have any question, please read the FAQ below:'}
+                            {labels.intro}
                         </p>
                         <div className={styles.list}>
                             {faq.map((item) => (

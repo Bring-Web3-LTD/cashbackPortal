@@ -27,8 +27,14 @@ export const useRetailerCard = ({ retailer }: RetailerCardProps) => {
 
     const tokenSymbol = cryptoSymbols?.[0] ?? ''
 
+    const labels = {
+        upTo: t('upTo'),
+        in: t('in'),
+        shop: t('shop'),
+    }
+
     return {
-        t,
+        labels,
         cashback,
         tokenSymbol,
         fallbackLogo,

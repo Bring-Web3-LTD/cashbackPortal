@@ -67,8 +67,21 @@ export const useRetailerCardModal = ({
 
     const tokenSymbol = cryptoSymbols?.[0] ?? ''
 
+    // Resolve the static labels here so the view stays free of i18n.
+    const labels = {
+        title: t('cashbackDetails'),
+        close: t('close'),
+        upTo: t('upTo'),
+        in: t('in'),
+        termsTitle: t('cashbackTermsTitle'),
+        loading: t('loading'),
+        cancel: t('cancel'),
+        goToShop: t('goToShop'),
+        agreeTerms: t('agreeTerms'),
+    }
+
     return {
-        t,
+        labels,
         fallbackLogo,
         onLogoError: () => {
             if (retailer) setFallbackLogo(getInitials(retailer.displayName))

@@ -11,7 +11,6 @@ const ClaimModal = (props: ClaimModalProps) => {
         tokenSymbol,
         tokenAmountDisplay,
         minimumClaimThreshold,
-        walletName,
         walletEmoji,
         explorerLink,
         onClose,
@@ -19,7 +18,7 @@ const ClaimModal = (props: ClaimModalProps) => {
         onTryAgain,
     } = props
     const {
-        t,
+        labels,
         open,
         cryptoToken,
         emojiFailed,
@@ -53,7 +52,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                                 <button
                                     type="button"
                                     className={styles.headerClose}
-                                    aria-label={t('close') || 'Close'}
+                                    aria-label={labels.close}
                                     onClick={onClose}
                                 >
                                     <Icon name="x-mark.svg" alt="" />
@@ -68,7 +67,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                         <>
                             <div className={styles.body}>
                                 <p className={styles.intro}>
-                                    {t('claimIntro') || 'This page ask you to claim rewards into your account. This transaction will impact your balance.'}
+                                    {labels.claimIntro}
                                 </p>
 
                                 <div className={styles.rowPrimary}>
@@ -96,29 +95,29 @@ const ClaimModal = (props: ClaimModalProps) => {
                                             </span>
                                         )}
                                         <span className={styles.rowLabel}>
-                                            {walletName || t('address') || 'Address'}
+                                            {labels.walletDisplay}
                                         </span>
                                     </span>
                                     <span className={styles.valueMuted}>{shortAddress}</span>
                                 </div>
 
                                 <div className={styles.rowSecondary}>
-                                    <span className={styles.rowLabel}>{t('networkFee') || 'Network fee'}</span>
-                                    <span className={styles.valueMuted}>{t('networkFeeWaived') || 'Waived'}</span>
+                                    <span className={styles.rowLabel}>{labels.networkFee}</span>
+                                    <span className={styles.valueMuted}>{labels.networkFeeWaived}</span>
                                 </div>
 
                                 <div className={styles.rowSecondary}>
-                                    <span className={styles.rowLabel}>{t('minimalAmountClaim') || 'Minimal amount claim'}</span>
+                                    <span className={styles.rowLabel}>{labels.minimalAmountClaim}</span>
                                     <span className={styles.valueMuted}>{`${minimumClaimThreshold} ${tokenSymbol}`.trim()}</span>
                                 </div>
                             </div>
 
                             <footer className={styles.footerTwoButtons}>
                                 <button type="button" className={styles.btnSecondary} onClick={onClose}>
-                                    {t('close') || 'Close'}
+                                    {labels.close}
                                 </button>
                                 <button type="button" className={styles.btnPrimary} onClick={onConfirm}>
-                                    {t('confirm') || 'Confirm'}
+                                    {labels.confirm}
                                 </button>
                             </footer>
 
@@ -130,22 +129,22 @@ const ClaimModal = (props: ClaimModalProps) => {
                             <div className={styles.minimumBody}>
                                 <div className={styles.minimumText}>
                                     <h3 className={styles.minimumTitle}>
-                                        {t('minimumOnWayTitle') || 'Your cashback is on the way.'}
+                                        {labels.minimumOnWayTitle}
                                     </h3>
                                     <p className={styles.minimumPara}>
-                                        {t('minimumOnWayMsg1') || 'Every purchase you make through Nightly earns you real crypto cashback.'}
+                                        {labels.minimumOnWayMsg1}
                                     </p>
                                     <p className={styles.minimumPara}>
-                                        {t('minimumOnWayMsg2') || `Once your earnings cross ${minimumClaimThreshold} ${tokenSymbol}, you'll be able to send them straight to your wallet, fast, on-chain, and yours to keep.`}
+                                        {labels.minimumOnWayMsg2}
                                     </p>
                                     <p className={styles.minimumHint}>
-                                        {t('minimumKeepShopping') || 'Keep shopping. Your rewards are stacking up.'}
+                                        {labels.minimumKeepShopping}
                                     </p>
                                 </div>
                             </div>
                             <footer className={styles.footerOneButton}>
                                 <button type="button" className={styles.btnSecondaryWide} onClick={onClose}>
-                                    {t('close') || 'Close'}
+                                    {labels.close}
                                 </button>
                             </footer>
                         </>
@@ -159,11 +158,11 @@ const ClaimModal = (props: ClaimModalProps) => {
                                 </span>
                             </div>
                             <div className={styles.failureText}>
-                                <h3 className={styles.failureTitle}>{t('claiming') || 'Claiming...'}</h3>
+                                <h3 className={styles.failureTitle}>{labels.claiming}</h3>
                                 <p className={styles.failureMsg}>
-                                    {t('claimProcessingMsg') || 'Your reward will be ready soon.'}
+                                    {labels.claimProcessingMsg}
                                     <br />
-                                    {t('claimProcessingMsg2') || 'Please wait...'}
+                                    {labels.claimProcessingMsg2}
                                 </p>
                                 {explorerLink ? (
                                     <a
@@ -172,7 +171,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                                         rel="noreferrer"
                                         className={styles.successExplorer}
                                     >
-                                        {t('showInExplorer') || 'Show in explorer'} <Icon name="open-website.svg" alt="" />
+                                        {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
                                     </a>
                                 ) : null}
                             </div>
@@ -212,9 +211,9 @@ const ClaimModal = (props: ClaimModalProps) => {
                                     <Icon name="success-glow-line.svg" alt="" />
                                 </span>
                                 <div className={styles.successText}>
-                                    <h4 className={styles.successTitle}>{t('rewardClaimedTitle') || 'Reward claimed!'}</h4>
+                                    <h4 className={styles.successTitle}>{labels.rewardClaimedTitle}</h4>
                                     <p className={styles.successMsg}>
-                                        {t('rewardClaimedMsg', { address: shortAddress || walletName || 'Address' })}
+                                        {labels.rewardClaimedMsg}
                                     </p>
                                     {explorerLink ? (
                                         <a
@@ -223,14 +222,14 @@ const ClaimModal = (props: ClaimModalProps) => {
                                             rel="noreferrer"
                                             className={styles.successExplorer}
                                         >
-                                            {t('showInExplorer') || 'Show in explorer'} <Icon name="open-website.svg" alt="" />
+                                            {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
                                         </a>
                                     ) : null}
                                 </div>
                             </div>
                             <footer className={styles.footerOneButton}>
                                 <button type="button" className={styles.btnSecondaryWide} onClick={onClose}>
-                                    {t('close') || 'Close'}
+                                    {labels.close}
                                 </button>
                             </footer>
                         </>
@@ -245,9 +244,9 @@ const ClaimModal = (props: ClaimModalProps) => {
                                     </span>
                                 </div>
                                 <div className={styles.failureText}>
-                                    <h3 className={styles.failureTitle}>{t('claimFailedTitle') || 'Failed...'}</h3>
+                                    <h3 className={styles.failureTitle}>{labels.claimFailedTitle}</h3>
                                     <p className={styles.failureMsg}>
-                                        {t('claimFailedMsg') || 'Something went wrong while claiming your reward. Make sure you have stable internet connection and try again.'}
+                                        {labels.claimFailedMsg}
                                     </p>
                                     {explorerLink ? (
                                         <a
@@ -256,17 +255,17 @@ const ClaimModal = (props: ClaimModalProps) => {
                                             rel="noreferrer"
                                             className={styles.successExplorer}
                                         >
-                                            {t('showInExplorer') || 'Show in explorer'} <Icon name="open-website.svg" alt="" />
+                                            {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
                                         </a>
                                     ) : null}
                                 </div>
                             </div>
                             <footer className={styles.footerTwoButtonsStatus}>
                                 <button type="button" className={styles.btnSecondary} onClick={onClose}>
-                                    {t('close') || 'Close'}
+                                    {labels.close}
                                 </button>
                                 <button type="button" className={styles.btnPrimary} onClick={onTryAgain}>
-                                    {t('tryAgain') || 'Try again'}
+                                    {labels.tryAgain}
                                 </button>
                             </footer>
                         </>

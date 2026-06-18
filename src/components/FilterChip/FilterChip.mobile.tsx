@@ -2,8 +2,8 @@
  * Active-filter chip. Replaces the categories row when a category or search
  * suggestion is committed: a pill with the label and a clear (X) button.
  */
-import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
+import { useFilterChip } from './useFilterChip'
 import styles from './styles.mobile.module.css'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const FilterChip = ({ label, onClear, maxWidth }: Props) => {
-    const { t } = useTranslation()
+    const { labels } = useFilterChip()
     const style = maxWidth ? { maxWidth: `${maxWidth}px` } : undefined
 
     return (
@@ -27,7 +27,7 @@ const FilterChip = ({ label, onClear, maxWidth }: Props) => {
                     type="button"
                     className={styles.clear}
                     onClick={onClear}
-                    aria-label={t('close') || 'Close'}
+                    aria-label={labels.close}
                 >
                     <Icon name="x-mark.svg" className={styles.clearIcon} />
                 </button>

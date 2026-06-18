@@ -5,7 +5,7 @@ import { useCashbackEarned } from './useCashbackEarned'
 import styles from './styles.mobile.module.css'
 
 const CashbackEarned = () => {
-    const { t, isLoading, RiveComponent, riveFailed, amountDisplay, symbol, usdDisplay } =
+    const { labels, isLoading, RiveComponent, riveFailed, amountDisplay, symbol, usdDisplay } =
         useCashbackEarned()
 
     // Loading skeleton: neutral tile, placeholder bars, no fox.
@@ -13,7 +13,7 @@ const CashbackEarned = () => {
         return (
             <section
                 className={`${styles.root} ${styles.loading}`}
-                aria-label={t('cashbackEarned') || 'Cashback earned'}
+                aria-label={labels.cashbackEarned}
                 aria-busy="true"
             >
                 <div className={styles.body}>
@@ -43,7 +43,7 @@ const CashbackEarned = () => {
     return (
         <section
             className={styles.root}
-            aria-label={t('cashbackEarned') || 'Cashback earned'}
+            aria-label={labels.cashbackEarned}
         >
             <div className={styles.body}>
                 <div className={styles.labelRow}>
@@ -53,7 +53,7 @@ const CashbackEarned = () => {
                         aria-hidden="true"
                     />
                     <p className={styles.label}>
-                        {t('cashbackEarned') || 'Cashback earned'}
+                        {labels.cashbackEarned}
                     </p>
                 </div>
                 <div className={styles.amountGroup}>
@@ -62,7 +62,7 @@ const CashbackEarned = () => {
                         {symbol ? ` ${symbol}` : null}
                     </p>
                     <p className={styles.sub}>
-                        {t('currentValue') || 'Current value'}: {usdDisplay}
+                        {labels.currentValue}: {usdDisplay}
                     </p>
                 </div>
             </div>

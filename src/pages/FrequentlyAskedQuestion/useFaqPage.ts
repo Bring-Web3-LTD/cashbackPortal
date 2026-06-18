@@ -21,5 +21,10 @@ export const useFaqPage = () => {
     const faq = data?.faq ?? []
     const indentationMark = data?.indentationMark ?? ''
 
-    return { t, faq, indentationMark, isLoading, openOrder, close, onToggle }
+    const labels = {
+        title: t('faq'),
+        intro: t('faqIntro'),
+    }
+
+    return { labels, faq, indentationMark, isLoading, openOrder, close, onToggle }
 }

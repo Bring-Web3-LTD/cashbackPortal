@@ -9,7 +9,7 @@ import styles from './styles.mobile.module.css'
 
 const RetailerCard = (props: RetailerCardProps) => {
     const { retailer, iconPath, onClick } = props
-    const { t, cashback, tokenSymbol, fallbackLogo, onLogoError } = useRetailerCard(props)
+    const { labels, cashback, tokenSymbol, fallbackLogo, onLogoError } = useRetailerCard(props)
 
     return (
         <button
@@ -43,15 +43,15 @@ const RetailerCard = (props: RetailerCardProps) => {
                 <div className={styles.text}>
                     <span className={styles.name}>{retailer.displayName}</span>
                     <span className={styles.sub}>
-                        <span className={styles.sub_label}>{t('upTo')} </span>
+                        <span className={styles.sub_label}>{labels.upTo} </span>
                         <span className={styles.sub_amount}>{cashback}</span>
-                        <span className={styles.sub_label}> {t('in')} </span>
+                        <span className={styles.sub_label}> {labels.in} </span>
                         <span className={styles.sub_coin}>{tokenSymbol}</span>
                     </span>
                 </div>
             </div>
             <span className={styles.shop} aria-hidden="true">
-                <span className={styles.shop_label}>{t('shop')}</span>
+                <span className={styles.shop_label}>{labels.shop}</span>
                 <Icon name="external-link.svg" alt="" />
             </span>
         </button>

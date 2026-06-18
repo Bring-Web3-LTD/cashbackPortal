@@ -36,6 +36,7 @@ export const useClaimModal = ({
     tokenAmountDisplay,
     tokenAmount,
     walletAddress,
+    walletName,
     walletEmoji,
 }: ClaimModalProps) => {
     const { t } = useTranslation()
@@ -67,16 +68,40 @@ export const useClaimModal = ({
     const shortAddress = shortenWalletAddress(walletAddress)
 
     const titles: Record<ClaimModalState, string> = {
-        confirm: t('claimRewardsTitle') || 'Claim Rewards',
-        minimum: t('minimumClaimTitle') || 'Minimum Claim',
-        success: t('rewardClaimedHeader') || 'Reward claimed',
-        failure: t('claimRewardsTitle') || 'Claim Rewards',
-        processing: t('claimingHeader') || 'Claiming',
+        confirm: t('claimRewardsTitle'),
+        minimum: t('minimumClaimTitle'),
+        success: t('rewardClaimedHeader'),
+        failure: t('claimRewardsTitle'),
+        processing: t('claimingHeader'),
     }
     const title = state ? titles[state] : ''
 
+    // Resolve every label here so the view holds no i18n.
+    const labels = {
+        close: t('close'),
+        confirm: t('confirm'),
+        tryAgain: t('tryAgain'),
+        claimIntro: t('claimIntro'),
+        walletDisplay: walletName || t('address'),
+        networkFee: t('networkFee'),
+        networkFeeWaived: t('networkFeeWaived'),
+        minimalAmountClaim: t('minimalAmountClaim'),
+        minimumOnWayTitle: t('minimumOnWayTitle'),
+        minimumOnWayMsg1: t('minimumOnWayMsg1'),
+        minimumOnWayMsg2: t('minimumOnWayMsg2'),
+        minimumKeepShopping: t('minimumKeepShopping'),
+        claiming: t('claiming'),
+        claimProcessingMsg: t('claimProcessingMsg'),
+        claimProcessingMsg2: t('claimProcessingMsg2'),
+        showInExplorer: t('showInExplorer'),
+        rewardClaimedTitle: t('rewardClaimedTitle'),
+        rewardClaimedMsg: t('rewardClaimedMsg', { address: shortAddress || walletName }),
+        claimFailedTitle: t('claimFailedTitle'),
+        claimFailedMsg: t('claimFailedMsg'),
+    }
+
     return {
-        t,
+        labels,
         open,
         cryptoToken,
         emojiFailed,

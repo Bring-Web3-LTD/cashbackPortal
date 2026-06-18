@@ -46,8 +46,13 @@ export const useCashbackEarned = () => {
     // USD subtitle from backend's aggregate value; fall back to 0 (eligible + pending would miss the claimed portion).
     const usdDisplay = formatUsd(totalEarned?.totalEstimatedUsd ?? 0)
 
+    const labels = {
+        cashbackEarned: t('cashbackEarned'),
+        currentValue: t('currentValue'),
+    }
+
     return {
-        t,
+        labels,
         isLoading,
         RiveComponent,
         riveFailed,
