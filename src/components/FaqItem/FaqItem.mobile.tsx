@@ -4,22 +4,8 @@
  */
 import { FC, JSX } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { FaqItemProps, Link } from './useFaqItem'
 import styles from './styles.mobile.module.css'
-
-interface Link {
-    href: string
-    linkText: string
-}
-
-interface Props {
-    id: string
-    question: string
-    answer: string[]
-    links: Link[]
-    indentationMark: string
-    isOpen: boolean
-    onToggle: () => void
-}
 
 /**
  * Renders the answer lines, turning configured `linkText` occurrences into
@@ -76,7 +62,7 @@ const renderAnswer = (
     )
 }
 
-const FaqItem: FC<Props> = ({
+const FaqItem: FC<FaqItemProps> = ({
     id,
     question,
     answer,

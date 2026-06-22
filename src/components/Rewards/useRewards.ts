@@ -9,6 +9,11 @@ import { useBalance, selectEligible, selectPending } from '../../hooks/useBalanc
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { ENV } from '../../config'
 
+export interface RewardsProps {
+    /** Override the Claimable card's "Claim" click handler. */
+    onClaim?: () => void
+}
+
 export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()

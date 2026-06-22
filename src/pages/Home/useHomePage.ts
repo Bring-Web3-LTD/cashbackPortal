@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
-import { CategoriesItem } from '../../components/Categories/Categories.mobile'
+import { CategoriesItem } from '../../components/Categories/useCategories'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
 import { useBalance, selectEligible } from '../../hooks/useBalance'

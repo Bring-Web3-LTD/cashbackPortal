@@ -4,15 +4,10 @@
  * amounts/labels become greyed placeholder bars and the buttons are disabled.
  */
 import Icon from '../Icon/Icon'
-import { useRewards } from './useRewards'
+import { useRewards, RewardsProps } from './useRewards'
 import styles from './styles.mobile.module.css'
 
-interface Props {
-    /** Override the Claimable card's "Claim" click handler. */
-    onClaim?: () => void
-}
-
-const Rewards = ({ onClaim }: Props) => {
+const Rewards = ({ onClaim }: RewardsProps) => {
     const {
         isLoading,
         claimableDisplay,

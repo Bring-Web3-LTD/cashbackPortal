@@ -1,15 +1,8 @@
 import Icon from '../Icon/Icon'
+import { HeaderProps } from './useHeader'
 import styles from './styles.mobile.module.css'
 
-interface Props {
-    title: string
-    /** Shows ← arrow on the left. */
-    onBack?: () => void
-    /** Shows × mark on the right. */
-    onClose?: () => void
-}
-
-const Header = ({ title, onBack, onClose }: Props) => (
+const Header = ({ title, onBack, onClose }: HeaderProps) => (
     <header className={styles.header}>
         <div className={styles.side}>
             {onBack ? (

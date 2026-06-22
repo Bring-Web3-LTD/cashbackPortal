@@ -1,11 +1,8 @@
 import CashbackEarned from '../CashbackEarned/CashbackEarned.mobile'
 import Rewards from '../Rewards/Rewards.mobile'
+import { HeroSectionProps } from './useHeroSection'
 
-interface Props {
-    onClaim?: () => void
-}
-
-const HeroSection = ({ onClaim }: Props) => (
+const HeroSection = ({ onClaim }: HeroSectionProps) => (
     <>
         <CashbackEarned />
         <Rewards onClaim={onClaim} />

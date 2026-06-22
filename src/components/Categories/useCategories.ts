@@ -6,6 +6,19 @@
 import { useTranslation } from 'react-i18next'
 import { useDragScroll } from '../../hooks/useDragScroll'
 
+export interface CategoriesItem {
+    id: number
+    name: string
+}
+
+export interface CategoriesProps {
+    categories: CategoriesItem[]
+    selectedId?: number | null
+    isLoading?: boolean
+    onSelect: (cat: CategoriesItem | null) => void
+    onSearchClick?: () => void
+}
+
 export const useCategories = (isLoading?: boolean) => {
     const { t } = useTranslation()
     const { ref: scrollerRef, didDrag } = useDragScroll<HTMLDivElement>(!isLoading)

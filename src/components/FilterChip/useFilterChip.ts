@@ -4,6 +4,11 @@
  */
 import { useTranslation } from 'react-i18next'
 
+export interface FilterChipProps {
+    label: string
+    onClear: () => void
+}
+
 export const useFilterChip = () => {
     const { t } = useTranslation()
 

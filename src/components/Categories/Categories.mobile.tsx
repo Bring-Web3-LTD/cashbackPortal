@@ -4,21 +4,8 @@
  * placeholder bar while loading.
  */
 import Icon from '../Icon/Icon'
-import { useCategories } from './useCategories'
+import { useCategories, CategoriesProps } from './useCategories'
 import styles from './styles.mobile.module.css'
-
-export interface CategoriesItem {
-    id: number
-    name: string
-}
-
-interface Props {
-    categories: CategoriesItem[]
-    selectedId?: number | null
-    isLoading?: boolean
-    onSelect: (cat: CategoriesItem | null) => void
-    onSearchClick?: () => void
-}
 
 const Categories = ({
     categories,
@@ -26,7 +13,7 @@ const Categories = ({
     isLoading,
     onSelect,
     onSearchClick,
-}: Props) => {
+}: CategoriesProps) => {
     const { scrollerRef, didDrag, labels } = useCategories(isLoading)
 
     if (isLoading) {

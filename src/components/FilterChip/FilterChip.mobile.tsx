@@ -3,24 +3,16 @@
  * suggestion is committed: a pill with the label and a clear (X) button.
  */
 import Icon from '../Icon/Icon'
-import { useFilterChip } from './useFilterChip'
+import { useFilterChip, FilterChipProps } from './useFilterChip'
 import styles from './styles.mobile.module.css'
 
-interface Props {
-    label: string
-    onClear: () => void
-    /** Optional clamp for very long labels. */
-    maxWidth?: number
-}
-
-const FilterChip = ({ label, onClear, maxWidth }: Props) => {
+const FilterChip = ({ label, onClear }: FilterChipProps) => {
     const { labels } = useFilterChip()
-    const style = maxWidth ? { maxWidth: `${maxWidth}px` } : undefined
 
     return (
         <div className={styles.root}>
             <span className={styles.chip}>
-                <span className={styles.label} style={style} title={label}>
+                <span className={styles.label} title={label}>
                     {label}
                 </span>
                 <button
