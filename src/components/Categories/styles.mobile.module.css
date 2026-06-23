@@ -20,25 +20,21 @@
     background: var(--skeleton-tile-bg, #1D2133);
 }
 
-/* Horizontal pill scroller; margin-right reserves the search-icon gutter. */
+/* Swiper root (horizontal pill scroller); margin-right reserves the
+   search-icon gutter. Swiper handles the overflow/scroll itself. */
 .scroller {
-    position: relative;
     flex: 1 1 auto;
     min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 0px;
     height: 100%;
     margin-right: 28px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    cursor: grab;
 }
 
-.scroller::-webkit-scrollbar {
-    display: none;
+/* Each pill is an auto-width slide (slidesPerView="auto"). */
+.slide {
+    width: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 /* Right-edge fade over overflowing pills; fades to the page background. */

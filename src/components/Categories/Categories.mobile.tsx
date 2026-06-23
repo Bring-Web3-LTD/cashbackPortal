@@ -3,18 +3,16 @@
  * One category selected at a time (click active to clear). Shows a single
  * placeholder bar while loading.
  */
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/free-mode'
 import Icon from '../Icon/Icon'
 import { useCategories, CategoriesProps } from './useCategories'
 import styles from './styles.mobile.module.css'
 
-const Categories = ({
-    categories,
-    selectedId,
-    isLoading,
-    onSelect,
-    onSearchClick,
-}: CategoriesProps) => {
-    const { scrollerRef, didDrag, labels } = useCategories(isLoading)
+const Categories = (props: CategoriesProps) => {
+    const { categories, isLoading, onSearchClick } = props
+    const { labels, isActive, selectTab, swiperProps } = useCategories(props)
 
     if (isLoading) {
         return (
@@ -26,23 +24,21 @@ const Categories = ({
 
     return (
         <div className={styles.root} role="tablist" aria-label={labels.categories}>
-            <div className={styles.scroller} ref={scrollerRef}>
-                {categories.map((cat) => {
-                    const active = cat.id === selectedId
-                    return (
+            <Swiper className={styles.scroller} {...swiperProps}>
+                {categories.map((cat) => (
+                    <SwiperSlide key={cat.id} className={styles.slide}>
                         <button
-                            key={cat.id}
                             type="button"
                             role="tab"
-                            aria-selected={active}
-                            className={`${styles.tab} ${active ? styles.tabActive : ''}`}
-                            onClick={() => { if (!didDrag()) onSelect(active ? null : cat) }}
+                            aria-selected={isActive(cat)}
+                            className={`${styles.tab} ${isActive(cat) ? styles.tabActive : ''}`}
+                            onClick={() => selectTab(cat)}
                         >
                             {cat.name}
                         </button>
-                    )
-                })}
-            </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
 
             <span className={styles.fog} aria-hidden="true" />
 
