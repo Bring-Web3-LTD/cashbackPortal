@@ -22,6 +22,7 @@ const Search = (props: SearchProps) => {
         suggestions,
         showDropdown,
         showNoResults,
+        showFade,
         handleSubmit,
         handleIconClick,
         handleKeyDown,
@@ -64,29 +65,32 @@ const Search = (props: SearchProps) => {
 
             {showDropdown && (
                 <div id={listboxId} className={styles.dropdown} role="listbox">
-                    {showNoResults ? (
-                        <div className={styles.empty}>{labels.noMatches}</div>
-                    ) : (
-                        suggestions.map((s, i) => (
-                            <button
-                                type="button"
-                                key={s.id}
-                                id={optionId(s.id)}
-                                role="option"
-                                aria-selected={i === activeIndex}
-                                className={`${styles.suggestion} ${
-                                    i === activeIndex ? styles.suggestionActive : ''
-                                }`}
-                                // mouseDown (not click) so the input keeps focus.
-                                onMouseDown={(e) => {
-                                    e.preventDefault()
-                                    commit(s.name)
-                                }}
-                            >
-                                {s.name}
-                            </button>
-                        ))
-                    )}
+                    <div className={styles.dropdownList}>
+                        {showNoResults ? (
+                            <div className={styles.empty}>{labels.noMatches}</div>
+                        ) : (
+                            suggestions.map((s, i) => (
+                                <button
+                                    type="button"
+                                    key={s.id}
+                                    id={optionId(s.id)}
+                                    role="option"
+                                    aria-selected={i === activeIndex}
+                                    className={`${styles.suggestion} ${
+                                        i === activeIndex ? styles.suggestionActive : ''
+                                    }`}
+                                    // mouseDown (not click) so the input keeps focus.
+                                    onMouseDown={(e) => {
+                                        e.preventDefault()
+                                        commit(s.name)
+                                    }}
+                                >
+                                    {s.name}
+                                </button>
+                            ))
+                        )}
+                    </div>
+                    {showFade && <span className={styles.dropdownFade} aria-hidden="true" />}
                 </div>
             )}
         </div>

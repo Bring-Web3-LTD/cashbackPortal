@@ -5,6 +5,28 @@ import Icon from '../Icon/Icon'
 import { useClaimModal, ClaimModalProps } from './useClaimModal'
 import styles from './styles.mobile.module.css'
 
+/** "Show in explorer" link. Default + hover icons are per-platform assets;
+ *  CSS toggles their opacity on hover (platforms without the hover asset fall
+ *  back to the default icon). */
+const ExplorerLink = ({ href, label }: { href: string; label: string }) => (
+    <a href={href} target="_blank" rel="noreferrer" className={styles.successExplorer}>
+        {label}
+        <span className={styles.explorerIcon}>
+            <Icon
+                name="open-website.svg"
+                className={`${styles.explorerIconImg} ${styles.explorerIconDefault}`}
+                alt=""
+            />
+            <Icon
+                name="open-website-active.svg"
+                fallbackName="open-website.svg"
+                className={`${styles.explorerIconImg} ${styles.explorerIconActive}`}
+                alt=""
+            />
+        </span>
+    </a>
+)
+
 const ClaimModal = (props: ClaimModalProps) => {
     const {
         state,
@@ -165,14 +187,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                                     {labels.claimProcessingMsg2}
                                 </p>
                                 {explorerLink ? (
-                                    <a
-                                        href={explorerLink}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className={styles.successExplorer}
-                                    >
-                                        {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
-                                    </a>
+                                    <ExplorerLink href={explorerLink} label={labels.showInExplorer} />
                                 ) : null}
                             </div>
                         </div>
@@ -216,14 +231,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                                         {labels.rewardClaimedMsg}
                                     </p>
                                     {explorerLink ? (
-                                        <a
-                                            href={explorerLink}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className={styles.successExplorer}
-                                        >
-                                            {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
-                                        </a>
+                                        <ExplorerLink href={explorerLink} label={labels.showInExplorer} />
                                     ) : null}
                                 </div>
                             </div>
@@ -249,14 +257,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                                         {labels.claimFailedMsg}
                                     </p>
                                     {explorerLink ? (
-                                        <a
-                                            href={explorerLink}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className={styles.successExplorer}
-                                        >
-                                            {labels.showInExplorer} <Icon name="open-website.svg" alt="" />
-                                        </a>
+                                        <ExplorerLink href={explorerLink} label={labels.showInExplorer} />
                                     ) : null}
                                 </div>
                             </div>

@@ -95,6 +95,13 @@
     word-break: break-word;
 }
 
+/* Hovering anywhere in the open answer highlights the whole answer, not just
+   the line under the cursor. */
+.answer:hover .answerLine,
+.answer:hover .link {
+    color: var(--faq-answer-hover-f-c, #F7F7F7);
+}
+
 .answerLine + .answerLine {
     margin-top: 4px;
 }

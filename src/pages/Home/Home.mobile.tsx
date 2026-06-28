@@ -18,6 +18,7 @@ const MobileHome = () => {
         searchTyping,
         setSearchTyping,
         searchChip,
+        isSearching,
         suggestions,
         showDropdown,
         showNoResults,
@@ -91,6 +92,7 @@ const MobileHome = () => {
                     isFetchingNextPage={isFetchingNextPage}
                     hasNextPage={Boolean(hasNextPage)}
                     onFetchNextPage={fetchNextPage}
+                    isSearching={isSearching}
                 />
             </main>
             <MobileClaimModal

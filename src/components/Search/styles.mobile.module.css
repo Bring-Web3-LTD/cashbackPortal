@@ -85,24 +85,54 @@
     left: 0;
     right: 0;
     z-index: 20;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     background: var(--search-dropdown-bg, #0F0F1A);
     border: var(--search-dropdown-border-w, 1px) solid var(--search-dropdown-border-c, #2B344D);
     border-radius: var(--search-dropdown-radius, 8px);
-    padding: 8px;
-    gap: 4px;
     box-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
-    max-height: 320px;
+    max-height: 244px;
+    /* Static container: the inner list scrolls so the bottom fade can overlay
+       the visible edge instead of scrolling away with the content. */
+    overflow: hidden;
+}
+
+/* Scrolling list region. */
+.dropdownList {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-.dropdown::-webkit-scrollbar {
+.dropdownList::-webkit-scrollbar {
     width: 0;
     height: 0;
     display: none;
+}
+
+/* Bottom fade hinting more results below. Pixel-exact per Figma "Darken"
+   (1863:17190): 12px tall, gradient bg→transparent (bottom-up), 0.5px blur,
+   -0.5px offset to bleed over the border. All values are per-platform vars. */
+.dropdownFade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--search-dropdown-fade-offset, -0.5px);
+    height: var(--search-dropdown-fade-h, 12px);
+    pointer-events: none;
+    background: var(--search-dropdown-fade-bg,
+        linear-gradient(to bottom, transparent, var(--search-dropdown-bg, #0F0F1A)));
+    -webkit-backdrop-filter: blur(var(--search-dropdown-fade-blur, 0.5px));
+    backdrop-filter: blur(var(--search-dropdown-fade-blur, 0.5px));
+    border-bottom-left-radius: var(--search-dropdown-radius, 8px);
+    border-bottom-right-radius: var(--search-dropdown-radius, 8px);
 }
 
 .suggestion {
@@ -127,7 +157,8 @@
 }
 
 .empty {
-    padding: 6px 12px;
+    /* Align with the suggestion rows (same 8px horizontal inset). */
+    padding: 6px 8px;
     font-family: inherit;
     font-size: var(--search-bar-f-s, 14px);
     line-height: var(--search-bar-l-h, 20px);

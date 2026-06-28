@@ -46,13 +46,20 @@
 /* Decorative icon clipped on the right of the card */
 .decoIcon {
     position: absolute;
-    top: 0;
-    left: 98px;
+    right: -20px;
+    bottom: -20px;
     width: 82px;
     height: 82px;
-    opacity: 1;
+    opacity: 0.1;
     pointer-events: none;
     display: block;
+}
+
+/* Tip-jar aligns to the card top (Figma top:0), 2px lower than the hourglass
+   which keeps the shared bottom-anchored -2px offset. */
+.decoIconClaim {
+    top: 0;
+    bottom: auto;
 }
 
 .cardBody {
@@ -98,6 +105,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 48px;
     height: 24px;
     padding: 0 8px;
     border: none;
@@ -129,7 +137,7 @@
 }
 
 .claimBtn:not(:disabled):hover {
-    background: var(--balance-claim-btn-hover-bg, var(--balance-claim-btn-bg, #6067F9));
+    background: var(--balance-claim-btn-hover-bg, var(--balance-claim-btn-bg, #4B52E0));
 }
 
 /* ── Pending button (purple solid, arrow icon) ── */

@@ -30,7 +30,7 @@ const Rewards = ({ onClaim }: RewardsProps) => {
                     {!isLoading && (
                         <Icon
                             name="tip-jar.svg"
-                            className={styles.decoIcon}
+                            className={`${styles.decoIcon} ${styles.decoIconClaim}`}
                             aria-hidden="true"
                         />
                     )}

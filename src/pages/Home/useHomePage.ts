@@ -16,7 +16,6 @@ import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
 import { ClaimModalState } from '../../utils/claimFlow'
-import { DEV_MODE } from '../../config'
 
 // Min chars before the autocomplete filters/shows — a single char matches
 // too much to be useful.
@@ -33,15 +32,10 @@ export const useHomePage = () => {
     const [searchTyping, setSearchTyping] = useState('')
     // Committed search value — drives the API filter and the chip display.
     const [searchChip, setSearchChip] = useState<string | null>(null)
-    const [claimState, setClaimState] = useState<ClaimModalState | null>(() => {
-        // DEV ONLY: force a claim modal state via ?claimState=failure|success|processing|minimum|confirm
-        if (DEV_MODE) {
-            const forced = new URLSearchParams(window.location.search).get('claimState')
-            const valid = ['confirm', 'processing', 'success', 'failure', 'minimum']
-            if (forced && valid.includes(forced)) return forced as ClaimModalState
-        }
-        return null
-    })
+    const [claimState, setClaimState] = useState<ClaimModalState | null>(null)
+    // Amount snapshotted when the claim goes in-flight so the success overlay
+    // keeps showing it after the balance query refetches to 0.
+    const [claimedDisplay, setClaimedDisplay] = useState('0.00')
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
     const claimExplorerLinkRef = useRef(claimExplorerLink)
     useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
@@ -54,7 +48,12 @@ export const useHomePage = () => {
     const currentCryptoSymbol = eligible?.tokenSymbol ?? cryptoSymbols?.[0] ?? ''
     const claimAmount = eligible?.tokenAmount ?? 0
     const minimumClaimThreshold = eligible?.minimumClaimThreshold ?? 0
-    const claimDisplay = eligible?.tokenAmountDisplay ?? '0.00'
+    const liveClaimDisplay = eligible?.tokenAmountDisplay ?? '0.00'
+    // Once claiming, freeze the displayed amount (the balance drops to 0 once
+    // the post-claim refetch lands); the live value only drives confirm/minimum.
+    const claimInFlight =
+        claimState === 'processing' || claimState === 'success' || claimState === 'failure'
+    const claimDisplay = claimInFlight ? claimedDisplay : liveClaimDisplay
 
     // Only the committed chip filters the API. The typed query
     // drives the autocomplete dropdown via local filtering of the already-
@@ -121,6 +120,8 @@ export const useHomePage = () => {
 
     const handleConfirmClaim = async () => {
         if (!walletAddress || !eligible) return
+        // Snapshot the amount being claimed before the balance refetches to 0.
+        setClaimedDisplay(liveClaimDisplay)
         setClaimState('processing')
 
         const initiated = await claimInitiate({
@@ -211,6 +212,7 @@ export const useHomePage = () => {
         searchTyping,
         setSearchTyping,
         searchChip,
+        isSearching: Boolean(searchChip),
         suggestions,
         showDropdown,
         showNoResults,

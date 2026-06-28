@@ -62,7 +62,7 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: 47px 16px 0 16px;
+    padding: 16px 16px 0 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;

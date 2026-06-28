@@ -12,18 +12,12 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: 32px 16px;
+    padding: 16px 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
     box-sizing: border-box;
     overflow: hidden;
-}
-
-/* While the hero card (first child) is loading, sit tighter to the top
-   (16px vs 32px). Driven off the skeleton's own aria-busy. */
-.content:has(> :first-child[aria-busy='true']) {
-    padding-top: 16px;
 }
 
 /* All fixed top sections (hero, rewards, helper buttons, tabs row) keep

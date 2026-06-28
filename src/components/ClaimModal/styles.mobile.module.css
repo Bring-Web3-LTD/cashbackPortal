@@ -99,7 +99,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
+    padding: 8px 8px 8px 12px;
     gap: 8px;
 }
 
@@ -523,9 +523,39 @@
     gap: 6px;
 }
 
+.successExplorer:hover {
+    color: var(--claim-modal-explorer-hover-f-c, #8793FF);
+}
+
 .successExplorer img {
     width: 16px;
     height: 16px;
+}
+
+/* Per-platform default → hover icon swap (two stacked icons, opacity toggled). */
+.explorerIcon {
+    position: relative;
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.explorerIconImg {
+    position: absolute;
+    inset: 0;
+}
+
+.explorerIconActive {
+    opacity: 0;
+}
+
+.successExplorer:hover .explorerIconDefault {
+    opacity: 0;
+}
+
+.successExplorer:hover .explorerIconActive {
+    opacity: 1;
 }
 
 /* Failure screen (Figma node 1863:11781) */
@@ -535,7 +565,9 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    padding: 16px 16px 0;
+    /* 24px top + the header's 8px margin-bottom + 16px icon-wrap centering =
+       48px from header to the icon (Figma 1863:9857). */
+    padding: 24px 16px 0;
 }
 
 .failureIconWrap {

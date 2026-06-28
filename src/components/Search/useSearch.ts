@@ -121,6 +121,10 @@ export const useSearch = ({
             ? optionId(suggestions[activeIndex].id)
             : undefined
 
+    // Bottom "more results" fade only when a scrollable list is shown — never
+    // over the single "no matches" row.
+    const showFade = showDropdown && !showNoResults
+
     const labels = {
         placeholder: t('searchPlaceholder'),
         search: t('search'),
@@ -140,6 +144,7 @@ export const useSearch = ({
         suggestions,
         showDropdown,
         showNoResults,
+        showFade,
         handleSubmit,
         handleIconClick,
         handleKeyDown,

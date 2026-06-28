@@ -8,7 +8,7 @@ import styles from './styles.mobile.module.css'
 const SKELETON_ROWS = 8
 
 const CardsList = (props: CardsListProps) => {
-    const { retailers, metadata, isLoading, hasNextPage } = props
+    const { retailers, metadata, isLoading, hasNextPage, isSearching } = props
     const {
         sentinelRef,
         activeRetailer,
@@ -52,6 +52,7 @@ const CardsList = (props: CardsListProps) => {
                             retailer={retailer}
                             iconPath={`${metadata.retailerIconBasePath}${retailer.iconPath}${metadata.iconQueryParam}`}
                             onClick={handleCardClick}
+                            isSearching={isSearching}
                         />
                     ))}
                     {hasNextPage ? <div ref={sentinelRef} className={styles.sentinel} aria-hidden="true" /> : null}

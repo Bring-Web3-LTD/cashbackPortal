@@ -135,6 +135,11 @@
     --search-dropdown-border-c: #334155;
     --search-dropdown-radius: 8px;
     --search-dropdown-hover-bg: rgba(71, 85, 105, 0.5);
+    /* Bottom "more results" fade. End color = dropdown bg (#0F172A here). */
+    --search-dropdown-fade-bg: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, #0F172A 100%);
+    --search-dropdown-fade-h: 12px;
+    --search-dropdown-fade-blur: 0.5px;
+    --search-dropdown-fade-offset: -0.5px;
 
     /* ── Retailer card ── */
     --cards-fog-color: #0F172A;
@@ -263,6 +268,7 @@
     --faq-answer-f-w: 400;
     --faq-answer-l-h: 16px;
     --faq-answer-f-c: #64748B;
+    --faq-answer-hover-f-c: #F8FAFC;
 
     --faq-divider-w: 1px;
     --faq-divider-c: #334155;
@@ -421,6 +427,7 @@
     --claim-modal-explorer-f-w: 400;
     --claim-modal-explorer-l-h: 20px;
     --claim-modal-explorer-f-c: #06B6D4;
+    --claim-modal-explorer-hover-f-c: #22D3EE;
 
     --claim-modal-failure-circle-bg: rgba(239, 68, 68, 0.20);
 

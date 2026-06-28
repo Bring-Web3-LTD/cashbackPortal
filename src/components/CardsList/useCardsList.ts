@@ -20,6 +20,8 @@ export interface CardsListProps {
     isFetchingNextPage: boolean
     hasNextPage: boolean
     onFetchNextPage: () => void
+    /** True while a committed search filters the list — cards show "name/section". */
+    isSearching?: boolean
 }
 
 export const useCardsList = ({

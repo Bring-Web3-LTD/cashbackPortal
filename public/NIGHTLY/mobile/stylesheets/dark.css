@@ -68,7 +68,7 @@
     --balance-amount-f-c: #F7F7F7;
 
     --balance-claim-btn-bg: #6067F9;
-    --balance-claim-btn-hover-bg: #7079FF;
+    --balance-claim-btn-hover-bg: #4B52E0;
     --balance-claim-btn-disabled-bg: #2B344D;
     --balance-claim-btn-disabled-f-c: #7685A0;
     --balance-claim-btn-below-min-hover-bg: #3E4864;
@@ -85,7 +85,7 @@
 
     /* ── Helper pill buttons (Need Help? / Missing a Reward?) ── */
     --helper-btn-bg: #2B344D;
-    --helper-btn-hover-bg: #3A4663;
+    --helper-btn-hover-bg: #3E4864;
     --helper-btn-f-c: #F7F7F7;
     --helper-btn-f-s: 12px;
     --helper-btn-f-w: 400;
@@ -140,6 +140,11 @@
     --search-dropdown-border-c: #2B344D;
     --search-dropdown-radius: 8px;
     --search-dropdown-hover-bg: rgba(43, 52, 77, 0.5);
+    /* Bottom "more results" fade (Figma 1863:17190). End color = dropdown bg. */
+    --search-dropdown-fade-bg: linear-gradient(180deg, rgba(15, 15, 26, 0) 0%, #0F0F1A 100%);
+    --search-dropdown-fade-h: 12px;
+    --search-dropdown-fade-blur: 0.5px;
+    --search-dropdown-fade-offset: -0.5px;
 
     /* ── Retailer card (Big_Button) ── */
     --cards-fog-color: #0F0F1A;
@@ -268,6 +273,7 @@
     --faq-answer-f-w: 400;
     --faq-answer-l-h: 16px;
     --faq-answer-f-c: #7685A0;
+    --faq-answer-hover-f-c: #F7F7F7;
 
     --faq-divider-w: 1px;
     --faq-divider-c: #2B344D;
@@ -435,6 +441,7 @@
     --claim-modal-explorer-f-w: 400;
     --claim-modal-explorer-l-h: 20px;
     --claim-modal-explorer-f-c: #6067F9;
+    --claim-modal-explorer-hover-f-c: #8793FF;
 
     /* Failure icon badge */
     --claim-modal-failure-circle-bg: rgba(210, 88, 88, 0.25);
