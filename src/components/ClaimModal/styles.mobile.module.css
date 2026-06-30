@@ -218,12 +218,12 @@
     background: var(--claim-modal-btn-primary-bg, #6067f9);
 }
 
-/* Minimum claim screen (Figma node 1863:13957) */
+/* Minimum claim screen */
 .minimumBody {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 16px 16px 0;
+    padding: 32px 16px 0;
 }
 
 .minimumText {
