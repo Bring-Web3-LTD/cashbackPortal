@@ -175,7 +175,6 @@
     --retailer-modal-bg: #0F172A;
     --retailer-modal-border-c: #334155;
     --retailer-modal-radius: 16px;
-    --retailer-modal-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 
     --retailer-modal-header-border-c: #334155;
     --retailer-modal-header-title-f-s: 16px;
@@ -238,7 +237,6 @@
     --faq-sheet-border-w: 1px;
     --faq-sheet-border-c: #334155;
     --faq-sheet-radius: 16px;
-    --faq-sheet-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.5);
     --faq-sheet-fade-from: rgba(15, 23, 42, 0);
     --faq-sheet-fade-to: #0F172A;
 
@@ -282,7 +280,6 @@
     --history-sheet-border-w: 1px;
     --history-sheet-border-c: #334155;
     --history-sheet-radius: 16px;
-    --history-sheet-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.5);
     --history-sheet-fade-from: rgba(15, 23, 42, 0);
     --history-sheet-fade-to: #0F172A;
 
@@ -355,7 +352,6 @@
     --claim-modal-panel-border-c: #334155;
     --claim-modal-panel-border-w: 1px;
     --claim-modal-panel-radius: 16px;
-    --claim-modal-panel-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 
     --claim-modal-header-border-c: #334155;
     --claim-modal-header-title-f-s: 16px;

@@ -39,7 +39,6 @@
     border-bottom: none;
     border-top-left-radius: var(--faq-sheet-radius, 16px);
     border-top-right-radius: var(--faq-sheet-radius, 16px);
-    box-shadow: var(--faq-sheet-shadow, 0px 4px 16px 0px rgba(4, 4, 7, 0.5));
     overflow: hidden;
     box-sizing: border-box;
 }

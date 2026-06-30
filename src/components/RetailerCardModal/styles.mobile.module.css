@@ -28,7 +28,7 @@
     border-bottom: none;
     border-top-left-radius: var(--retailer-modal-radius);
     border-top-right-radius: var(--retailer-modal-radius);
-    box-shadow: var(--retailer-modal-shadow);
+    
     display: flex;
     flex-direction: column;
     gap: 8px;
