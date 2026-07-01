@@ -1,0 +1,448 @@
+/* NIGHTLY — Mobile portal, Dark mode.
+   Fully self-contained — does NOT rely on DEFAULT cascade. Only per-platform
+   tokens (colors, fonts, shadows, borders) live here — layout/sizing is
+   hardcoded directly in component CSS modules. */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap');
+
+* {
+    font-family: 'Prompt', system-ui, sans-serif;
+}
+
+:root {
+    /* Page chrome */
+    --bg: #0F0F1A;
+    --scrollbar-w: 12px;
+    --scrollbar-bg: #2B344D;
+
+    /* ── Hero "Cashback earned" card (Figma 1883:11460) ── */
+    --cashback-earned-radius: 6px;
+    --cashback-earned-bg:
+        linear-gradient(90deg, rgba(135, 147, 255, 0.05) 0%, rgba(135, 147, 255, 0) 100%),
+        rgba(135, 147, 255, 0.2);
+    --cashback-earned-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+    --cashback-earned-label-f-c: #AFBBFF;
+    --cashback-earned-label-f-s: 14px;
+    --cashback-earned-label-f-w: 400;
+    --cashback-earned-label-l-h: 20px;
+    --cashback-earned-amount-f-c: #F7F7F7;
+    --cashback-earned-amount-f-s: 24px;
+    --cashback-earned-amount-f-w: 700;
+    --cashback-earned-amount-l-h: 24px;
+    --cashback-earned-sub-f-c: #8793FF;
+    --cashback-earned-sub-f-s: 12px;
+    --cashback-earned-sub-f-w: 400;
+    --cashback-earned-sub-l-h: 16px;
+
+    /* ── Top bar (Header) ── */
+    --header-bg: #0F0F1A;
+    --header-border-c: #2B344D;
+    --header-border-w: 1px;
+
+    --header-title-f-s: 16px;
+    --header-title-f-w: 700;
+    --header-title-l-h: 22px;
+    --header-title-f-c: #F7F7F7;
+
+    --header-action-radius: 16px;
+    --header-action-bg: rgba(43, 52, 77, 0.5);
+    --header-action-hover-bg: rgba(43, 52, 77, 0.75);
+    --header-action-icon-c: #F7F7F7;
+
+    /* ── Rewards / balance card (Claimable + Pending) ── */
+
+    --balance-card-bg:
+        linear-gradient(109.31deg, rgba(23, 28, 47, 0.2) 0%, rgba(135, 147, 255, 0.2) 100%),
+        #171C2F;
+    --balance-card-radius: 6px;
+    --balance-card-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+
+    --balance-label-f-s: 12px;
+    --balance-label-f-w: 400;
+    --balance-label-l-h: 16px;
+    --balance-label-f-c: #7685A0;
+
+    --balance-amount-f-s: 16px;
+    --balance-amount-f-w: 700;
+    --balance-amount-l-h: 22px;
+    --balance-amount-l-s: 0.32px;
+    --balance-amount-f-c: #F7F7F7;
+
+    --balance-claim-btn-bg: #6067F9;
+    --balance-claim-btn-hover-bg: #4B52E0;
+    --balance-claim-btn-disabled-bg: #2B344D;
+    --balance-claim-btn-disabled-f-c: #7685A0;
+    --balance-claim-btn-below-min-hover-bg: #3E4864;
+    --balance-claim-btn-below-min-hover-f-c: #F7F7F7;
+    --balance-claim-btn-f-c: #F7F7F7;
+    --balance-claim-btn-f-s: 12px;
+    --balance-claim-btn-f-w: 400;
+    --balance-claim-btn-radius: 4px;
+
+    --balance-pending-btn-bg: #6067F9;
+    --balance-pending-btn-hover-bg: #4B52E0;
+    --balance-pending-btn-icon-c: #F7F7F7;
+    --balance-pending-btn-radius: 4px;
+
+    /* ── Helper pill buttons (Need Help? / Missing a Reward?) ── */
+    --helper-btn-bg: #2B344D;
+    --helper-btn-hover-bg: #3E4864;
+    --helper-btn-f-c: #F7F7F7;
+    --helper-btn-f-s: 12px;
+    --helper-btn-f-w: 400;
+    --helper-btn-radius: 4px;
+
+    /* ── Skeleton shimmer (Figma 1863:8000 loading state) ──
+       Tile bg + drop shadow match the loaded retailer card surface;
+       filler bars use the lighter Grey/600 tint that Figma uses for the
+       text/button placeholders inside each tile. */
+    --skeleton-bg: rgba(247, 247, 247, 0.08);
+    --skeleton-tile-bg: #1D2133;
+    --skeleton-tile-shadow: 0 2px 6px rgba(4, 4, 7, 0.5);
+    --skeleton-fill: #262B3F;
+    --skeleton-bar-radius: 5px;
+
+    /* ── Category tabs row (Figma 1883:11493) ── */
+
+    --tab-bg: transparent;
+    --tab-f-c: #7685A0;
+    --tab-f-s: 14px;
+    --tab-f-w: 400;
+    --tab-l-h: 20px;
+    --tab-radius: 4px;
+
+    --tab-active-bg: var(--transparent-grey-40050, rgba(62, 72, 100, 0.50));
+    --tab-active-f-c: #F7F7F7;
+    /* Hover: purple text on transparent (no bg pill) — distinct from the
+       selected state which has both purple text AND a purple-tinted pill. */
+    --tab-hover-f-c: #8793FF;
+    --tab-hover-bg: var(--transparent-purple-30025, rgba(96, 103, 249, 0.25));
+
+    /* Right-edge fog (Figma 1863:13296 "Darken") — fading to the page bg. */
+    --tabs-fog-color: #0F0F1A;
+
+    /* ── Inline search bar (Figma 1863:3089) — Grey/900 + Grey/500 border ── */
+    --search-bar-radius: 6px;
+    --search-bar-bg: #040407;
+    --search-bar-border-w: 1px;
+    --search-bar-border-c: #2B344D;
+    --search-bar-f-s: 14px;
+    --search-bar-l-h: 20px;
+    --search-bar-f-c: #F7F7F7;
+    --search-bar-placeholder-f-c: rgba(247, 247, 247, 0.25);
+    --search-bar-close-c: #F7F7F7;
+    /* No-matches message — Grey/300 (solid, unlike the faint placeholder). */
+    --search-empty-f-c: #7685A0;
+    --search-suggestion-f-c: #7685A0;
+
+    /* Autocomplete dropdown — Grey/700 surface (Figma 1863:2765). */
+    --search-dropdown-bg: #0F0F1A;
+    --search-dropdown-border-w: 1px;
+    --search-dropdown-border-c: #2B344D;
+    --search-dropdown-radius: 8px;
+    --search-dropdown-hover-bg: rgba(43, 52, 77, 0.5);
+    /* Bottom "more results" fade (Figma 1863:17190). End color = dropdown bg. */
+    --search-dropdown-fade-bg: linear-gradient(180deg, rgba(15, 15, 26, 0) 0%, #0F0F1A 100%);
+    --search-dropdown-fade-h: 12px;
+    --search-dropdown-fade-blur: 0.5px;
+    --search-dropdown-fade-offset: -0.5px;
+
+    /* ── Retailer card (Big_Button) ── */
+    --cards-fog-color: #0F0F1A;
+
+    --retailer-card-bg: #171C2F;
+    --retailer-card-radius: 6px;
+
+    --retailer-icon-radius: 4px;
+    --retailer-icon-bg: #FFFFFF;
+    --retailer-fallback-f-c: #171C2F;
+
+    --retailer-name-f-s: 16px;
+    --retailer-name-f-w: 400;
+    --retailer-name-l-h: 22px;
+    --retailer-name-f-c: #F7F7F7;
+
+    --retailer-sub-f-s: 12px;
+    --retailer-sub-l-h: 16px;
+    --retailer-sub-label-f-c: #8793FF;
+    --retailer-sub-amount-f-c: #AFBBFF;
+
+    /* ── Shop button on retailer card ── */
+    --shop-btn-bg: rgba(96, 103, 249, 0.25);
+    --shop-btn-radius: 4px;
+    --shop-btn-f-s: 12px;
+    --shop-btn-l-h: 16px;
+    --shop-btn-f-c: #8793FF;
+    --shop-btn-hover-bg: rgba(135, 147, 255, 0.25);
+    --shop-btn-hover-f-c: #AFBBFF;
+
+    /* ── T&C modal (Cashback Details) — Figma 1883:11808 ── */
+    --modal-backdrop-bg: rgba(4, 4, 7, 0.5);
+
+    --retailer-modal-bg: #0F0F1A;
+    --retailer-modal-border-c: #2B344D;
+    --retailer-modal-radius: 16px;
+
+    --retailer-modal-header-border-c: #2B344D;
+    --retailer-modal-header-title-f-s: 16px;
+    --retailer-modal-header-title-f-w: 700;
+    --retailer-modal-header-title-l-h: 22px;
+    --retailer-modal-header-title-f-c: #F7F7F7;
+    --retailer-modal-header-action-radius: 16px;
+    --retailer-modal-header-action-bg: rgba(43, 52, 77, 0.5);
+    --retailer-modal-header-action-hover-bg: rgba(43, 52, 77, 0.75);
+
+    --retailer-modal-logo-radius: 4px;
+    --retailer-modal-fallback-f-s: 24px;
+    --retailer-modal-fallback-f-w: 700;
+
+    --retailer-modal-name-f-s: 22px;
+    --retailer-modal-name-f-w: 400;
+    --retailer-modal-name-l-h: 30px;
+    --retailer-modal-name-f-c: #F7F7F7;
+
+    --retailer-modal-pill-radius: 4px;
+    --retailer-modal-pill-bg: rgba(96, 103, 249, 0.25);
+    --retailer-modal-pill-f-s: 14px;
+    --retailer-modal-pill-l-h: 20px;
+    --retailer-modal-pill-label-f-c: #8793FF;
+    --retailer-modal-pill-amount-f-c: #AFBBFF;
+    --retailer-modal-pill-amount-f-w: 700;
+
+    --retailer-modal-terms-bg: #090B12;
+    --retailer-modal-terms-border-c: #2B344D;
+    --retailer-modal-terms-radius: 8px;
+    --retailer-modal-terms-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.25), inset 0 -16px 8px rgba(9, 11, 18, 0.25);
+    --retailer-modal-terms-title-f-s: 12px;
+    --retailer-modal-terms-title-f-w: 700;
+    --retailer-modal-terms-title-l-h: 16px;
+    --retailer-modal-terms-title-f-c: #F7F7F7;
+    --retailer-modal-terms-body-f-s: 10px;
+    --retailer-modal-terms-body-l-h: 13px;
+    --retailer-modal-terms-body-f-c: #B1BDD4;
+
+    --retailer-modal-btn-radius: 8px;
+    --retailer-modal-btn-f-s: 16px;
+    --retailer-modal-btn-f-w: 400;
+    --retailer-modal-btn-l-h: 22px;
+    --retailer-modal-btn-f-c: #F7F7F7;
+    --retailer-modal-cancel-bg: #2B344D;
+    --retailer-modal-cancel-hover-bg: #3E4864;
+    --retailer-modal-shop-bg: #6067F9;
+    --retailer-modal-shop-hover-bg: #4B52E0;
+
+    --retailer-modal-disclaimer-f-s: 10px;
+    --retailer-modal-disclaimer-l-h: 13px;
+    --retailer-modal-disclaimer-f-c: #3E4864;
+    --retailer-modal-disclaimer-hover-f-c: #7685A0;
+
+    /* ── FAQ page (Figma 1883:13769) ── */
+    --faq-overlay-darken-bg: #040407;
+    --faq-sheet-bg: #0F0F1A;
+    --faq-sheet-border-w: 1px;
+    --faq-sheet-border-c: #2B344D;
+    --faq-sheet-radius: 16px;
+    --faq-sheet-fade-from: rgba(15, 15, 26, 0);
+    --faq-sheet-fade-to: #0F0F1A;
+
+
+    --faq-intro-f-s: 14px;
+    --faq-intro-f-w: 400;
+    --faq-intro-l-h: 20px;
+    --faq-intro-f-c: #7685A0;
+
+    --faq-item-bg: #171C2F;
+    --faq-item-hover-bg: #2B344D;
+    --faq-item-radius: 6px;
+
+    --faq-skeleton-bg: rgba(43, 52, 77, 0.5);
+    --faq-skeleton-radius: 4px;
+    --faq-skeleton-bar-bg: #262B3F;
+    --faq-skeleton-bar-radius: 3px;
+
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 400;
+    --faq-question-l-h: 22px;
+    --faq-question-f-c: #F7F7F7;
+
+    --faq-chevron-f-c: #7685A0;
+    --faq-chevron-active-f-c: #F7F7F7;
+
+    --faq-answer-f-s: 12px;
+    --faq-answer-f-w: 400;
+    --faq-answer-l-h: 16px;
+    --faq-answer-f-c: #7685A0;
+    --faq-answer-hover-f-c: #F7F7F7;
+
+    --faq-divider-w: 1px;
+    --faq-divider-c: #2B344D;
+
+    --faq-link-f-c: var(--faq-answer-f-c, #7685A0);
+
+    /* ── History page (Figma 1883:13769 modal offer line pattern) ── */
+
+    /* History bottom-sheet overlay (Figma 1863:12581) */
+    --history-overlay-darken-bg: #040407;
+    --history-sheet-bg: #0F0F1A;
+    --history-sheet-border-w: 1px;
+    --history-sheet-border-c: #2B344D;
+    --history-sheet-radius: 16px;
+    --history-sheet-fade-from: rgba(15, 15, 26, 0);
+    --history-sheet-fade-to: #0F0F1A;
+
+    --history-intro-f-s: 12px;
+    --history-intro-f-w: 400;
+    --history-intro-l-h: 16px;
+    --history-intro-f-c: #7685A0;
+
+    --history-item-bg: #171C2F;
+    --history-item-hover-bg: #2B344D;
+    --history-item-radius: 6px;
+
+    --history-avatar-radius: 4px;
+    --history-avatar-bg: #2B344D;
+    --history-avatar-claim-bg: #6067F9;
+
+    --history-name-f-s: 16px;
+    --history-name-f-w: 400;
+    --history-name-l-h: 22px;
+    --history-name-f-c: #F7F7F7;
+    --history-date-f-s: 14px;
+    --history-date-f-w: 400;
+    --history-date-l-h: 20px;
+    --history-date-f-c: #7685A0;
+
+    --history-amount-radius: 6px;
+    --history-amount-bg: rgba(96, 103, 249, 0.25);
+    --history-amount-f-c: #8793FF;
+    --history-amount-f-s: 14px;
+    --history-amount-f-w: 700;
+    --history-amount-l-h: 20px;
+    --history-amount-claimed-bg: rgba(90, 184, 139, 0.25);
+    --history-amount-claimed-f-c: #70D1A3;
+    --history-amount-completed-bg: rgba(234, 207, 65, 0.25);
+    --history-amount-completed-f-c: #FBE158;
+    --history-amount-cancelled-bg: rgba(210, 88, 88, 0.25);
+    --history-amount-cancelled-f-c: #F08282;
+    --history-amount-pending-bg: rgba(62, 72, 100, 0.5);
+    --history-amount-pending-f-c: #B1BDD4;
+
+    --history-status-f-s: 10px;
+    --history-status-f-w: 400;
+    --history-status-l-h: 13px;
+    --history-status-f-c: #7685A0;
+    --history-status-claimed-f-c: #5AB88B;
+    --history-status-completed-f-c: #EACF41;
+    --history-status-cancelled-f-c: #D25858;
+    --history-status-pending-f-c: #7685A0;
+
+    --history-divider-w: 1px;
+    --history-divider-c: #2B344D;
+
+    --history-description-f-s: 12px;
+    --history-description-f-w: 400;
+    --history-description-l-h: 16px;
+    --history-description-f-c: #7685A0;
+
+    --history-empty-f-s: 14px;
+    --history-empty-f-w: 400;
+    --history-empty-l-h: 20px;
+    --history-empty-f-c: #7685A0;
+    --history-empty-radius: 6px;
+    --history-empty-bg: #0F0F1A;
+
+    /* ── Claim Rewards modal (Figma 1863:9450 / 11781 / 13957) ──
+       Bottom-sheet claim flow: confirm, minimum, processing, success,
+       failure. Role-based tokens so a platform can re-skin the whole flow. */
+    --claim-modal-font: 'Prompt', system-ui, sans-serif;
+
+    /* Backdrop + panel frame */
+    --claim-modal-backdrop-bg: rgba(15, 15, 26, 0.75);
+    --claim-modal-panel-bg: #0F0F1A;
+    --claim-modal-panel-border-c: #2B344D;
+    --claim-modal-panel-border-w: 1px;
+    --claim-modal-panel-radius: 16px;
+
+    /* Header */
+    --claim-modal-header-border-c: #2B344D;
+    --claim-modal-header-title-f-s: 16px;
+    --claim-modal-header-title-f-w: 700;
+    --claim-modal-header-title-l-h: 22px;
+    --claim-modal-header-title-f-c: #F7F7F7;
+    --claim-modal-header-action-radius: 16px;
+    --claim-modal-header-action-bg: rgba(43, 52, 77, 0.5);
+
+    /* Body + intro */
+    --claim-modal-intro-f-s: 14px;
+    --claim-modal-intro-f-w: 400;
+    --claim-modal-intro-l-h: 20px;
+    --claim-modal-intro-f-c: #7685A0;
+
+    /* Detail rows (token / wallet / fee / minimum) */
+    --claim-modal-row-radius: 6px;
+    --claim-modal-row-bg: #171C2F;
+    --claim-modal-row-label-f-s: 16px;
+    --claim-modal-row-label-f-w: 400;
+    --claim-modal-row-label-l-h: 22px;
+    --claim-modal-row-label-f-c: #F7F7F7;
+    --claim-modal-amount-positive-f-c: #5AB88B;
+    --claim-modal-badge-bg: #2B344D;
+    --claim-modal-badge-radius: 4px;
+    --claim-modal-badge-f-s: 12px;
+    --claim-modal-badge-l-h: 16px;
+    --claim-modal-badge-f-c: #F7F7F7;
+    --claim-modal-value-f-s: 16px;
+    --claim-modal-value-l-h: 22px;
+    --claim-modal-value-f-c: #7685A0;
+
+    /* Footer buttons */
+    --claim-modal-btn-radius: 8px;
+    --claim-modal-btn-f-s: 16px;
+    --claim-modal-btn-f-w: 400;
+    --claim-modal-btn-l-h: 22px;
+    --claim-modal-btn-f-c: #F7F7F7;
+    --claim-modal-btn-secondary-bg: #2B344D;
+    --claim-modal-btn-secondary-hover-bg: #3E4864;
+    --claim-modal-btn-primary-bg: #6067F9;
+
+    /* Minimum-claim screen */
+    --claim-modal-min-title-f-s: 20px;
+    --claim-modal-min-title-f-w: 700;
+    --claim-modal-min-title-l-h: 26px;
+    --claim-modal-min-title-f-c: #F7F7F7;
+    --claim-modal-min-para-f-s: 16px;
+    --claim-modal-min-para-f-w: 400;
+    --claim-modal-min-para-l-h: 22px;
+    --claim-modal-min-para-f-c: #7685A0;
+    --claim-modal-min-hint-f-s: 14px;
+    --claim-modal-min-hint-f-w: 400;
+    --claim-modal-min-hint-l-h: 20px;
+    --claim-modal-min-hint-f-c: #AFBBFF;
+
+    /* Status screens (success / failure / processing) shared layout */
+    --claim-modal-status-title-f-s: 22px;
+    --claim-modal-status-title-f-w: 700;
+    --claim-modal-status-title-l-h: 28px;
+    --claim-modal-status-title-f-c: #F7F7F7;
+    --claim-modal-status-msg-f-s: 16px;
+    --claim-modal-status-msg-f-w: 400;
+    --claim-modal-status-msg-l-h: 22px;
+    --claim-modal-status-msg-f-c: #7685A0;
+
+    /* Success amount + explorer link */
+    --claim-modal-success-amount-f-s: 40px;
+    --claim-modal-success-amount-f-w: 700;
+    --claim-modal-success-amount-l-h: 30px;
+    --claim-modal-success-amount-f-c: #F7F7F7;
+    --claim-modal-explorer-f-s: 14px;
+    --claim-modal-explorer-f-w: 400;
+    --claim-modal-explorer-l-h: 20px;
+    --claim-modal-explorer-f-c: #6067F9;
+    --claim-modal-explorer-hover-f-c: #8793FF;
+
+    /* Failure icon badge */
+    --claim-modal-failure-circle-bg: rgba(210, 88, 88, 0.25);
+
+    /* Processing spinner badge */
+    --claim-modal-spinner-circle-bg: rgba(135, 147, 255, 0.25);
+    --claim-modal-spinner-c: #F7F7F7;
+}

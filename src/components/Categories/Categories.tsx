@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import useWindowSize from '../../utils/hooks/useWindowSize';
+import useWindowSize from '../../hooks/useWindowSize';
 
 interface Props {
     categories: Category[];

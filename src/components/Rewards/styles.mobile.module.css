@@ -1,0 +1,243 @@
+/* Mobile balance card (Claimable / Pending) + helper buttons.
+   All visuals driven by role-based CSS vars defined in
+   /DEFAULT/mobile/stylesheets/{theme}.css. */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+/* ── Single balance card (Claimable or Pending) ── */
+.card {
+    flex: 1 1 0;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    background: var(--balance-card-bg);
+    border-radius: var(--balance-card-radius, 6px);
+    box-shadow: var(--balance-card-shadow, 0 2px 6px rgba(4, 4, 7, 0.5));
+    padding: 8px 12px;
+    box-sizing: border-box;
+    min-height: 60px;
+}
+
+/* Small screens (≤320px): tighter card padding so amount + button still fit. */
+@media (max-width: 320px) {
+    .card {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+/* Loading skeleton tile — plain neutral card, no artwork. */
+.cardLoading {
+    background: var(--skeleton-tile-bg, #1D2133);
+    box-shadow: var(--skeleton-tile-shadow, var(--balance-card-shadow, 0 2px 6px rgba(4, 4, 7, 0.5)));
+}
+
+/* Decorative icon clipped on the right of the card */
+.decoIcon {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 82px;
+    height: 82px;
+    opacity: 0.1;
+    pointer-events: none;
+    display: block;
+}
+
+/* Tip-jar aligns to the card top (Figma top:0), 2px lower than the hourglass
+   which keeps the shared bottom-anchored -2px offset. */
+.decoIconClaim {
+    top: 0;
+    bottom: auto;
+}
+
+.cardBody {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1;
+}
+
+.label {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--balance-label-f-s, 12px);
+    font-weight: var(--balance-label-f-w, 400);
+    line-height: var(--balance-label-l-h, 16px);
+    color: var(--balance-label-f-c, #7685A0);
+}
+
+.amountRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 24px;
+}
+
+.amount {
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--balance-amount-f-s, 16px);
+    font-weight: var(--balance-amount-f-w, 700);
+    line-height: var(--balance-amount-l-h, 22px);
+    letter-spacing: var(--balance-amount-l-s, 0.32px);
+    color: var(--balance-amount-f-c, #F7F7F7);
+    white-space: nowrap;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+/* ── Claim button (purple solid, "Claim" text) ── */
+.claimBtn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 24px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--balance-claim-btn-radius, 4px);
+    background: var(--balance-claim-btn-bg, #6067F9);
+    color: var(--balance-claim-btn-f-c, #F7F7F7);
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--balance-claim-btn-f-s, 12px);
+    font-weight: var(--balance-claim-btn-f-w, 400);
+    line-height: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.claimBtn:disabled {
+    background: var(--balance-claim-btn-disabled-bg, #2B344D);
+    color: var(--balance-claim-btn-disabled-f-c, #7685A0);
+}
+
+/* Below minimum threshold: disabled coloring, still clickable (opens minimum overlay). */
+.claimBtnDisabled {
+    background: var(--balance-claim-btn-disabled-bg, #2B344D);
+    color: var(--balance-claim-btn-disabled-f-c, #7685A0);
+}
+
+.claimBtn.claimBtnDisabled:not(:disabled):hover {
+    background: var(--balance-claim-btn-below-min-hover-bg, #3E4864);
+    color: var(--balance-claim-btn-below-min-hover-f-c, #F7F7F7);
+}
+
+.claimBtn:not(:disabled):hover {
+    background: var(--balance-claim-btn-hover-bg, var(--balance-claim-btn-bg, #4B52E0));
+}
+
+/* ── Pending button (purple solid, arrow icon) ── */
+.pendingBtn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 24px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--balance-pending-btn-radius, 4px);
+    background: var(--balance-pending-btn-bg, #6067F9);
+    cursor: pointer;
+    color: var(--balance-pending-btn-icon-c, #F7F7F7);
+}
+
+.pendingBtn:hover {
+    background: var(--balance-pending-btn-hover-bg, var(--balance-pending-btn-bg, #6067F9));
+}
+
+.pendingBtnIcon {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/* ── Helper pill buttons row ── */
+.helperRow {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.helperBtn {
+    flex: 1 1 0;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--helper-btn-radius, 4px);
+    background: var(--helper-btn-bg, #2B344D);
+    color: var(--helper-btn-f-c, #F7F7F7);
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--helper-btn-f-s, 12px);
+    font-weight: var(--helper-btn-f-w, 400);
+    line-height: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.helperBtn:hover {
+    background: var(--helper-btn-hover-bg, var(--helper-btn-bg, #2B344D));
+}
+
+/* Loading skeleton. */
+.helperBtnLoading,
+.helperBtnLoading:hover {
+    background: var(--helper-btn-loading-bg, rgba(43, 52, 77, 0.5));
+    cursor: default;
+}
+
+/* ── Skeleton placeholders ── */
+.skeleton {
+    display: inline-block;
+    background: var(--skeleton-fill, #262B3F);
+    border-radius: var(--skeleton-bar-radius, 5px);
+}
+
+/* Card label bar. */
+.skeletonLabel {
+    width: 59px;
+    height: 15px;
+    max-width: 100%;
+}
+
+/* Amount bar. */
+.skeletonAmount {
+    width: 77px;
+    height: 15px;
+    max-width: 100%;
+}
+
+/* Claim / arrow button placeholder block. */
+.skeletonBtn {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 24px;
+    border-radius: var(--balance-claim-btn-radius, 4px);
+}
+
+/* Helper button inner bar. */
+.skeletonHelperBar {
+    width: 110px;
+    height: 11px;
+    max-width: 100%;
+    border-radius: 3px;
+}
+

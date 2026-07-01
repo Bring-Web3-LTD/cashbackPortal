@@ -1,0 +1,166 @@
+/* Inline search bar. Replaces the category tabs row when search is tapped. */
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    /* Figma: 8px gap below the open search bar, not the page's 16px. */
+    margin-bottom: -8px;
+}
+
+.root {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    background: var(--search-bar-bg, #040407);
+    border: var(--search-bar-border-w, 1px) solid var(--search-bar-border-c, #2B344D);
+    border-radius: var(--search-bar-radius, 6px);
+}
+
+/* Trailing search icon button; doubles as "close" when the input is empty.
+   Default and hover/pressed are two assets; CSS swaps visibility per state. */
+.iconBtn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.iconBtnIcon {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: opacity 0.15s ease;
+}
+
+.iconBtnIconActive {
+    opacity: 0;
+}
+
+.iconBtn:hover .iconBtnIconDefault,
+.iconBtn:active .iconBtnIconDefault {
+    opacity: 0;
+}
+
+.iconBtn:hover .iconBtnIconActive,
+.iconBtn:active .iconBtnIconActive {
+    opacity: 1;
+}
+
+.input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    color: var(--search-bar-f-c, #F7F7F7);
+    font-size: var(--search-input-f-s, 13px);
+    line-height: var(--search-bar-l-h, 20px);
+    font-family: inherit;
+}
+
+.input::placeholder {
+    color: var(--search-bar-placeholder-f-c, #7685A0);
+}
+
+/* Autocomplete dropdown — overlays the cards list below the input. */
+.dropdown {
+    position: absolute;
+    top: calc(32px + 8px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: var(--search-dropdown-bg, #0F0F1A);
+    border: var(--search-dropdown-border-w, 1px) solid var(--search-dropdown-border-c, #2B344D);
+    border-radius: var(--search-dropdown-radius, 8px);
+    box-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
+    max-height: 244px;
+    /* Static container: the inner list scrolls so the bottom fade can overlay
+       the visible edge instead of scrolling away with the content. */
+    overflow: hidden;
+}
+
+/* Scrolling list region. */
+.dropdownList {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.dropdownList::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Bottom fade hinting more results below. Pixel-exact per Figma "Darken"
+   (1863:17190): 12px tall, gradient bg→transparent (bottom-up), 0.5px blur,
+   -0.5px offset to bleed over the border. All values are per-platform vars. */
+.dropdownFade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--search-dropdown-fade-offset, -0.5px);
+    height: var(--search-dropdown-fade-h, 12px);
+    pointer-events: none;
+    background: var(--search-dropdown-fade-bg,
+        linear-gradient(to bottom, transparent, var(--search-dropdown-bg, #0F0F1A)));
+    -webkit-backdrop-filter: blur(var(--search-dropdown-fade-blur, 0.5px));
+    backdrop-filter: blur(var(--search-dropdown-fade-blur, 0.5px));
+    border-bottom-left-radius: var(--search-dropdown-radius, 8px);
+    border-bottom-right-radius: var(--search-dropdown-radius, 8px);
+}
+
+.suggestion {
+    appearance: none;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: var(--search-bar-f-s, 14px);
+    line-height: var(--search-bar-l-h, 20px);
+    color: var(--search-suggestion-f-c, #7685A0);
+    cursor: pointer;
+}
+
+.suggestion:hover,
+.suggestion:focus-visible,
+.suggestionActive {
+    color: var(--search-bar-f-c, #F7F7F7);
+    outline: none;
+}
+
+.empty {
+    /* Align with the suggestion rows (same 8px horizontal inset). */
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: var(--search-bar-f-s, 14px);
+    line-height: var(--search-bar-l-h, 20px);
+    color: var(--search-empty-f-c, #7685A0);
+}

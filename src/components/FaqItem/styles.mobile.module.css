@@ -1,0 +1,117 @@
+/* FAQ accordion item. Visuals driven by CSS vars with hardcoded fallbacks. */
+
+.item {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: var(--faq-item-bg, #171C2F);
+    border-radius: var(--faq-item-radius, 6px);
+    padding: 8px 8px 8px 12px;
+    transition: background 0.15s ease;
+    overflow: hidden;
+}
+
+@media (hover: hover) {
+    .item:hover {
+        background: var(--faq-item-hover-bg, #2B344D);
+    }
+}
+
+/* ── Question row (always visible, acts as the toggle button) ── */
+.question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font-family: 'Prompt', system-ui, sans-serif;
+}
+
+.questionText {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--faq-question-f-s, 16px);
+    font-weight: var(--faq-question-f-w, 400);
+    line-height: var(--faq-question-l-h, 22px);
+    color: var(--faq-question-f-c, #F7F7F7);
+}
+
+.chevron {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    /* Default: Grey/300. Turns Grey/100 on hover or when expanded. */
+    color: var(--faq-chevron-f-c, #7685A0);
+    transition: transform 0.2s ease, color 0.15s ease;
+}
+
+/* Collapsed default = Grey/300; hover or expanded = Grey/100. The open state
+   swaps to the up-chevron SVG (no rotation needed). */
+.item:hover .chevron,
+.chevronOpen {
+    color: var(--faq-chevron-active-f-c, #F7F7F7);
+}
+
+.chevronIcon {
+    display: block;
+}
+
+/* ── Expandable answer panel ── */
+.answer {
+    overflow: hidden;
+}
+
+.divider {
+    display: block;
+    width: 100%;
+    height: var(--faq-divider-w, 1px);
+    margin-top: 8px;
+    background: var(--faq-divider-c, #2B344D);
+}
+
+.answerBody {
+    margin-top: 8px;
+}
+
+.answerLine {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--faq-answer-f-s, 12px);
+    font-weight: var(--faq-answer-f-w, 400);
+    line-height: var(--faq-answer-l-h, 16px);
+    color: var(--faq-answer-f-c, #7685A0);
+    word-break: break-word;
+}
+
+/* Hovering anywhere in the open answer highlights the whole answer, not just
+   the line under the cursor. */
+.answer:hover .answerLine,
+.answer:hover .link {
+    color: var(--faq-answer-hover-f-c, #F7F7F7);
+}
+
+.answerLine + .answerLine {
+    margin-top: 4px;
+}
+
+.answerIndented {
+    padding-left: 16px;
+}
+
+.link {
+    color: var(--faq-link-f-c, inherit);
+    text-decoration: underline;
+    cursor: pointer;
+}

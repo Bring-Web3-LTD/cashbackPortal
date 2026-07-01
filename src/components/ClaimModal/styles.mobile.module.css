@@ -1,0 +1,656 @@
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--claim-modal-backdrop-bg, rgba(15, 15, 26, 0.75));
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.panel {
+    width: 100%;
+    max-width: 360px;
+    height: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
+    background: var(--claim-modal-panel-bg, #0f0f1a);
+    border: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-panel-border-c, #2b344d);
+    border-bottom: none;
+    border-top-left-radius: var(--claim-modal-panel-radius, 16px);
+    border-top-right-radius: var(--claim-modal-panel-radius, 16px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.header {
+    height: 56px;
+    border-bottom: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-header-border-c, #2b344d);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+}
+
+.headerSpacer {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.headerClose {
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border: none;
+    border-radius: var(--claim-modal-header-action-radius, 16px);
+    background: var(--claim-modal-header-action-bg, rgba(43, 52, 77, 0.5));
+    cursor: pointer;
+}
+
+.headerClose img {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.headerTitle {
+    margin: 0;
+    color: var(--claim-modal-header-title-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-header-title-f-s, 16px);
+    font-weight: var(--claim-modal-header-title-f-w, 700);
+    line-height: var(--claim-modal-header-title-l-h, 22px);
+    letter-spacing: 0.32px;
+    text-align: center;
+    flex: 1;
+}
+
+.body {
+    padding: 24px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.intro {
+    margin: 0 0 12px;
+    color: var(--claim-modal-intro-f-c, #7685a0);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-intro-f-s, 14px);
+    font-weight: var(--claim-modal-intro-f-w, 400);
+    line-height: var(--claim-modal-intro-l-h, 20px);
+}
+
+.rowPrimary,
+.rowSecondary {
+    box-sizing: border-box;
+    height: 40px;
+    border-radius: var(--claim-modal-row-radius, 6px);
+    background: var(--claim-modal-row-bg, #171c2f);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px 8px 12px;
+    gap: 8px;
+}
+
+.rowPrimary {
+    margin-bottom: 12px;
+}
+
+.rowLeft,
+.rowRight {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.coinIcon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coinIcon img {
+    width: 14px;
+    height: 12.25px;
+    object-fit: contain;
+}
+
+.walletEmoji {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.walletEmoji img {
+    width: 24px;
+    height: 24px;
+}
+
+.rowLabel {
+    color: var(--claim-modal-row-label-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-row-label-f-s, 16px);
+    font-weight: var(--claim-modal-row-label-f-w, 400);
+    line-height: var(--claim-modal-row-label-l-h, 22px);
+    white-space: nowrap;
+}
+
+.amountPositive {
+    color: var(--claim-modal-amount-positive-f-c, #5ab88b);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-value-f-s, 16px);
+    font-weight: 400;
+    line-height: var(--claim-modal-value-l-h, 22px);
+    white-space: nowrap;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--claim-modal-badge-radius, 4px);
+    background: var(--claim-modal-badge-bg, #2b344d);
+    padding: 4px 8px;
+    color: var(--claim-modal-badge-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-badge-f-s, 12px);
+    font-weight: 400;
+    line-height: var(--claim-modal-badge-l-h, 16px);
+    white-space: nowrap;
+}
+
+.valueMuted {
+    color: var(--claim-modal-value-f-c, #7685a0);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-value-f-s, 16px);
+    font-weight: 400;
+    line-height: var(--claim-modal-value-l-h, 22px);
+    white-space: nowrap;
+}
+
+.footerTwoButtons {
+    margin-top: auto;
+    padding: 0 16px 16px;
+    display: flex;
+    gap: 16px;
+}
+
+.btnSecondary,
+.btnPrimary,
+.btnSecondaryWide {
+    height: 40px;
+    border: none;
+    border-radius: var(--claim-modal-btn-radius, 8px);
+    color: var(--claim-modal-btn-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-btn-f-s, 16px);
+    font-weight: var(--claim-modal-btn-f-w, 400);
+    line-height: var(--claim-modal-btn-l-h, 22px);
+    cursor: pointer;
+}
+
+.btnSecondary {
+    flex: 1;
+    background: var(--claim-modal-btn-secondary-bg, #2b344d);
+}
+
+.btnSecondary:hover:not(:disabled) {
+    background: var(--claim-modal-btn-secondary-hover-bg, #3e4864);
+}
+
+.btnPrimary {
+    flex: 1;
+    background: var(--claim-modal-btn-primary-bg, #6067f9);
+}
+
+/* Minimum claim screen */
+.minimumBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 16px 0;
+}
+
+.minimumText {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.minimumTitle {
+    margin: 0;
+    color: var(--claim-modal-min-title-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-min-title-f-s, 20px);
+    font-weight: var(--claim-modal-min-title-f-w, 700);
+    line-height: var(--claim-modal-min-title-l-h, 26px);
+    letter-spacing: 0.4px;
+}
+
+.minimumPara {
+    margin: 0;
+    color: var(--claim-modal-min-para-f-c, #7685a0);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-min-para-f-s, 16px);
+    font-weight: var(--claim-modal-min-para-f-w, 400);
+    line-height: var(--claim-modal-min-para-l-h, 22px);
+}
+
+.minimumHint {
+    margin: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    color: var(--claim-modal-min-hint-f-c, #AFBBFF);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-min-hint-f-s, 14px);
+    font-weight: var(--claim-modal-min-hint-f-w, 400);
+    line-height: var(--claim-modal-min-hint-l-h, 20px);
+}
+
+.footerOneButton {
+    padding: 0 16px 16px;
+}
+
+.btnSecondaryWide {
+    width: 100%;
+    background: var(--claim-modal-btn-secondary-bg, #2b344d);
+}
+
+.btnSecondaryWide:hover:not(:disabled) {
+    background: var(--claim-modal-btn-secondary-hover-bg, #3e4864);
+}
+
+.spinner {
+    box-sizing: border-box;
+    width: 56px;
+    height: 56px;
+    border: 4px solid transparent;
+    border-top-color: var(--claim-modal-spinner-c, #f7f7f7);
+    border-right-color: var(--claim-modal-spinner-c, #f7f7f7);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+.successAmount {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--claim-modal-success-amount-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-success-amount-f-s, 40px);
+    font-weight: var(--claim-modal-success-amount-f-w, 700);
+    line-height: var(--claim-modal-success-amount-l-h, 30px);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Success screen (Figma node 1863:9429) */
+.successBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 16px 0;
+    position: relative;
+}
+
+.successDesign {
+    position: relative;
+    width: 100%;
+    height: 144px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 8px;
+}
+
+/* Wide purple glow under the amount (Figma Ellipse 103, real asset).
+   Natural viewBox 362.8×170.8, ellipse center at the svg middle; placed so the
+   glow center sits on the design frame's bottom edge. */
+.successGlow {
+    position: absolute;
+    left: 50%;
+    bottom: -85px;
+    width: 362.8px;
+    height: 170.8px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.successGlow img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Bright horizon line below the amount (Figma Ellipse 104, real asset).
+   Natural viewBox 266×107, positioned near the lower third of the design. */
+.successGlowLine {
+    position: absolute;
+    left: 50%;
+    top: 103px;
+    width: 266px;
+    height: 107px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.successGlowLine img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sparkle stars (Figma Design frame 1863:9452, 328×144).
+   The span is the position anchor at the Figma box coords; the img is rendered
+   at its natural viewBox px size (which already includes the drop-shadow
+   padding) and centered, so the visible star core matches the Figma size. */
+.successStar {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 1;
+    transform-origin: center;
+    animation: starTwinkle 2.4s ease-in-out infinite;
+}
+
+.successStar img {
+    display: block;
+    flex-shrink: 0;
+}
+
+.successStar1 {
+    left: 164px;
+    top: 90px;
+    width: 24px;
+    height: 24px;
+    animation-delay: 0s;
+}
+
+.successStar1 img {
+    width: 23px;
+    height: 23px;
+}
+
+.successStar2 {
+    left: 288px;
+    top: 109px;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0.5s;
+}
+
+.successStar2 img {
+    width: 36px;
+    height: 36px;
+}
+
+.successStar3 {
+    left: 34px;
+    top: 13px;
+    width: 30px;
+    height: 30px;
+    animation-delay: 1s;
+}
+
+.successStar3 img {
+    width: 46px;
+    height: 46px;
+}
+
+.successStar4 {
+    left: 269px;
+    top: 45px;
+    width: 14px;
+    height: 14px;
+    animation-delay: 1.5s;
+}
+
+.successStar4 img {
+    width: 30px;
+    height: 30px;
+}
+
+.successStar5 {
+    left: 84px;
+    top: 114px;
+    width: 16px;
+    height: 16px;
+    animation-delay: 0.8s;
+}
+
+.successStar5 img {
+    width: 32px;
+    height: 32px;
+}
+
+.successStar6 {
+    left: 188px;
+    top: 21px;
+    width: 18px;
+    height: 18px;
+    animation-delay: 1.8s;
+}
+
+.successStar6 img {
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes starTwinkle {
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .successStar {
+        animation: none;
+        opacity: 1;
+    }
+}
+
+.successText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 328px;
+    max-width: 100%;
+}
+
+.successTitle {
+    margin: 0;
+    color: var(--claim-modal-status-title-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-status-title-f-s, 22px);
+    font-weight: var(--claim-modal-status-title-f-w, 700);
+    line-height: var(--claim-modal-status-title-l-h, 28px);
+    letter-spacing: 0.44px;
+    text-align: center;
+}
+
+.successMsg {
+    margin: 0;
+    color: var(--claim-modal-status-msg-f-c, #7685a0);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-status-msg-f-s, 16px);
+    font-weight: var(--claim-modal-status-msg-f-w, 400);
+    line-height: var(--claim-modal-status-msg-l-h, 22px);
+    text-align: center;
+}
+
+.successExplorer {
+    margin-top: 0;
+    color: var(--claim-modal-explorer-f-c, #6067f9);
+    text-decoration: none;
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-explorer-f-s, 14px);
+    font-weight: var(--claim-modal-explorer-f-w, 400);
+    line-height: var(--claim-modal-explorer-l-h, 20px);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.successExplorer:hover {
+    color: var(--claim-modal-explorer-hover-f-c, #8793FF);
+}
+
+.successExplorer img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Per-platform default → hover icon swap (two stacked icons, opacity toggled). */
+.explorerIcon {
+    position: relative;
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.explorerIconImg {
+    position: absolute;
+    inset: 0;
+}
+
+.explorerIconActive {
+    opacity: 0;
+}
+
+.successExplorer:hover .explorerIconDefault {
+    opacity: 0;
+}
+
+.successExplorer:hover .explorerIconActive {
+    opacity: 1;
+}
+
+/* Failure screen (Figma node 1863:11781) */
+.failureBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    /* 24px top + the header's 8px margin-bottom + 16px icon-wrap centering =
+       48px from header to the icon (Figma 1863:9857). */
+    padding: 24px 16px 0;
+}
+
+.failureIconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 144px;
+}
+
+.failureCircle {
+    box-sizing: border-box;
+    width: 112px;
+    height: 112px;
+    flex-shrink: 0;
+    padding: 28px;
+    border-radius: 1000px;
+    background: var(--claim-modal-failure-circle-bg, rgba(210, 88, 88, 0.25));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.failureCircle img {
+    width: 56px;
+    height: 56px;
+}
+
+.failureText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 328px;
+    max-width: 100%;
+}
+
+.failureTitle {
+    margin: 0;
+    color: var(--claim-modal-status-title-f-c, #f7f7f7);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-status-title-f-s, 22px);
+    font-weight: var(--claim-modal-status-title-f-w, 700);
+    line-height: var(--claim-modal-status-title-l-h, 28px);
+    letter-spacing: 0.44px;
+    text-align: center;
+}
+
+.failureMsg {
+    margin: 0;
+    color: var(--claim-modal-status-msg-f-c, #7685a0);
+    font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
+    font-size: var(--claim-modal-status-msg-f-s, 16px);
+    font-weight: var(--claim-modal-status-msg-f-w, 400);
+    line-height: var(--claim-modal-status-msg-l-h, 22px);
+    text-align: center;
+}
+
+/* Processing screen (Figma node 1863:9857) */
+.spinnerCircle {
+    box-sizing: border-box;
+    width: 112px;
+    height: 112px;
+    flex-shrink: 0;
+    padding: 28px;
+    border-radius: 1000px;
+    background: var(--claim-modal-spinner-circle-bg, rgba(135, 147, 255, 0.25));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.footerTwoButtonsStatus {
+    margin-top: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px 16px;
+    display: flex;
+    gap: 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

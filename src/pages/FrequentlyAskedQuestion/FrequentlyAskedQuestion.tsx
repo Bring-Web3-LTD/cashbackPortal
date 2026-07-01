@@ -4,7 +4,7 @@ import { Link, useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import fetchFaq from '../../api/fetchFaq'
 import { useQuery } from '@tanstack/react-query'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../components/Icon/Icon'
 

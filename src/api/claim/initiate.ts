@@ -11,6 +11,9 @@ interface Body extends BackendRequestBody {
 interface Response {
     messageToSign: string
     status?: number
+    // Per-platform chain explorer URL for the resulting tx. Omitted by the
+    // backend when no explorer is configured for the platform.
+    explorerLink?: string
 }
 
 const claimInitiate = async (body: Body): Promise<Response> => {

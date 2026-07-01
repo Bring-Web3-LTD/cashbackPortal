@@ -1,0 +1,30 @@
+/* Portal root — capped at MOBILE_PORTAL_MAX_WIDTH and centered. */
+.root {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    /* Hide native scrollbar; page still scrolls. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.root::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Also hide the scrollbar on html/body while the mobile layout is mounted. */
+:global(html),
+:global(body) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+:global(html)::-webkit-scrollbar,
+:global(body)::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}

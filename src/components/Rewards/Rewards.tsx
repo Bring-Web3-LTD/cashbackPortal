@@ -10,10 +10,10 @@ import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
 import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import Icon from '../Icon/Icon'
 
@@ -81,7 +81,7 @@ const Rewards = () => {
                 if (event.data.key) body.key = event.data.key
                 const res = await claimSubmit(body)
 
-                if (res.status === 202) {
+                if (res?.ok) {
                     setClaimStatus('success')
                     sendGaEvent('claim_accepted', {
                         category: 'system',

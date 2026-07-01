@@ -564,6 +564,18 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.19.1.tgz#984771bfd1de2715f42394c87fb716c1349e014f"
   integrity sha512-S45oynt/WH19bHbIXjtli6QmwNYvaz+vtnubvNpNDvUOoA/OWh6j1OikIP3G+v5GHdxyC6EXoChG3HgYGEUfcg==
 
+"@rive-app/canvas@2.38.0":
+  version "2.38.0"
+  resolved "https://registry.yarnpkg.com/@rive-app/canvas/-/canvas-2.38.0.tgz#13b779f75209f55f60de7b2f8f624911c3e211ea"
+  integrity sha512-tTrPXsWJZLARBa3H9rOPVMrWp5IRwaVABHLISdBogGGebp0sIAAmfDAD1eK/bP+UODejsT4X3mPBI3GPNln44g==
+
+"@rive-app/react-canvas@^4.29.0":
+  version "4.29.0"
+  resolved "https://registry.yarnpkg.com/@rive-app/react-canvas/-/react-canvas-4.29.0.tgz#d0bf06f4490b3b5c533c1ce4dcee57dfb4b34e57"
+  integrity sha512-Jwlnq/9g8DIAS7VIw4c9Pj9UN11F9BmznLq4oFGmd2w80lCZtRjU9UHTs+RfDC2+0y2fBc3BRiwEHgja0krkQQ==
+  dependencies:
+    "@rive-app/canvas" "2.38.0"
+
 "@rollup/rollup-android-arm-eabi@4.52.4":
   version "4.52.4"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.52.4.tgz#59e7478d310f7e6a7c72453978f562483828112f"
@@ -2546,6 +2558,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+swiper@^12.2.0:
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-12.2.0.tgz#f6daa886465abd1bbc42be2f2ce1827cd03c91ea"
+  integrity sha512-K8uXsBZU6ME97Ia3xbBge8IRCnR1lOmIILzvY/jGVic7dSTQ530s3uO8RvXbPUtkkXLWIwmZLRPbtDxRWVAFdg==
 
 text-table@^0.2.0:
   version "0.2.0"

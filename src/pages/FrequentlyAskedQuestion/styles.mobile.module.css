@@ -1,0 +1,114 @@
+/* FAQ overlay — bottom-sheet, same structure as MobileHistory. */
+
+.root {
+    position: fixed;
+    inset: 0;
+    max-width: 360px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.behind {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    isolation: isolate;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.darken {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--faq-overlay-darken-bg, #040407);
+    opacity: 0.65;
+}
+
+.sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 32px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    background: var(--faq-sheet-bg, #0F0F1A);
+    border: var(--faq-sheet-border-w, 1px) solid var(--faq-sheet-border-c, #2B344D);
+    border-bottom: none;
+    border-top-left-radius: var(--faq-sheet-radius, 16px);
+    border-top-right-radius: var(--faq-sheet-radius, 16px);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.sheet::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        var(--faq-sheet-fade-from, rgba(15, 15, 26, 0)),
+        var(--faq-sheet-fade-to, #0F0F1A)
+    );
+}
+
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 16px 16px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.intro {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--faq-intro-f-s, 14px);
+    font-weight: var(--faq-intro-f-w, 400);
+    line-height: var(--faq-intro-l-h, 20px);
+    color: var(--faq-intro-f-c, #7685A0);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skeletonItem {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    padding: 4px 8px;
+    border-radius: var(--faq-skeleton-radius, 4px);
+    background: var(--faq-skeleton-bg, rgba(43, 52, 77, 0.5));
+    overflow: hidden;
+}
+
+.skeletonBar {
+    height: 11px;
+    width: 182px;
+    border-radius: var(--faq-skeleton-bar-radius, 3px);
+    background: var(--faq-skeleton-bar-bg, #262B3F);
+}
+

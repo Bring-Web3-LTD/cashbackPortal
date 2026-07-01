@@ -8,6 +8,7 @@ interface Body extends BackendRequestBody {
 interface Data {
     eligible: Token[]
     totalPendings: Token[]
+    totalEarned?: Token[]
     movements: Movements
 }
 

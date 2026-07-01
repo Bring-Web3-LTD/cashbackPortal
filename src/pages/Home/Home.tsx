@@ -15,8 +15,8 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
-import { useGoogleAnalytics } from '../../utils/hooks/useGoogleAnalytics'
-import { useWalletAddress } from '../../utils/hooks/useWalletAddress'
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { parseCampaignId } from '../../utils/campaigns'
 import Icon from '../../components/Icon/Icon'
 

@@ -1,0 +1,210 @@
+/* History row styles. Visuals driven by CSS vars with hardcoded fallbacks. */
+
+.item {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: var(--history-item-bg, #171C2F);
+    border-radius: var(--history-item-radius, 6px);
+    padding: 8px 12px;
+    transition: background 0.15s ease;
+    overflow: hidden;
+}
+
+@media (hover: hover) {
+    .item:hover {
+        background: var(--history-item-hover-bg, #2B344D);
+    }
+
+}
+
+/* Collapsed row — toggles the panel. */
+.row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font-family: 'Prompt', system-ui, sans-serif;
+    min-height: 40px;
+}
+
+.row:disabled {
+    cursor: default;
+}
+
+/* Avatar */
+.avatar {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--history-avatar-radius, 4px);
+    background: var(--history-avatar-bg, #2B344D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.avatarClaim {
+    background: var(--history-avatar-claim-bg, #6067F9);
+}
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.avatarClaim .avatarImg {
+    /* Inset gift glyph so it doesn't touch the edge. */
+    width: 57.14%;
+    height: 57.14%;
+}
+
+/* Body — name + date stacked. */
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    gap: 2px;
+    height: 50px;
+}
+
+.name {
+    /* Truncate with ellipsis; narrower cap on tiny screens. */
+    max-width: 139px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: var(--history-name-f-s, 16px);
+    font-weight: var(--history-name-f-w, 400);
+    line-height: var(--history-name-l-h, 22px);
+    color: var(--history-name-f-c, #F7F7F7);
+}
+
+@media (max-width: 320px) {
+    .name {
+        max-width: 114px;
+    }
+}
+
+.date {
+    font-size: var(--history-date-f-s, 14px);
+    font-weight: var(--history-date-f-w, 400);
+    line-height: var(--history-date-l-h, 20px);
+    color: var(--history-date-f-c, #7685A0);
+}
+
+/* Right column — amount pill + status text. */
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex: 0 0 auto;
+}
+
+.amount {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: var(--history-amount-radius, 6px);
+    background: var(--history-amount-bg, rgba(96, 103, 249, 0.25));
+    color: var(--history-amount-f-c, #8793FF);
+    font-size: var(--history-amount-f-s, 14px);
+    font-weight: var(--history-amount-f-w, 700);
+    line-height: var(--history-amount-l-h, 20px);
+    letter-spacing: 0.28px;
+    white-space: nowrap;
+}
+
+.amount_claimed {
+    background: var(--history-amount-claimed-bg, rgba(90, 184, 139, 0.25));
+    color: var(--history-amount-claimed-f-c, #70D1A3);
+}
+
+.amount_completed {
+    background: var(--history-amount-completed-bg, rgba(234, 207, 65, 0.25));
+    color: var(--history-amount-completed-f-c, #FBE158);
+}
+
+.amount_cancelled {
+    background: var(--history-amount-cancelled-bg, rgba(210, 88, 88, 0.25));
+    color: var(--history-amount-cancelled-f-c, #F08282);
+}
+
+.amount_pending {
+    background: var(--history-amount-pending-bg, rgba(62, 72, 100, 0.5));
+    color: var(--history-amount-pending-f-c, #B1BDD4);
+}
+
+.status {
+    padding-right: 4px;
+    font-size: var(--history-status-f-s, 10px);
+    font-weight: var(--history-status-f-w, 400);
+    line-height: var(--history-status-l-h, 13px);
+    color: var(--history-status-f-c, #7685A0);
+}
+
+.status_claimed {
+    color: var(--history-status-claimed-f-c, #5AB88B);
+}
+
+.status_completed {
+    color: var(--history-status-completed-f-c, #EACF41);
+}
+
+.status_cancelled {
+    color: var(--history-status-cancelled-f-c, #D25858);
+}
+
+.status_pending {
+    color: var(--history-status-pending-f-c, #7685A0);
+}
+
+/* Expandable description panel. */
+.panel {
+    overflow: hidden;
+}
+
+.divider {
+    display: block;
+    width: 100%;
+    height: var(--history-divider-w, 1px);
+    margin-top: 8px;
+    background: var(--history-divider-c, #2B344D);
+}
+
+.panelBody {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.descriptionLine {
+    margin: 0;
+    font-family: 'Prompt', system-ui, sans-serif;
+    font-size: var(--history-description-f-s, 12px);
+    font-weight: var(--history-description-f-w, 400);
+    line-height: var(--history-description-l-h, 16px);
+    color: var(--history-description-f-c, #7685A0);
+    word-break: break-word;
+}
+
+.txid {
+    display: block;
+    margin-top: 2px;
+    word-break: break-all;
+}

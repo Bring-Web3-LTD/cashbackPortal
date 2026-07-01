@@ -1,12 +1,16 @@
-import { motion } from 'framer-motion'
 import { useLocation, useRouteLoaderData } from 'react-router-dom';
 import { GoogleAnalyticsProvider } from '../context/GoogleAnalyticsContext';
-import { Outlet } from 'react-router-dom';
 import { GA_MEASUREMENT_ID, MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
+import DesktopOutlet from './DesktopOutlet';
+import MobileOutlet from './MobileOutlet';
 
+/**
+ * Root layout. Hosts the shared providers (Wallet, GA) once for both
+ * platforms; only the route outlet is split — DesktopOutlet vs MobileOutlet.
+ */
 const Layout = () => {
     const location = useLocation();
     const data = useRouteLoaderData('root') as LoaderData;
@@ -21,7 +25,13 @@ const Layout = () => {
     }
 
     return (
-        <WalletProvider initialWalletAddress={data.walletAddress} initIsTester={data.isTester}>
+        <WalletProvider
+            initialWalletAddress={data.walletAddress}
+            initIsTester={data.isTester}
+            initialWalletName={data.walletName}
+            initialWalletEmoji={data.walletEmoji}
+            mode={data.useMobilePortal ? 'mobile' : 'desktop'}
+        >
             <GoogleAnalyticsProvider
                 measurementId={GA_MEASUREMENT_ID}
                 platform={platform}
@@ -29,15 +39,9 @@ const Layout = () => {
                 flowId={data.flowId}
                 userId={data.userId}
             >
-                <motion.div
-                    key={location.pathname}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    <Outlet />
-                </motion.div>
+                {data.useMobilePortal
+                    ? <MobileOutlet pathname={location.pathname} />
+                    : <DesktopOutlet pathname={location.pathname} />}
             </GoogleAnalyticsProvider>
         </WalletProvider>
     );

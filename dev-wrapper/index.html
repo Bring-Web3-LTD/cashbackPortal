@@ -54,6 +54,32 @@
                         <input id="extensionId" type="text" />
                     </label>
 
+                    <label>
+                        <span>Wallet name</span>
+                        <input id="walletName" type="text" placeholder="(optional, e.g. WalletName)" />
+                    </label>
+
+                    <label>
+                        <span>Wallet emoji URL</span>
+                        <input id="walletEmoji" type="text" placeholder="(optional, asset URL)" />
+                    </label>
+
+                    <label>
+                        <span>View mode</span>
+                        <select id="viewMode">
+                            <option value="desktop">Desktop</option>
+                            <option value="mobile">Mobile</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Style as</span>
+                        <select id="styleAs">
+                            <option value="">Platform</option>
+                            <option value="DEFAULT">DEFAULT</option>
+                        </select>
+                    </label>
+
                     <button id="refresh" type="button">Refresh</button>
                 </fieldset>
 
@@ -108,8 +134,10 @@
                 <p id="status" class="status"></p>
             </aside>
 
-            <section class="frame">
-                <iframe id="portal" title="Bring Cashback Portal"></iframe>
+            <section class="frame" id="frame">
+                <div class="frame-stage" id="frameStage">
+                    <iframe id="portal" title="Bring Cashback Portal"></iframe>
+                </div>
             </section>
         </main>
 

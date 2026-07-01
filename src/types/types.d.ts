@@ -25,10 +25,17 @@ interface Category {
     name: string
 }
 
+interface CryptoToken {
+    symbol: string
+    name: string
+    icon: string
+}
+
 interface LoaderData {
     walletAddress: string
     platform: string
     cryptoSymbols: string[]
+    cryptoTokens?: CryptoToken[]
     isCountryAvailable: boolean
     iconsPath: string
     defaultIconsPath: string
@@ -38,6 +45,11 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    // Mobile Portal — optional wallet identity surfaced from the JWT, plus the
+    // computed flag that drives whether the mobile UI is rendered for this load.
+    walletEmoji?: string
+    walletName?: string
+    useMobilePortal?: boolean
     variant: string
 }
 
@@ -50,6 +62,9 @@ interface Token {
     tokenIconPath: string
     tokenInUsd: number
     totalEstimatedUsd: number
+    // Backend-formatted display string for the amount. May contain Unicode
+    // subscript digits (₀–₉) — render via <TokenAmount /> on mobile.
+    tokenAmountDisplay?: string
 }
 
 interface HistoryItem {
@@ -57,6 +72,8 @@ interface HistoryItem {
     action: string
     tokenAmount: number
     tokenSymbol: string
+    // Backend-formatted display string for the amount.
+    tokenAmountDisplay?: string
 }
 
 interface Claim {
@@ -66,6 +83,10 @@ interface Claim {
     tokenSymbol: string
     type?: "claim"
     txid?: string
+    // Backend-formatted display string for the amount.
+    tokenAmountDisplay?: string
+    // Per-platform chain explorer URL for this claim's tx. Hide UI when absent.
+    explorerLink?: string
 }
 
 interface Deal {
@@ -76,6 +97,7 @@ interface Deal {
     status: string
     tokenName: string
     retailerName: string
+    retailerDisplayName: string
     retailerIconPath: string
     retailerBackgroundColor: string
     history: HistoryItem[]
@@ -84,6 +106,8 @@ interface Deal {
     totalEstimatedUsd?: number
     date?: string
     type?: "deal"
+    // Backend-formatted display string for the amount.
+    tokenAmountDisplay?: string
 }
 
 interface Movements {

@@ -85,9 +85,14 @@ const $ = <T extends HTMLElement>(id: string) => {
 const themeEl = $<HTMLSelectElement>('theme')
 const walletEl = $<HTMLInputElement>('wallet')
 const extensionEl = $<HTMLInputElement>('extensionId')
+const walletNameEl = $<HTMLInputElement>('walletName')
+const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
 const apiStageInfoEl = $<HTMLElement>('apiStageInfo')
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
+const frameEl = $<HTMLElement>('frame')
+const viewModeEl = $<HTMLSelectElement>('viewMode')
+const styleAsEl = $<HTMLSelectElement>('styleAs')
 const lastUrlEl = $<HTMLTextAreaElement>('lastUrl')
 const lastTokenRawEl = $<HTMLTextAreaElement>('lastTokenRaw')
 const lastTokenDecodedEl = $<HTMLDivElement>('lastTokenDecoded')
@@ -111,6 +116,34 @@ if (localStorage.getItem(SIDEBAR_KEY) === '1') layoutEl.classList.add('collapsed
 toggleBtn.addEventListener('click', () => {
     const collapsed = layoutEl.classList.toggle('collapsed')
     localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0')
+})
+
+// View-mode switcher: Desktop (full width) vs Mobile (constrained iframe width
+// so the portal's `window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH` check fires
+// and renders the mobile portal). The portal only reads innerWidth at bootstrap,
+// so changing modes reloads the iframe.
+const VIEW_MODE_KEY = 'bring-dev-wrapper:view-mode'
+const applyViewMode = (mode: string) => {
+    frameEl.classList.toggle('mobile', mode === 'mobile')
+}
+const savedViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'desktop'
+viewModeEl.value = savedViewMode
+applyViewMode(savedViewMode)
+viewModeEl.addEventListener('change', () => {
+    const mode = viewModeEl.value
+    localStorage.setItem(VIEW_MODE_KEY, mode)
+    applyViewMode(mode)
+    // Re-bootstrap so the portal re-evaluates useMobilePortal at the new width.
+    void refresh()
+})
+
+const STYLE_AS_KEY = 'bring-dev-wrapper:style-as'
+styleAsEl.value = localStorage.getItem(STYLE_AS_KEY) || ''
+styleAsEl.addEventListener('change', () => {
+    localStorage.setItem(STYLE_AS_KEY, styleAsEl.value)
+    // CSS loads at init time — must fully reload the iframe.
+    isFirstLoad = true
+    void refresh()
 })
 
 const startConnectedEl = $<HTMLInputElement>('startConnected')
@@ -511,6 +544,10 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
         walletAddress,
+        // Optional wallet identity — /check/portal embeds these in the JWT,
+        // surfaced in the Mobile Portal claim screen.
+        walletName: walletNameEl.value.trim() || undefined,
+        walletEmoji: walletEmojiEl.value.trim() || undefined,
         // Empty string means "don't include theme in the payload" so the
         // portal/API uses its own defaults.
         theme: (themeEl.value || undefined) as Theme | undefined,
@@ -569,7 +606,10 @@ async function refresh() {
 
     if (isFirstLoad) {
         // First load: token is embedded in portalUrl's query string.
-        iframeEl.src = buildIframeSrc(portalUrl!, token)
+        const src = buildIframeSrc(portalUrl!, token)
+        const u = new URL(src)
+        if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
+        iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')
     } else {
@@ -590,6 +630,8 @@ async function refresh() {
 
 themeEl.addEventListener('change', refresh)
 extensionEl.addEventListener('change', refresh)
+walletNameEl.addEventListener('change', refresh)
+walletEmojiEl.addEventListener('change', refresh)
 refreshBtn.addEventListener('click', refresh)
 
 // Wallet input edits go through the bridge so the mock wallet's internal state
