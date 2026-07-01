@@ -48,12 +48,12 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
   return (
     <div>
       {answer.map((line, index) => (
-        <p
+        <div
           className={line.startsWith(indentationMark) ? styles.pre : styles.p}
           key={index}
         >
           {parseText(line)}
-        </p>
+        </div>
       ))}
     </div>
   );
