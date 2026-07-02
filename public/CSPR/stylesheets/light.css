@@ -92,8 +92,8 @@
     --retailer-card-border-color: transparent;
     --retailer-card--hover-border-color: #1A1919;
 
-    --retailer-card-img-border-c: #FFF;
-    --retailer-card-img-border-w: 0px;
+    --retailer-card-img-border-c: rgba(220, 224, 233, 0.50);
+    --retailer-card-img-border-w: 1px;
     --retailer-card-img-border-campaign-c:  #FFF;
 
     --retailer-card-flag-f-s: 14px;
@@ -124,7 +124,7 @@
     --loading-msg-f-c: #FBFBFB;
     /* need to configure */
     --filter-btn-f-s: 15px;
-    --filter-btn-f-w: 400;
+    --filter-btn-f-w: 700;
     --filter-btn-f-c: #0A2EBF;;
     --filter-btn-bg: #EDEEF0;
     --filter-btn-hover-bg: #EDEEF0;
@@ -147,12 +147,14 @@
     --category-btn-hover-border-c:transparent;
     --category-btn-hover-radius: 6px;
 
+    --modal-h: 221px;
+    --modal-close-size: 24px;
     --modal-offset-top: -120px;
     --modal-bg: #F5F6F7;
     --modal-overlay-bg: rgba(43, 43, 43, 0.6);
     --modal-border-w: 0;
     --modal-border-c: transparent;
-    --modal-radius: 12px;
+    --modal-radius: 5px;
     --modal-title-f-s: 20px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #1A1919;
@@ -219,6 +221,7 @@
     --retailer-logo-fallback-f-w: 700;
     --retailer-logo-fallback-border-w: 1px;
     --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
+
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
     --scrollbar-w: 10px;
 
@@ -255,9 +258,9 @@
 
     --history-back-x-location: 64px;
 
-    --history-table-header-bg: transparent;
-    --history-table-header-border-c: transparent;
-    --history-table-header-border-w: 0;
+    --history-table-header-bg: #FFF;
+    --history-table-header-border-c: rgba(239, 239, 239, 0.50);;
+    --history-table-header-border-w: 1px;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 14px;
