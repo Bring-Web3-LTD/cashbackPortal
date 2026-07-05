@@ -4,6 +4,7 @@ import { createMockWallet, type MockWallet } from './mockWallet'
 import { createNightlyWallet } from './nightlyWallet'
 import { createSolflareWallet } from './solflareWallet'
 import { createYoroiWallet } from './yoroiWallet'
+import { createGeroWallet } from './geroWallet'
 import { createCasperWallet } from './casperWallet'
 import { createEckoWallet } from './eckoWallet'
 import { createReadyWallet } from './readyWallet'
@@ -47,6 +48,7 @@ const PROVIDER_API: Record<string, { url?: string; key?: string }> = {
     nightly: { url: env.VITE_PORTAL_API_NIGHTLY, key: env.VITE_PORTAL_API_KEY_NIGHTLY },
     solflare: { url: env.VITE_PORTAL_API_SOLFLARE, key: env.VITE_PORTAL_API_KEY_SOLFLARE },
     yoroi: { url: env.VITE_PORTAL_API_YOROI, key: env.VITE_PORTAL_API_KEY_YOROI },
+    gero: { url: env.VITE_PORTAL_API_GERO, key: env.VITE_PORTAL_API_KEY_GERO },
     casper: { url: env.VITE_PORTAL_API_CASPER, key: env.VITE_PORTAL_API_KEY_CASPER },
     ecko: { url: env.VITE_PORTAL_API_ECKO, key: env.VITE_PORTAL_API_KEY_ECKO },
     ready: { url: env.VITE_PORTAL_API_READY, key: env.VITE_PORTAL_API_KEY_READY },
@@ -238,7 +240,7 @@ const wallet = createMockWallet({
 // `wallet` above is the in-page mock. The bridge always talks to a single
 // `MockWallet` reference, so we wrap a proxy that forwards to whichever
 // adapter the user picks in the sidebar (mock | nightly | ...).
-type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'casper' | 'ecko' | 'ready'
+type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready'
 const WALLET_PROVIDER_KEY = 'bring-dev-wrapper:wallet-provider'
 
 const mockAdapter = wallet
@@ -268,6 +270,15 @@ const getYoroiAdapter = (): MockWallet => {
         })
     }
     return yoroiAdapter
+}
+let geroAdapter: MockWallet | null = null
+const getGeroAdapter = (): MockWallet => {
+    if (!geroAdapter) {
+        geroAdapter = createGeroWallet({
+            onSign: ({ key }) => appendLog('info', `Gero signed with ${shortAddress(key)}`),
+        })
+    }
+    return geroAdapter
 }
 let casperAdapter: MockWallet | null = null
 const getCasperAdapter = (): MockWallet => {
@@ -300,6 +311,7 @@ const pickAdapter = (): MockWallet => {
         case 'nightly': return getNightlyAdapter()
         case 'solflare': return getSolflareAdapter()
         case 'yoroi': return getYoroiAdapter()
+        case 'gero': return getGeroAdapter()
         case 'casper': return getCasperAdapter()
         case 'ecko': return getEckoAdapter()
         case 'ready': return getReadyAdapter()
