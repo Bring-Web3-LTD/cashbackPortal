@@ -48,12 +48,12 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
   return (
     <div>
       {answer.map((line, index) => (
-        <p
+        <div
           className={line.startsWith(indentationMark) ? styles.pre : styles.p}
           key={index}
         >
           {parseText(line)}
-        </p>
+        </div>
       ))}
     </div>
   );
@@ -84,35 +84,38 @@ const FrequentlyAskedQuestion = () => {
               key={item.question + item.id}
               className={`${styles.collapsible} ${currentIndex === item.itemOrder ? styles.collapsible_open : ''}`}
             >
-              <div
-                className={styles.question_container}
-                onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
-              >
-                <div className={styles.question}>
-                  {item.question}
+              <div className={styles.row}>
+                <div className={styles.text_col}>
+                  <div
+                    className={styles.question}
+                    onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
+                  >
+                    {item.question}
+                  </div>
+                  <AnimatePresence>
+                    {currentIndex === item.itemOrder && <motion.div
+                      className={styles.answer_container}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <AnswerParser
+                        answer={item.answer}
+                        links={item.links || []}
+                        indentationMark={data.indentationMark}
+                      />
+                    </motion.div>}
+                  </AnimatePresence>
                 </div>
                 <button
                   id={`faq-details-btn-${item.id}`}
                   className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
+                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
                 >
                   <Icon name="arrow-down.svg" alt="arrow-down" />
                 </button>
               </div>
-              <AnimatePresence>
-                {currentIndex === item.itemOrder && <motion.div
-                  className={styles.answer_container}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <AnswerParser
-                    answer={item.answer}
-                    links={item.links || []}
-                    indentationMark={data.indentationMark}
-                  />
-                </motion.div>}
-              </AnimatePresence>
             </div>
           ))}
       </div>

@@ -286,13 +286,16 @@
     --history-empty-f-w: 500;
     --history-empty-f-c: #FFF;
 
-    --faq-question-f-s: 16px;
-    --faq-question-f-w: 500;
-    --faq-question-f-c: #FFF;
+    --faq-question-f-s: 17px;
+    --faq-question-f-w: 700;
+    --faq-question-f-c: #FBFBFB;
 
     --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
-    --faq-answer-f-c: #FFF;
+    --faq-answer-f-c: #FBFBFB;
+
+    --faq-link-f-s: 16px;
+    --faq-link-f-w: 700;
 }
 
 * {

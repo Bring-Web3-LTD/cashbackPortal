@@ -37,7 +37,7 @@
     border-bottom-width: var(--history-table-row-border-w);
     border-bottom-style: solid;
     border-bottom-color: var(--history-table-row-border-c);
-    padding: 0 26px;
+    padding: 24px 16px;
     transition: .2s;
     word-wrap: break-word;
 }
@@ -46,21 +46,31 @@
     background: var(--history-table-row-active-bg);
 }
 
-.question_container {
-    min-height: 62px;
+.row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 16px;
+}
+
+.text_col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
 }
 
 .question {
     font-size: var(--faq-question-f-s);
     font-weight: var(--faq-question-f-w);
     color: var(--faq-question-f-c);
+    line-height: 24px;
+    cursor: pointer;
 }
 
 .answer_container {
     overflow: hidden;
+    margin-top: 8px;
 }
 
 .details_btn {
@@ -90,16 +100,13 @@
     line-height: 24px;
 }
 
-.pre {
-    padding-left: 32px;
-}
-
 .link_btn {
     background: transparent;
     border: none;
     text-decoration: underline;
     padding: 0;
-    font-size: 16px;
+    font-size: var(--faq-link-f-s);
+    font-weight: var(--faq-link-f-w);
     cursor: pointer;
     color: var(--history-purchase-name-f-c);
 }

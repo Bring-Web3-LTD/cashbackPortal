@@ -271,6 +271,9 @@
     --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
     --faq-answer-f-c: #E1E6F5;
+
+    --faq-link-f-s: 16px;
+    --faq-link-f-w: 500;
 }
 
 * {

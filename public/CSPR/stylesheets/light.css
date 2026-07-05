@@ -294,12 +294,15 @@
     --history-empty-f-c:  var(--Content-Light-contentPrimary, #1A1919);
 
     --faq-question-f-s: 15px;
-    --faq-question-f-w: 500;
+    --faq-question-f-w: 600;
     --faq-question-f-c: var(--Content-Light-contentPrimary, #1A1919);
 
     --faq-answer-f-s: 15px;
     --faq-answer-f-w: 400;
     --faq-answer-f-c: var(--Content-Light-contentPrimary, #1A1919);
+
+    --faq-link-f-s: 15px;
+    --faq-link-f-w: 600;
 }
 
 * {
