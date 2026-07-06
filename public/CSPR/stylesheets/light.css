@@ -92,7 +92,7 @@
     --retailer-card-border-color: transparent;
     --retailer-card--hover-border-color: #1A1919;
 
-    --retailer-card-img-border-c: rgba(220, 224, 233, 0.50);
+    --retailer-card-img-border-c: #EEF0F4;
     --retailer-card-img-border-w: 1px;
     --retailer-card-img-border-campaign-c:  #FFF;
 
@@ -258,6 +258,7 @@
 
     --history-back-x-location: 64px;
 
+    --history-table-radius: 12px;
     --history-table-header-bg: #FFF;
     --history-table-header-border-c: rgba(239, 239, 239, 0.50);;
     --history-table-header-border-w: 1px;

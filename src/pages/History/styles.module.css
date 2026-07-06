@@ -29,6 +29,8 @@
 
 .table {
     width: 1167px;
+    border-radius: var(--history-table-radius, 0);
+    overflow: hidden;
 }
 
 .table_header {
