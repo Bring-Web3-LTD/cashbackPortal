@@ -32,6 +32,7 @@
 }
 
 .collapsible {
+    background: var(--history-purchase-name-bg, transparent);
     border: 1px solid black;
     border-radius: 10px;
     /* border-bottom-width: var(--history-table-row-border-w); */

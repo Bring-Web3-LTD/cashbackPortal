@@ -13,7 +13,7 @@
     --subtitle-f-w: 400;
     --subtitle-f-c: #1A1919;
 
-    --header-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --header-btn-bg: #EDEEF0;
     --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
     --header-btn-f-s: 15px;
     --header-btn-f-w: 600;
@@ -25,7 +25,8 @@
     --rewards-bg: var(--Background-Light-backgroundPrimary, #FFF);
 
     --rewards-img-size: 24px;
-    
+    --rewards-icon-container-width: 48px;
+    --rewards-icon-container-height: 48px;
 
     --claim-img-bg:  #0A2EBF;;
     --claim-img-border-w: 0;
@@ -35,7 +36,7 @@
     --pending-img-bg:var(--Content-Light-contentAction, #0A2EBF);
     --pending-img-border-w: 0;
     --pending-img-border-c: transparent;
-    --pending-img-radius: 40%;
+    --pending-img-radius: 40px;
 
     --rewards-text-f-s: 24px;/*?*/
     --rewards-text-f-w: 700;/*?*/
@@ -56,7 +57,7 @@
 
     --rewards-btn-width: 205px;
     --rewards-btn-f-s: 18px;
-    --rewards-btn-f-w: 600;
+    --rewards-btn-f-w: 700;
     --rewards-btn-radius: 6px;
 
     --primary-btn-f-s: 18px;
@@ -87,12 +88,12 @@
     --pending-btn-pressed-bg:   #E8E9EC;
 
     --retailer-card-bg: #FFF;
-    --retailer-card-border-w: 0px;
+    --retailer-card-border-w: 1px;
     --retailer-card-border-color: transparent;
-    --retailer-card--hover-border-color: transparent;
+    --retailer-card--hover-border-color: #1A1919;
 
-    --retailer-card-img-border-c: #FFF;
-    --retailer-card-img-border-w: 0px;
+    --retailer-card-img-border-c: #EEF0F4;
+    --retailer-card-img-border-w: 1px;
     --retailer-card-img-border-campaign-c:  #FFF;
 
     --retailer-card-flag-f-s: 14px;
@@ -101,7 +102,7 @@
     --retailer-card-flag-bg: #2DDC88;
     --retailer-card-flag-campaign-f-c: #2DDC88;/*?*/
     --retailer-card-flag-campaign-bg: #FFF;/*?*/
-    --retailer-card-flag-radius:  var(--corner-radius-4, 4px) 0 0 var(--corner-radius-4, 4px);
+    --retailer-card-flag-radius:  4px;
 
     --retailer-card-name-f-s: 18px;
     --retailer-card-name-f-w: 700;
@@ -123,7 +124,7 @@
     --loading-msg-f-c: #FBFBFB;
     /* need to configure */
     --filter-btn-f-s: 15px;
-    --filter-btn-f-w: 400;
+    --filter-btn-f-w: 700;
     --filter-btn-f-c: #0A2EBF;;
     --filter-btn-bg: #EDEEF0;
     --filter-btn-hover-bg: #EDEEF0;
@@ -146,12 +147,14 @@
     --category-btn-hover-border-c:transparent;
     --category-btn-hover-radius: 6px;
 
+    --modal-h: 221px;
+    --modal-close-size: 24px;
     --modal-offset-top: -120px;
     --modal-bg: #F5F6F7;
     --modal-overlay-bg: rgba(43, 43, 43, 0.6);
     --modal-border-w: 0;
     --modal-border-c: transparent;
-    --modal-radius: 12px;
+    --modal-radius: 5px;
     --modal-title-f-s: 20px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #1A1919;
@@ -218,6 +221,7 @@
     --retailer-logo-fallback-f-w: 700;
     --retailer-logo-fallback-border-w: 1px;
     --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
+
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
     --scrollbar-w: 10px;
 
@@ -254,9 +258,10 @@
 
     --history-back-x-location: 64px;
 
-    --history-table-header-bg: transparent;
-    --history-table-header-border-c: transparent;
-    --history-table-header-border-w: 0;
+    --history-table-radius: 12px;
+    --history-table-header-bg: #FFF;
+    --history-table-header-border-c: rgba(239, 239, 239, 0.50);;
+    --history-table-header-border-w: 1px;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 14px;
@@ -274,6 +279,7 @@
     --history-purchase-name-f-s: 15px;
     --history-purchase-name-f-w: 600;
     --history-purchase-name-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --history-purchase-name-bg: #FFF;
 
     --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
