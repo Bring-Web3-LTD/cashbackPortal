@@ -125,8 +125,8 @@ const RetailerCardModal = ({
                                 className={styles.modal}
                             >
                                 {terms ? (
-                            <Markdown 
-                                className={styles.markdown}
+                            <Markdown
+                                className={`${styles.markdown} ${styles.markdown_short}`}
                                 rehypePlugins={[rehypeRaw]}
                                 components={{
                                     a: ({ href, children, ...props }) => {
