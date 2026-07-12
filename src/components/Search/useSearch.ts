@@ -13,7 +13,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 
 export interface SearchSuggestion {
     id: string
@@ -40,7 +40,7 @@ export const useSearch = ({
     showDropdown = false,
 }: SearchProps) => {
     const { t } = useTranslation()
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const inputRef = useRef<HTMLInputElement>(null)
     const listboxId = useId()
 
@@ -50,13 +50,13 @@ export const useSearch = ({
     useEffect(() => setActiveIndex(-1), [suggestions])
     useEffect(() => inputRef.current?.focus(), [])
 
-    // Debounced typed value drives the GA search_input event only (not the
+    // Debounced typed value drives the analytics search_input event only (not the
     // filter) — mirrors desktop Search so search usage is tracked.
     const [debouncedValue] = useDebounce(value, 500)
     useEffect(() => {
         const trimmed = debouncedValue.trim()
         if (!trimmed) return
-        sendGaEvent('search_input', {
+        sendAnalyticsEvent('search_input', {
             category: 'user_action',
             action: 'input',
             details: trimmed,
@@ -73,14 +73,14 @@ export const useSearch = ({
         (name: string) => {
             const trimmed = name.trim()
             if (!trimmed) return
-            sendGaEvent('search_select', {
+            sendAnalyticsEvent('search_select', {
                 category: 'user_action',
                 action: 'select',
                 details: trimmed,
             })
             onSelectSuggestion?.(trimmed)
         },
-        [onSelectSuggestion, sendGaEvent],
+        [onSelectSuggestion, sendAnalyticsEvent],
     )
 
     const handleSubmit = useCallback(

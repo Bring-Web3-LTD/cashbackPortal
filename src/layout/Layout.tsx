@@ -1,6 +1,6 @@
 import { useLocation, useRouteLoaderData } from 'react-router-dom';
-import { GoogleAnalyticsProvider } from '../context/GoogleAnalyticsContext';
-import { GA_MEASUREMENT_ID, MAINTENANCE_MODE } from '../config';
+import { AnalyticsProvider } from '../context/AnalyticsContext';
+import { MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
@@ -8,7 +8,7 @@ import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
 
 /**
- * Root layout. Hosts the shared providers (Wallet, GA) once for both
+ * Root layout. Hosts the shared providers (Wallet, Analytics) once for both
  * platforms; only the route outlet is split — DesktopOutlet vs MobileOutlet.
  */
 const Layout = () => {
@@ -32,8 +32,7 @@ const Layout = () => {
             initialWalletEmoji={data.walletEmoji}
             mode={data.useMobilePortal ? 'mobile' : 'desktop'}
         >
-            <GoogleAnalyticsProvider
-                measurementId={GA_MEASUREMENT_ID}
+            <AnalyticsProvider
                 platform={platform}
                 location={location.pathname}
                 flowId={data.flowId}
@@ -42,7 +41,7 @@ const Layout = () => {
                 {data.useMobilePortal
                     ? <MobileOutlet pathname={location.pathname} />
                     : <DesktopOutlet pathname={location.pathname} />}
-            </GoogleAnalyticsProvider>
+            </AnalyticsProvider>
         </WalletProvider>
     );
 };

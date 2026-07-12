@@ -10,7 +10,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import type { RetailersMetadata } from '../../hooks/useRetailers'
 
 export interface CardsListProps {
@@ -33,7 +33,7 @@ export const useCardsList = ({
 }: CardsListProps) => {
     const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
 
     const sentinelRef = useRef<HTMLDivElement>(null)
 
@@ -141,7 +141,7 @@ export const useCardsList = ({
 
     // ── Handlers ──────────────────────────────────────────────────────
     const handleCardClick = (retailer: Retailer) => {
-        sendGaEvent('retailer_open', {
+        sendAnalyticsEvent('retailer_open', {
             category: 'user_action',
             action: 'click',
             details: retailer.displayName,
@@ -157,10 +157,10 @@ export const useCardsList = ({
         setRedirectLink('')
     }
 
-    // The anchor opens the new tab; here we only log GA and close the modal.
+    // The anchor opens the new tab; here we only log analytics and close the modal.
     const handleGoToShop = () => {
         if (!activeRetailer) return
-        sendGaEvent('retailer_shop', {
+        sendAnalyticsEvent('retailer_shop', {
             category: 'user_action',
             action: 'click',
             details: activeRetailer.displayName,

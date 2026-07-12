@@ -4,7 +4,7 @@ import formatCashback from '../../utils/formatCashback'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import fetchTerms from '../../utils/fetchTerms'
@@ -50,7 +50,7 @@ const RetailerCard = ({
 }: Props) => {
     const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
     const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
@@ -119,7 +119,7 @@ const RetailerCard = ({
         }
         activateDeal()
         setModalState('loading')
-        sendGaEvent('retailer_open', {
+        sendAnalyticsEvent('retailer_open', {
             category: 'user_action',
             action: 'click',
             details: label,
@@ -175,7 +175,7 @@ const RetailerCard = ({
                 open={modalState !== 'close'}
                 closeFn={() => {
                     setModalState('close')
-                    sendGaEvent('popup_close', {
+                    sendAnalyticsEvent('popup_close', {
                         category: 'user_action',
                         action: 'click',
                         details: 'Retailer',

@@ -13,7 +13,7 @@ import Select, {
     SingleValueProps,
     SelectInstance,
 } from "react-select"
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'use-debounce'
 import Icon from '../Icon/Icon'
@@ -178,12 +178,12 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
     const selectRef = useRef<SelectInstance<ReactSelectOptionType> | null>(null)
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const { t } = useTranslation()
 
     useEffect(() => {
         if (!debouncedInput.length) return
-        sendGaEvent("search_input", {
+        sendAnalyticsEvent("search_input", {
             category: "user_action",
             action: "input",
             details: debouncedInput,
@@ -201,7 +201,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
         if (!item || Array.isArray(item)) return
         const { value } = item as ReactSelectOptionType
 
-        sendGaEvent("search_select", {
+        sendAnalyticsEvent("search_select", {
             category: "user_action",
             action: "select",
             details: value,
@@ -226,7 +226,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
             if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
 
             // if (input.length === 3) {
-            //     sendGaEvent("search_input", {
+            //     sendAnalyticsEvent("search_input", {
             //         category: "user_action",
             //         action: "input",
             //         details: input,

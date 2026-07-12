@@ -10,7 +10,7 @@ import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
 import message from '../../utils/message'
 import { useQueryClient } from '@tanstack/react-query'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
 import { ENV } from '../../config'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
@@ -21,7 +21,7 @@ import Icon from '../Icon/Icon'
 const Rewards = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
     const { platform, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
@@ -61,7 +61,7 @@ const Rewards = () => {
             }
             // Handle the message data here
             if (event.data.action === 'SIGNATURE') {
-                sendGaEvent('claim_submit', {
+                sendAnalyticsEvent('claim_submit', {
                     category: 'user_action',
                     details: claimAmount,
                     process: 'submit'
@@ -83,7 +83,7 @@ const Rewards = () => {
 
                 if (res?.ok) {
                     setClaimStatus('success')
-                    sendGaEvent('claim_accepted', {
+                    sendAnalyticsEvent('claim_accepted', {
                         category: 'system',
                         action: 'request',
                         details: claimAmount,
@@ -91,7 +91,7 @@ const Rewards = () => {
                     queryClient.invalidateQueries({ queryKey: ["balance", walletAddress] })
                 } else {
                     setClaimStatus('failure')
-                    sendGaEvent('claim_failed', {
+                    sendAnalyticsEvent('claim_failed', {
                         category: 'system',
                         action: 'request',
                         details: `${claimAmount}, ${res}`,
@@ -111,7 +111,7 @@ const Rewards = () => {
             window.removeEventListener('message', handleMessage);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendGaEvent, walletAddress]);
+    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendAnalyticsEvent, walletAddress]);
 
     // Get the message to sign from the API and post a message to parent page a request to sign the message
     const signMessage = async () => {
@@ -127,7 +127,7 @@ const Rewards = () => {
             flowId
         })
 
-        sendGaEvent('claim_open', {
+        sendAnalyticsEvent('claim_open', {
             category: 'user_action',
             action: 'click',
             details: claimAmount,

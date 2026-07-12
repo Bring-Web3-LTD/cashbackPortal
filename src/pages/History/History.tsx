@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import Icon from '../../components/Icon/Icon'
@@ -126,7 +126,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
 
 const HistoryDesktop = () => {
     const [activeRow, setActiveRow] = useState(-1)
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const { t } = useTranslation()
 
     const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
@@ -203,7 +203,7 @@ const HistoryDesktop = () => {
                 to='..'
                 onClick={e => {
                     e.preventDefault()
-                    sendGaEvent('topbar_back', {
+                    sendAnalyticsEvent('topbar_back', {
                         category: 'user_action',
                         action: 'click',
                         details: 'to: /'
@@ -234,7 +234,7 @@ const HistoryDesktop = () => {
                                     toggleFn={() => {
                                         if (activeRow !== i) {
                                             setActiveRow(i)
-                                            sendGaEvent('history_expand', {
+                                            sendAnalyticsEvent('history_expand', {
                                                 category: 'user_action',
                                                 action: 'click',
                                                 details: item.retailerName || 'Total claims',

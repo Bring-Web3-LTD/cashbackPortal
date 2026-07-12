@@ -4,7 +4,7 @@ import { Link, useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import fetchFaq from '../../api/fetchFaq'
 import { useQuery } from '@tanstack/react-query'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../components/Icon/Icon'
 
@@ -62,7 +62,7 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
 const FrequentlyAskedQuestion = () => {
   const navigate = useNavigate()
   const { walletAddress, platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
-  const { sendGaEvent } = useGoogleAnalytics()
+  const { sendAnalyticsEvent } = useAnalytics()
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(-1)
 
@@ -125,7 +125,7 @@ const FrequentlyAskedQuestion = () => {
         to={'..'}
         onClick={e => {
           e.preventDefault()
-          sendGaEvent('topbar_back', {
+          sendAnalyticsEvent('topbar_back', {
             category: 'user_action',
             action: 'click',
             details: 'to: /'

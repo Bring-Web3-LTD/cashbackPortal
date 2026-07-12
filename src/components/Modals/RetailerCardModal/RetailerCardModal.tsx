@@ -4,7 +4,7 @@ import Markdown from 'react-markdown'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
-import { useGoogleAnalytics } from '../../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../../hooks/useAnalytics'
 import { useRouteLoaderData } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
@@ -39,7 +39,7 @@ const RetailerCardModal = ({
     fallbackLogo: fallbackLogoProp
 }: Props) => {
 
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const { extensionId, cryptoSymbols, showTerms } = useRouteLoaderData('root') as LoaderData
     const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
     const [showingTerms, setShowingTerms] = useState(false)
@@ -62,7 +62,7 @@ const RetailerCardModal = ({
             token
         })
         onClose()
-        sendGaEvent('retailer_shop', {
+        sendAnalyticsEvent('retailer_shop', {
             category: 'user_action',
             action: 'click',
             details: name,
