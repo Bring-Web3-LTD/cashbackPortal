@@ -15,14 +15,14 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
 import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
-import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics'
+import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { parseCampaignId } from '../../utils/campaigns'
 import Icon from '../../components/Icon/Icon'
 
 const Home = () => {
     const { platform, isCountryAvailable, userId, flowId } = useRouteLoaderData('root') as LoaderData
-    const { sendGaEvent } = useGoogleAnalytics()
+    const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams();
     const { walletAddress, isTester } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
@@ -117,7 +117,7 @@ const Home = () => {
         setCategory(cat)
         setSearch(null)
         scrollToTop()
-        sendGaEvent('category_select', {
+        sendAnalyticsEvent('category_select', {
             category: 'user_action',
             action: 'click',
             details: cat.name
@@ -128,7 +128,7 @@ const Home = () => {
         setCategory(null)
         setSearch(null)
         scrollToTop()
-        sendGaEvent("clear_selection", {
+        sendAnalyticsEvent("clear_selection", {
             category: "user_action",
             action: "click",
             details: search?.value ?? category?.name,
