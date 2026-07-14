@@ -100,6 +100,31 @@
     max-width: 100%;
 }
 
+/* No container background behind the initials - it peeks out as a ring. */
+.img_container_fallback {
+    background: none;
+}
+
+.fallback_logo {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-align: center;
+    text-transform: uppercase;
+    background: var(--retailer-logo-fallback-bg, var(--retailer-card-img-border-c));
+    color: var(--retailer-logo-fallback-f-c, white);
+    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    font-size: 21px;
+}
+
+.fallback_logo_two_letters {
+    font-size: 26px;
+    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
 .details_btn {
     display: flex;
     justify-content: center;
