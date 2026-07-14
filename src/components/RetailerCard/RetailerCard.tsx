@@ -8,6 +8,7 @@ import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import fetchTerms from '../../utils/fetchTerms'
+import injectCashback from '../../utils/injectCashback'
 import { getInitials } from '../../utils/getInitials'
 
 const isBigCashback = (symbol: string, amount: number) => {
@@ -135,7 +136,7 @@ const RetailerCard = ({
 
         Promise.all(fetches)
             .then(([retailerTerms, campaignTerms]) => {
-                setTerms(campaignTerms || topGeneralTerms + retailerTerms + generalTerms)
+                setTerms(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback))
             })
             .catch(console.error)
         // eslint-disable-next-line react-hooks/exhaustive-deps
