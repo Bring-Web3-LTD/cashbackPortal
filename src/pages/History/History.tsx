@@ -58,9 +58,14 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                                 className={styles.img}
                                 src={imgSrc}
                                 alt="logo"
-                                onError={imgSrcFallback ? (e) => {
-                                    if (e.currentTarget.src !== imgSrcFallback) e.currentTarget.src = imgSrcFallback
-                                } : () => setFallbackLogo(getInitials(retailerName))}
+                                onError={(e) => {
+                                    const img = e.currentTarget
+                                    if (imgSrcFallback && img.getAttribute('src') !== imgSrcFallback) {
+                                        img.src = imgSrcFallback
+                                        return
+                                    }
+                                    setFallbackLogo(getInitials(retailerName))
+                                }}
                             />
                         }
                     </div>
