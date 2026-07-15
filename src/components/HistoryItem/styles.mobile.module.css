@@ -71,6 +71,24 @@
     height: 57.14%;
 }
 
+/* Initials fallback when a retailer logo is missing or fails — mirrors RetailerCard,
+   including its light icon background so the initials stay readable on dark themes. */
+.avatarHasFallback {
+    background: var(--retailer-icon-bg, #FFFFFF);
+}
+
+.avatarFallback {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--retailer-fallback-f-c);
+}
+
+.avatarFallbackTwo {
+    font-size: 14px;
+}
+
 /* Body — name + date stacked. */
 .body {
     display: flex;

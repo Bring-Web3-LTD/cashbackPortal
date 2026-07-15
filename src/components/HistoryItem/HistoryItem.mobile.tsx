@@ -11,7 +11,7 @@ import styles from './styles.mobile.module.css'
 
 const HistoryItem: FC<HistoryItemProps> = (props) => {
     const { row, isOpen } = props
-    const { panelId, buttonId, imgFailed, onImgError, expandable, handleClick } =
+    const { panelId, buttonId, imgFailed, fallbackLogo, onImgError, expandable, handleClick } =
         useHistoryItem(props)
 
     return (
@@ -30,8 +30,8 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
                 disabled={!expandable}
             >
                 <span
-                    className={`${styles.avatar} ${row.isClaim ? styles.avatarClaim : ''}`}
-                    style={!row.isClaim ? { background: row.iconBg || '#FFFFFF' } : undefined}
+                    className={`${styles.avatar} ${row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
+                    style={!row.isClaim && !fallbackLogo ? { background: row.iconBg || '#FFFFFF' } : undefined}
                     aria-hidden="true"
                 >
                     {row.isClaim ? (
@@ -43,7 +43,13 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
                             alt=""
                             onError={onImgError}
                         />
-                    ) : null}
+                    ) : (
+                        <span
+                            className={`${styles.avatarFallback} ${fallbackLogo.length === 2 ? styles.avatarFallbackTwo : ''}`}
+                        >
+                            {fallbackLogo}
+                        </span>
+                    )}
                 </span>
                 <span className={styles.body}>
                     <span className={styles.name}>{row.retailerName}</span>

@@ -9,6 +9,7 @@ import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import Icon from '../../components/Icon/Icon'
+import { getInitials } from '../../utils/getInitials'
 
 interface HistoryMobile {
     status: string
@@ -37,6 +38,7 @@ interface ClaimsRes {
 }
 
 const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+    const [fallbackLogo, setFallbackLogo] = useState('')
     return (
         <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
@@ -45,18 +47,27 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
             >
                 <div className={styles.name_container}>
                     <div
-                        className={styles.img_container}
-                        style={status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
+                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''}`}
+                        style={fallbackLogo || status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
                     >
-                        <img
-                            style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
-                            className={styles.img}
-                            src={imgSrc}
-                            alt="logo"
-                            onError={imgSrcFallback ? (e) => {
-                                if (e.currentTarget.src !== imgSrcFallback) e.currentTarget.src = imgSrcFallback
-                            } : undefined}
-                        />
+                        {fallbackLogo ?
+                            <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
+                            :
+                            <img
+                                style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
+                                className={styles.img}
+                                src={imgSrc}
+                                alt="logo"
+                                onError={(e) => {
+                                    const img = e.currentTarget
+                                    if (imgSrcFallback && img.getAttribute('src') !== imgSrcFallback) {
+                                        img.src = imgSrcFallback
+                                        return
+                                    }
+                                    setFallbackLogo(getInitials(retailerName))
+                                }}
+                            />
+                        }
                     </div>
                     <span className={`${styles.purchase_name} ${retailerName.length > 20 ? '' : styles.nowrap}`}>{retailerName}</span>
                 </div>
