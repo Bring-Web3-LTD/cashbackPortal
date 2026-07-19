@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
 import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
+import formatCashback from '../../utils/formatCashback'
+import injectCashback from '../../utils/injectCashback'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import type { RetailersMetadata } from '../../hooks/useRetailers'
@@ -104,7 +106,8 @@ export const useCardsList = ({
         Promise.all(fetches)
             .then(([retailerTerms, campaignTerms]) => {
                 if (controller.signal.aborted) return
-                setActiveTerms(campaignTerms || topGeneralTerms + retailerTerms + generalTerms)
+                const cashback = formatCashback(activeRetailer.maxCashback, activeRetailer.cashbackSymbol, activeRetailer.cashbackCurrency)
+                setActiveTerms(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback))
             })
             .catch((err) => {
                 if (!controller.signal.aborted) console.error('Failed to fetch retailer terms', err)
