@@ -91,7 +91,8 @@
     align-items: center;
     gap: 6px;
     position: absolute;
-    top: 15px;
+    /* Below the header legal links (Privacy / Terms of Use). */
+    top: 48px;
     right: 32px;
     user-select: none;
     cursor: pointer;

@@ -14,7 +14,9 @@
     --subtitle-f-s: 14px;
     --subtitle-f-w: 400;
     --subtitle-f-c: #D1D5DB;
-
+    --legal-link-f-s: 10px;
+    --legal-link-f-w: 400;
+    --legal-link-f-c: rgba(251, 251, 251, 0.90);
     --header-btn-bg: transparent;
     --header-btn-f-s: 14px;
     --header-btn-f-w: 500;
