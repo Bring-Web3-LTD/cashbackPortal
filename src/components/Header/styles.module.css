@@ -11,6 +11,22 @@
     margin-bottom: 45.5px;
 }
 
+.legal_links {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-right: 32px;
+}
+
+.legal_link {
+    font-size: var(--legal-link-f-s, 10px);
+    font-weight: var(--legal-link-f-w, 400);
+    color: var(--legal-link-f-c, var(--subtitle-f-c));
+    text-decoration: underline;
+    text-underline-position: from-font;
+}
+
 .title {
     color: var(--title-f-c);
     font-size: var(--title-f-s);
