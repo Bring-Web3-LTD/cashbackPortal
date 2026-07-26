@@ -35,7 +35,9 @@ export const useRetailers = (
     const country = searchParams.get('country')?.toUpperCase()
 
     return useInfiniteQuery({
-        queryKey: ['retailers', category, search],
+        // walletAddress is part of the key because the backend orders the list by the caller's
+        // engagement history — connecting a wallet must refetch rather than reuse the anonymous list.
+        queryKey: ['retailers', category, search, walletAddress],
         queryFn: async ({ pageParam }) => {
             const options: Parameters<typeof fetchRetailers>[0] = {
                 type: 'all',

@@ -60,7 +60,10 @@ const Home = () => {
         isLoading: isLoadingRetailers,
         isSuccess: isRetailersSuccess,
     } = useInfiniteQuery({
-        queryKey: ["retailers", category, search],
+        // walletAddress is part of the key because the backend orders the list by the caller's
+        // engagement history — connecting a wallet must refetch rather than reuse the anonymous list.
+        // Must stay identical to the key in hooks/useRetailers.ts so both surfaces share one cache.
+        queryKey: ["retailers", category, search, walletAddress],
         queryFn: async ({ pageParam }) => {
             const options: Parameters<typeof fetchRetailers>[0] = {
                 type: "all",
