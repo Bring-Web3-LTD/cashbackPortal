@@ -120,13 +120,37 @@ toggleBtn.addEventListener('click', () => {
     localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0')
 })
 
-// View-mode switcher: Desktop (full width) vs Mobile (constrained iframe width
+// View-mode switcher: Desktop (full width), Mobile (constrained iframe width
 // so the portal's `window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH` check fires
-// and renders the mobile portal). The portal only reads innerWidth at bootstrap,
-// so changing modes reloads the iframe.
+// and renders the mobile portal), or Responsive (exact user-set px dimensions).
+// The portal only reads innerWidth at bootstrap, so changing modes reloads the
+// iframe.
 const VIEW_MODE_KEY = 'bring-dev-wrapper:view-mode'
+const RESPONSIVE_SIZE_KEY = 'bring-dev-wrapper:responsive-size'
+const responsiveSizeEl = $<HTMLDivElement>('responsiveSize')
+const responsiveWidthEl = $<HTMLInputElement>('responsiveWidth')
+const responsiveHeightEl = $<HTMLInputElement>('responsiveHeight')
+
+const savedSize = (() => {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(RESPONSIVE_SIZE_KEY) || '')
+        if (Number.isFinite(parsed?.w) && Number.isFinite(parsed?.h)) return parsed as { w: number; h: number }
+    } catch { /* fall through to defaults */ }
+    return { w: 1024, h: 768 }
+})()
+responsiveWidthEl.value = String(savedSize.w)
+responsiveHeightEl.value = String(savedSize.h)
+
+const applyResponsiveSize = () => {
+    frameEl.style.setProperty('--responsive-w', `${savedSize.w}px`)
+    frameEl.style.setProperty('--responsive-h', `${savedSize.h}px`)
+}
+applyResponsiveSize()
+
 const applyViewMode = (mode: string) => {
     frameEl.classList.toggle('mobile', mode === 'mobile')
+    frameEl.classList.toggle('responsive', mode === 'responsive')
+    responsiveSizeEl.hidden = mode !== 'responsive'
 }
 const savedViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'desktop'
 viewModeEl.value = savedViewMode
@@ -138,6 +162,72 @@ viewModeEl.addEventListener('change', () => {
     // Re-bootstrap so the portal re-evaluates useMobilePortal at the new width.
     void refresh()
 })
+
+const clampSize = (el: HTMLInputElement, fallback: number) => {
+    const min = Number(el.min)
+    const max = Number(el.max)
+    const value = Number(el.value)
+    if (!Number.isFinite(value) || el.value.trim() === '') return fallback
+    return Math.min(max, Math.max(min, Math.round(value)))
+}
+// Resize the stage live while typing; re-bootstrap only on commit (blur/Enter)
+// since the portal reads innerWidth once at bootstrap.
+const onSizeInput = () => {
+    savedSize.w = clampSize(responsiveWidthEl, savedSize.w)
+    savedSize.h = clampSize(responsiveHeightEl, savedSize.h)
+    applyResponsiveSize()
+}
+const onSizeCommit = () => {
+    onSizeInput()
+    responsiveWidthEl.value = String(savedSize.w)
+    responsiveHeightEl.value = String(savedSize.h)
+    localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+    void refresh()
+}
+for (const el of [responsiveWidthEl, responsiveHeightEl]) {
+    el.addEventListener('input', onSizeInput)
+    el.addEventListener('change', onSizeCommit)
+}
+
+// Drag-resize: east/south edges and the SE corner of the responsive stage.
+// Sizes are computed from the cursor position against the stage rect (not
+// deltas) so the dragged edge tracks the cursor even though the stage is
+// centered and shifts as it grows.
+const frameStageEl = $<HTMLDivElement>('frameStage')
+const clampNum = (value: number, el: HTMLInputElement) =>
+    Math.min(Number(el.max), Math.max(Number(el.min), Math.round(value)))
+const setupResizeHandle = (id: string, axes: { x?: boolean; y?: boolean }) => {
+    const handle = $<HTMLDivElement>(id)
+    handle.addEventListener('pointerdown', (e) => {
+        e.preventDefault()
+        handle.setPointerCapture(e.pointerId)
+        frameEl.classList.add('resizing')
+        const startW = savedSize.w
+        const startH = savedSize.h
+        const onMove = (ev: PointerEvent) => {
+            const rect = frameStageEl.getBoundingClientRect()
+            if (axes.x) savedSize.w = clampNum(ev.clientX - rect.left, responsiveWidthEl)
+            if (axes.y) savedSize.h = clampNum(ev.clientY - rect.top, responsiveHeightEl)
+            applyResponsiveSize()
+            responsiveWidthEl.value = String(savedSize.w)
+            responsiveHeightEl.value = String(savedSize.h)
+        }
+        const onUp = () => {
+            handle.removeEventListener('pointermove', onMove)
+            frameEl.classList.remove('resizing')
+            if (savedSize.w === startW && savedSize.h === startH) return
+            localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+            // Re-bootstrap at the final size (portal reads innerWidth once).
+            void refresh()
+        }
+        handle.addEventListener('pointermove', onMove)
+        handle.addEventListener('pointerup', onUp, { once: true })
+        handle.addEventListener('pointercancel', onUp, { once: true })
+    })
+}
+setupResizeHandle('resizeE', { x: true })
+setupResizeHandle('resizeS', { y: true })
+setupResizeHandle('resizeSE', { x: true, y: true })
 
 const STYLE_AS_KEY = 'bring-dev-wrapper:style-as'
 styleAsEl.value = localStorage.getItem(STYLE_AS_KEY) || ''

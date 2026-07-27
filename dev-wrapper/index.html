@@ -69,8 +69,20 @@
                         <select id="viewMode">
                             <option value="desktop">Desktop</option>
                             <option value="mobile">Mobile</option>
+                            <option value="responsive">Responsive</option>
                         </select>
                     </label>
+
+                    <div class="responsive-size" id="responsiveSize" hidden>
+                        <label>
+                            <span>Width (px)</span>
+                            <input id="responsiveWidth" type="number" min="200" max="3840" step="1" />
+                        </label>
+                        <label>
+                            <span>Height (px)</span>
+                            <input id="responsiveHeight" type="number" min="200" max="2400" step="1" />
+                        </label>
+                    </div>
 
                     <label>
                         <span>Style as</span>
@@ -138,6 +150,9 @@
             <section class="frame" id="frame">
                 <div class="frame-stage" id="frameStage">
                     <iframe id="portal" title="Bring Cashback Portal"></iframe>
+                    <div class="resize-handle handle-e" id="resizeE" title="Drag to resize"></div>
+                    <div class="resize-handle handle-s" id="resizeS" title="Drag to resize"></div>
+                    <div class="resize-handle handle-se" id="resizeSE" title="Drag to resize"></div>
                 </div>
             </section>
         </main>
