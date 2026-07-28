@@ -76,7 +76,7 @@ const RetailerCardModal = ({
                 xMarkPath='x-mark-light.svg'
                 className={`${styles.retailer_overlay} ${styles.retailer_overlay_desktop}`}
                 style={{
-                    '--modal-h': showingTerms ? 'calc(286px - 40px - 6px)' : 'calc(286px - 40px - 24px)',
+                    '--modal-h': showingTerms ? 'calc(288px - 40px - 6px)' : 'calc(288px - 40px - 24px)',
                     '--modal-pb': showingTerms ? '6px' : '24px',
                 }}
                 open={open}
