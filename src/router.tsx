@@ -87,6 +87,8 @@ const rootLoader = async () => {
             // In dev mode (no token) source them from URL params instead.
             walletName: params.get('walletName') || undefined,
             walletEmoji: params.get('walletEmoji') || undefined,
+            bringTou: params.get('bringTou') || undefined,
+            privacy: params.get('privacy') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()

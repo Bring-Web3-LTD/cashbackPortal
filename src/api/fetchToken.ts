@@ -22,6 +22,8 @@ interface Response {
         // and embedded in the issued JWT. Surfaced in the Mobile Portal UI.
         walletEmoji?: string
         walletName?: string
+        bringTou?: string
+        privacy?: string
     }
 }
 

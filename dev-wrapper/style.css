@@ -429,6 +429,7 @@ html, body {
 }
 
 .frame-stage {
+    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -451,6 +452,93 @@ html, body {
     border-radius: 16px;
     overflow: hidden;
     background: #fff;
+}
+
+/* Responsive view: exact user-set dimensions via CSS variables, centered in
+   the frame with scroll overflow when the stage is larger than the viewport. */
+.frame.responsive {
+    background: #0f0f1a;
+    display: flex;
+    align-items: safe center;
+    justify-content: safe center;
+    padding: 16px;
+    overflow: auto;
+}
+
+.frame.responsive .frame-stage {
+    width: var(--responsive-w, 1024px);
+    height: var(--responsive-h, 768px);
+    flex: none;
+    box-shadow: 0 0 0 1px #2b344d, 0 12px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.responsive-size {
+    display: flex;
+    gap: 8px;
+}
+
+.responsive-size[hidden] {
+    display: none;
+}
+
+/* Drag-resize handles: only active in responsive mode. Pointer capture on the
+   handle keeps the drag alive even when the cursor crosses the iframe. */
+.resize-handle {
+    display: none;
+    position: absolute;
+    z-index: 5;
+    touch-action: none;
+}
+
+.frame.responsive .resize-handle {
+    display: block;
+}
+
+.handle-e {
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    cursor: ew-resize;
+}
+
+.handle-s {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    cursor: ns-resize;
+}
+
+.handle-se {
+    right: 0;
+    bottom: 0;
+    width: 18px;
+    height: 18px;
+    cursor: nwse-resize;
+}
+
+.resize-handle:hover,
+.frame.resizing .resize-handle {
+    background: rgba(122, 162, 255, 0.35);
+}
+
+/* While dragging, keep the iframe from swallowing pointer events and text
+   from getting selected. */
+.frame.resizing {
+    user-select: none;
+}
+
+.frame.resizing iframe {
+    pointer-events: none;
+}
+
+.responsive-size label {
+    flex: 1;
+    min-width: 0;
 }
 
 .frame iframe {

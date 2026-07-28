@@ -51,6 +51,8 @@ interface LoaderData {
     walletName?: string
     useMobilePortal?: boolean
     variant: string
+    bringTou?: string
+    privacy?: string
 }
 
 

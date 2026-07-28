@@ -43,7 +43,9 @@
     --subtitle-f-s: 18px;
     --subtitle-f-w: 400;
     --subtitle-f-c: #F5F8FF;
-
+    --legal-link-f-s: 10px;
+    --legal-link-f-w: 400;
+    --legal-link-f-c: rgba(251, 251, 251, 0.90);
     --header-btn-bg: rgba(245, 248, 255, 0.08);
     --header-btn-hover-bg: rgba(245, 248, 255, 0.12);
     --header-btn-f-s: 15px;
