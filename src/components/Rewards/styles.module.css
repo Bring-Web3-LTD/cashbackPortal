@@ -127,6 +127,7 @@
 }
 
 .claim_btn {
+    width: var(--claim-btn-width, var(--rewards-btn-width, 172px));
     background: var(--primary-btn-bg);
     color: var(--primary-btn-f-c);
     border-width: var(--primary-btn-border-w);

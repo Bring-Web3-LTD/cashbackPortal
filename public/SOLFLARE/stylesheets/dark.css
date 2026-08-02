@@ -104,6 +104,7 @@
     --pending-amount-f-c: #F5F8FF;
 
     --rewards-btn-width: 205px;
+    --claim-btn-width: 191px;
     --rewards-btn-h: 48px;
     --rewards-btn-f-s: 16px;
     --rewards-btn-f-w: 700;
@@ -385,6 +386,8 @@
     --history-table-row-hover-bg: #14171D;
     --history-table-row-active-bg: #090C11;
     --history-claimed-icon-bg: #282B30;
+    --history-icon-size: 40px;
+    --history-claim-glyph-size: 19px;
     --history-details-btn-bg: #1B1E23;
     --history-purchase-name-f-s: 16px;
     --history-purchase-name-f-w: 500;
