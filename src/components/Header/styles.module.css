@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: var(--header-gap, 8px);
+    gap: 8px;
     background: var(--header-bg);
     width: 100vw;
     max-width: 100%;
@@ -53,8 +53,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--header-btns-gap, 8px);
-    margin-top: var(--header-btns-mt, 24px);
+    gap: 8px;
+    margin-top: 24px;
 }
 
 .btn {
@@ -62,13 +62,12 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    min-width: var(--header-btn-min-w, 90px);
+    min-width: 90px;
     width: var(--header-btn-w, auto);
-    height: var(--header-btn-h, 29px);
+    height: 29px;
     padding: var(--header-btn-p, 0 16px);
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
-    line-height: var(--header-btn-l-h, normal);
     text-transform: var(--header-btn-transform, none);
     color: var(--header-btn-f-c);
     border-width: var(--header-btn-border-w);

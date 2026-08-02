@@ -89,8 +89,8 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: var(--history-icon-size, 48px);
-    height: var(--history-icon-size, 48px);
+    width: 48px;
+    height: 48px;
     background: var(--history-claimed-icon-bg);
 }
 
@@ -98,11 +98,6 @@
     border-radius: 50%;
     object-fit: contain;
     max-width: 100%;
-}
-
-/* Claim rows show a glyph, not a logo — it sits inset inside the circle. */
-.img_claim {
-    width: var(--history-claim-glyph-size, auto);
 }
 
 /* No container background behind the initials - it peeks out as a ring. */

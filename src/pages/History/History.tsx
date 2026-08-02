@@ -55,7 +55,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                             :
                             <img
                                 style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
-                                className={`${styles.img} ${status.toLowerCase() === 'claimed' ? styles.img_claim : ''}`}
+                                className={styles.img}
                                 src={imgSrc}
                                 alt="logo"
                                 onError={(e) => {

@@ -47,7 +47,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
-        width: "var(--search-w, 438px)",
+        width: "438px",
         height: "46px",
         padding: "8px 8px 8px 17px",
         gap: "6px",
