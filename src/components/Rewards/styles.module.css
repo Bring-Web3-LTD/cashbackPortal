@@ -2,14 +2,14 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 34px;
+    gap: var(--rewards-gap, 34px);
 }
 
 .subcontainer {
-    --padding: 22px;
+    --padding: var(--rewards-banner-p, 22px);
     border-radius: 12px;
-    height: 98px;
-    width: calc(570px - (var(--padding) * 2));
+    height: var(--rewards-banner-h, 98px);
+    width: calc(var(--rewards-banner-w, 570px) - (var(--padding) * 2));
     background: var(--rewards-bg);
     display: flex;
     justify-content: space-between;
@@ -19,7 +19,7 @@
 
 .reward_details {
     display: flex;
-    gap: 8px;
+    gap: var(--rewards-details-gap, 8px);
     align-items: center;
     user-select: none;
 }
@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* gap: 8px; */
+    gap: var(--rewards-text-gap, 0);
 }
 
 .icon_container {
@@ -98,7 +98,7 @@
 .rewards_usd {
     font-size: var(--rewards-usd-f-s);
     font-weight: var(--rewards-usd-f-w);
-    line-height: 16px;
+    line-height: var(--rewards-usd-l-h, 16px);
 }
 
 .claim_usd {
@@ -115,12 +115,14 @@
     align-items: center;
     border-style: solid;
     border-radius: var(--rewards-btn-radius);
-    height: 46px;
+    box-sizing: border-box;
+    height: var(--rewards-btn-h, 46px);
     width: var(--rewards-btn-width, 172px);
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
+    line-height: var(--rewards-btn-l-h, normal);
     cursor: pointer;
-    padding: 0;
+    padding: var(--rewards-btn-p, 0);
     transition: .2s;
 }
 

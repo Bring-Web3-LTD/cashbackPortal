@@ -3,15 +3,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    width: 138px;
-    height: 118px;
-    padding: 17.659px 43.211px 19px 42.56px;
+    gap: var(--retailer-card-gap, 4px);
+    width: var(--retailer-card-w, 138px);
+    height: var(--retailer-card-h, 118px);
+    padding: var(--retailer-card-p, 17.659px 43.211px 19px 42.56px);
     background: var(--retailer-card-bg);
     border-width: var(--retailer-card-border-w);
     border-style: solid;
     border-color: var(--retailer-card-border-color);
-    border-radius: 9px;
+    border-radius: var(--retailer-card-radius, 9px);
     cursor: pointer;
     user-select: none;
     transition: .2s;
@@ -55,8 +55,8 @@
 
 .logo {
     object-fit: contain;
-    width: 58px;
-    height: 58px;
+    width: var(--retailer-card-logo-size, 58px);
+    height: var(--retailer-card-logo-size, 58px);
     border-radius: 50%;
 }
 
@@ -87,8 +87,8 @@
     font-weight: var(--retailer-card-name-f-w);
     color: var(--retailer-card-name-f-c);
     white-space: nowrap;
-    line-height: 20.8px;
-    margin: 4px 0;
+    line-height: var(--retailer-card-name-l-h, 20.8px);
+    margin: var(--retailer-card-name-m, 4px 0);
 }
 
 .cashback_rate {
@@ -96,8 +96,9 @@
     font-weight: var(--retailer-card-amount-f-w);
     color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
-    padding: 6px;
-    width: 160px;
+    padding: var(--retailer-card-amount-p, 6px);
+    width: var(--retailer-card-amount-w, 160px);
+    line-height: var(--retailer-card-amount-l-h, normal);
     border-radius: 50px;
     text-align: center;
     white-space: nowrap;
@@ -113,16 +114,16 @@
     position: absolute;
     top: 16px;
     right: 0;
-    min-width: 37px;
+    min-width: var(--retailer-card-flag-min-w, 37px);
     max-width: 56px;
     width: fit-content;
     height: fit-content;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
-    line-height: 12px;
+    line-height: var(--retailer-card-flag-l-h, 12px);
     vertical-align: middle;
     text-align: center;
-    padding: 5px 8px;
+    padding: var(--retailer-card-flag-p, 5px 8px);
     color: var(--retailer-card-flag-f-c);
     background: var(--retailer-card-flag-bg);
     border-top-left-radius: var(--retailer-card-flag-radius);

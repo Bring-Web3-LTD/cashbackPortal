@@ -45,19 +45,34 @@
     --subtitle-f-c: #F5F8FF;
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
-    --legal-link-f-c: rgba(251, 251, 251, 0.90);
+    --legal-link-f-c: #7A7D83;
+    --header-gap: 10px;
+    --header-btns-mt: 11px;
     --header-btn-bg: rgba(245, 248, 255, 0.08);
     --header-btn-hover-bg: rgba(245, 248, 255, 0.12);
-    --header-btn-f-s: 15px;
-    --header-btn-f-w: 400;
+    --header-btn-f-s: 14px;
+    --header-btn-f-w: 700;
+    --header-btn-l-h: 20px;
+    --header-btn-transform: capitalize;
     --header-btn-f-c: #F5F8FF;
     --header-btn-border-w: 0;
     --header-btn-border-c: transparent;
     --header-btn-radius: 100px;
     --header-btn-p: 9px 12px;
+    --header-btn-h: 36px;
+    --header-btn-w: 183px;
+    --header-btns-gap: 13px;
 
     --rewards-bg: #1B1E24;
-    --rewards-img-size: 20px;
+    --rewards-gap: 24px;
+    --rewards-banner-w: 575px;
+    --rewards-banner-h: 86px;
+    --rewards-banner-p: 12px;
+    --rewards-details-gap: 16px;
+    --rewards-text-gap: 2px;
+    --rewards-icon-container-width: 48px;
+    --rewards-icon-container-height: 48px;
+    --rewards-img-size: 24px;
 
     --claim-img-bg: #282B30;
     --claim-img-border-w: 0;
@@ -76,8 +91,9 @@
 
     --rewards-usd-f-s: 15px;
     --rewards-usd-f-w: 400;
-    --claim-usd-f-c: #B9BBBF;
-    --pending-usd-f-c: #B9BBBF;
+    --rewards-usd-l-h: 24px;
+    --claim-usd-f-c: #F5F8FF;
+    --pending-usd-f-c: #F5F8FF;
 
     --rewards-amount-f-s: 22px;
     --rewards-amount-f-w: 700;
@@ -86,9 +102,11 @@
     --claim-amount-f-c: #F5F8FF;
     --pending-amount-f-c: #F5F8FF;
 
-    --rewards-btn-width: 205px;
-    --rewards-btn-f-s: 18px;
+    --rewards-btn-width: 190px;
+    --rewards-btn-h: 48px;
+    --rewards-btn-f-s: 16px;
     --rewards-btn-f-w: 700;
+    --rewards-btn-l-h: 24px;
     --rewards-btn-radius: 100px;
 
     --primary-btn-f-s: 18px;
@@ -118,7 +136,14 @@
     --pending-btn-pressed-border-w: 0;
     --pending-btn-pressed-bg: #E6D73F;
 
+    --cards-gap: 24px;
     --retailer-card-bg: #12151A;
+    --retailer-card-w: auto;
+    --retailer-card-h: auto;
+    --retailer-card-p: 16px;
+    --retailer-card-gap: 8px;
+    --retailer-card-radius: 10px;
+    --retailer-card-logo-size: 56px;
     --retailer-card-hover-bg: #16181D;
     --retailer-card-border-w: 1px;
     --retailer-card-border-color: rgba(102, 104, 110, 0.3);
@@ -136,19 +161,27 @@
     --retailer-logo-fallback-border-w: 1px;
     --retailer-logo-fallback-border-c: rgba(177, 190, 213, 0.5);
 
-    --retailer-card-flag-f-s: 12px;
+    --retailer-card-flag-f-s: 14px;
     --retailer-card-flag-f-w: 700;
+    --retailer-card-flag-l-h: 24px;
+    --retailer-card-flag-p: 4px 8px;
+    --retailer-card-flag-min-w: 48px;
     --retailer-card-flag-f-c: #FFEF46;
     --retailer-card-flag-bg: #282B30;
     --retailer-card-flag-campaign-f-c: #FFEF46;
     --retailer-card-flag-campaign-bg: #282B30;
-    --retailer-card-flag-radius: 5px;
+    --retailer-card-flag-radius: 6px;
 
-    --retailer-card-name-f-s: 15px;
+    --retailer-card-name-f-s: 17px;
     --retailer-card-name-f-w: 500;
     --retailer-card-name-f-c: #F5F8FF;
+    --retailer-card-name-l-h: 24px;
+    --retailer-card-name-m: 4px 0 0;
 
     --retailer-card-amount-f-s: 12px;
+    --retailer-card-amount-l-h: 16px;
+    --retailer-card-amount-p: 4px 8px;
+    --retailer-card-amount-w: 150px;
     --retailer-card-amount-f-c: #F5F8FF;
     --retailer-card-amount-f-w: 500;
     --retailer-card-amount-bg: #2C2F36;
@@ -173,7 +206,10 @@
     --filter-btn-border-c: transparent;
     --filter-btn-radius: 10px;
 
+    --categories-gap: 16px;
     --category-btn-bg: #1B1E23;
+    --category-btn-w: 103px;
+    --category-btn-h: 36px;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
     --category-btn-f-c: #B1B4BB;
@@ -298,6 +334,7 @@
     --scrollbar-w: 12px;
 
     --search-bg: transparent;
+    --search-w: 397px;
     --search-menu-bg: #0C0F14;
     --search-f-s: 16px;
     --search-f-w: 400;

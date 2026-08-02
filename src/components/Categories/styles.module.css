@@ -7,7 +7,7 @@
 
 .categories {
     display: flex;
-    gap: 8px;
+    gap: var(--categories-gap, 8px);
     overflow-x: scroll;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
@@ -22,8 +22,8 @@
     font-size: var(--category-btn-f-s);
     font-weight: var(--category-btn-f-w);
     color: var(--category-btn-f-c);
-    width: 108px;
-    height: 38px;
+    width: var(--category-btn-w, 108px);
+    height: var(--category-btn-h, 38px);
     white-space: nowrap;
     text-align: center;
     border-width: var(--category-btn-border-w);
