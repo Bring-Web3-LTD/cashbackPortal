@@ -46,6 +46,7 @@
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
     --legal-link-f-c: #7A7D83;
+    --legal-link-decoration: none;
     --header-gap: 10px;
     --header-btns-mt: 11px;
     --header-btn-bg: rgba(245, 248, 255, 0.08);
@@ -102,7 +103,7 @@
     --claim-amount-f-c: #F5F8FF;
     --pending-amount-f-c: #F5F8FF;
 
-    --rewards-btn-width: 190px;
+    --rewards-btn-width: 205px;
     --rewards-btn-h: 48px;
     --rewards-btn-f-s: 16px;
     --rewards-btn-f-w: 700;
