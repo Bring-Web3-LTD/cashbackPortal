@@ -24,15 +24,6 @@ interface Props {
     onChangeFn: (value: ReactSelectOptionType) => void
 }
 
-const optionRowStyle = {
-    fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
-    fontSize: "var(--search-option-f-s, 15px)",
-    lineHeight: "22px",
-    height: "33px",
-    color: "var(--search-option-f-c)",
-    padding: "5px 20px 5px 39px",
-} as const
-
 const customStyles: StylesConfig<ReactSelectOptionType> = {
     control: (base, state) => {
         const borderColor = state.isFocused
@@ -47,17 +38,20 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
-        width: "438px",
+        width: "441px",
         height: "46px",
-        padding: "8px 8px 8px 17px",
-        gap: "6px",
+        padding: "11px 14px",
+        gap: "8px",
+        overflow: "hidden",
         fontSize: "var(--search-f-s)",
         fontWeight: "var(--search-f-w)",
         cursor: "text",
         boxShadow: "none",
         outline: "none !important",
+        // ponytail: narrow-viewport width kept from the previous layout — the
+        // Figma has no <1280px variant. Revisit when one lands.
         "@media only screen and (max-width: 1280px)": {
-            width: "342px",
+            // width: "342px",
         }
         }
     },
@@ -73,24 +67,42 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             display: "none",
         },
     }),
-    menu: (base) => ({
-        ...base,
-        marginTop: "6px",
-        backgroundColor: "var(--search-menu-bg, var(--search-bg))",
-        border: "var(--search-menu-border-w, 0) solid var(--search-menu-border-c, transparent)",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
-        borderRadius: "var(--search-menu-radius, 12px)",
-        overflow: "hidden",
-        paddingTop: "10px",
-        paddingBottom: "15px",
-        fontSize: "var(--search-f-s)",
-        zIndex: 10,
-    }),
+    menu: (base, state) => {
+        const optionCount = state.options?.length ?? 0
+        const isEmpty = optionCount === 0
+        return {
+            ...base,
+            marginTop: "4px",
+            backgroundColor: "var(--search-menu-bg, var(--search-bg))",
+            // Only the multi-result dropdown is outlined in the design.
+            border: optionCount > 1
+                ? "var(--search-menu-border-w, 0) solid var(--search-menu-border-c, transparent)"
+                : "none",
+            borderRadius: "var(--search-menu-radius, 10px)",
+            overflow: "hidden",
+            // The empty state is one fixed-height block with its own insets;
+            // result lists instead pad 8px above and below the rows.
+            height: isEmpty ? "75px" : "auto",
+            padding: isEmpty ? "12px 14px" : "8px 0",
+            fontSize: "var(--search-f-s)",
+            zIndex: 10,
+        }
+    },
     option: (base, state) => {
         const isSingleOption = (state.selectProps.options?.length ?? 0) <= 1
         return {
             ...base,
-            ...optionRowStyle,
+            // A lone result gets a taller row and larger text (Figma "One Result").
+            display: "flex",
+            alignItems: "center",
+            height: isSingleOption ? "42px" : "33px",
+            padding: "5px 20px 5px 39px",
+            fontSize: isSingleOption
+                ? "var(--search-single-option-f-s, 15px)"
+                : "var(--search-option-f-s, 14px)",
+            lineHeight: isSingleOption ? "normal" : "20px",
+            fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
+            color: "var(--search-option-f-c)",
             backgroundColor: isSingleOption
                 ? "transparent"
                 : state.isFocused
@@ -103,26 +115,40 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             cursor: "pointer",
         }
     },
+    // react-select insets the value/placeholder by 2px on every side by
+    // default; the design starts the text flush at icon + 8px gap.
     input: (base) => ({
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
+        margin: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
         color: "var(--search-f-c)",
     }),
     placeholder: (base) => ({
         ...base,
+        marginLeft: 0,
+        marginRight: 0,
         color: 'var(--search-placeholder-f-c)'
     }),
     singleValue: (base) => ({
         ...base,
+        marginLeft: 0,
+        marginRight: 0,
         color: 'var(--search-f-c)',
     }),
     valueContainer: (base) => ({
         ...base,
         padding: 0,
     }),
+    // Insets live on the menu (the dropdown box in the design); this is only
+    // the two stacked lines inside it.
     noOptionsMessage: (base) => ({
         ...base,
-        padding: "5px 20px 5px 39px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+        padding: 0,
         textAlign: "left",
         color: "var(--search-option-f-c)",
     }),
@@ -144,10 +170,10 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 
     return (
         <components.NoOptionsMessage {...props}>
-            <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
+            <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "normal", color: "var(--search-option-f-c)" }}>
                 No results.
             </div>
-            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-option-f-c)" }}>
+            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "normal", color: "var(--search-no-results-hint-f-c, var(--search-placeholder-f-c))" }}>
                 Try a different search term
             </div>
         </components.NoOptionsMessage>

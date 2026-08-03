@@ -1,0 +1,45 @@
+/* GERO — Dark mode.
+   Every value below is read from the Gero Wallet Figma file
+   (UTE6T25pP8QfDIATcBLerv). The palette block mirrors the Figma variable
+   names 1:1 (`Text/Primary` → `--text-primary`); everything under it maps
+   those tokens onto the portal's vars. Only tokens a shipped screen
+   actually uses are listed. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* --- Palette --- */
+    --background-page: #000000;
+    --surface-hover: rgba(30, 35, 48, 0.35);
+    --text-primary: #FFFFFF;
+    --text-secondary: #A8ADBF;
+    --text-tertiary: #7A7D83;
+    --border-default: rgba(86, 98, 99, 0.75);
+
+    /* --- Search (node 2100:611) --- */
+    /* The input has no fill in the design. */
+    --search-bg: transparent;
+    --search-f-s: 16px;
+    --search-f-w: 400;
+    --search-f-c: var(--text-primary);
+    --search-placeholder-f-c: var(--text-tertiary);
+    --search-border-w: 2px;
+    --search-border-c: var(--border-default);
+    --search-radius: 10px;
+
+    --search-menu-bg: var(--background-page);
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: var(--border-default);
+    --search-menu-radius: 10px;
+
+    --search-option-f-s: 14px;
+    --search-option-f-w: 400;
+    --search-option-f-c: var(--text-primary);
+    --search-option-hover-bg: var(--surface-hover);
+    /* Row shown when the query matches exactly one retailer. */
+    --search-single-option-f-s: 15px;
+    --search-no-results-hint-f-c: var(--text-secondary);
+}
+
+* {
+    font-family: "Inter", sans-serif;
+}
