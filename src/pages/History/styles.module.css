@@ -100,6 +100,11 @@
     max-width: 100%;
 }
 
+/* Claim rows show a glyph, not a logo — no circular clip on it. */
+.img_claim {
+    border-radius: 0;
+}
+
 /* No container background behind the initials - it peeks out as a ring. */
 .img_container_fallback {
     background: none;

@@ -119,6 +119,7 @@
     width: var(--rewards-btn-width, 172px);
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
+    line-height: var(--rewards-btn-l-h, normal);
     cursor: pointer;
     padding: 0;
     transition: .2s;

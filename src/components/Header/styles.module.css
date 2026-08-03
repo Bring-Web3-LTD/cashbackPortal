@@ -30,7 +30,7 @@
     font-size: var(--legal-link-f-s, 10px);
     font-weight: var(--legal-link-f-w, 400);
     color: var(--legal-link-f-c, var(--subtitle-f-c));
-    text-decoration: underline;
+    text-decoration: var(--legal-link-decoration, underline);
     text-underline-position: from-font;
 }
 
@@ -61,11 +61,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
     min-width: 90px;
+    width: var(--header-btn-w, auto);
     height: 29px;
     padding: var(--header-btn-p, 0 16px);
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
+    text-transform: var(--header-btn-transform, none);
     color: var(--header-btn-f-c);
     border-width: var(--header-btn-border-w);
     border-style: solid;
