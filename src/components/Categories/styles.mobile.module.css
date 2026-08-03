@@ -56,7 +56,8 @@
     justify-content: center;
     height: 100%;
     padding: 6px 10px;
-    border: none;
+    border: var(--tab-border-w, 0) solid var(--tab-border-c, transparent);
+    box-sizing: border-box;
     border-radius: var(--tab-radius, 6px);
     background: var(--tab-bg, transparent);
     color: var(--tab-f-c, #7685A0);

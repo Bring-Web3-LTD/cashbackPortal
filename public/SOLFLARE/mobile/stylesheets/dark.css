@@ -1,0 +1,508 @@
+/* SOLFLARE — Mobile portal, Dark mode (light mode is not set; light.css reuses this).
+   Source of truth: Figma "Rewards Hub" (Portal_Mobile components, node 278:4721).
+   Palette: #090C11 page / #12151A card / #16181D row / #282B30 raised,
+   #F5F8FF primary text, #B1B4BB secondary, #7A7D83 muted,
+   yellow #FFEF46 accent (hover #EEDA0F, dark-on-accent #1F2018, muted #E6D73F),
+   standard hairline border rgba(138,142,148,0.30), pill CTAs (100px).
+   Overrides every color token from DEFAULT/mobile — only layout/sizing stays
+   in component CSS modules.
+   Font: FK Grotesk (licensed) */
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Medium.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Medium.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'FK Grotesk';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Bold.woff2') format('woff2');
+}
+
+* {
+    font-family: 'FK Grotesk', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+    /* Page chrome */
+    --bg: #090C11;
+    --scrollbar-w: 12px;
+    --scrollbar-bg: #282B30;
+
+    /* ── Hero "Cashback earned" card — flat status-card look (Figma
+       "pending"/"claim" cards): #12151A + hairline border (via shadow token,
+       the hero card has no border token), muted label, yellow ≈USD sub. ── */
+    --cashback-earned-radius: 10px;
+    --cashback-earned-bg: #12151A;
+    --cashback-earned-shadow: 0 0 0 1px rgba(138, 142, 148, 0.30);
+    --cashback-earned-label-f-c: #7A7D83;
+    --cashback-earned-label-f-s: 14px;
+    --cashback-earned-label-f-w: 500;
+    --cashback-earned-label-l-h: 20px;
+    --cashback-earned-amount-f-c: #F5F8FF;
+    --cashback-earned-amount-f-s: 24px;
+    --cashback-earned-amount-f-w: 700;
+    --cashback-earned-amount-l-h: 24px;
+    --cashback-earned-sub-f-c: #FFEF46;
+    --cashback-earned-sub-f-s: 12px;
+    --cashback-earned-sub-f-w: 400;
+    --cashback-earned-sub-l-h: 16px;
+
+    /* ── Top bar (Header) — borderless, FK Grotesk 700 17, bare icons ── */
+    --header-bg: #090C11;
+    --header-border-c: transparent;
+    --header-border-w: 0;
+
+    --header-title-f-s: 17px;
+    --header-title-f-w: 700;
+    --header-title-l-h: 22px;
+    --header-title-f-c: #F5F8FF;
+
+    --header-action-radius: 16px;
+    --header-action-bg: transparent;
+    --header-action-hover-bg: rgba(245, 248, 255, 0.08);
+    --header-action-icon-c: #F5F8FF;
+
+    /* ── Rewards / balance card (Claimable + Pending) — Figma status cards:
+       flat #12151A, hairline border, muted label, yellow ≈USD ── */
+    --balance-card-bg: #12151A;
+    --balance-card-border-w: 1px;
+    --balance-card-border-c: rgba(138, 142, 148, 0.30);
+    --balance-card-radius: 10px;
+    --balance-card-shadow: none;
+
+    --balance-label-f-s: 12px;
+    --balance-label-f-w: 500;
+    --balance-label-l-h: 16px;
+    --balance-label-f-c: #7A7D83;
+
+    --balance-amount-f-s: 15px;
+    --balance-amount-f-w: 500;
+    --balance-amount-l-h: 20px;
+    --balance-amount-l-s: 0;
+    --balance-amount-f-c: #F5F8FF;
+
+    --balance-claim-btn-bg: #FFEF46;
+    --balance-claim-btn-hover-bg: #EEDA0F;
+    --balance-claim-btn-disabled-bg: rgba(255, 239, 70, 0.3);
+    --balance-claim-btn-disabled-f-c: #1F2018;
+    --balance-claim-btn-below-min-hover-bg: rgba(255, 239, 70, 0.4);
+    --balance-claim-btn-below-min-hover-f-c: #1F2018;
+    --balance-claim-btn-f-c: #1F2018;
+    --balance-claim-btn-f-s: 12px;
+    --balance-claim-btn-f-w: 500;
+    --balance-claim-btn-radius: 100px;
+
+    --balance-pending-btn-bg: #FFEF46;
+    --balance-pending-btn-hover-bg: #EEDA0F;
+    --balance-pending-btn-icon-c: #1F2018;
+    --balance-pending-btn-radius: 100px;
+
+    /* ── Helper pill buttons (Need Help? / Missing Reward) — Figma history
+       sheet: dark tint + hairline border, white bold label ── */
+    --helper-btn-bg: rgba(245, 248, 255, 0.08);
+    --helper-btn-hover-bg: rgba(245, 248, 255, 0.12);
+    --helper-btn-border-w: 1px;
+    --helper-btn-border-c: rgba(138, 142, 148, 0.30);
+    --helper-btn-f-c: #F5F8FF;
+    --helper-btn-f-s: 12px;
+    --helper-btn-f-w: 700;
+    --helper-btn-radius: 8px;
+    --helper-btn-loading-bg: rgba(40, 43, 48, 0.5);
+
+    /* ── Skeleton shimmer (Figma Sol Skelton) ── */
+    --skeleton-bg: rgba(245, 248, 255, 0.06);
+    --skeleton-tile-bg: #12151A;
+    --skeleton-tile-shadow: none;
+    --skeleton-fill: #282B30;
+    --skeleton-bar-radius: 5px;
+
+    /* ── Category tabs row — outlined pills (Figma Chip): transparent +
+       hairline border, active gets a #2C2F36 fill ── */
+    --tab-bg: transparent;
+    --tab-border-w: 1px;
+    --tab-border-c: rgba(138, 142, 148, 0.30);
+    --tab-f-c: #B1B4BB;
+    --tab-f-s: 13px;
+    --tab-f-w: 500;
+    --tab-l-h: 16px;
+    --tab-radius: 100px;
+
+    --tab-active-bg: #2C2F36;
+    --tab-active-f-c: #F5F8FF;
+    --tab-hover-f-c: #F5F8FF;
+    --tab-hover-bg: rgba(245, 245, 245, 0.05);
+
+    /* Right-edge fog — fading to the page bg. */
+    --tabs-fog-color: #090C11;
+
+    /* ── Active-filter chip (replaces the tabs row) — Figma Sol Filter Chip
+       "Default": dark pill, white label. (The yellow "Applied" variant would
+       hide the shared light x-mark icon, so the dark variant is used.) ── */
+    --filter-chip-radius: 100px;
+    --filter-chip-bg: #282B30;
+    --filter-chip-f-c: #F5F8FF;
+    --filter-chip-f-s: 14px;
+    --filter-chip-l-h: 20px;
+
+    /* ── Inline search bar (Figma Sol Search) ── */
+    --search-bar-radius: 8px;
+    --search-bar-bg: #0C0F14;
+    --search-bar-border-w: 1px;
+    --search-bar-border-c: rgba(138, 142, 148, 0.30);
+    --search-bar-f-s: 14px;
+    --search-bar-l-h: 20px;
+    --search-bar-f-c: #F5F8FF;
+    --search-bar-placeholder-f-c: #7A7D83;
+    --search-bar-close-c: #F5F8FF;
+    --search-empty-f-c: #7A7D83;
+    --search-suggestion-f-c: #B1B4BB;
+
+    /* Autocomplete dropdown (Figma Sol Search "Open") */
+    --search-dropdown-bg: #12151A;
+    --search-dropdown-border-w: 1px;
+    --search-dropdown-border-c: rgba(138, 142, 148, 0.30);
+    --search-dropdown-radius: 8px;
+    --search-dropdown-hover-bg: #16181D;
+    /* Bottom "more results" fade. End color = dropdown bg. */
+    --search-dropdown-fade-bg: linear-gradient(180deg, rgba(18, 21, 26, 0) 0%, #12151A 100%);
+    --search-dropdown-fade-h: 12px;
+    --search-dropdown-fade-blur: 0.5px;
+    --search-dropdown-fade-offset: -0.5px;
+
+    /* ── Retailer card (Figma Sol Store Card): #12151A + hairline border,
+       r=10, circular white logo, "Up to 5% in USDC" with yellow amount ── */
+    --cards-fog-color: #090C11;
+
+    --retailer-card-bg: #12151A;
+    --retailer-card-hover-bg: #282B30;
+    --retailer-card-border-w: 1px;
+    --retailer-card-border-c: rgba(138, 142, 148, 0.30);
+    --retailer-card-radius: 10px;
+    --retailer-card-focus-ring: rgba(138, 142, 148, 0.6);
+    --retailer-icon-radius: 50%;
+    --retailer-icon-bg: #FFFFFF;
+    --retailer-fallback-f-c: #1F2018;
+
+    --retailer-name-f-s: 15px;
+    --retailer-name-f-w: 500;
+    --retailer-name-l-h: 22px;
+    --retailer-name-f-c: #F5F8FF;
+
+    --retailer-sub-f-s: 13px;
+    --retailer-sub-l-h: 18px;
+    --retailer-sub-label-f-c: #B1B4BB;
+    --retailer-sub-amount-f-c: #FFEF46;
+
+    /* ── Shop button on retailer card — neutral tint + hairline border,
+       white bold label (Figma), NOT yellow ── */
+    --shop-btn-bg: rgba(245, 248, 255, 0.08);
+    --shop-btn-border-w: 1px;
+    --shop-btn-border-c: rgba(138, 142, 148, 0.30);
+    --shop-btn-radius: 5px;
+    --shop-btn-f-s: 13px;
+    --shop-btn-l-h: 18px;
+    --shop-btn-f-c: #F5F8FF;
+    --shop-btn-hover-bg: rgba(245, 248, 255, 0.12);
+    --shop-btn-hover-f-c: #F5F8FF;
+
+    /* ── T&C modal (Cashback Details) — Figma Sol Modal/Overlay: #090C11
+       sheet with rgba(245,245,245,0.10) frame ── */
+    --modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+
+    --retailer-modal-bg: #090C11;
+    --retailer-modal-border-c: rgba(245, 245, 245, 0.10);
+    --retailer-modal-radius: 20px;
+
+    --retailer-modal-header-border-c: rgba(138, 142, 148, 0.30);
+    --retailer-modal-header-title-f-s: 17px;
+    --retailer-modal-header-title-f-w: 700;
+    --retailer-modal-header-title-l-h: 22px;
+    --retailer-modal-header-title-f-c: #F5F8FF;
+    --retailer-modal-header-action-radius: 16px;
+    --retailer-modal-header-action-bg: transparent;
+    --retailer-modal-header-action-hover-bg: rgba(245, 248, 255, 0.08);
+
+    --retailer-modal-logo-radius: 50%;
+    --retailer-modal-fallback-f-s: 24px;
+    --retailer-modal-fallback-f-w: 700;
+
+    --retailer-modal-name-f-s: 22px;
+    --retailer-modal-name-f-w: 700;
+    --retailer-modal-name-l-h: 30px;
+    --retailer-modal-name-f-c: #F5F8FF;
+
+    /* Cashback pill — Figma "Highlight" chip: yellow 12% tint, muted-yellow text */
+    --retailer-modal-pill-radius: 100px;
+    --retailer-modal-pill-bg: rgba(255, 239, 70, 0.12);
+    --retailer-modal-pill-f-s: 13px;
+    --retailer-modal-pill-l-h: 18px;
+    --retailer-modal-pill-label-f-c: #E6D73F;
+    --retailer-modal-pill-amount-f-c: #E6D73F;
+    --retailer-modal-pill-amount-f-w: 700;
+
+    /* Terms box — Figma Sol Info Card */
+    --retailer-modal-terms-bg: #12151A;
+    --retailer-modal-terms-border-c: rgba(138, 142, 148, 0.30);
+    --retailer-modal-terms-radius: 12px;
+    --retailer-modal-terms-shadow: none;
+    --retailer-modal-terms-title-f-s: 12px;
+    --retailer-modal-terms-title-f-w: 700;
+    --retailer-modal-terms-title-l-h: 16px;
+    --retailer-modal-terms-title-f-c: #F5F8FF;
+    --retailer-modal-terms-body-f-s: 12px;
+    --retailer-modal-terms-body-l-h: 16px;
+    --retailer-modal-terms-body-f-c: #B1B4BB;
+
+    /* Footer buttons — Figma Sol Button: yellow CTA pill / neutral secondary */
+    --retailer-modal-btn-radius: 100px;
+    --retailer-modal-btn-f-s: 15px;
+    --retailer-modal-btn-f-w: 500;
+    --retailer-modal-btn-l-h: 20px;
+    --retailer-modal-btn-f-c: #F5F8FF;
+    --retailer-modal-cancel-bg: rgba(245, 248, 255, 0.08);
+    --retailer-modal-cancel-hover-bg: rgba(245, 248, 255, 0.12);
+    --retailer-modal-shop-bg: #FFEF46;
+    --retailer-modal-shop-hover-bg: #EEDA0F;
+    /* Dark text on the yellow CTA (cancel keeps the shared light color). */
+    --retailer-modal-shop-f-c: #1F2018;
+
+    --retailer-modal-disclaimer-f-s: 10px;
+    --retailer-modal-disclaimer-l-h: 13px;
+    --retailer-modal-disclaimer-f-c: #636772;
+    --retailer-modal-disclaimer-hover-f-c: #8A8E94;
+
+    /* ── FAQ page — Figma Sol FAQ: page-colored items with hairline border ── */
+    --faq-overlay-darken-bg: #090C11;
+    --faq-sheet-bg: #090C11;
+    --faq-sheet-border-w: 1px;
+    --faq-sheet-border-c: rgba(245, 245, 245, 0.10);
+    --faq-sheet-radius: 20px;
+    --faq-sheet-fade-from: rgba(9, 12, 17, 0);
+    --faq-sheet-fade-to: #090C11;
+
+    --faq-intro-f-s: 14px;
+    --faq-intro-f-w: 400;
+    --faq-intro-l-h: 20px;
+    --faq-intro-f-c: #F5F8FF;
+
+    --faq-item-bg: #090C11;
+    --faq-item-hover-bg: #16181D;
+    --faq-item-border-w: 1px;
+    --faq-item-border-c: rgba(138, 142, 148, 0.30);
+    --faq-item-radius: 10px;
+
+    --faq-skeleton-bg: #12151A;
+    --faq-skeleton-radius: 8px;
+    --faq-skeleton-bar-bg: #282B30;
+    --faq-skeleton-bar-radius: 3px;
+
+    --faq-question-f-s: 14px;
+    --faq-question-f-w: 500;
+    --faq-question-l-h: 22px;
+    --faq-question-f-c: #F5F8FF;
+
+    --faq-chevron-f-c: #B1B4BB;
+    --faq-chevron-active-f-c: #F5F8FF;
+
+    --faq-answer-f-s: 12px;
+    --faq-answer-f-w: 400;
+    --faq-answer-l-h: 16px;
+    --faq-answer-f-c: #B1B4BB;
+    --faq-answer-hover-f-c: #F5F8FF;
+
+    --faq-divider-w: 1px;
+    --faq-divider-c: rgba(138, 142, 148, 0.30);
+
+    /* "click here" support link is yellow in Figma */
+    --faq-link-f-c: #FFEF46;
+
+    /* ── History page — Figma Sol History card: #16181D rows, subtle border,
+       status-tinted amount pills ── */
+    --history-overlay-darken-bg: #090C11;
+    --history-sheet-bg: #090C11;
+    --history-sheet-border-w: 1px;
+    --history-sheet-border-c: rgba(245, 245, 245, 0.10);
+    --history-sheet-radius: 20px;
+    --history-sheet-fade-from: rgba(9, 12, 17, 0);
+    --history-sheet-fade-to: #090C11;
+
+    --history-intro-f-s: 14px;
+    --history-intro-f-w: 400;
+    --history-intro-l-h: 20px;
+    --history-intro-f-c: #F5F8FF;
+
+    --history-item-bg: #16181D;
+    --history-item-hover-bg: #1B1E24;
+    --history-item-border-w: 1px;
+    --history-item-border-c: rgba(138, 142, 148, 0.10);
+    --history-item-radius: 12px;
+
+    --history-avatar-radius: 50%;
+    --history-avatar-bg: #282B30;
+    /* Yellow claim avatar — the SOLFLARE mobile gift.svg is dark-stroked to match. */
+    --history-avatar-claim-bg: #FFEF46;
+
+    --history-name-f-s: 15px;
+    --history-name-f-w: 500;
+    --history-name-l-h: 22px;
+    --history-name-f-c: #F5F8FF;
+    --history-date-f-s: 13px;
+    --history-date-f-w: 400;
+    --history-date-l-h: 20px;
+    --history-date-f-c: #B1B4BB;
+
+    /* Amount pills — Figma Sol status (r=8, 700 13/18) */
+    --history-amount-radius: 8px;
+    --history-amount-bg: rgba(177, 180, 187, 0.15);
+    --history-amount-f-c: #B1B4BB;
+    --history-amount-f-s: 13px;
+    --history-amount-f-w: 700;
+    --history-amount-l-h: 18px;
+    --history-amount-claimed-bg: rgba(255, 239, 70, 0.30);
+    --history-amount-claimed-f-c: #E6D73F;
+    --history-amount-completed-bg: rgba(8, 194, 157, 0.15);
+    --history-amount-completed-f-c: #08C29D;
+    --history-amount-cancelled-bg: rgba(218, 73, 63, 0.15);
+    --history-amount-cancelled-f-c: #DA493F;
+    --history-amount-pending-bg: rgba(177, 180, 187, 0.15);
+    --history-amount-pending-f-c: #B1B4BB;
+
+    --history-status-f-s: 10px;
+    --history-status-f-w: 400;
+    --history-status-l-h: 13px;
+    --history-status-f-c: #7A7D83;
+    --history-status-claimed-f-c: #E6D73F;
+    --history-status-completed-f-c: #08C29D;
+    --history-status-cancelled-f-c: #DA493F;
+    --history-status-pending-f-c: #7A7D83;
+
+    --history-divider-w: 1px;
+    --history-divider-c: rgba(138, 142, 148, 0.30);
+
+    --history-description-f-s: 12px;
+    --history-description-f-w: 500;
+    --history-description-l-h: 16px;
+    --history-description-f-c: #B1B4BB;
+
+    --history-empty-f-s: 14px;
+    --history-empty-f-w: 400;
+    --history-empty-l-h: 20px;
+    --history-empty-f-c: #B1B4BB;
+    --history-empty-radius: 10px;
+    --history-empty-bg: transparent;
+
+    /* ── Claim Rewards modal — Figma Sol Modal/Overlay ── */
+    --claim-modal-font: 'FK Grotesk', system-ui, -apple-system, sans-serif;
+
+    /* Backdrop + panel frame (Sol overlay: page color @ 75%) */
+    --claim-modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+    --claim-modal-panel-bg: #090C11;
+    --claim-modal-panel-border-c: rgba(245, 245, 245, 0.10);
+    --claim-modal-panel-border-w: 1px;
+    --claim-modal-panel-radius: 20px;
+
+    /* Header */
+    --claim-modal-header-border-c: rgba(138, 142, 148, 0.30);
+    --claim-modal-header-title-f-s: 17px;
+    --claim-modal-header-title-f-w: 700;
+    --claim-modal-header-title-l-h: 22px;
+    --claim-modal-header-title-f-c: #F5F8FF;
+    --claim-modal-header-action-radius: 16px;
+    --claim-modal-header-action-bg: transparent;
+
+    /* Body + intro */
+    --claim-modal-intro-f-s: 14px;
+    --claim-modal-intro-f-w: 400;
+    --claim-modal-intro-l-h: 20px;
+    --claim-modal-intro-f-c: #B1B4BB;
+
+    /* Detail rows (token / wallet / fee / minimum) */
+    --claim-modal-row-radius: 10px;
+    --claim-modal-row-bg: #16181D;
+    --claim-modal-row-label-f-s: 15px;
+    --claim-modal-row-label-f-w: 400;
+    --claim-modal-row-label-l-h: 22px;
+    --claim-modal-row-label-f-c: #F5F8FF;
+    --claim-modal-amount-positive-f-c: #08C29D;
+    --claim-modal-badge-bg: #282B30;
+    --claim-modal-badge-radius: 8px;
+    --claim-modal-badge-f-s: 12px;
+    --claim-modal-badge-l-h: 16px;
+    --claim-modal-badge-f-c: #F5F8FF;
+    --claim-modal-value-f-s: 15px;
+    --claim-modal-value-l-h: 22px;
+    --claim-modal-value-f-c: #B1B4BB;
+
+    /* Footer buttons — Figma Sol Button (500 15/20, pill) */
+    --claim-modal-btn-radius: 100px;
+    --claim-modal-btn-f-s: 15px;
+    --claim-modal-btn-f-w: 500;
+    --claim-modal-btn-l-h: 20px;
+    --claim-modal-btn-f-c: #F5F8FF;
+    --claim-modal-btn-secondary-bg: rgba(245, 248, 255, 0.08);
+    --claim-modal-btn-secondary-hover-bg: rgba(245, 248, 255, 0.12);
+    --claim-modal-btn-primary-bg: #FFEF46;
+    --claim-modal-btn-primary-hover-bg: #EEDA0F;
+    /* Dark text on the yellow CTA (secondary keeps the shared light color). */
+    --claim-modal-btn-primary-f-c: #1F2018;
+
+    /* Minimum-claim screen */
+    --claim-modal-min-title-f-s: 20px;
+    --claim-modal-min-title-f-w: 700;
+    --claim-modal-min-title-l-h: 26px;
+    --claim-modal-min-title-f-c: #F5F8FF;
+    --claim-modal-min-para-f-s: 15px;
+    --claim-modal-min-para-f-w: 400;
+    --claim-modal-min-para-l-h: 22px;
+    --claim-modal-min-para-f-c: #B1B4BB;
+    --claim-modal-min-hint-f-s: 14px;
+    --claim-modal-min-hint-f-w: 400;
+    --claim-modal-min-hint-l-h: 20px;
+    --claim-modal-min-hint-f-c: #FFEF46;
+
+    /* Status screens (Figma "Failed..." modal: 700 20/26 title, grey msg) */
+    --claim-modal-status-title-f-s: 20px;
+    --claim-modal-status-title-f-w: 700;
+    --claim-modal-status-title-l-h: 26px;
+    --claim-modal-status-title-f-c: #F5F8FF;
+    --claim-modal-status-msg-f-s: 14px;
+    --claim-modal-status-msg-f-w: 400;
+    --claim-modal-status-msg-l-h: 20px;
+    --claim-modal-status-msg-f-c: #B1B4BB;
+
+    /* Success amount + explorer link (yellow in Figma) */
+    --claim-modal-success-amount-f-s: 40px;
+    --claim-modal-success-amount-f-w: 700;
+    --claim-modal-success-amount-l-h: 30px;
+    --claim-modal-success-amount-f-c: #F5F8FF;
+    --claim-modal-explorer-f-s: 14px;
+    --claim-modal-explorer-f-w: 400;
+    --claim-modal-explorer-l-h: 20px;
+    --claim-modal-explorer-f-c: #FFEF46;
+    --claim-modal-explorer-hover-f-c: #EEDA0F;
+
+    /* Failure icon badge — neutral circle, red glyph (Figma) */
+    --claim-modal-failure-circle-bg: rgba(245, 248, 255, 0.08);
+
+    /* Processing spinner badge */
+    --claim-modal-spinner-circle-bg: rgba(245, 248, 255, 0.08);
+    --claim-modal-spinner-c: #FFEF46;
+}
