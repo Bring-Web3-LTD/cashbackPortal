@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     background: var(--faq-item-bg, #171C2F);
+    border: var(--faq-item-border-w, 0) solid var(--faq-item-border-c, transparent);
     border-radius: var(--faq-item-radius, 6px);
     padding: 8px 8px 8px 12px;
     transition: background 0.15s ease;

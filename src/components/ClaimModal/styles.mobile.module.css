@@ -216,6 +216,13 @@
 .btnPrimary {
     flex: 1;
     background: var(--claim-modal-btn-primary-bg, #6067f9);
+    /* Platforms with a light accent (e.g. Solflare yellow) need dark text on
+       the primary CTA while secondary buttons keep the shared light color. */
+    color: var(--claim-modal-btn-primary-f-c, var(--claim-modal-btn-f-c, #f7f7f7));
+}
+
+.btnPrimary:hover:not(:disabled) {
+    background: var(--claim-modal-btn-primary-hover-bg, var(--claim-modal-btn-primary-bg, #6067f9));
 }
 
 /* Minimum claim screen */
