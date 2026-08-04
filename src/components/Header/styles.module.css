@@ -53,7 +53,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: var(--header-btns-gap, 8px);
     margin-top: 24px;
 }
 
