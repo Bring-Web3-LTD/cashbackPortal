@@ -49,8 +49,10 @@
     --legal-link-decoration: none;
     --header-btn-bg: rgba(245, 248, 255, 0.08);
     --header-btn-hover-bg: rgba(245, 248, 255, 0.12);
-    --header-btn-f-s: 15px;
-    --header-btn-f-w: 400;
+    --header-btn-f-s: 14px;
+    --header-btn-f-w: 700;
+    --header-btn-l-h: 20px;
+    --header-btn-h: 36px;
     --header-btn-f-c: #F5F8FF;
     --header-btn-border-w: 0;
     --header-btn-border-c: transparent;
