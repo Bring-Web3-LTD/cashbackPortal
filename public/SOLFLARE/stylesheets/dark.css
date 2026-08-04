@@ -60,6 +60,7 @@
     --header-btn-p: 9px 12px;
     --header-btn-w: 183px;
     --header-btn-transform: capitalize;
+    --header-btns-gap: 13px;
 
     --rewards-bg: #1B1E24;
     --rewards-img-size: 20px;
