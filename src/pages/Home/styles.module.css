@@ -11,7 +11,8 @@
 }
 
 .filters_section {
-    position: sticky;
+    /* sticky needs opaque --bg behind it; transparent-bg themes opt out */
+    position: var(--filters-position, sticky);
     z-index: 1;
     top: 0;
     width: 100%;
