@@ -3,6 +3,9 @@
 */
 :root {
     --bg: transparent;
+    /* transparent --bg: sticky filters would scroll over content with no
+       backdrop, so pin them off */
+    --filters-position: static;
     --header-bg: transparent;
 
     --title-f-s: 28px;
