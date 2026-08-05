@@ -194,21 +194,26 @@ const Rewards = () => {
                     </div>
                     <button
                         id="rewards-claim-btn"
-                        className={`${styles.btn} ${styles.claim_btn}`}
+                        className={`${styles.btn} ${styles.claim_btn} ${loading ? styles.loading_btn : ''}`}
                         onClick={() => signMessage()}
                         disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
                     >
                         {
                             loading ?
-                                <Oval
-                                    visible={true}
-                                    height="20"
-                                    width="20"
-                                    color="#fff"
-                                    secondaryColor='grey'
-                                    strokeWidth={6}
-                                    ariaLabel="oval-loading"
-                                />
+                                // Oval writes `color` straight into the SVG `stroke`
+                                // attribute, where a var() never resolves — so the
+                                // theme drives it through the wrapper's `color`.
+                                <span className={styles.loader}>
+                                    <Oval
+                                        visible={true}
+                                        height="20"
+                                        width="20"
+                                        color="currentColor"
+                                        secondaryColor='grey'
+                                        strokeWidth={6}
+                                        ariaLabel="oval-loading"
+                                    />
+                                </span>
                                 :
                                 t('claimCashback')
                         }

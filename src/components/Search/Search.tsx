@@ -147,7 +147,7 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
             <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
                 No results.
             </div>
-            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-option-f-c)" }}>
+            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-no-results-hint-f-c, var(--search-option-f-c))" }}>
                 Try a different search term
             </div>
         </components.NoOptionsMessage>
@@ -155,7 +155,9 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
-    const isActive = props.isFocused || props.selectProps.menuIsOpen
+    // `hasValue` keeps the active glyph after blur, while a term is still
+    // filtering. Platforms with no focus icon fall back to the plain one.
+    const isActive = props.isFocused || props.selectProps.menuIsOpen || props.hasValue
     return (
         <components.Control {...props}>
             <Icon
