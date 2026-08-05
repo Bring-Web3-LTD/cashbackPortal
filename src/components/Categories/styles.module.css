@@ -46,7 +46,7 @@
 /* Selected falls back to the hover look, so platforms that never defined a
    selected state keep rendering exactly as before. */
 .selected {
-    color: var(--category-btn-hover-f-c);
+    color: var(--category-btn-selected-f-c, var(--category-btn-hover-f-c));
     font-weight: var(--category-btn-hover-f-w);
     border-width: var(--category-btn-hover-border-w);
     border-color: var(--category-btn-selected-border-c, var(--category-btn-border-c));

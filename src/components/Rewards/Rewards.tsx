@@ -194,7 +194,7 @@ const Rewards = () => {
                     </div>
                     <button
                         id="rewards-claim-btn"
-                        className={`${styles.btn} ${styles.claim_btn}`}
+                        className={`${styles.btn} ${styles.claim_btn} ${loading ? styles.loading_btn : ''}`}
                         onClick={() => signMessage()}
                         disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
                     >

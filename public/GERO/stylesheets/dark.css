@@ -96,11 +96,11 @@
     --primary-btn-border-c: transparent;
     --primary-btn-bg: linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
     /* Hover/pressed darken the gradient with a 12% black overlay layer. */
-    --primary-btn-hover-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
-    --primary-btn-pressed-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    --primary-btn-hover-bg: linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    --primary-btn-pressed-bg: linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
     /* Disabled is the 40% gradient at 50% layer opacity, baked to 20% because
-       the button has no opacity variable. */
-    --primary-btn-disabled-bg: linear-gradient(90deg, rgba(0, 200, 242, 0.2) 0%, rgba(0, 250, 214, 0.2) 100%);
+       the button has no opacity variable. The same 50% applies to the label. */
+    --primary-btn-disabled-bg: linear-gradient(90deg, rgba(0, 200, 242, 0.40) 0%, rgba(0, 250, 214, 0.40) 100%);
     --primary-btn-disabled-f-c: #141414;
     /* Spinner arc on the gradient CTA takes the label colour, not white. */
     --rewards-loader-c: #000000;
@@ -119,12 +119,12 @@
     --pending-btn-hover-f-c: #000000;
     --pending-btn-hover-border-c: transparent;
     --pending-btn-hover-border-w: 0;
-    --pending-btn-hover-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    --pending-btn-hover-bg: linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
 
     --pending-btn-pressed-f-c: #000000;
     --pending-btn-pressed-border-c: transparent;
     --pending-btn-pressed-border-w: 0;
-    --pending-btn-pressed-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    --pending-btn-pressed-bg: linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
 
     /* Retailer card. */
     --retailer-card-bg: #1A1A1A;
@@ -193,22 +193,24 @@
     --filter-btn-border-c: transparent;
     --filter-btn-radius: 10px;
 
-    /* Category chip. */
-    --category-btn-bg: #1A1A1A;
+    /* Category chip. Resting sits flat on the page; hover lifts it to the
+       raised surface. Only the label colour and the ring mark the selection. */
+    --category-btn-bg: rgba(0, 0, 0, 0.75);
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
     --category-btn-f-c: #A8ADBF;
     --category-btn-border-w: 1px;
     --category-btn-border-c: rgba(86, 98, 99, 0.75);
     --category-btn-radius: 100px;
-    --category-btn-hover-bg: rgba(30, 35, 48, 0.35);
-    --category-btn-hover-f-c: #FFFFFF;
+    --category-btn-hover-bg: #1A1A1A;
+    --category-btn-hover-f-c: #A8ADBF;
     --category-btn-hover-f-w: 400;
     --category-btn-hover-border-w: 1px;
-    --category-btn-hover-border-c: rgba(86, 98, 99, 0.45);
+    --category-btn-hover-border-c: rgba(86, 98, 99, 0.75);
     --category-btn-hover-radius: 100px;
-    /* Selected keeps the resting fill and is marked by the accent ring alone. */
-    --category-btn-selected-bg: #1A1A1A;
+    /* Selected carries no fill of its own — the page shows through. */
+    --category-btn-selected-bg: transparent;
+    --category-btn-selected-f-c: #FFFFFF;
     --category-btn-selected-border-c: #00DFF3;
     /* Loading placeholder chip. */
     --category-skeleton-bg: #1B1E23;

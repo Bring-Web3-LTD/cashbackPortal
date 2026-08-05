@@ -155,7 +155,9 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
 }
 
 const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
-    const isActive = props.isFocused || props.selectProps.menuIsOpen
+    // `hasValue` keeps the active glyph after blur, while a term is still
+    // filtering. Platforms with no focus icon fall back to the plain one.
+    const isActive = props.isFocused || props.selectProps.menuIsOpen || props.hasValue
     return (
         <components.Control {...props}>
             <Icon

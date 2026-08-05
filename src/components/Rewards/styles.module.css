@@ -152,6 +152,14 @@
     color: var(--primary-btn-disabled-f-c);
 }
 
+/* Loading is not "disabled" visually — the button keeps its resting fill and
+   only swaps the label for the spinner. Must follow :disabled to win. */
+.loading_btn:disabled {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-f-c);
+    cursor: default;
+}
+
 .pending_btn {
     background: var(--pending-btn-bg);
     color: var(--pending-btn-f-c);
