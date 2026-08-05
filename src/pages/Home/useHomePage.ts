@@ -23,7 +23,7 @@ const SEARCH_MIN_CHARS = 2
 
 export const useHomePage = () => {
     const { platform, userId, flowId, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress, walletName, walletEmoji } = useWalletAddress()
+    const { walletAddress, walletName, walletEmoji, couponsIframeSrc } = useWalletAddress()
     const queryClient = useQueryClient()
 
     const [category, setCategory] = useState<CategoriesItem | null>(null)
@@ -241,5 +241,7 @@ export const useHomePage = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
+        // coupons - live value from the wallet context (refreshed per verify)
+        couponsIframeSrc,
     }
 }

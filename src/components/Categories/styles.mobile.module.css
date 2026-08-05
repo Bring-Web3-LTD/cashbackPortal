@@ -61,7 +61,7 @@
     border-radius: var(--tab-radius, 6px);
     background: var(--tab-bg, transparent);
     color: var(--tab-f-c, #7685A0);
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--tab-f-s, 14px);
     font-weight: var(--tab-f-w, 400);
     line-height: var(--tab-l-h, 20px);

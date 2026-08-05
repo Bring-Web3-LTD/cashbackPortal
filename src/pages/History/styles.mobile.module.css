@@ -95,7 +95,7 @@
 .intro {
     margin: 0;
     padding: 0 16px;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--history-intro-f-s, 12px);
     font-weight: var(--history-intro-f-w, 400);
     line-height: var(--history-intro-l-h, 16px);
@@ -175,7 +175,7 @@
 
 .emptyText {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--history-empty-f-s, 14px);
     font-weight: var(--history-empty-f-w, 400);
     line-height: var(--history-empty-l-h, 20px);

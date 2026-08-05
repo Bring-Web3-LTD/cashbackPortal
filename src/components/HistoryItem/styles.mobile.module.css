@@ -34,7 +34,7 @@
     cursor: pointer;
     text-align: left;
     color: inherit;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     min-height: 40px;
 }
 
@@ -214,7 +214,7 @@
 
 .descriptionLine {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--history-description-f-s, 12px);
     font-weight: var(--history-description-f-w, 400);
     line-height: var(--history-description-l-h, 16px);

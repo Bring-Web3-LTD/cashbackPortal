@@ -77,6 +77,7 @@ const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? '
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
 const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
+const DEFAULT_VIEW_MODE = ((env.VITE_PORTAL_VIEW_MODE as string | undefined) ?? '').trim().toLowerCase()
 
 const $ = <T extends HTMLElement>(id: string) => {
     const el = document.getElementById(id)
@@ -147,12 +148,133 @@ const applyResponsiveSize = () => {
 }
 applyResponsiveSize()
 
+// Device presets (CSS viewport sizes, portrait) for the Mobile/Responsive
+// modes, mirroring browser devtools device emulation. In Mobile mode a preset
+// sizes the stage to the exact device viewport; in Responsive mode it drives
+// the width/height inputs, so drag-resize and manual edits still work (and
+// drop the selection back to "Custom"). Orientation is a separate flag so
+// rotate survives switching devices.
+type DevicePlatform = 'ios' | 'android'
+const DEVICES: { key: string; label: string; w: number; h: number; group: string; platform: DevicePlatform }[] = [
+    { key: 'iphone-se', label: 'iPhone SE', w: 375, h: 667, group: 'Phones', platform: 'ios' },
+    { key: 'iphone-14', label: 'iPhone 14', w: 390, h: 844, group: 'Phones', platform: 'ios' },
+    { key: 'iphone-16', label: 'iPhone 15 / 16', w: 393, h: 852, group: 'Phones', platform: 'ios' },
+    { key: 'iphone-17', label: 'iPhone 17', w: 402, h: 874, group: 'Phones', platform: 'ios' },
+    { key: 'iphone-17-pro-max', label: 'iPhone 17 Pro Max', w: 440, h: 956, group: 'Phones', platform: 'ios' },
+    { key: 'pixel-7', label: 'Pixel 7', w: 412, h: 915, group: 'Phones', platform: 'android' },
+    { key: 'galaxy-s8-plus', label: 'Galaxy S8+', w: 360, h: 740, group: 'Phones', platform: 'android' },
+    { key: 'galaxy-s20-ultra', label: 'Galaxy S20 Ultra', w: 412, h: 915, group: 'Phones', platform: 'android' },
+    { key: 'galaxy-z-fold', label: 'Galaxy Z Fold (folded)', w: 344, h: 882, group: 'Phones', platform: 'android' },
+    { key: 'ipad-mini', label: 'iPad Mini', w: 768, h: 1024, group: 'Tablets', platform: 'ios' },
+    { key: 'ipad-air', label: 'iPad Air', w: 820, h: 1180, group: 'Tablets', platform: 'ios' },
+    { key: 'ipad-pro-11', label: 'iPad Pro 11″', w: 834, h: 1194, group: 'Tablets', platform: 'ios' },
+    { key: 'ipad-pro-129', label: 'iPad Pro 12.9″', w: 1024, h: 1366, group: 'Tablets', platform: 'ios' },
+]
+const DEVICE_KEY = 'bring-dev-wrapper:device'
+const DEVICE_LANDSCAPE_KEY = 'bring-dev-wrapper:device-landscape'
+const deviceRowEl = $<HTMLDivElement>('deviceRow')
+const deviceEl = $<HTMLSelectElement>('devicePreset')
+const rotateBtn = $<HTMLButtonElement>('rotateDevice')
+
+{
+    const custom = document.createElement('option')
+    custom.value = ''
+    custom.textContent = 'Custom / default'
+    deviceEl.append(custom)
+    const groups = new Map<string, HTMLOptGroupElement>()
+    for (const device of DEVICES) {
+        let group = groups.get(device.group)
+        if (!group) {
+            group = document.createElement('optgroup')
+            group.label = device.group
+            groups.set(device.group, group)
+            deviceEl.append(group)
+        }
+        const option = document.createElement('option')
+        option.value = device.key
+        option.textContent = `${device.label} (${device.w}×${device.h})`
+        group.append(option)
+    }
+}
+
+let deviceLandscape = localStorage.getItem(DEVICE_LANDSCAPE_KEY) === '1'
+const savedDevice = localStorage.getItem(DEVICE_KEY) || ''
+deviceEl.value = DEVICES.some(d => d.key === savedDevice) ? savedDevice : ''
+
+const applyDevice = (mode: string) => {
+    deviceRowEl.hidden = mode !== 'mobile' && mode !== 'responsive'
+    const device = DEVICES.find(d => d.key === deviceEl.value)
+    // In Mobile mode with no device there's nothing to rotate (fixed 360px
+    // column); in Responsive mode rotate always works (swaps custom size too).
+    rotateBtn.disabled = !device && mode === 'mobile'
+    frameEl.classList.toggle('has-device', Boolean(device) && mode === 'mobile')
+    if (!device) return
+    const w = deviceLandscape ? device.h : device.w
+    const h = deviceLandscape ? device.w : device.h
+    if (mode === 'mobile') {
+        frameEl.style.setProperty('--device-w', `${w}px`)
+        frameEl.style.setProperty('--device-h', `${h}px`)
+    } else if (mode === 'responsive') {
+        savedSize.w = w
+        savedSize.h = h
+        responsiveWidthEl.value = String(w)
+        responsiveHeightEl.value = String(h)
+        applyResponsiveSize()
+        localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+    }
+}
+
+// Platform hint sent in the check/portal body so the backend can bake the
+// coupon partner's `platform` param into couponsIframeSrc (explicit platform
+// instead of UA sniffing, which sees the desktop browser). Derived from the
+// device preset; plain Mobile mode defaults to ios, Desktop/custom-Responsive
+// send nothing. Harmlessly ignored until the backend supports the field.
+const getDevicePlatform = (): DevicePlatform | undefined => {
+    const device = DEVICES.find(d => d.key === deviceEl.value)
+    if (viewModeEl.value === 'mobile') return device?.platform ?? 'ios'
+    if (viewModeEl.value === 'responsive') return device?.platform
+    return undefined
+}
+
+// Manual size edits / drag-resize mean the size no longer matches the preset.
+const clearDeviceSelection = () => {
+    if (!deviceEl.value) return
+    deviceEl.value = ''
+    localStorage.setItem(DEVICE_KEY, '')
+    applyDevice(viewModeEl.value)
+}
+
+deviceEl.addEventListener('change', () => {
+    localStorage.setItem(DEVICE_KEY, deviceEl.value)
+    applyDevice(viewModeEl.value)
+    // Re-bootstrap so the portal re-evaluates useMobilePortal at the new width.
+    void refresh()
+})
+
+rotateBtn.addEventListener('click', () => {
+    if (!deviceEl.value && viewModeEl.value === 'responsive') {
+        // Custom size: rotate just swaps the current width/height.
+        ;[savedSize.w, savedSize.h] = [savedSize.h, savedSize.w]
+        responsiveWidthEl.value = String(savedSize.w)
+        responsiveHeightEl.value = String(savedSize.h)
+        applyResponsiveSize()
+        localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+    } else {
+        deviceLandscape = !deviceLandscape
+        localStorage.setItem(DEVICE_LANDSCAPE_KEY, deviceLandscape ? '1' : '0')
+        applyDevice(viewModeEl.value)
+    }
+    void refresh()
+})
+
 const applyViewMode = (mode: string) => {
     frameEl.classList.toggle('mobile', mode === 'mobile')
     frameEl.classList.toggle('responsive', mode === 'responsive')
     responsiveSizeEl.hidden = mode !== 'responsive'
+    applyDevice(mode)
 }
-const savedViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'desktop'
+const savedViewMode = localStorage.getItem(VIEW_MODE_KEY)
+    || (['desktop', 'mobile', 'responsive'].includes(DEFAULT_VIEW_MODE) ? DEFAULT_VIEW_MODE : 'desktop')
 viewModeEl.value = savedViewMode
 applyViewMode(savedViewMode)
 viewModeEl.addEventListener('change', () => {
@@ -182,6 +304,7 @@ const onSizeCommit = () => {
     responsiveWidthEl.value = String(savedSize.w)
     responsiveHeightEl.value = String(savedSize.h)
     localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+    clearDeviceSelection()
     void refresh()
 }
 for (const el of [responsiveWidthEl, responsiveHeightEl]) {
@@ -217,6 +340,7 @@ const setupResizeHandle = (id: string, axes: { x?: boolean; y?: boolean }) => {
             frameEl.classList.remove('resizing')
             if (savedSize.w === startW && savedSize.h === startH) return
             localStorage.setItem(RESPONSIVE_SIZE_KEY, JSON.stringify(savedSize))
+            clearDeviceSelection()
             // Re-bootstrap at the final size (portal reads innerWidth once).
             void refresh()
         }
@@ -653,6 +777,9 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         // Empty string means "don't include theme in the payload" so the
         // portal/API uses its own defaults.
         theme: (themeEl.value || undefined) as Theme | undefined,
+        // Platform of the emulated device, so the backend can pass it through
+        // to platform-sensitive iframe URLs (e.g. AppCard coupons).
+        devicePlatform: getDevicePlatform(),
     }
 
     const requestId = ++pendingId

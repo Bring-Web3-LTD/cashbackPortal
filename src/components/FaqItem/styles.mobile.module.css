@@ -34,7 +34,7 @@
     cursor: pointer;
     text-align: left;
     color: inherit;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
 }
 
 .questionText {
@@ -88,7 +88,7 @@
 
 .answerLine {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--faq-answer-f-s, 12px);
     font-weight: var(--faq-answer-f-w, 400);
     line-height: var(--faq-answer-l-h, 16px);

@@ -454,6 +454,20 @@ html, body {
     background: #fff;
 }
 
+/* Mobile view with a device preset: exact device viewport, centered, scroll
+   when the device is larger than the available frame area. */
+.frame.mobile.has-device {
+    align-items: safe center;
+    padding: 16px;
+    overflow: auto;
+}
+
+.frame.mobile.has-device .frame-stage {
+    flex: none;
+    width: var(--device-w, 360px);
+    height: var(--device-h, 640px);
+}
+
 /* Responsive view: exact user-set dimensions via CSS variables, centered in
    the frame with scroll overflow when the stage is larger than the viewport. */
 .frame.responsive {
@@ -482,6 +496,36 @@ html, body {
 
 .responsive-size[hidden] {
     display: none;
+}
+
+/* Device preset select + rotate button on one row. */
+.device-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.device-row[hidden] {
+    display: none;
+}
+
+.device-row label {
+    flex: 1;
+    min-width: 0;
+}
+
+.device-row .rotate {
+    width: auto;
+    flex: none;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.device-row .rotate:disabled {
+    opacity: 0.4;
+    cursor: default;
 }
 
 /* Drag-resize handles: only active in responsive mode. Pointer capture on the

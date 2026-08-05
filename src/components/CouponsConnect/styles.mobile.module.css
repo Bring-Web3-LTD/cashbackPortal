@@ -1,0 +1,223 @@
+/* Coupons "connect to unlock" promo.
+   PLACEHOLDER: no design/spec yet — disposable, replace wholesale with the
+   final design. Themed entirely off existing platform vars (accent = the
+   balance claim button) so each wallet gets its own colors for free. */
+.root {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow: hidden;
+}
+
+/* Soft ambient accent glow behind everything. */
+.glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 38%, rgba(96, 103, 249, 0.18), transparent 62%);
+    background: radial-gradient(
+        circle at 50% 38%,
+        color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 20%, transparent),
+        transparent 62%
+    );
+}
+
+.promo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Floating deal chips drifting around the ticket. */
+.chip {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--balance-claim-btn-bg, #6067F9);
+    background: rgba(96, 103, 249, 0.14);
+    background: color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 14%, transparent);
+    border: 1px solid rgba(96, 103, 249, 0.35);
+    border-color: color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 35%, transparent);
+    animation: float 5s ease-in-out infinite;
+}
+
+/* Kept inside the promo bounds so the container never clips them. */
+.chipA { top: -34px; left: 6px; rotate: -12deg; }
+.chipB { top: 6px; right: -14px; rotate: 10deg; animation-delay: 1.3s; }
+
+/* Ticket stack: a second ticket peeking out behind the main one for depth. */
+.ticketStack {
+    position: relative;
+    margin-bottom: 14px;
+    animation: rise 0.5s ease-out both;
+}
+
+.couponBack {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    rotate: 4deg;
+    translate: 6px 6px;
+    scale: 0.98;
+    opacity: 0.5;
+    background: #2b2f8a;
+    background: color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 45%, #000);
+}
+
+/* The coupon ticket: accent gradient, perforation notches, dashed tear line. */
+.coupon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    rotate: -3deg;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--balance-claim-btn-bg, #6067F9), #3a3f9e);
+    background: linear-gradient(
+        135deg,
+        var(--balance-claim-btn-bg, #6067F9),
+        color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 58%, #000)
+    );
+    color: var(--balance-claim-btn-f-c, #F7F7F7);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 12px 32px rgba(96, 103, 249, 0.35);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 35%, transparent);
+    animation: bob 4.5s ease-in-out infinite;
+}
+
+/* Perforation notches punched out of the ticket's sides. */
+.coupon::before,
+.coupon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg, #090C11);
+    transform: translateY(-50%);
+}
+
+.coupon::before { left: -7px; }
+.coupon::after { right: -7px; }
+
+.couponPct { font-size: 20px; line-height: 1; }
+
+.couponDivider {
+    align-self: stretch;
+    border-left: 2px dashed rgba(255, 255, 255, 0.45);
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 26px;
+    color: var(--balance-amount-f-c, #F5F8FF);
+    animation: rise 0.5s ease-out 0.08s both;
+}
+
+.sub {
+    margin: 0 0 10px;
+    color: var(--history-empty-f-c, #B1B4BB);
+    font-size: var(--history-empty-f-s, 14px);
+    font-weight: var(--history-empty-f-w, 400);
+    line-height: var(--history-empty-l-h, 20px);
+    animation: rise 0.5s ease-out 0.16s both;
+}
+
+/* Connect CTA — accent-themed, with a periodic sheen sweep. */
+.connectBtn {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    padding: 12px 36px;
+    border-radius: var(--balance-claim-btn-radius, 10px);
+    background: var(--balance-claim-btn-bg, #6067F9);
+    color: var(--balance-claim-btn-f-c, #F7F7F7);
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 20px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(96, 103, 249, 0.4);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--balance-claim-btn-bg, #6067F9) 40%, transparent);
+    transition: transform 0.12s ease;
+    animation: rise 0.5s ease-out 0.24s both;
+}
+
+.connectBtn:active { transform: scale(0.97); }
+
+/* Trust microcopy under the CTA. */
+.hint {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--history-empty-f-c, #B1B4BB);
+    opacity: 0.75;
+    animation: rise 0.5s ease-out 0.32s both;
+}
+
+.connectBtn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 40%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: sheen 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -8px; }
+}
+
+@keyframes bob {
+    0%, 100% { translate: 0 0; rotate: -3deg; }
+    50% { translate: 0 -6px; rotate: -1.5deg; }
+}
+
+@keyframes sheen {
+    0%, 55% { left: -60%; }
+    85%, 100% { left: 120%; }
+}
+
+/* Staggered entrance for the stack → title → sub → CTA → hint. */
+@keyframes rise {
+    from { opacity: 0; translate: 0 14px; }
+    to { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chip,
+    .coupon,
+    .connectBtn::after,
+    .ticketStack,
+    .title,
+    .sub,
+    .connectBtn,
+    .hint {
+        animation: none;
+    }
+}

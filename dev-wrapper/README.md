@@ -8,6 +8,11 @@ implement.
 ## What it does
 
 1. Reads `theme`, `walletAddress`, `extensionId` from the controls.
+   When a device preset is active (Mobile/Responsive view modes) the payload
+   also carries `devicePlatform: 'ios' | 'android'`, so the backend can bake
+   an explicit platform into platform-sensitive iframe URLs it builds (e.g.
+   AppCard's `platform` param in `couponsIframeSrc`) instead of those pages
+   UA-sniffing the desktop browser. Ignored until the backend supports it.
 2. Calls `POST $VITE_PORTAL_API` (the dev `check/portal` endpoint) with
    `x-api-key: $VITE_PORTAL_API_KEY`. The URL and key actually used are
    chosen by the **Wallet provider** selector — see
