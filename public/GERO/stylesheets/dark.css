@@ -2,8 +2,8 @@
    Font: Inter, already loaded and applied by DEFAULT/stylesheets.
 */
 :root {
-    --bg: #000000;
-    --header-bg: #000000;
+    --bg: transparent;
+    --header-bg: transparent;
 
     --title-f-s: 28px;
     --title-f-w: 700;
