@@ -43,11 +43,14 @@
     border-radius: var(--category-btn-hover-radius);
 }
 
+/* Selected falls back to the hover look, so platforms that never defined a
+   selected state keep rendering exactly as before. */
 .selected {
     color: var(--category-btn-hover-f-c);
     font-weight: var(--category-btn-hover-f-w);
     border-width: var(--category-btn-hover-border-w);
-    background: var(--category-btn-hover-bg);
+    border-color: var(--category-btn-selected-border-c, var(--category-btn-border-c));
+    background: var(--category-btn-selected-bg, var(--category-btn-hover-bg));
 }
 
 .arrow {

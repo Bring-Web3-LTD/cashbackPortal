@@ -21,7 +21,7 @@ const Loading = () => {
                 Processing
             </div>
             <div className={styles.msg}>
-                We are processing your request<br />it could take a few seconds.
+                We are processing your request.<br />It could take a few seconds.
             </div>
             <button
                 id="status-modal-loading-btn"
@@ -74,11 +74,19 @@ const Failure = ({ closeFn }: StatusProps) => {
     )
 }
 
+// The status modal can sit on its own surface, separate from the other modals.
+// Both fall back to the shared shell, so platforms that set neither are unchanged.
+const shellOverrides = {
+    '--custom-modal-bg': 'var(--modal-status-bg, var(--modal-bg))',
+    '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
+}
+
 const StatusModal = ({ open, closeFn, status }: Props) => {
     return (
         <Modal
             open={open}
             closeFn={closeFn}
+            style={shellOverrides}
         >
             {status === 'loading' ?
                 <Loading />

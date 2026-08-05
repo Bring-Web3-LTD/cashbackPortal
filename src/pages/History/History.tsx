@@ -222,7 +222,9 @@ const HistoryDesktop = () => {
                     navigate(-1)
                 }}
             >
-                <Icon name="arrow-left.svg" alt="" />
+                <span className={styles.back_icon}>
+                    <Icon name="arrow-left.svg" alt="" />
+                </span>
                 <span className={styles.back_btn_text}>
                     {t('back')}
                 </span>
@@ -232,10 +234,13 @@ const HistoryDesktop = () => {
                     <h1 className={styles.title}>{t('historyTitle')}</h1>
                     <div className={styles.table}>
                         <div className={styles.table_header}>
-                            <span className={styles.table_header_cell}>Purchase</span>
-                            <span className={styles.table_header_cell}>Amount</span>
-                            <span className={styles.table_header_cell}>Status</span>
-                            <span className={styles.table_header_cell}>Details</span>
+                            {/* Translatable so a platform can rename a column
+                                (e.g. GERO's "Reward" / "Amount in Token");
+                                the default keeps the existing wording. */}
+                            <span className={styles.table_header_cell}>{t('historyColPurchase', 'Purchase')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColAmount', 'Amount')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColStatus', 'Status')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColDetails', 'Details')}</span>
                         </div>
                         {
                             history.map((item, i) =>

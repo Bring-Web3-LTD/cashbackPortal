@@ -331,7 +331,9 @@
 
     --history-back-hover-f-s: 14px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #F5F8FF;
+    /* Matches the resting --history-page-back-f-c, so the back label doesn't
+       shift colour on hover. */
+    --history-back-hover-f-c: #797A7D;
 
     --history-back-x-location: 64px;
 

@@ -34,7 +34,9 @@
     align-items: center;
     gap: 6px;
     align-self: stretch;
-    background: var(--primary-btn-bg);
+    /* Popup CTAs can differ from the rewards CTA (e.g. a solid fill where the
+       banner uses a gradient); falls back to it when unset. */
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
     font-size: var(--primary-btn-f-s);
     font-weight: var(--primary-btn-f-w);
     color: var(--primary-btn-f-c);
@@ -48,10 +50,10 @@
 }
 
 .btn:hover {
-    background: var(--primary-btn-hover-bg);
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
 }
 
 .btn:disabled {
-    background: var(--primary-btn-disabled-bg);
+    background: var(--modal-primary-btn-disabled-bg, var(--primary-btn-disabled-bg));
     color: var(--primary-btn-disabled-f-c);
 }

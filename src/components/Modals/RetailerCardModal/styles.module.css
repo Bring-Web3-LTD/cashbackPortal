@@ -1,5 +1,6 @@
 .retailer_overlay {
     --custom-modal-bg: var(--retailer-custom-modal-bg, var(--modal-bg));
+    --custom-modal-radius: var(--retailer-custom-modal-radius, var(--modal-radius));
 }
 
 .retailer_overlay_desktop {
@@ -184,7 +185,9 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    background: var(--primary-btn-bg);
+    /* See LoginModal: popup CTAs may use a different fill from the rewards
+       CTA, falling back to it when unset. */
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
     font-size: var(--modal-deal-btn-f-s, var(--primary-btn-f-s));
     font-weight: var(--primary-btn-f-w);
     color: var(--primary-btn-f-c);
@@ -199,16 +202,16 @@
 }
 
 .start_btn:hover {
-    background: var(--primary-btn-hover-bg);
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
 }
 
 .start_btn:disabled {
-    background: var(--primary-btn-disabled-bg);
+    background: var(--modal-primary-btn-disabled-bg, var(--primary-btn-disabled-bg));
     color: var(--primary-btn-disabled-f-c);
 }
 
 .loading_btn:disabled {
-    background: var(--primary-btn-bg);
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
     color: var(--primary-btn-f-c);
     opacity: 1;
     cursor: default;
@@ -236,14 +239,17 @@
     color: var(--modal-deal-consent-f-c);
 }
 
+/* The modal avatar can be ringed differently from the retailer card's, so it
+   has its own vars; both fall back to the card's, leaving platforms that only
+   define those rendering exactly as before. */
 .logo_container {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
-    border-width: var(--retailer-card-img-border-w);
+    border-width: var(--modal-deal-logo-border-w, var(--retailer-card-img-border-w));
     border-style: solid;
-    border-color: var(--retailer-card-img-border-c);
+    border-color: var(--modal-deal-logo-border-c, var(--retailer-card-img-border-c));
     border-radius: 50%;
     margin-bottom: 6px;
 }

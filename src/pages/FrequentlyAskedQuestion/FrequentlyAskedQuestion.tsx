@@ -133,7 +133,9 @@ const FrequentlyAskedQuestion = () => {
           navigate(-1)
         }}
       >
-        <Icon name="arrow-left.svg" alt="arrow" />
+        <span className={styles.back_icon}>
+          <Icon name="arrow-left.svg" alt="arrow" />
+        </span>
         <span className={styles.back_btn_text}>
           {t('back')}
         </span>

@@ -238,6 +238,18 @@ styleAsEl.addEventListener('change', () => {
     void refresh()
 })
 
+// Adds `?test=status` to the portal URL, which shows the portal's claim
+// status-modal preview buttons. The portal ignores the flag on a prod build.
+const STATUS_PREVIEW_KEY = 'bring-dev-wrapper:status-preview'
+const statusPreviewEl = $<HTMLInputElement>('statusPreview')
+statusPreviewEl.checked = localStorage.getItem(STATUS_PREVIEW_KEY) === '1'
+statusPreviewEl.addEventListener('change', () => {
+    localStorage.setItem(STATUS_PREVIEW_KEY, statusPreviewEl.checked ? '1' : '0')
+    // The flag is read from the query string at bootstrap — reload to apply.
+    isFirstLoad = true
+    void refresh()
+})
+
 const startConnectedEl = $<HTMLInputElement>('startConnected')
 startConnectedEl.checked = startConnected
 startConnectedEl.addEventListener('change', () => {
@@ -711,6 +723,7 @@ async function refresh() {
         const src = buildIframeSrc(portalUrl!, token)
         const u = new URL(src)
         if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
+        if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
         iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')

@@ -147,7 +147,7 @@ const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
             <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
                 No results.
             </div>
-            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-option-f-c)" }}>
+            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-no-results-hint-f-c, var(--search-option-f-c))" }}>
                 Try a different search term
             </div>
         </components.NoOptionsMessage>

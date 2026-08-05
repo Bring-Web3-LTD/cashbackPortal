@@ -1,0 +1,458 @@
+/* GERO — no dedicated light theme; light.css re-imports this file.
+   Font: Inter, already loaded and applied by DEFAULT/stylesheets.
+*/
+:root {
+    --bg: #000000;
+    --header-bg: #000000;
+
+    --title-f-s: 28px;
+    --title-f-w: 700;
+    --title-f-c: #FFFFFF;
+
+    --subtitle-f-s: 18px;
+    --subtitle-f-w: 400;
+    --subtitle-f-c: #FFFFFF;
+    --legal-link-f-s: 10px;
+    --legal-link-f-w: 400;
+    --legal-link-f-c: #7A7D83;
+    --legal-link-decoration: none;
+    /* "Need Help?" / "Missing a reward?" are secondary buttons: no fill,
+       accent label, muted outline. */
+    --header-btn-bg: transparent;
+    --header-btn-f-s: 15px;
+    --header-btn-f-w: 400;
+    --header-btn-f-c: #00DFF3;
+    --header-btn-border-w: 1px;
+    --header-btn-border-c: rgba(86, 98, 99, 0.75);
+    --header-btn-radius: 100px;
+    /* 12px insets, not 16 — at 16 the longer label stops fitting the fixed
+       160px pill and wraps out of it. */
+    --header-btn-p: 9px 12px;
+    --header-btn-w: 160px;
+    /* 9px insets + 20px line box; the portal's 29px default clipped the label. */
+    --header-btn-h: 38px;
+    /* Sentence case — capitalize would give "Missing A Reward?". */
+    --header-btn-transform: none;
+
+    --header-btn-hover-bg: rgba(30, 35, 48, 0.35);
+    --header-btn-hover-f-c: #00C8DB;
+    --header-btn-hover-border-w: 1px;
+    --header-btn-hover-border-c: rgba(86, 98, 99, 0.45);
+
+    /* Pressed keeps the resting border and only darkens the label. */
+    --header-btn-pressed-bg: rgba(30, 35, 48, 0.35);
+    --header-btn-pressed-f-c: #00BBC5;
+    --header-btn-pressed-border-w: 1px;
+    --header-btn-pressed-border-c: rgba(86, 98, 99, 0.75);
+
+    /* Rewards banner. Its 570x98 box, 22px inset and 12px radius are already
+       hardcoded in Rewards/styles.module.css and match. */
+    --rewards-bg: #1A1A1A;
+    --rewards-img-size: 24px;
+    --rewards-icon-container-width: 48px;
+    --rewards-icon-container-height: 48px;
+
+    --claim-img-bg: #262931;
+    --claim-img-border-w: 0;
+    --claim-img-border-c: transparent;
+    --claim-img-radius: 50%;
+
+    --pending-img-bg: #262931;
+    --pending-img-border-w: 0;
+    --pending-img-border-c: transparent;
+    --pending-img-radius: 50%;
+
+    --rewards-text-f-s: 22px;
+    --rewards-text-f-w: 700;
+    --claim-text-f-c: #FFFFFF;
+    --pending-text-f-c: #FFFFFF;
+
+    --rewards-usd-f-s: 15px;
+    --rewards-usd-f-w: 700;
+    --claim-usd-f-c: #A8ADBF;
+    --pending-usd-f-c: #A8ADBF;
+
+    --rewards-amount-f-s: 22px;
+    --rewards-amount-f-w: 700;
+    --rewards-amount-l-h: 28px;
+
+    /* Painted as a background behind background-clip: text, so a flat colour. */
+    --claim-amount-f-c: #FFFFFF;
+    --pending-amount-f-c: #FFFFFF;
+
+    /* Both banner pills are 205x46 / radius 100 and both take the primary
+       gradient — "Cashback History" included, not the outlined variant. */
+    --rewards-btn-width: 205px;
+    --rewards-btn-f-s: 17px;
+    --rewards-btn-f-w: 600;
+    --rewards-btn-l-h: 24px;
+    --rewards-btn-radius: 100px;
+
+    --primary-btn-f-s: 17px;
+    --primary-btn-f-w: 600;
+    --primary-btn-f-c: #000000;
+    --primary-btn-radius: 100px;
+    --primary-btn-border-w: 0;
+    --primary-btn-border-c: transparent;
+    --primary-btn-bg: linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    /* Hover/pressed darken the gradient with a 12% black overlay layer. */
+    --primary-btn-hover-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    --primary-btn-pressed-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+    /* Disabled is the 40% gradient at 50% layer opacity, baked to 20% because
+       the button has no opacity variable. */
+    --primary-btn-disabled-bg: linear-gradient(90deg, rgba(0, 200, 242, 0.2) 0%, rgba(0, 250, 214, 0.2) 100%);
+    --primary-btn-disabled-f-c: #141414;
+    /* Spinner arc on the gradient CTA takes the label colour, not white. */
+    --rewards-loader-c: #000000;
+
+    /* Popup CTAs (Connect / Go Shopping / Install) use a solid accent fill
+       rather than the banner's gradient. */
+    --modal-primary-btn-bg: #00DFF3;
+    --modal-primary-btn-hover-bg: #00C8DB;
+    --modal-primary-btn-disabled-bg: rgba(0, 223, 243, 0.3);
+
+    --pending-btn-f-c: #000000;
+    --pending-btn-border-c: transparent;
+    --pending-btn-border-w: 0;
+    --pending-btn-bg: linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+
+    --pending-btn-hover-f-c: #000000;
+    --pending-btn-hover-border-c: transparent;
+    --pending-btn-hover-border-w: 0;
+    --pending-btn-hover-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+
+    --pending-btn-pressed-f-c: #000000;
+    --pending-btn-pressed-border-c: transparent;
+    --pending-btn-pressed-border-w: 0;
+    --pending-btn-pressed-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 100%), linear-gradient(90deg, #00C8F2 0%, #00FAD6 100%);
+
+    /* Retailer card. */
+    --retailer-card-bg: #1A1A1A;
+    /* Hover is a rgba(0, 214, 233, 0.06) sheet over the card fill; the portal
+       swaps the fill outright, so that composite is flattened here. */
+    --retailer-card-hover-bg: #182526;
+    --retailer-card-border-w: 1px;
+    --retailer-card-border-color: #262931;
+    --retailer-card--hover-border-color: #262931;
+
+    --retailer-card-img-border-c: #262931;
+    --retailer-card-img-border-w: 1px;
+    --retailer-card-img-border-campaign-c: #00DFF3;
+
+    /* The initials fallback has no spec of its own; it follows the flag's accent. */
+    --retailer-logo-fallback-bg: #00DFF3;
+    --retailer-logo-fallback-f-c: #161B26;
+    --retailer-logo-fallback-f-s: 37px;
+    --retailer-logo-fallback-f-s-two-letters: 24px;
+    --retailer-logo-fallback-f-w: 700;
+    --retailer-logo-fallback-border-w: 1px;
+    --retailer-logo-fallback-border-c: #262931;
+
+    --retailer-card-flag-f-s: 15px;
+    --retailer-card-flag-f-w: 700;
+    --retailer-card-flag-f-c: #161B26;
+    --retailer-card-flag-bg: #00DFF3;
+    --retailer-card-flag-campaign-f-c: #161B26;
+    --retailer-card-flag-campaign-bg: #00DFF3;
+    --retailer-card-flag-radius: 6px;
+
+    --retailer-card-name-f-s: 18px;
+    --retailer-card-name-f-w: 700;
+    --retailer-card-name-f-c: #FFFFFF;
+
+    --retailer-card-amount-f-s: 13px;
+    --retailer-card-amount-f-c: #80EBF4;
+    --retailer-card-amount-f-w: 600;
+    --retailer-card-amount-bg: rgba(0, 214, 233, 0.1);
+    --retailer-card-amount-campaign-f-w: 600;
+    --retailer-card-amount-campaign-bg: rgba(0, 214, 233, 0.1);
+
+    /* Loading placeholder: a plain raised surface rather than the badge tint
+       the bars would otherwise inherit, and no border on the card. */
+    --retailer-card-skeleton-bg: #262931;
+    --retailer-card-skeleton-card-bg: #141414;
+    --retailer-card-skeleton-border-w: 0;
+
+    --deals-amount-f-s: 15px;
+    --deals-amount-f-w: 400;
+    --deals-amount-f-c: #A8ADBF;
+
+    --loading-msg-f-s: 12px;
+    --loading-msg-f-w: 500;
+    --loading-msg-f-c: #F5F8FF;
+
+    /* Filter tag: the pill showing the active search term with an X to clear
+       it. It has no distinct hover state, so hover matches rest. */
+    --filter-btn-f-s: 14px;
+    --filter-btn-f-w: 600;
+    --filter-btn-f-c: #FFFFFF;
+    --filter-btn-bg: #262931;
+    --filter-btn-hover-bg: #262931;
+    --filter-btn-hover-f-c: #FFFFFF;
+    --filter-btn-border-w: 0;
+    --filter-btn-border-c: transparent;
+    --filter-btn-radius: 10px;
+
+    /* Category chip. */
+    --category-btn-bg: #1A1A1A;
+    --category-btn-f-s: 15px;
+    --category-btn-f-w: 400;
+    --category-btn-f-c: #A8ADBF;
+    --category-btn-border-w: 1px;
+    --category-btn-border-c: rgba(86, 98, 99, 0.75);
+    --category-btn-radius: 100px;
+    --category-btn-hover-bg: rgba(30, 35, 48, 0.35);
+    --category-btn-hover-f-c: #FFFFFF;
+    --category-btn-hover-f-w: 400;
+    --category-btn-hover-border-w: 1px;
+    --category-btn-hover-border-c: rgba(86, 98, 99, 0.45);
+    --category-btn-hover-radius: 100px;
+    /* Selected keeps the resting fill and is marked by the accent ring alone. */
+    --category-btn-selected-bg: #1A1A1A;
+    --category-btn-selected-border-c: #00DFF3;
+    /* Loading placeholder chip. */
+    --category-skeleton-bg: #1B1E23;
+
+    /* Modal shell + copy, shared by every modal. The claim popups sit centred
+       in the viewport, so no vertical nudge. */
+    --modal-offset-top: 0px;
+    --modal-bg: #1B1E24;
+    --modal-overlay-bg: rgba(0, 0, 0, 0.8);
+    --modal-border-w: 0;
+    --modal-border-c: transparent;
+    --modal-radius: 12px;
+    /* Modal.tsx renders the close icon at 20px; this bumps it to 24. */
+    --modal-close-size: 24px;
+    --modal-title-f-s: 18px;
+    --modal-title-f-w: 700;
+    --modal-title-f-c: #FFFFFF;
+    --modal-paragraph-f-s: 15px;
+    --modal-paragraph-f-w: 400;
+    --modal-paragraph-f-c: #FFFFFF;
+
+    --modal-claim-amount-f-s: 40px;
+    --modal-claim-amount-f-w: 700;
+    --modal-claim-amount-f-c: #F5F8FF;
+    --modal-claim-details-bg: #282B30;
+    --modal-claim-details-border-w: 0;
+    --modal-claim-details-border-c: transparent;
+    --modal-claim-details-radius: 12px;
+    --modal-claim-disclaimer-f-s: 14px;
+    --modal-claim-disclaimer-f-w: 400;
+    --modal-claim-disclaimer-f-c: #B9BBBF;
+    --modal-claim-address-bg: #282B30;
+    --modal-claim-address-title-f-s: 14px;
+    --modal-claim-address-title-f-w: 500;
+    --modal-claim-address-title-f-c: #F5F8FF;
+    --modal-claim-address-border-w: 0;
+    --modal-claim-address-border-c: transparent;
+    --modal-claim-address-radius: 12px;
+    --modal-claim-address-f-s: 14px;
+    --modal-claim-address-f-w: 400;
+    --modal-claim-address-f-c: #F5F8FF;
+    --modal-claim-tooltip-f-s: 14px;
+    --modal-claim-tooltip-f-w: 400;
+    --modal-claim-tooltip-f-c: #F5F8FF;
+
+    --modal-claim-countdown-radius: 100px;
+    --modal-claim-countdown-border-w: 2px;
+    --modal-claim-countdown-border-c: #FFEF46;
+    --modal-claim-countdown-progress-c: #282B30;
+    --modal-claim-countdown-f-s: 16px;
+    --modal-claim-countdown-f-w: 500;
+    --modal-claim-countdown-f-c: #FFEF46;
+
+    /* Retailer / Go Shopping modal. Its avatar ring is lighter than the
+       retailer card's logo ring.
+       --retailer-custom-modal-bg and --retailer-custom-modal-radius stay unset:
+       the popup paints its header, content and footer over the card in
+       --modal-bg, so the card itself never shows. The terms view is the one
+       place it does, and there it is darker and rounder. */
+    --modal-terms-bg: #161B26;
+    --modal-terms-radius: 16px;
+    --modal-deal-logo-border-w: 1px;
+    --modal-deal-logo-border-c: rgba(86, 98, 99, 0.75);
+    --modal-deal-name-f-s: 18px;
+    --modal-deal-name-f-w: 700;
+    --modal-deal-name-f-c: #FFFFFF;
+    --modal-deal-btn-f-s: 17px;
+    --modal-deal-back-f-c: #7A7D83;
+    --modal-deal-back-f-s: 13px;
+    /* Terms panel: every line is primary text on the card surface; only the
+       heading is semi-bold. */
+    --modal-deal-markdown-bg: #141414;
+    --modal-deal-markdown-border-w: 1px;
+    --modal-deal-markdown-border-c: rgba(86, 98, 99, 0.3);
+    --modal-deal-markdown-radius: 8px;
+    --modal-deal-markdown-f-s: 13px;
+    --modal-deal-markdown-list-f-s: 13px;
+    --modal-deal-markdown-f-w: 400;
+    --modal-deal-markdown-f-c: #FFFFFF;
+    --modal-deal-markdown-bold-f-w: 600;
+    --modal-deal-markdown-bold-f-c: #FFFFFF;
+    --modal-deal-markdown-h3-f-s: 13px;
+    --modal-deal-markdown-h3-f-w: 600;
+    --modal-deal-markdown-h3-f-c: #FFFFFF;
+    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.10);
+    /* "By clicking Go Shopping you accept the Terms" — the sentence is muted,
+       the Terms link is white and underlined. */
+    --modal-deal-consent-f-s: 13px;
+    --modal-deal-consent-f-w: 600;
+    --modal-deal-consent-f-c: #A8ADBF;
+    --modal-deal-terms-btn-f-c: #FFFFFF;
+    --modal-deal-terms-btn-hover-f-c: #FFFFFF;
+
+    /* Claim status modal (error / success / processing). It sits on a darker,
+       more rounded surface than the popup modals. */
+    --modal-status-bg: #141414;
+    --modal-status-radius: 20px;
+    --modal-status-title-f-s: 30px;
+    --modal-status-title-f-w: 700;
+    --modal-status-title-loading-f-c: #FFFFFF;
+    --modal-status-title-success-f-c: #39CB98;
+    --modal-status-title-failure-f-c: #FF6464;
+
+    --modal-status-msg-f-s: 16px;
+    --modal-status-msg-f-w: 400;
+    --modal-status-msg-f-c: #A8ADBF;
+
+    /* "Done" is the secondary button: faint fill, muted outline. */
+    --modal-status-btn-bg: rgba(255, 255, 255, 0.08);
+    --modal-status-btn-f-s: 16px;
+    --modal-status-btn-f-w: 400;
+    --modal-status-btn-f-c: #FFFFFF;
+    --modal-status-btn-border-w: 1px;
+    --modal-status-btn-border-c: #556263;
+    --modal-status-btn-radius: 100px;
+
+    /* Hover only lifts the fill; everything else holds the resting look. */
+    --modal-status-btn-hover-bg: rgba(255, 255, 255, 0.12);
+    --modal-status-btn-hover-f-s: 16px;
+    --modal-status-btn-hover-f-w: 400;
+    --modal-status-btn-hover-f-c: #FFFFFF;
+    --modal-status-btn-hover-border-w: 1px;
+    --modal-status-btn-hover-border-c: #556263;
+    --modal-status-btn-hover-radius: 100px;
+
+    /* Disabled is the resting look at 50% opacity, baked into each channel
+       since the button has no opacity variable. */
+    --modal-status-btn-disabled-bg: rgba(255, 255, 255, 0.04);
+    --modal-status-btn-disabled-f-s: 16px;
+    --modal-status-btn-disabled-f-w: 400;
+    --modal-status-btn-disabled-f-c: rgba(255, 255, 255, 0.5);
+    --modal-status-btn-disabled-border-w: 1px;
+    --modal-status-btn-disabled-border-c: rgba(85, 98, 99, 0.5);
+    --modal-status-btn-disabled-radius: 100px;
+
+    --modal-status-loader-c: #00DFF3;
+
+    --scrollbar-bg: #282B30;
+    --scrollbar-w: 12px;
+
+    /* Search. The input has no fill and keeps the same border in every state,
+       so no --search-border-focus-c: it falls back to --search-border-c. */
+    --search-bg: transparent;
+    --search-f-s: 16px;
+    --search-f-w: 400;
+    --search-f-c: #FFFFFF;
+    --search-placeholder-f-c: #7A7D83;
+    --search-border-w: 2px;
+    --search-border-c: rgba(86, 98, 99, 0.75);
+    --search-radius: 10px;
+
+    --search-menu-bg: #000000;
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: rgba(86, 98, 99, 0.75);
+    --search-menu-radius: 10px;
+
+    --search-option-f-s: 14px;
+    --search-option-f-w: 400;
+    --search-option-f-c: #FFFFFF;
+    --search-option-hover-bg: rgba(30, 35, 48, 0.35);
+    /* "Try a different search term" is muted under the white "No results." */
+    --search-no-results-hint-f-c: #A8ADBF;
+
+    /* History toolbar. */
+    --history-title-f-s: 20px;
+    --history-title-f-w: 700;
+    --history-title-f-c: #FFFFFF;
+
+    --history-back-f-s: 13px;
+    --history-back-f-w: 600;
+    --history-back-f-c: #7A7D83;
+
+    --history-back-hover-f-s: 13px;
+    --history-back-hover-f-w: 600;
+    --history-back-hover-f-c: #A8ADBF;
+    /* Opt in to tinting the back arrow on hover: the icon doubles as the mask,
+       so one file covers both states. */
+    --history-back-icon-src: url('/GERO/icons/dark/arrow-left.svg');
+    --history-back-icon-hover-f-c: #A8ADBF;
+
+    --history-back-x-location: 64px;
+
+    --history-table-header-bg: #000000;
+    /* Shorthand, so the header is divided on its bottom edge only, and with a
+       fainter rule than the one the rows use between themselves. */
+    --history-table-header-border-c: rgba(138, 142, 148, 0.1);
+    --history-table-header-border-w: 0 0 1px;
+    --history-table-header-radius: 0;
+
+    --history-table-header-f-s: 14px;
+    --history-table-header-f-w: 400;
+    --history-table-header-f-c: #A8ADBF;
+
+    /* Rows and expanded rows carry no fill of their own — the page shows
+       through. Only hover tints. */
+    --history-table-row-border-w: 1px;
+    --history-table-row-border-c: rgba(86, 98, 99, 0.75);
+    --history-table-row-bg: transparent;
+
+    --history-table-row-hover-bg: rgba(30, 35, 48, 0.35);
+    --history-table-row-active-bg: transparent;
+    /* History rows. Sizes follow the deal row (14/400); the aggregate
+       "Total claims" row shares these vars, so only its status cell can be
+       bolded. Claimed and pending read white; only canceled and completed
+       carry a status colour. */
+    --history-claimed-icon-bg: #00DFF3;
+    --history-details-btn-bg: #1B1E23;
+    --history-purchase-name-f-s: 14px;
+    --history-purchase-name-f-w: 400;
+    --history-purchase-name-f-c: #FFFFFF;
+
+    --history-amount-f-s: 14px;
+    --history-amount-f-w: 400;
+    --history-amount-f-c: #FFFFFF;
+
+    --history-status-f-s: 14px;
+    --history-status-f-w: 400;
+    --history-status-f-c: #39CB98;
+    --history-status-pending-f-c: #FFFFFF;
+    --history-status-canceled-f-c: #FF6464;
+    --history-status-claimed-f-c: #FFFFFF;
+    --history-status-claimed-f-w: 700;
+
+    --history-description-f-s: 14px;
+    --history-description-f-w: 400;
+    --history-description-f-c: #F5F8FF;
+    --history-description-bold-f-w: 700;
+
+    /* Empty history. */
+    --history-empty-f-s: 15px;
+    --history-empty-f-w: 400;
+    --history-empty-f-c: #A8ADBF;
+
+    /* FAQ. Its rows are divided more faintly than the history table's. */
+    --faq-row-border-c: rgba(138, 142, 148, 0.1);
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 600;
+    --faq-question-f-c: #FFFFFF;
+
+    --faq-answer-f-s: 15px;
+    --faq-answer-f-w: 400;
+    --faq-answer-f-c: #A8ADBF;
+
+    --faq-link-f-s: 15px;
+    --faq-link-f-w: 400;
+    --faq-link-f-c: #00DFF3;
+}

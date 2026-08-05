@@ -64,7 +64,7 @@
     box-sizing: border-box;
     min-width: 90px;
     width: var(--header-btn-w, auto);
-    height: 29px;
+    height: var(--header-btn-h, 29px);
     padding: var(--header-btn-p, 0 16px);
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);

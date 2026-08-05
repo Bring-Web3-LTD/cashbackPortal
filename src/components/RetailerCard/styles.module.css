@@ -136,10 +136,19 @@
     font-weight: var(--retailer-card-flag-campaign-f-w, var(--retailer-card-flag-f-w));
 }
 
+/* The placeholder card can drop the real card's border and sit on its own
+   surface; both fall back to the card's values. */
+.skeleton_card {
+    background: var(--retailer-card-skeleton-card-bg, var(--retailer-card-bg));
+    border-width: var(--retailer-card-skeleton-border-w, var(--retailer-card-border-w));
+}
+
+/* Placeholder blocks can be a plain surface rather than the cashback badge's
+   tint; falls back to it so platforms that set neither are unchanged. */
 .skeleton_logo,
 .skeleton_retailer_name,
 .skeleton_cashback_rate {
-    background: var(--retailer-card-amount-bg);
+    background: var(--retailer-card-skeleton-bg, var(--retailer-card-amount-bg));
 }
 
 .skeleton_logo {

@@ -10,6 +10,7 @@
 
 .modal {
     --_modal-bg: var(--custom-modal-bg, var(--modal-bg));
+    --_modal-radius: var(--custom-modal-radius, var(--modal-radius));
     --padding: 24px;
     margin-top: var(--modal-offset-top);
     position: relative;
@@ -23,7 +24,7 @@
     border-width: var(--modal-border-w);
     border-style: solid;
     border-color: var(--modal-border-c);
-    border-radius: var(--modal-radius);
+    border-radius: var(--_modal-radius);
     user-select: none;
     -webkit-user-select: none;
 }

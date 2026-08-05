@@ -27,6 +27,28 @@
     transition: .2s;
 }
 
+/* The arrow's colour is baked into its SVG, so CSS can't repaint the <img>.
+   Optional hover tint: a platform opts in by pointing --history-back-icon-src at
+   its own arrow and setting --history-back-icon-hover-f-c. The overlay then uses
+   the arrow as a mask and paints that colour over it. Set neither and the fill
+   stays transparent, so the overlay is invisible and nothing changes. */
+.back_icon {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.back_icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--history-back-icon-hover-f-c, transparent);
+    -webkit-mask: var(--history-back-icon-src) center / contain no-repeat;
+    mask: var(--history-back-icon-src) center / contain no-repeat;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
 .table {
     width: 1167px;
     border-radius: var(--history-table-radius, 0);
@@ -223,15 +245,19 @@ b {
 }
 
 @media (hover: hover) {
+    /* Only the fill changes on hover — the row divider stays put. */
     .collapsible:hover {
-        border-color: transparent;
         background: var(--history-table-row-hover-bg);
     }
 
     .back_btn:hover {
         font-size: var(--history-back-hover-f-s);
         font-weight: var(--history-back-hover-f-w);
-        color: var(--history-page-back-f-c, var(--history-back-hover-f-c));
+        color: var(--history-back-hover-f-c, var(--history-page-back-f-c));
+    }
+
+    .back_btn:hover .back_icon::after {
+        opacity: 1;
     }
 }
 

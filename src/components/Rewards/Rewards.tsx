@@ -200,15 +200,20 @@ const Rewards = () => {
                     >
                         {
                             loading ?
-                                <Oval
-                                    visible={true}
-                                    height="20"
-                                    width="20"
-                                    color="#fff"
-                                    secondaryColor='grey'
-                                    strokeWidth={6}
-                                    ariaLabel="oval-loading"
-                                />
+                                // Oval writes `color` straight into the SVG `stroke`
+                                // attribute, where a var() never resolves — so the
+                                // theme drives it through the wrapper's `color`.
+                                <span className={styles.loader}>
+                                    <Oval
+                                        visible={true}
+                                        height="20"
+                                        width="20"
+                                        color="currentColor"
+                                        secondaryColor='grey'
+                                        strokeWidth={6}
+                                        ariaLabel="oval-loading"
+                                    />
+                                </span>
                                 :
                                 t('claimCashback')
                         }

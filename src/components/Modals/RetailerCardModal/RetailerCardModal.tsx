@@ -24,6 +24,14 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     fallbackLogo?: string
 }
 
+// The terms view can sit on its own surface, separate from the rest of the
+// modal. Both fall back to the shell the modal already uses, so platforms that
+// set neither are unchanged.
+const termsShellOverrides = {
+    '--custom-modal-bg': 'var(--modal-terms-bg, var(--retailer-custom-modal-bg, var(--modal-bg)))',
+    '--custom-modal-radius': 'var(--modal-terms-radius, var(--retailer-custom-modal-radius, var(--modal-radius)))',
+}
+
 const RetailerCardModal = ({
     open,
     closeFn,
@@ -78,6 +86,7 @@ const RetailerCardModal = ({
                 style={{
                     '--modal-h': showingTerms ? 'calc(288px - 40px - 6px)' : 'calc(288px - 40px - 24px)',
                     '--modal-pb': showingTerms ? '6px' : '24px',
+                    ...(showingTerms ? termsShellOverrides : {}),
                 }}
                 open={open}
                 closeFn={onClose}

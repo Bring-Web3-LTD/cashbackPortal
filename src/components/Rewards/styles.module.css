@@ -125,6 +125,13 @@
     transition: .2s;
 }
 
+/* Spinner arc colour. Falls back to the white it has always been, so
+   platforms that don't set the variable are unchanged. */
+.loader {
+    display: flex;
+    color: var(--rewards-loader-c, #fff);
+}
+
 .claim_btn {
     background: var(--primary-btn-bg);
     color: var(--primary-btn-f-c);
