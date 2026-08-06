@@ -111,6 +111,93 @@ html, body {
 .logout-btn:hover { color: #e7e9ee; }
 .logout-btn[hidden] { display: none; }
 
+/* Centre cluster of the header: compact viewport/display controls (view mode,
+   device preset, stage size, wrapper background). Label-free — tooltips carry
+   the explanations. Interactive tooling chrome, so like the sidebar it's
+   raised above the visual-diff overlay layers (see Z_LAYER in
+   visualDiffOverlay.ts). */
+.view-toolbar {
+    position: relative;
+    z-index: 2147483640;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+.view-toolbar select,
+.view-toolbar input {
+    background: #15191f;
+    border: 1px solid #2a313c;
+    color: #e7e9ee;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.view-toolbar input[type="number"] {
+    width: 62px;
+}
+
+.view-toolbar input[type="color"] {
+    width: 34px;
+    height: 28px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.view-toolbar button {
+    background: #1f2530;
+    border: 1px solid #2a313c;
+    color: #e7e9ee;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 12px;
+    font-family: inherit;
+    line-height: 1.3;
+    cursor: pointer;
+}
+
+.view-toolbar button:hover { background: #262d3a; }
+
+.view-toolbar button:disabled,
+.view-toolbar select:disabled,
+.view-toolbar input:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.view-toolbar button.active {
+    background: #3d5aeb;
+    border-color: #3d5aeb;
+}
+
+.view-toolbar button.active:hover { background: #2e48d9; }
+
+.view-toolbar .tb-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.view-toolbar .tb-x {
+    color: #8a93a3;
+    font-size: 12px;
+}
+
+/* Right side of the header; mirrors the flexible title side so the toolbar
+   stays centred. */
+.bar-actions {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
 .layout {
     position: relative;
     display: grid;
@@ -284,15 +371,88 @@ html, body {
     gap: 8px;
 }
 
+.controls label.row { cursor: pointer; }
+
+/* Custom checkboxes: native look replaced with a rounded square that fills
+   with the accent blue and pops in a checkmark (clip-path) when checked. */
 .controls .row input[type="checkbox"] {
-    width: auto;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
     margin: 0;
+    flex: none;
+    display: inline-grid;
+    place-content: center;
+    background: #15191f;
+    border: 1px solid #3a4351;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
 }
 
-.controls .btn-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.controls .row input[type="checkbox"]::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    background: #7ba6ff;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transition: transform 0.12s ease-in-out;
+}
+
+/* Checked state stays quiet: same dark fill, just a blue border + blue tick
+   (a solid accent fill read as too dominant next to the muted sidebar). */
+.controls .row input[type="checkbox"]:checked {
+    background: #1a2030;
+    border-color: #3d5aeb;
+}
+
+.controls .row input[type="checkbox"]:checked::before { transform: scale(1); }
+
+.controls .row input[type="checkbox"]:hover:not(:disabled):not(:checked) {
+    border-color: #4a5568;
+}
+
+.controls .row input[type="checkbox"]:focus-visible {
+    outline: 2px solid rgba(61, 90, 235, 0.5);
+    outline-offset: 1px;
+}
+
+.controls .row input[type="checkbox"]:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+/* Checkbox row with a link-styled action on the right (e.g. "Start connected"
+   + "Send connect"). */
+.controls .row-split {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 8px;
+    margin-bottom: 10px;
+}
+
+.controls .row-split .row { margin-bottom: 0; }
+
+.controls button.link-btn {
+    width: auto;
+    flex: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #7ba6ff;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.controls button.link-btn:hover {
+    background: none;
+    color: #a9c4ff;
 }
 
 .log {
@@ -347,6 +507,27 @@ html, body {
 
 .controls .debug label {
     margin-top: 10px;
+}
+
+/* Entry-count badge in the "Window messages" summary — shows activity while
+   the drawer is collapsed. */
+.msg-count {
+    display: inline-block;
+    min-width: 18px;
+    margin-left: 8px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: #1f2530;
+    border: 1px solid #2a313c;
+    color: #8a93a3;
+    font-size: 10px;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.controls .debug .log {
+    margin-top: 8px;
 }
 
 .jwt-decoded {
@@ -454,6 +635,20 @@ html, body {
     background: #fff;
 }
 
+/* Mobile view with a device preset: exact device viewport, centered, scroll
+   when the device is larger than the available frame area. */
+.frame.mobile.has-device {
+    align-items: safe center;
+    padding: 16px;
+    overflow: auto;
+}
+
+.frame.mobile.has-device .frame-stage {
+    flex: none;
+    width: var(--device-w, 360px);
+    height: var(--device-h, 640px);
+}
+
 /* Responsive view: exact user-set dimensions via CSS variables, centered in
    the frame with scroll overflow when the stage is larger than the viewport. */
 .frame.responsive {
@@ -475,14 +670,69 @@ html, body {
     background: #fff;
 }
 
-.responsive-size {
-    display: flex;
-    gap: 8px;
+/* Collapsible drawers nested inside a fieldset (e.g. the Wallet group's
+   identity fields) sit flush with the fieldset's own bottom padding. */
+.controls fieldset .debug {
+    margin: 10px 0 0;
 }
 
-.responsive-size[hidden] {
-    display: none;
+/* Green dot on the Wallet identity summary: a value is set inside, visible
+   even while the drawer is collapsed. */
+.identity-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3ddc84;
+    margin-left: 8px;
+    vertical-align: middle;
 }
+
+.identity-dot[hidden] { display: none; }
+
+.controls .row input:disabled + span { opacity: 0.5; }
+
+/* Top row of the sidebar: API path plus the small re-bootstrap icon. The
+   refresh lives here (not in a fieldset) because it re-runs the call with
+   EVERYTHING below — Bootstrap params and wallet state alike. */
+.api-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: -6px 0 12px;
+}
+
+.api-row .api-info { margin: 0; }
+
+.api-row .refresh-icon {
+    width: auto;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 7px;
+    color: #b7bdc9;
+}
+
+.api-row .refresh-icon:hover { color: #e7e9ee; }
+
+.api-row .refresh-icon svg {
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.api-row .refresh-icon:hover svg { transform: rotate(90deg); }
+
+/* Uncommitted text-field edits: the portal hasn't re-bootstrapped with them
+   yet, so the refresh icon lights up until the next bootstrap runs. */
+.api-row .refresh-icon.dirty {
+    background: #3d5aeb;
+    border-color: #3d5aeb;
+    color: #fff;
+}
+
+.api-row .refresh-icon.dirty:hover { background: #2e48d9; }
 
 /* Drag-resize handles: only active in responsive mode. Pointer capture on the
    handle keeps the drag alive even when the cursor crosses the iframe. */
@@ -534,11 +784,6 @@ html, body {
 
 .frame.resizing iframe {
     pointer-events: none;
-}
-
-.responsive-size label {
-    flex: 1;
-    min-width: 0;
 }
 
 .frame iframe {

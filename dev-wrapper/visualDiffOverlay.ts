@@ -19,6 +19,8 @@
  *     remove it, `clear` removes all); each shows a live px readout
  *   - `ruler` arms a measuring tape: press-drag between two dots to read the
  *     pixel distance; both dots stay draggable (double-click / Delete removes)
+ *   - `arrow` arms an annotation arrow: press-drag from where the label should
+ *     sit to what you're pointing at; click the label chip to type a note
  *   - `hide` / `lock` / `reset`
  *
  * Note: this overlays the dev-wrapper page itself, NOT the portal rendered
@@ -34,6 +36,19 @@ type Guide = { id: string; axis: 'x' | 'y'; pos: number }
 // A free-angle measuring tape between two viewport points (CSS px). The label
 // shows the straight-line distance between them.
 type Ruler = { id: string; x1: number; y1: number; x2: number; y2: number }
+
+// A free-angle annotation arrow. Same geometry as a Ruler — (x1,y1) is the
+// tail you start the drag from, (x2,y2) the head it points at — but drawn as a
+// thick shaft with a solid head, and carrying no measurement.
+type Arrow = {
+    id: string
+    x1: number
+    y1: number
+    x2: number
+    y2: number
+    // Free text shown in a chip at the tail. Empty until you type one in.
+    text: string
+}
 
 type State = {
     src: string
@@ -52,6 +67,9 @@ type State = {
     gridColor: string
     guides: Guide[]
     rulers: Ruler[]
+    arrows: Arrow[]
+    arrowColor: string
+    arrowWidth: number
 }
 
 const STORAGE_KEY = 'bring.visualDiff.wrapper.v1'
@@ -102,6 +120,12 @@ const DEFAULTS: State = {
     gridColor: '#FF2D9B',
     guides: [],
     rulers: [],
+    arrows: [],
+    // Distinct from every other tool colour (guides cyan, rulers amber, grid
+    // pink, active-state yellow) so an annotation is never mistaken for a
+    // measurement.
+    arrowColor: '#FF3B30',
+    arrowWidth: 6,
 }
 
 const loadState = (): State => {
@@ -407,7 +431,8 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         return Number.isFinite(n) ? Math.max(m, n + 1) : m
     }, 1)
     let hoveredRulerId: string | null = null
-    let rulerArmed = false
+    // Which draw mode the shared catcher is in, if any.
+    let rulerArmed: null | 'ruler' | 'arrow' = null
 
     // With Shift held, snap a stretched endpoint to a pure horizontal or
     // vertical line relative to the anchor (whichever axis the drag favours),
@@ -550,6 +575,331 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         return id
     }
 
+    // --- annotation arrows -------------------------------------------------
+    // Thick free-angle arrows for pointing at things, each with an optional
+    // text label in a chip at the tail. Arm with the "arrow" button, then
+    // press-drag from where the label should sit to whatever you're pointing
+    // at. Both endpoints stay draggable; click the chip to type. Shift
+    // constrains the angle to horizontal/vertical, as with rulers.
+    const arrowEls = new Map<string, HTMLDivElement>()
+    let arrowSeq = state.arrows.reduce((m, a) => {
+        const n = Number(a.id.replace(/^a/, ''))
+        return Number.isFinite(n) ? Math.max(m, n + 1) : m
+    }, 1)
+    let hoveredArrowId: string | null = null
+
+    const arrowColor = () =>
+        /^#[0-9a-fA-F]{6}$/.test(state.arrowColor) ? state.arrowColor : DEFAULTS.arrowColor
+    // Chip text flips to dark on light arrow colours so the label stays
+    // legible whatever colour is chosen.
+    const chipTextColor = () => {
+        const hex = arrowColor()
+        const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
+        return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6 ? '#1a1a1a' : '#ffffff'
+    }
+
+    const removeArrow = (id: string) => {
+        state = { ...state, arrows: state.arrows.filter(a => a.id !== id) }
+        if (hoveredArrowId === id) hoveredArrowId = null
+        renderArrows()
+        save()
+    }
+
+    const positionArrow = (id: string) => {
+        const el = arrowEls.get(id)
+        const a = state.arrows.find(aa => aa.id === id)
+        if (!el || !a) return
+        const w = Math.max(1, state.arrowWidth)
+        const dx = a.x2 - a.x1
+        const dy = a.y2 - a.y1
+        const len = Math.hypot(dx, dy) || 1
+        const ux = dx / len
+        const uy = dy / len
+        // Head scales with thickness; clamped so a very short arrow stays an
+        // arrow rather than collapsing into a triangle with no shaft.
+        const headLen = Math.min(len * 0.6, w * 3.2 + 6)
+        const headHalf = headLen * 0.62
+        const bx = a.x2 - ux * headLen
+        const by = a.y2 - uy * headLen
+        // Perpendicular, for the head's base corners.
+        const px = -uy
+        const py = ux
+
+        const shaft = el.querySelector('[data-a="shaft"]') as SVGLineElement
+        const shaftOutline = el.querySelector('[data-a="shaftOutline"]') as SVGLineElement
+        for (const line of [shaftOutline, shaft]) {
+            line.setAttribute('x1', String(a.x1))
+            line.setAttribute('y1', String(a.y1))
+            line.setAttribute('x2', String(bx))
+            line.setAttribute('y2', String(by))
+        }
+        shaft.setAttribute('stroke', arrowColor())
+        shaft.setAttribute('stroke-width', String(w))
+        shaftOutline.setAttribute('stroke-width', String(w + 3))
+
+        const pts = [
+            `${a.x2},${a.y2}`,
+            `${bx + px * headHalf},${by + py * headHalf}`,
+            `${bx - px * headHalf},${by - py * headHalf}`,
+        ].join(' ')
+        const head = el.querySelector('[data-a="head"]') as SVGPolygonElement
+        const headOutline = el.querySelector('[data-a="headOutline"]') as SVGPolygonElement
+        head.setAttribute('points', pts)
+        head.setAttribute('fill', arrowColor())
+        headOutline.setAttribute('points', pts)
+
+        // Label + delete button sit just beyond the tail, on the far side from
+        // the head, so they never cover the shaft or the thing being pointed at.
+        const chipWrap = el.querySelector('[data-a="chipWrap"]') as HTMLElement
+        const chip = el.querySelector('[data-a="chip"]') as HTMLElement
+        const off = 14 + w
+        chipWrap.style.left = `${a.x1 - ux * off}px`
+        chipWrap.style.top = `${a.y1 - uy * off}px`
+        chip.style.background = arrowColor()
+        chip.style.color = chipTextColor()
+        if (chip.textContent !== a.text && document.activeElement !== chip) {
+            chip.textContent = a.text
+        }
+        chip.classList.toggle('is-empty', !a.text)
+
+        const h1 = el.querySelector('[data-h="1"]') as HTMLElement
+        const h2 = el.querySelector('[data-h="2"]') as HTMLElement
+        h1.style.left = `${a.x1}px`
+        h1.style.top = `${a.y1}px`
+        h2.style.left = `${a.x2}px`
+        h2.style.top = `${a.y2}px`
+        for (const h of [h1, h2]) h.style.background = arrowColor()
+    }
+
+    const makeArrowEl = (arrow: Arrow): HTMLDivElement => {
+        const container = document.createElement('div')
+        Object.assign(container.style, {
+            position: 'fixed', inset: '0', zIndex: Z_LAYER, pointerEvents: 'none',
+        } as CSSStyleDeclaration)
+
+        const svg = document.createElementNS(SVG_NS, 'svg')
+        Object.assign(svg.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', overflow: 'visible' } as CSSStyleDeclaration)
+        // Dark outline drawn under the shaft/head keeps the arrow readable over
+        // both a dark page and a light design overlay.
+        const OUTLINE = 'rgba(0,0,0,0.55)'
+        const mkLine = (name: string, stroke: string) => {
+            const l = document.createElementNS(SVG_NS, 'line')
+            l.setAttribute('data-a', name)
+            l.setAttribute('stroke', stroke)
+            l.setAttribute('stroke-linecap', 'round')
+            return l
+        }
+        const mkPoly = (name: string, extra: Record<string, string>) => {
+            const p = document.createElementNS(SVG_NS, 'polygon')
+            p.setAttribute('data-a', name)
+            for (const [k, v] of Object.entries(extra)) p.setAttribute(k, v)
+            return p
+        }
+        svg.append(
+            mkLine('shaftOutline', OUTLINE),
+            mkPoly('headOutline', { fill: OUTLINE, stroke: OUTLINE, 'stroke-width': '3', 'stroke-linejoin': 'round' }),
+            mkLine('shaft', arrowColor()),
+            mkPoly('head', { fill: arrowColor() }),
+        )
+        container.appendChild(svg)
+
+        // Label and its delete button ride together in one absolutely-
+        // positioned row, so the ✕ tracks the chip whatever width the text
+        // gives it.
+        const chipWrap = document.createElement('div')
+        chipWrap.setAttribute('data-a', 'chipWrap')
+        Object.assign(chipWrap.style, {
+            position: 'absolute',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            // Hit-testable so hovering anywhere across label-gap-button counts
+            // as being on the arrow; without it the pointer crossing the 4px
+            // gap would flicker the controls off and on.
+            pointerEvents: 'auto',
+        } as CSSStyleDeclaration)
+
+        const chip = document.createElement('div')
+        chip.setAttribute('data-a', 'chip')
+        chip.className = 'bring-arrow-chip'
+        chip.contentEditable = 'true'
+        chip.spellcheck = false
+        chip.title = 'Click to edit · Enter to finish'
+        Object.assign(chip.style, {
+            font: '600 11px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace',
+            padding: '3px 7px',
+            borderRadius: '5px',
+            maxWidth: '260px',
+            whiteSpace: 'pre-wrap',
+            overflowWrap: 'anywhere',
+            textAlign: 'center',
+            pointerEvents: 'auto',
+            cursor: 'text',
+            outline: 'none',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.45)',
+        } as CSSStyleDeclaration)
+        // Keep clicks/keys inside the chip local: they must not start an
+        // endpoint drag, trip pick mode, or reach the global arrow-nudge
+        // handler.
+        chip.addEventListener('pointerdown', (e) => e.stopPropagation())
+        chip.addEventListener('click', (e) => e.stopPropagation())
+        chip.addEventListener('keydown', (e) => {
+            e.stopPropagation()
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                chip.blur()
+            } else if (e.key === 'Escape') {
+                e.preventDefault()
+                chip.blur()
+            }
+        })
+        // Update state live while typing, but hit localStorage only on blur:
+        // `save()` serializes the whole state (including a possibly multi-MB
+        // data-URI image in `src`) synchronously, which janks per-keystroke.
+        const commit = (persist: boolean) => {
+            const text = (chip.textContent ?? '').trim()
+            state = { ...state, arrows: state.arrows.map(a => a.id === arrow.id ? { ...a, text } : a) }
+            chip.classList.toggle('is-empty', !text)
+            if (persist) save()
+        }
+        chip.addEventListener('input', () => commit(false))
+        chip.addEventListener('blur', () => {
+            commit(true)
+            positionArrow(arrow.id)
+        })
+
+        // Explicit per-arrow delete. Double-clicking an endpoint and Delete-
+        // while-hovering both still work, but neither is discoverable — this is
+        // the obvious way to remove one particular arrow.
+        const delBtn = document.createElement('button')
+        delBtn.setAttribute('data-a', 'del')
+        delBtn.type = 'button'
+        delBtn.textContent = '✕'
+        delBtn.title = 'Remove this arrow'
+        Object.assign(delBtn.style, {
+            flex: '0 0 auto',
+            width: '18px',
+            height: '18px',
+            lineHeight: '1',
+            padding: '0',
+            borderRadius: '50%',
+            border: '1px solid rgba(255,255,255,0.25)',
+            background: 'rgba(20,22,28,0.92)',
+            color: '#F5F8FF',
+            font: '11px/1 ui-monospace, SFMono-Regular, Menlo, monospace',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            opacity: '0',
+            transition: 'opacity 0.12s, filter 0.12s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.45)',
+        } as CSSStyleDeclaration)
+        delBtn.addEventListener('pointerdown', (e) => {
+            // Must not start an endpoint drag or reach the page underneath.
+            e.preventDefault()
+            e.stopPropagation()
+        })
+        delBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            removeArrow(arrow.id)
+        })
+
+        chipWrap.append(chip, delBtn)
+        container.appendChild(chipWrap)
+
+        const mkHandle = (which: 1 | 2): HTMLDivElement => {
+            const h = document.createElement('div')
+            h.setAttribute('data-h', String(which))
+            Object.assign(h.style, {
+                position: 'absolute', width: '13px', height: '13px',
+                marginLeft: '-7px', marginTop: '-7px', borderRadius: '50%',
+                border: '2px solid rgba(0,0,0,0.55)', boxSizing: 'border-box',
+                pointerEvents: 'auto', cursor: 'grab', touchAction: 'none',
+                opacity: '0', transition: 'opacity 0.12s',
+            } as CSSStyleDeclaration)
+            h.title = which === 1
+                ? 'Drag to move the tail · double-click or Delete to remove'
+                : 'Drag to move the point · double-click or Delete to remove'
+            h.addEventListener('pointerdown', (e: PointerEvent) => {
+                e.preventDefault()
+                e.stopPropagation()
+                h.setPointerCapture(e.pointerId)
+                const kx = which === 1 ? 'x1' : 'x2'
+                const ky = which === 1 ? 'y1' : 'y2'
+                const move = (ev: PointerEvent) => {
+                    const cur = state.arrows.find(a => a.id === arrow.id)
+                    const ax = which === 1 ? (cur?.x2 ?? ev.clientX) : (cur?.x1 ?? ev.clientX)
+                    const ay = which === 1 ? (cur?.y2 ?? ev.clientY) : (cur?.y1 ?? ev.clientY)
+                    const p = constrainToAxis(ax, ay, ev.clientX, ev.clientY, ev.shiftKey)
+                    state = { ...state, arrows: state.arrows.map(a => a.id === arrow.id ? { ...a, [kx]: Math.round(p.x), [ky]: Math.round(p.y) } : a) }
+                    positionArrow(arrow.id)
+                }
+                const up = (ev: PointerEvent) => {
+                    h.removeEventListener('pointermove', move)
+                    h.removeEventListener('pointerup', up)
+                    h.removeEventListener('pointercancel', up)
+                    try { h.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
+                    save()
+                }
+                h.addEventListener('pointermove', move)
+                h.addEventListener('pointerup', up)
+                h.addEventListener('pointercancel', up)
+            })
+            h.addEventListener('dblclick', (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                removeArrow(arrow.id)
+            })
+            return h
+        }
+        const handles = [mkHandle(1), mkHandle(2)]
+        container.append(...handles)
+
+        // Controls stay invisible until you're on the arrow, so annotations
+        // read as clean graphics in a screenshot but are still editable on
+        // approach.
+        const setHandleVis = (on: boolean) => {
+            hoveredArrowId = on ? arrow.id : hoveredArrowId === arrow.id ? null : hoveredArrowId
+            for (const h of handles) h.style.opacity = on ? '1' : '0'
+            delBtn.style.opacity = on ? '1' : '0'
+            // Opacity alone leaves it clickable — a hidden ✕ next to the label
+            // would delete an arrow on a stray click.
+            delBtn.style.pointerEvents = on ? 'auto' : 'none'
+        }
+        for (const el of [chipWrap, ...handles]) {
+            el.addEventListener('pointerenter', () => setHandleVis(true))
+            el.addEventListener('pointerleave', () => setHandleVis(false))
+        }
+        // While the label has focus the ✕ must stay put — it would otherwise
+        // vanish the moment the pointer left the chip to go click it.
+        chip.addEventListener('focus', () => setHandleVis(true))
+
+        return container
+    }
+
+    function renderArrows() {
+        const ids = new Set(state.arrows.map(a => a.id))
+        for (const [id, el] of arrowEls) {
+            if (!ids.has(id)) { el.remove(); arrowEls.delete(id) }
+        }
+        for (const arrow of state.arrows) {
+            if (!arrowEls.has(arrow.id)) {
+                const el = makeArrowEl(arrow)
+                arrowEls.set(arrow.id, el)
+                document.body.appendChild(el)
+            }
+            positionArrow(arrow.id)
+        }
+    }
+
+    const addArrow = (x1: number, y1: number, x2: number, y2: number): string => {
+        const id = `a${arrowSeq++}`
+        state = { ...state, arrows: [...state.arrows, { id, x1, y1, x2, y2, text: '' }] }
+        renderArrows()
+        return id
+    }
+
     // --- control panel -----------------------------------------------------
     const panel = document.createElement('div')
     Object.assign(panel.style, {
@@ -602,6 +952,13 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         }
         #bring-visual-diff-panel [data-act="clearUrl"] { opacity: 0.6; }
         #bring-visual-diff-panel [data-act="clearUrl"]:hover { opacity: 1; }
+        /* Empty arrow labels shrink to a faint hint rather than an invisible
+           zero-width box, so they stay clickable and discoverable. */
+        .bring-arrow-chip.is-empty::before {
+            content: 'label';
+            opacity: 0.65;
+        }
+        .bring-arrow-chip.is-empty:focus::before { content: none; }
     `
     document.head.appendChild(styleTag)
 
@@ -614,12 +971,12 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         <div data-el="body">
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">Figma</span>
-            <input type="text" data-el="figma" placeholder="figma.com/design/…?node-id=…" style="flex:1;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <input type="text" data-el="figma" placeholder="figma.com/design/…?node-id=…" style="flex:1;min-width:0;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
             <button data-act="fetchFigma" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">load</button>
         </div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">Token</span>
-            <input type="password" data-el="figmaToken" placeholder="Figma token (stored in this browser only)" autocomplete="off" style="flex:1;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <input type="password" data-el="figmaToken" placeholder="Figma token (stored in this browser only)" autocomplete="off" style="flex:1;min-width:0;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
         </div>
         <div data-el="figmaStatus" style="margin-top:4px;color:#9aa0a6;font-size:11px;min-height:14px"></div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
@@ -676,6 +1033,16 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
             <button data-act="ruler" title="Measure a distance: click this, then press-drag between two points. Drag the dots to adjust; double-click a dot or press Delete to remove." style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">ruler</button>
             <button data-act="clearRulers" title="Remove all measuring lines" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">clear</button>
         </div>
+        <div style="display:flex;align-items:center;gap:4px;margin-top:6px;flex-wrap:wrap">
+            <span style="width:56px;color:#9aa0a6">Arrow</span>
+            <button data-act="arrow" title="Point at something: click this, then press-drag from where the label should sit to what you're pointing at (shift = straight). Click the label to type; drag the dots to adjust; double-click a dot or press Delete to remove." style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">arrow</button>
+            <button data-act="clearArrows" title="Remove all arrows" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">clear</button>
+            <span style="display:flex;align-items:center;gap:4px;margin-left:60px">
+                <input type="color" data-el="arrowColor" title="Arrow colour (applies to all arrows)" style="width:28px;height:24px;padding:0;background:#0e1116;border:1px solid #2a2d33;border-radius:4px;cursor:pointer">
+                <input type="number" min="1" max="40" step="1" data-el="arrowWidth" title="Arrow thickness (applies to all arrows)" style="width:46px;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+                <span style="color:#66686E;font-size:11px">px</span>
+            </span>
+        </div>
         <div data-el="inspectRow">
             <div style="display:flex;align-items:center;gap:4px;margin-top:6px;flex-wrap:wrap">
                 <span style="width:56px;color:#9aa0a6">Inspect</span>
@@ -708,6 +1075,9 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     const gridSizeInput = q<HTMLInputElement>('[data-el="gridSize"]')
     const gridColorInput = q<HTMLInputElement>('[data-el="gridColor"]')
     const rulerBtn = q<HTMLButtonElement>('[data-act="ruler"]')
+    const arrowBtn = q<HTMLButtonElement>('[data-act="arrow"]')
+    const arrowColorInput = q<HTMLInputElement>('[data-el="arrowColor"]')
+    const arrowWidthInput = q<HTMLInputElement>('[data-el="arrowWidth"]')
     const pickBtn = q<HTMLButtonElement>('[data-act="pick"]')
     const pickInfo = q<HTMLElement>('[data-el="pickInfo"]')
     const inspectRow = q<HTMLDivElement>('[data-el="inspectRow"]')
@@ -738,34 +1108,60 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     } as CSSStyleDeclaration)
     document.body.appendChild(rulerCatcher)
 
-    const setRulerArmed = (on: boolean) => {
-        rulerArmed = on
-        rulerCatcher.style.display = on ? '' : 'none'
-        rulerBtn.textContent = on ? 'drawing… (Esc)' : 'ruler'
-        rulerBtn.style.background = on ? '#FFEF46' : '#2a2d33'
-        rulerBtn.style.color = on ? '#1F2018' : '#F5F8FF'
+    // Rulers and arrows share one catcher, so arming either disarms the other.
+    const setArmed = (mode: null | 'ruler' | 'arrow') => {
+        rulerArmed = mode
+        rulerCatcher.style.display = mode ? '' : 'none'
+        const paint = (btn: HTMLButtonElement, label: string, on: boolean) => {
+            btn.textContent = on ? 'drawing… (Esc)' : label
+            btn.style.background = on ? '#FFEF46' : '#2a2d33'
+            btn.style.color = on ? '#1F2018' : '#F5F8FF'
+        }
+        paint(rulerBtn, 'ruler', mode === 'ruler')
+        paint(arrowBtn, 'arrow', mode === 'arrow')
     }
 
     rulerCatcher.addEventListener('pointerdown', (e: PointerEvent) => {
+        if (!rulerArmed) return
         e.preventDefault()
         rulerCatcher.setPointerCapture(e.pointerId)
+        const drawingArrow = rulerArmed === 'arrow'
         const x = Math.round(e.clientX), y = Math.round(e.clientY)
-        const id = addRuler(x, y, x, y)
+        const id = drawingArrow ? addArrow(x, y, x, y) : addRuler(x, y, x, y)
         const move = (ev: PointerEvent) => {
             // Anchor on the press point so Shift constrains to H/V from there.
             const p = constrainToAxis(x, y, ev.clientX, ev.clientY, ev.shiftKey)
-            state = { ...state, rulers: state.rulers.map(r => r.id === id ? { ...r, x2: Math.round(p.x), y2: Math.round(p.y) } : r) }
-            positionRuler(id)
+            const x2 = Math.round(p.x), y2 = Math.round(p.y)
+            if (drawingArrow) {
+                state = { ...state, arrows: state.arrows.map(a => a.id === id ? { ...a, x2, y2 } : a) }
+                positionArrow(id)
+            } else {
+                state = { ...state, rulers: state.rulers.map(r => r.id === id ? { ...r, x2, y2 } : r) }
+                positionRuler(id)
+            }
         }
         const up = (ev: PointerEvent) => {
             rulerCatcher.removeEventListener('pointermove', move)
             rulerCatcher.removeEventListener('pointerup', up)
             rulerCatcher.removeEventListener('pointercancel', up)
             try { rulerCatcher.releasePointerCapture(ev.pointerId) } catch { /* already released */ }
-            // A plain click (no real drag) leaves a degenerate ruler — drop it.
-            const r = state.rulers.find(rr => rr.id === id)
-            if (r && Math.hypot(r.x2 - r.x1, r.y2 - r.y1) < 3) removeRuler(id)
-            else save()
+            // A plain click (no real drag) leaves a degenerate shape — drop it.
+            const shape = drawingArrow
+                ? state.arrows.find(a => a.id === id)
+                : state.rulers.find(r => r.id === id)
+            if (shape && Math.hypot(shape.x2 - shape.x1, shape.y2 - shape.y1) < 3) {
+                if (drawingArrow) removeArrow(id)
+                else removeRuler(id)
+                return
+            }
+            save()
+            if (drawingArrow) {
+                // Drop straight into typing the label — the point of an arrow
+                // is usually the note attached to it.
+                setArmed(null)
+                const chip = arrowEls.get(id)?.querySelector('[data-a="chip"]') as HTMLElement | null
+                chip?.focus()
+            }
         }
         rulerCatcher.addEventListener('pointermove', move)
         rulerCatcher.addEventListener('pointerup', up)
@@ -889,6 +1285,8 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         gridBtn.style.color = state.grid ? '#1F2018' : '#F5F8FF'
         if (gridSizeInput !== document.activeElement) gridSizeInput.value = String(state.gridSize)
         if (gridColorInput.value.toLowerCase() !== state.gridColor.toLowerCase()) gridColorInput.value = state.gridColor
+        if (arrowColorInput.value.toLowerCase() !== state.arrowColor.toLowerCase()) arrowColorInput.value = state.arrowColor
+        if (arrowWidthInput !== document.activeElement) arrowWidthInput.value = String(state.arrowWidth)
         // Highlight "fit" while fitted; clicking again restores the prior size.
         fitBtn.style.background = preFit ? '#FFEF46' : '#2a2d33'
         fitBtn.style.color = preFit ? '#1F2018' : '#F5F8FF'
@@ -938,6 +1336,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         applyGrid()
         renderGuides()
         renderRulers()
+        renderArrows()
         save()
     }
 
@@ -1047,7 +1446,7 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
             resetScaleAndCenter()
         }
     })
-    const onNumberInput = (el: HTMLInputElement, key: 'x' | 'y' | 'scale' | 'opacity' | 'gridSize', fallback: number) => {
+    const onNumberInput = (el: HTMLInputElement, key: 'x' | 'y' | 'scale' | 'opacity' | 'gridSize' | 'arrowWidth', fallback: number) => {
         el.addEventListener('input', () => {
             // Skip while the field is mid-edit (e.g. just `-` or empty) so we
             // don't replace the caret content; commit on blur instead.
@@ -1069,8 +1468,13 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     onNumberInput(scaleInput, 'scale', 1)
     onNumberInput(opacityInput, 'opacity', 0.5)
     onNumberInput(gridSizeInput, 'gridSize', 8)
+    onNumberInput(arrowWidthInput, 'arrowWidth', 6)
     gridColorInput.addEventListener('input', () => {
         state = { ...state, gridColor: gridColorInput.value }
+        syncUi()
+    })
+    arrowColorInput.addEventListener('input', () => {
+        state = { ...state, arrowColor: arrowColorInput.value }
         syncUi()
     })
 
@@ -1131,7 +1535,8 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         el === rulerCatcher ||
         [...wrapperLocks.values()].some(b => b === el) ||
         [...guideEls.values()].some(g => g === el) ||
-        [...rulerEls.values()].some(c => c === el || c.contains(el))
+        [...rulerEls.values()].some(c => c === el || c.contains(el)) ||
+        [...arrowEls.values()].some(c => c === el || c.contains(el))
 
     const describeEl = (el: Element): string => {
         const r = el.getBoundingClientRect()
@@ -1347,8 +1752,10 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         else if (act === 'addGuideV') { addGuide('x') }
         else if (act === 'addGuideH') { addGuide('y') }
         else if (act === 'clearGuides') { state = { ...state, guides: [] }; renderGuides(); save() }
-        else if (act === 'ruler') { setRulerArmed(!rulerArmed) }
+        else if (act === 'ruler') { setArmed(rulerArmed === 'ruler' ? null : 'ruler') }
         else if (act === 'clearRulers') { state = { ...state, rulers: [] }; renderRulers(); save() }
+        else if (act === 'arrow') { setArmed(rulerArmed === 'arrow' ? null : 'arrow') }
+        else if (act === 'clearArrows') { state = { ...state, arrows: [] }; renderArrows(); save() }
         else if (act === 'fit') {
             if (preFit) {
                 // Second click: un-fit, restoring the size/position from before.
@@ -1411,13 +1818,16 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         // Esc exits pick mode; a second Esc (or Esc when not picking) clears
         // any locked highlights. Allowed even when a field is focused.
         if (e.key === 'Escape') {
-            if (rulerArmed) { e.preventDefault(); setRulerArmed(false); return }
+            if (rulerArmed) { e.preventDefault(); setArmed(null); return }
             if (pickActive) { e.preventDefault(); setPickActive(false); return }
             if (totalLocks() > 0) { e.preventDefault(); clearAllLocks(); return }
         }
         const tgt = e.target as HTMLElement | null
-        if (tgt && /^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName)) return
-        // Delete/Backspace removes the guide or ruler the pointer is hovering.
+        // isContentEditable covers the arrow labels: without it, typing a
+        // caption would nudge the overlay and Delete would erase the arrow
+        // mid-sentence.
+        if (tgt && (/^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName) || tgt.isContentEditable)) return
+        // Delete/Backspace removes the guide, ruler or arrow the pointer is on.
         if ((e.key === 'Delete' || e.key === 'Backspace') && hoveredGuideId) {
             e.preventDefault()
             removeGuide(hoveredGuideId)
@@ -1426,6 +1836,11 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         if ((e.key === 'Delete' || e.key === 'Backspace') && hoveredRulerId) {
             e.preventDefault()
             removeRuler(hoveredRulerId)
+            return
+        }
+        if ((e.key === 'Delete' || e.key === 'Backspace') && hoveredArrowId) {
+            e.preventDefault()
+            removeArrow(hoveredArrowId)
             return
         }
         const step = e.shiftKey ? 10 : 1
@@ -1444,7 +1859,9 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
     // normal text paste still works there.
     window.addEventListener('paste', (e: ClipboardEvent) => {
         const tgt = e.target as HTMLElement | null
-        if (tgt && /^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName)) return
+        // isContentEditable: pasting text into an arrow label must stay a text
+        // paste, not load the clipboard as the overlay image.
+        if (tgt && (/^(INPUT|TEXTAREA|SELECT)$/.test(tgt.tagName) || tgt.isContentEditable)) return
         if (loadFromDataTransfer(e.clipboardData)) e.preventDefault()
     })
 
