@@ -33,7 +33,7 @@
     flex-direction: column;
     gap: 8px;
     overflow: hidden;
-    font-family: 'Prompt', sans-serif;
+    font-family: var(--font-family, 'Prompt', sans-serif);
 }
 
 /* ── Header (Cashback Details + X) ───────────────────────────────── */

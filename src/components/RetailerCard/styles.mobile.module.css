@@ -13,7 +13,7 @@
     box-sizing: border-box;
     cursor: pointer;
     text-align: left;
-    font-family: 'Prompt', sans-serif;
+    font-family: var(--font-family, 'Prompt', sans-serif);
     transition: background 0.15s ease;
 }
 

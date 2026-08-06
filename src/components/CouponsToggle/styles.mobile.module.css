@@ -1,0 +1,48 @@
+/* Coupons / Cashback switcher. Visuals driven by CSS vars with neutral
+   fallbacks; selected option is a filled chip, the other is plain text.
+
+   PLACEHOLDER for now — the final design/spec for this switcher is still
+   pending; expect these styles to be replaced when it lands. */
+
+.root {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    align-self: flex-start;
+    box-sizing: border-box;
+    min-width: 90px;
+    border-radius: var(--coupons-toggle-radius, 8px);
+    background: var(--coupons-toggle-bg, #1E293B);
+}
+
+.option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    height: 16px;
+    border: none;
+    border-radius: var(--coupons-toggle-active-radius, 8px);
+    background: transparent;
+    color: var(--coupons-toggle-f-c, #94A3B8);
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
+    font-size: var(--coupons-toggle-f-s, 12px);
+    font-weight: var(--coupons-toggle-f-w, 500);
+    line-height: var(--coupons-toggle-l-h, 16px);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.option:hover:not(.optionActive) {
+    color: var(--coupons-toggle-hover-f-c, var(--coupons-toggle-f-c, #94A3B8));
+    background: var(--coupons-toggle-hover-bg, rgba(245, 245, 245, 0.05));
+}
+
+.optionActive {
+    height: 30px;
+    background: var(--coupons-toggle-active-bg, #06B6D4);
+    color: var(--coupons-toggle-active-f-c, #F8FAFC);
+    cursor: default;
+}

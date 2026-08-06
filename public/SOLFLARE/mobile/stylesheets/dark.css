@@ -45,6 +45,21 @@
     --bg: #090C11;
     --scrollbar-w: 12px;
     --scrollbar-bg: #282B30;
+    /* Component CSS modules pick this up over their 'Prompt' fallback. */
+    --font-family: 'FK Grotesk', system-ui, -apple-system, sans-serif;
+
+    /* ── Coupons / Cashback switcher (Figma tab-switcher 278:4725) ── */
+    --coupons-toggle-bg: #1B1E23;
+    --coupons-toggle-radius: 8px;
+    --coupons-toggle-f-c: #7A7D83;
+    --coupons-toggle-f-s: 12px;
+    --coupons-toggle-f-w: 500;
+    --coupons-toggle-l-h: 16px;
+    --coupons-toggle-hover-f-c: #F5F8FF;
+    --coupons-toggle-hover-bg: rgba(245, 245, 245, 0.05);
+    --coupons-toggle-active-bg: #FFEF46;
+    --coupons-toggle-active-f-c: #1F2018;
+    --coupons-toggle-active-radius: 8px;
 
     /* ── Hero "Cashback earned" card — flat status-card look (Figma
        "pending"/"claim" cards): #12151A + hairline border (via shadow token,
