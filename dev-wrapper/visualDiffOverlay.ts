@@ -754,15 +754,18 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
                 chip.blur()
             }
         })
-        const commit = () => {
+        // Update state live while typing, but hit localStorage only on blur:
+        // `save()` serializes the whole state (including a possibly multi-MB
+        // data-URI image in `src`) synchronously, which janks per-keystroke.
+        const commit = (persist: boolean) => {
             const text = (chip.textContent ?? '').trim()
             state = { ...state, arrows: state.arrows.map(a => a.id === arrow.id ? { ...a, text } : a) }
             chip.classList.toggle('is-empty', !text)
-            save()
+            if (persist) save()
         }
-        chip.addEventListener('input', commit)
+        chip.addEventListener('input', () => commit(false))
         chip.addEventListener('blur', () => {
-            commit()
+            commit(true)
             positionArrow(arrow.id)
         })
 

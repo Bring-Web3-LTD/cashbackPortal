@@ -18,24 +18,24 @@
                 </p>
             </div>
             <div class="view-toolbar">
-                <select id="viewMode" title="View mode">
+                <select id="viewMode" title="View mode" aria-label="View mode">
                     <option value="desktop">Desktop</option>
                     <option value="mobile">Mobile</option>
                     <option value="responsive">Responsive</option>
                 </select>
                 <div class="tb-group" id="deviceRow">
-                    <select id="devicePreset" title="Device preset (Mobile/Responsive modes)"></select>
-                    <button id="rotateDevice" type="button" title="Rotate (swap width and height)">&#10561;</button>
+                    <select id="devicePreset" title="Device preset (Mobile/Responsive modes)" aria-label="Device preset"></select>
+                    <button id="rotateDevice" type="button" title="Rotate (swap width and height)" aria-label="Rotate stage">&#10561;</button>
                 </div>
                 <div class="tb-group" id="responsiveSize">
-                    <input id="responsiveWidth" type="number" min="200" max="3840" step="1" title="Stage width (px, Responsive mode)" />
+                    <input id="responsiveWidth" type="number" min="200" max="3840" step="1" title="Stage width (px, Responsive mode)" aria-label="Stage width in pixels" />
                     <span class="tb-x">&#215;</span>
-                    <input id="responsiveHeight" type="number" min="200" max="2400" step="1" title="Stage height (px, Responsive mode)" />
+                    <input id="responsiveHeight" type="number" min="200" max="2400" step="1" title="Stage height (px, Responsive mode)" aria-label="Stage height in pixels" />
                 </div>
                 <div class="tb-group" id="pageBgRow">
-                    <input id="pageBgColor" type="color" title="Colour of the wrapper area around the portal stage (Mobile/Responsive modes — in Desktop the portal fills the frame)" />
-                    <button id="pageBgHatch" type="button" title="Toggle diagonal hatching on the area around the stage">&#9640;</button>
-                    <button id="pageBgReset" type="button" title="Reset to the default colour with hatching">&#8634;</button>
+                    <input id="pageBgColor" type="color" title="Colour of the wrapper area around the portal stage (Mobile/Responsive modes — in Desktop the portal fills the frame)" aria-label="Wrapper background colour" />
+                    <button id="pageBgHatch" type="button" title="Toggle diagonal hatching on the area around the stage" aria-label="Toggle background hatching">&#9640;</button>
+                    <button id="pageBgReset" type="button" title="Reset to the default colour with hatching" aria-label="Reset wrapper background">&#8634;</button>
                 </div>
             </div>
             <div class="bar-actions">
