@@ -17,12 +17,35 @@
                     <code>POST /v1/extension/check/portal</code> bootstrap call.
                 </p>
             </div>
-            <button id="walletBtn" type="button" class="wallet-btn" data-state="disconnected">
-                Connect wallet
-            </button>
-            <button id="logoutBtn" type="button" class="logout-btn" title="Clear CloudFront basic-auth credentials" hidden>
-                Log out
-            </button>
+            <div class="view-toolbar">
+                <select id="viewMode" title="View mode">
+                    <option value="desktop">Desktop</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="responsive">Responsive</option>
+                </select>
+                <div class="tb-group" id="deviceRow">
+                    <select id="devicePreset" title="Device preset (Mobile/Responsive modes)"></select>
+                    <button id="rotateDevice" type="button" title="Rotate (swap width and height)">&#10561;</button>
+                </div>
+                <div class="tb-group" id="responsiveSize">
+                    <input id="responsiveWidth" type="number" min="200" max="3840" step="1" title="Stage width (px, Responsive mode)" />
+                    <span class="tb-x">&#215;</span>
+                    <input id="responsiveHeight" type="number" min="200" max="2400" step="1" title="Stage height (px, Responsive mode)" />
+                </div>
+                <div class="tb-group" id="pageBgRow">
+                    <input id="pageBgColor" type="color" title="Colour of the wrapper area around the portal stage (Mobile/Responsive modes — in Desktop the portal fills the frame)" />
+                    <button id="pageBgHatch" type="button" title="Toggle diagonal hatching on the area around the stage">&#9640;</button>
+                    <button id="pageBgReset" type="button" title="Reset to the default colour with hatching">&#8634;</button>
+                </div>
+            </div>
+            <div class="bar-actions">
+                <button id="walletBtn" type="button" class="wallet-btn" data-state="disconnected">
+                    Connect wallet
+                </button>
+                <button id="logoutBtn" type="button" class="logout-btn" title="Clear CloudFront basic-auth credentials" hidden>
+                    Log out
+                </button>
+            </div>
         </header>
 
         <main class="layout" id="layout">
@@ -30,10 +53,20 @@
                 <span class="toggle-icon" aria-hidden="true">‹</span>
             </button>
             <aside class="controls">
-                <p class="api-info">API path: <code id="apiStageInfo">—</code></p>
+                <div class="api-row">
+                    <p class="api-info">API path: <code id="apiStageInfo">—</code></p>
+                    <button id="refresh" type="button" class="secondary refresh-icon" aria-label="Refresh"
+                        title="Re-run the check/portal bootstrap with the current params and wallet state">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                    </button>
+                </div>
 
                 <fieldset>
-                    <legend>Inputs</legend>
+                    <legend>Bootstrap</legend>
 
                     <label>
                         <span>Theme</span>
@@ -45,53 +78,9 @@
                     </label>
 
                     <label>
-                        <span>Wallet address</span>
-                        <input id="wallet" type="text" placeholder="0x… (leave empty for null)" />
-                    </label>
-
-                    <label>
                         <span>Extension ID</span>
                         <input id="extensionId" type="text" />
                     </label>
-
-                    <label>
-                        <span>Wallet name</span>
-                        <input id="walletName" type="text" placeholder="(optional, e.g. WalletName)" />
-                    </label>
-
-                    <label>
-                        <span>Wallet emoji URL</span>
-                        <input id="walletEmoji" type="text" placeholder="(optional, asset URL)" />
-                    </label>
-
-                    <label>
-                        <span>View mode</span>
-                        <select id="viewMode">
-                            <option value="desktop">Desktop</option>
-                            <option value="mobile">Mobile</option>
-                            <option value="responsive">Responsive</option>
-                        </select>
-                    </label>
-
-                    <div class="device-row" id="deviceRow" hidden>
-                        <label>
-                            <span>Device</span>
-                            <select id="devicePreset"></select>
-                        </label>
-                        <button id="rotateDevice" type="button" class="secondary rotate"
-                            title="Rotate (swap width and height)">&#10561;</button>
-                    </div>
-
-                    <div class="responsive-size" id="responsiveSize" hidden>
-                        <label>
-                            <span>Width (px)</span>
-                            <input id="responsiveWidth" type="number" min="200" max="3840" step="1" />
-                        </label>
-                        <label>
-                            <span>Height (px)</span>
-                            <input id="responsiveHeight" type="number" min="200" max="2400" step="1" />
-                        </label>
-                    </div>
 
                     <label>
                         <span>Style as</span>
@@ -105,12 +94,10 @@
                         <input id="statusPreview" type="checkbox" />
                         <span>Status modal preview</span>
                     </label>
-
-                    <button id="refresh" type="button">Refresh</button>
                 </fieldset>
 
                 <fieldset>
-                    <legend>Mock wallet SDK</legend>
+                    <legend>Wallet</legend>
                     <label>
                         <span>Wallet provider</span>
                         <select id="walletProvider">
@@ -124,21 +111,47 @@
                             <option value="ready">Ready / Argent (Starknet, connect only)</option>
                         </select>
                     </label>
-                    <label class="row">
-                        <input id="startConnected" type="checkbox" />
-                        <span>Start connected</span>
+                    <label>
+                        <span>Wallet address</span>
+                        <input id="wallet" type="text" placeholder="0x… (leave empty for null)" />
                     </label>
-                    <div class="btn-row">
-                        <button id="manualConnect" type="button" class="secondary">Send connect</button>
-                        <button id="manualAbort" type="button" class="secondary">Abort sign</button>
+                    <div class="row-split">
+                        <label class="row">
+                            <input id="startConnected" type="checkbox" />
+                            <span>Start connected</span>
+                        </label>
+                        <button id="manualConnect" type="button" class="link-btn"
+                            title="Manually run the wallet connect flow and push the session to the portal">Send connect</button>
                     </div>
+                    <details class="debug">
+                        <summary>Wallet identity (optional)<span id="identityDot" class="identity-dot"
+                                title="A wallet identity value is set" hidden></span></summary>
+                        <label>
+                            <span>Wallet name</span>
+                            <input id="walletName" type="text" placeholder="(optional, e.g. WalletName)" />
+                        </label>
+                        <label>
+                            <span>Wallet emoji URL</span>
+                            <input id="walletEmoji" type="text" placeholder="(optional, asset URL)" />
+                        </label>
+                        <label class="row">
+                            <input id="identityStart" type="checkbox" />
+                            <span>Start with this identity</span>
+                        </label>
+                    </details>
                 </fieldset>
 
-                <fieldset>
-                    <legend>Event log</legend>
+                <details class="debug" open>
+                    <summary>Event log<span id="logCount" class="msg-count">0</span></summary>
                     <div id="log" class="log"></div>
                     <button id="clearLog" type="button" class="secondary">Clear</button>
-                </fieldset>
+                </details>
+
+                <details class="debug">
+                    <summary>Window messages<span id="msgCount" class="msg-count">0</span></summary>
+                    <div id="msgLog" class="log"></div>
+                    <button id="clearMsgLog" type="button" class="secondary">Clear</button>
+                </details>
 
                 <details class="debug">
                     <summary>Last API response</summary>

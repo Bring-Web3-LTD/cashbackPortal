@@ -968,12 +968,12 @@ export const mountVisualDiffOverlay = (opts: { startExpanded?: boolean } = {}) =
         <div data-el="body">
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">Figma</span>
-            <input type="text" data-el="figma" placeholder="figma.com/design/…?node-id=…" style="flex:1;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <input type="text" data-el="figma" placeholder="figma.com/design/…?node-id=…" style="flex:1;min-width:0;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
             <button data-act="fetchFigma" style="background:#2a2d33;color:#F5F8FF;border:0;padding:4px 8px;border-radius:4px;cursor:pointer;font:inherit">load</button>
         </div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
             <span style="width:56px;color:#9aa0a6">Token</span>
-            <input type="password" data-el="figmaToken" placeholder="Figma token (stored in this browser only)" autocomplete="off" style="flex:1;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
+            <input type="password" data-el="figmaToken" placeholder="Figma token (stored in this browser only)" autocomplete="off" style="flex:1;min-width:0;background:#0e1116;color:#F5F8FF;border:1px solid #2a2d33;padding:2px 4px;border-radius:4px;font:inherit">
         </div>
         <div data-el="figmaStatus" style="margin-top:4px;color:#9aa0a6;font-size:11px;min-height:14px"></div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
