@@ -25,13 +25,12 @@ const CouponsToggle = ({ value, onChange }: Props) => {
     ]
 
     return (
-        <div className={styles.root} role="tablist" aria-orientation="vertical">
+        <div className={styles.root}>
             {options.map(({ key, label }) => (
                 <button
                     key={key}
                     type="button"
-                    role="tab"
-                    aria-selected={value === key}
+                    aria-pressed={value === key}
                     className={`${styles.option} ${value === key ? styles.optionActive : ''}`}
                     onClick={() => onChange(key)}
                 >
