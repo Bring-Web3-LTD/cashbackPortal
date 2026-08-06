@@ -51,6 +51,15 @@ export function WalletProvider({
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
+            // Only the embedding host page may drive the session. When the
+            // portal is embedded, the host is `window.parent`; anything else -
+            // the nested coupons iframe (its messages arrive with `source` set
+            // to that iframe's window), wallet-extension content scripts
+            // posting to this window (`source === window`), or any other
+            // frame — must not be able to swap the session or re-theme the
+            // portal. When the portal runs top-level, `window.parent` is the
+            // window itself, so dev/console posts still work.
+            if (event.source !== window.parent) return
             const data = event.data
             // Validate message shape before trusting the payload.
             if (!data || typeof data !== 'object') return
