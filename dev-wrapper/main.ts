@@ -128,7 +128,6 @@ toggleBtn.addEventListener('click', () => {
 // iframe.
 const VIEW_MODE_KEY = 'bring-dev-wrapper:view-mode'
 const RESPONSIVE_SIZE_KEY = 'bring-dev-wrapper:responsive-size'
-const responsiveSizeEl = $<HTMLDivElement>('responsiveSize')
 const responsiveWidthEl = $<HTMLInputElement>('responsiveWidth')
 const responsiveHeightEl = $<HTMLInputElement>('responsiveHeight')
 
@@ -172,7 +171,6 @@ const DEVICES: { key: string; label: string; w: number; h: number; group: string
 ]
 const DEVICE_KEY = 'bring-dev-wrapper:device'
 const DEVICE_LANDSCAPE_KEY = 'bring-dev-wrapper:device-landscape'
-const deviceRowEl = $<HTMLDivElement>('deviceRow')
 const deviceEl = $<HTMLSelectElement>('devicePreset')
 const rotateBtn = $<HTMLButtonElement>('rotateDevice')
 
@@ -202,11 +200,14 @@ const savedDevice = localStorage.getItem(DEVICE_KEY) || ''
 deviceEl.value = DEVICES.some(d => d.key === savedDevice) ? savedDevice : ''
 
 const applyDevice = (mode: string) => {
-    deviceRowEl.hidden = mode !== 'mobile' && mode !== 'responsive'
+    // Toolbar controls stay visible in every mode and gray out when inactive,
+    // so the header doesn't reflow as the mode changes.
+    const framed = mode === 'mobile' || mode === 'responsive'
+    deviceEl.disabled = !framed
     const device = DEVICES.find(d => d.key === deviceEl.value)
     // In Mobile mode with no device there's nothing to rotate (fixed 360px
     // column); in Responsive mode rotate always works (swaps custom size too).
-    rotateBtn.disabled = !device && mode === 'mobile'
+    rotateBtn.disabled = !framed || (!device && mode === 'mobile')
     frameEl.classList.toggle('has-device', Boolean(device) && mode === 'mobile')
     if (!device) return
     const w = deviceLandscape ? device.h : device.w
@@ -245,6 +246,9 @@ const clearDeviceSelection = () => {
 }
 
 deviceEl.addEventListener('change', () => {
+    // Drop focus once picked, so the toolbar doesn't keep a focus ring and
+    // stray arrow keys can't re-trigger a device change.
+    deviceEl.blur()
     localStorage.setItem(DEVICE_KEY, deviceEl.value)
     applyDevice(viewModeEl.value)
     // Re-bootstrap so the portal re-evaluates useMobilePortal at the new width.
@@ -267,10 +271,78 @@ rotateBtn.addEventListener('click', () => {
     void refresh()
 })
 
+// Stage background: colour + hatch of the #frame surround around the portal
+// stage. Grayed out in Desktop mode — the iframe covers the frame edge-to-
+// edge there, so there's nothing to colour. Nothing stored = default
+// colour WITH hatching; the ↺ button returns to that default. (Same storage
+// key as when this control lived in the visual-diff panel, so an already-
+// picked colour carries over.)
+const PAGE_BG_KEY = 'bring.visualDiff.pageBg'
+const PAGE_BG_DEFAULT = '#0f0f1a'
+const pageBgColorEl = $<HTMLInputElement>('pageBgColor')
+const pageBgHatchBtn = $<HTMLButtonElement>('pageBgHatch')
+const pageBgResetBtn = $<HTMLButtonElement>('pageBgReset')
+
+type PageBg = { color: string; hatch: boolean }
+let pageBg: PageBg | null = (() => {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(PAGE_BG_KEY) || '') as Partial<PageBg>
+        if (typeof parsed.color === 'string') return { color: parsed.color, hatch: !!parsed.hatch }
+    } catch { /* nothing stored / corrupt — use the default */ }
+    return null
+})()
+const savePageBg = () => {
+    if (pageBg) localStorage.setItem(PAGE_BG_KEY, JSON.stringify(pageBg))
+    else localStorage.removeItem(PAGE_BG_KEY)
+}
+// `live` paints a not-yet-committed picker value while the colour wheel is
+// open. Inline styles override the `.frame.*` stylesheet backgrounds. The
+// hatch stripe tint flips with the colour's luminance so the texture stays
+// visible on both dark and light picks.
+const applyPageBg = (live?: string) => {
+    const active = live !== undefined
+        ? { color: live, hatch: pageBg?.hatch ?? true }
+        : pageBg ?? { color: PAGE_BG_DEFAULT, hatch: true }
+    pageBgColorEl.value = active.color
+    pageBgHatchBtn.classList.toggle('active', active.hatch)
+    const hex = /^#[0-9a-fA-F]{6}$/.test(active.color) ? active.color : PAGE_BG_DEFAULT
+    const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+    const stripe = luminance > 0.55 ? 'rgba(0,0,0,0.07)' : 'rgba(255,255,255,0.05)'
+    frameEl.style.background = hex
+    frameEl.style.backgroundImage = active.hatch
+        ? `repeating-linear-gradient(45deg, ${stripe} 0 8px, transparent 8px 16px)`
+        : 'none'
+}
+// Repaint live while the picker is open; persist only on commit, so dragging
+// through the colour wheel doesn't write on every frame.
+pageBgColorEl.addEventListener('input', () => applyPageBg(pageBgColorEl.value))
+pageBgColorEl.addEventListener('change', () => {
+    pageBg = { color: pageBgColorEl.value, hatch: pageBg?.hatch ?? true }
+    savePageBg()
+    applyPageBg()
+})
+pageBgHatchBtn.addEventListener('click', () => {
+    pageBg = { color: pageBgColorEl.value, hatch: !(pageBg?.hatch ?? true) }
+    savePageBg()
+    applyPageBg()
+})
+pageBgResetBtn.addEventListener('click', () => {
+    pageBg = null
+    savePageBg()
+    applyPageBg()
+})
+applyPageBg()
+
 const applyViewMode = (mode: string) => {
     frameEl.classList.toggle('mobile', mode === 'mobile')
     frameEl.classList.toggle('responsive', mode === 'responsive')
-    responsiveSizeEl.hidden = mode !== 'responsive'
+    const framed = mode === 'mobile' || mode === 'responsive'
+    responsiveWidthEl.disabled = mode !== 'responsive'
+    responsiveHeightEl.disabled = mode !== 'responsive'
+    pageBgColorEl.disabled = !framed
+    pageBgHatchBtn.disabled = !framed
+    pageBgResetBtn.disabled = !framed
     applyDevice(mode)
 }
 const savedViewMode = localStorage.getItem(VIEW_MODE_KEY)
@@ -278,6 +350,8 @@ const savedViewMode = localStorage.getItem(VIEW_MODE_KEY)
 viewModeEl.value = savedViewMode
 applyViewMode(savedViewMode)
 viewModeEl.addEventListener('change', () => {
+    // Drop focus once picked (see the device select above).
+    viewModeEl.blur()
     const mode = viewModeEl.value
     localStorage.setItem(VIEW_MODE_KEY, mode)
     applyViewMode(mode)
@@ -368,7 +442,6 @@ startConnectedEl.addEventListener('change', () => {
     localStorage.setItem(START_CONNECTED_KEY, startConnectedEl.checked ? '1' : '0')
 })
 const manualConnectBtn = $<HTMLButtonElement>('manualConnect')
-const manualAbortBtn = $<HTMLButtonElement>('manualAbort')
 const walletBtn = $<HTMLButtonElement>('walletBtn')
 const walletProviderEl = $<HTMLSelectElement>('walletProvider')
 const logEl = $<HTMLDivElement>('log')
@@ -397,7 +470,12 @@ if (!isLocalHost) {
     })
 }
 
+const logCountEl = $<HTMLSpanElement>('logCount')
+let logCount = 0
+
 function appendLog(kind: LogKind, label: string, payload?: unknown) {
+    logCount++
+    logCountEl.textContent = String(logCount)
     const entry = document.createElement('div')
     entry.className = 'entry'
     const ts = new Date().toLocaleTimeString(undefined, { hour12: false })
@@ -423,7 +501,73 @@ function appendLog(kind: LogKind, label: string, payload?: unknown) {
 }
 
 clearLogBtn.addEventListener('click', () => {
+    logCount = 0
+    logCountEl.textContent = '0'
     logEl.innerHTML = ''
+})
+
+// "Window messages" drawer: raw postMessage recorder. Unlike the Event log
+// (which only shows traffic the bridge accepts — `from: 'bringweb3'` with an
+// action — and no sender metadata), this records EVERY message event this page
+// receives with its origin and source window (portal iframe / self / other
+// frame — e.g. a nested coupons iframe posting to `top`), plus every message
+// the wrapper posts to the portal. Collapsed by default; the summary badge
+// counts entries so activity is visible while closed.
+const msgLogEl = $<HTMLDivElement>('msgLog')
+const msgCountEl = $<HTMLSpanElement>('msgCount')
+const clearMsgLogBtn = $<HTMLButtonElement>('clearMsgLog')
+const MSG_LOG_MAX = 200
+const MSG_PAYLOAD_MAX = 2000
+let msgCount = 0
+
+const stringifyPayload = (data: unknown): string => {
+    let text: string
+    try {
+        text = typeof data === 'string' ? data : JSON.stringify(data, null, 2) ?? String(data)
+    } catch {
+        text = String(data)
+    }
+    return text.length > MSG_PAYLOAD_MAX
+        ? `${text.slice(0, MSG_PAYLOAD_MAX)}… (${text.length} chars)`
+        : text
+}
+
+const recordMessage = (direction: 'in' | 'out', meta: string, data: unknown) => {
+    msgCount++
+    msgCountEl.textContent = String(msgCount)
+    const entry = document.createElement('div')
+    entry.className = 'entry'
+    const head = document.createElement('span')
+    const tsSpan = document.createElement('span')
+    tsSpan.className = 'ts'
+    tsSpan.textContent = new Date().toLocaleTimeString(undefined, { hour12: false })
+    const labelSpan = document.createElement('span')
+    labelSpan.className = direction
+    const action = (data as { action?: unknown } | null)?.action
+    labelSpan.textContent = `${direction === 'in' ? '←' : '→'} ${typeof action === 'string' ? action : '(no action)'} · ${meta}`
+    head.append(tsSpan, labelSpan)
+    entry.appendChild(head)
+    const pre = document.createElement('div')
+    pre.textContent = stringifyPayload(data)
+    entry.appendChild(pre)
+    msgLogEl.appendChild(entry)
+    while (msgLogEl.childElementCount > MSG_LOG_MAX) msgLogEl.firstElementChild?.remove()
+    msgLogEl.scrollTop = msgLogEl.scrollHeight
+}
+
+const describeSource = (event: MessageEvent): string => {
+    const from = event.source === window ? 'self'
+        : event.source === iframeEl.contentWindow ? 'portal iframe'
+        : 'other frame'
+    return `${from} · ${event.origin || '(no origin)'}`
+}
+
+window.addEventListener('message', (event) => recordMessage('in', describeSource(event), event.data))
+
+clearMsgLogBtn.addEventListener('click', () => {
+    msgCount = 0
+    msgCountEl.textContent = '0'
+    msgLogEl.innerHTML = ''
 })
 
 const shortAddress = (addr: string) =>
@@ -574,7 +718,13 @@ walletProviderEl.addEventListener('change', async () => {
 const bridge = createPortalBridge({
     iframe: iframeEl,
     wallet: walletProxy,
-    log: appendLog,
+    // Outbound bridge posts also feed the raw "Window messages" drawer (inbound
+    // is covered by its own window listener; the bridge posts carry an implicit
+    // `to: 'bringweb3'` added in post()).
+    log: (kind, label, payload) => {
+        appendLog(kind, label, payload)
+        if (kind === 'out') recordMessage('out', 'to portal', payload)
+    },
     // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
     // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
@@ -613,10 +763,6 @@ manualConnectBtn.addEventListener('click', () => {
         : undefined
     void bridge.connect(override)
 })
-manualAbortBtn.addEventListener('click', () => {
-    bridge.abortSign()
-})
-
 walletBtn.addEventListener('click', () => {
     if (walletBtn.dataset.state === 'connected') {
         void bridge.disconnect()
@@ -822,6 +968,11 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
+    // Only a SUCCESSFUL bootstrap consumed the current inputs — clear the
+    // pending-edit highlight on the refresh icon now, not when the request
+    // starts, so a failed call leaves the icon blue (the portal still hasn't
+    // picked the edits up).
+    refreshBtn.classList.remove('dirty')
     lastUrlEl.value = portalUrl
     renderDecodedJwt(token)
     return data
@@ -846,10 +997,9 @@ async function refresh() {
         // SESSION_UPDATE — the same message used for wallet changes.
         try {
             const targetOrigin = new URL(iframeEl.src).origin
-            iframeEl.contentWindow?.postMessage(
-                { to: 'bringweb3', action: 'SESSION_UPDATE', token },
-                targetOrigin,
-            )
+            const msg = { to: 'bringweb3', action: 'SESSION_UPDATE', token }
+            iframeEl.contentWindow?.postMessage(msg, targetOrigin)
+            recordMessage('out', 'to portal', msg)
             setStatus('Posted refreshed token to iframe.')
         } catch (err) {
             setStatus(`postMessage failed: ${(err as Error).message}`, true)
@@ -862,6 +1012,63 @@ extensionEl.addEventListener('change', refresh)
 walletNameEl.addEventListener('change', refresh)
 walletEmojiEl.addEventListener('change', refresh)
 refreshBtn.addEventListener('click', refresh)
+
+// Text inputs only re-bootstrap on commit (blur/Enter), so while one is being
+// edited the portal is stale. Highlight the refresh icon until the next
+// bootstrap picks the edits up (committing the field, connecting the wallet,
+// or clicking the icon all clear it via bootstrap()).
+const markDirty = () => refreshBtn.classList.add('dirty')
+for (const el of [extensionEl, walletEl, walletNameEl, walletEmojiEl]) {
+    el.addEventListener('input', markDirty)
+}
+
+// Wallet identity persistence: "Start with this identity" stores the
+// name/emoji so a page reload restores them BEFORE the first bootstrap — the
+// very first check/portal call then already carries them, simulating an
+// integration that always sends the identity. The checkbox is only available
+// while a value is set, and the summary dot marks a set identity even when
+// the drawer is collapsed.
+const IDENTITY_KEY = 'bring-dev-wrapper:wallet-identity'
+const identityStartEl = $<HTMLInputElement>('identityStart')
+const identityDotEl = $<HTMLSpanElement>('identityDot')
+
+const saveIdentity = () => {
+    const name = walletNameEl.value.trim()
+    const emoji = walletEmojiEl.value.trim()
+    if (identityStartEl.checked && (name || emoji)) {
+        localStorage.setItem(IDENTITY_KEY, JSON.stringify({ name, emoji }))
+    } else {
+        localStorage.removeItem(IDENTITY_KEY)
+    }
+}
+
+const syncIdentityUi = () => {
+    const anySet = Boolean(walletNameEl.value.trim() || walletEmojiEl.value.trim())
+    identityDotEl.hidden = !anySet
+    identityStartEl.disabled = !anySet
+    // Clearing the last value withdraws the opt-in - nothing left to start with.
+    if (!anySet && identityStartEl.checked) {
+        identityStartEl.checked = false
+        saveIdentity()
+    }
+}
+
+// Restore before the initial refresh() below, so the first bootstrap already
+// includes the stored identity.
+try {
+    const stored = JSON.parse(localStorage.getItem(IDENTITY_KEY) || '') as { name?: string; emoji?: string }
+    if (stored.name) walletNameEl.value = stored.name
+    if (stored.emoji) walletEmojiEl.value = stored.emoji
+    if (stored.name || stored.emoji) identityStartEl.checked = true
+} catch { /* nothing stored */ }
+syncIdentityUi()
+
+identityStartEl.addEventListener('change', saveIdentity)
+for (const el of [walletNameEl, walletEmojiEl]) {
+    el.addEventListener('input', syncIdentityUi)
+    // Keep the stored copy in sync when an opted-in value is edited.
+    el.addEventListener('change', saveIdentity)
+}
 
 // Wallet input edits go through the bridge so the mock wallet's internal state
 // stays in sync and the same SESSION_UPDATE flow is used.

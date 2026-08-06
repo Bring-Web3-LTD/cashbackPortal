@@ -17,7 +17,7 @@ implement.
    `x-api-key: $VITE_PORTAL_API_KEY`. The URL and key actually used are
    chosen by the **Wallet provider** selector — see
    [Per-provider API](#per-provider-api). The active API path (stage) is
-   shown read-only above the Inputs.
+   shown read-only at the top of the sidebar.
 3. On the first response, sets the iframe `src` from `portalUrl` (the JWT is
    already embedded in its query string — no `postMessage` needed). The
    legacy `iframeUrl` field is ignored.
@@ -93,26 +93,46 @@ Open <http://localhost:5174>.
 
 ## UI
 
+- **Header — view toolbar** — centred display controls: view mode
+  (Desktop / Mobile / Responsive), device preset + rotate, stage width×height,
+  and the wrapper-background swatch / hatch / reset. Controls that don't apply
+  to the current mode stay visible but grayed out (e.g. everything but the
+  mode select in Desktop, where the iframe covers the whole frame).
 - **Header / wallet button** — top-right. Click to connect (sends
   `SESSION_UPDATE`) or, when connected, click the short `0xab12…cdef`
   pill to disconnect.
-- **Sidebar — Wallet provider** — selects which wallet adapter to simulate and
-  which API URL/key to use (see [Per-provider API](#per-provider-api)).
-  Switching it starts a brand-new portal session and reloads the iframe.
-- **Sidebar — API path** — read-only text above the Inputs showing the active
+- **Sidebar — API path** — read-only text at the top showing the active
   API stage. It's set from the env on deploy, not editable in the UI.
-- **Sidebar — Inputs** — theme / wallet / extension ID + Refresh. Changing any
-  value re-calls the API and posts the new token to the iframe.
-- **Sidebar — Mock wallet SDK** — toggles for *Start disconnected*,
-  *Auto-respond to LOGIN*, *Auto-respond to SIGN_MESSAGE*, plus manual
-  *Send connect* / *Abort sign* buttons.
-- **Sidebar — Event log** — colour-coded stream of all messages
-  (`←` inbound, `→` outbound, `✗` error, `·` info) with timestamps and JSON
-  payloads.
-- **Sidebar — Last API response** (collapsed by default) — read-only view of
-  the last `portalUrl` and decoded JWT payload.
+- **Sidebar — Bootstrap** — the partner-page parameters of the
+  `check/portal` call: theme, extension ID, style-as override.
+  Changing any value re-calls the API and posts the new token to the iframe.
+- **Sidebar — Wallet** — the simulated end user: wallet provider (also picks
+  which API URL/key to use — see [Per-provider API](#per-provider-api);
+  switching starts a brand-new portal session and reloads the iframe), wallet
+  address, *Start connected* with a *Send connect* link beside it (manually
+  runs the connect flow), and a
+  collapsed *Wallet identity* drawer simulating integrations that pass the
+  optional wallet name/emoji in the bootstrap (they end up in the JWT and on
+  the claim screen). *Start with this identity* (available once a value is
+  set) persists them so the first bootstrap after a page reload already
+  includes them; a green dot on the drawer head marks a set identity even
+  while collapsed.
+- **Sidebar — refresh icon (⟳)** — next to the API path: manually re-runs the
+  bootstrap call with everything currently set (Bootstrap params and wallet
+  state) and pushes the fresh token to the portal. Rarely needed — every
+  input re-bootstraps on change — but handy to retry after an API error.
+- **Sidebar — Event log** (collapsible) — colour-coded stream of the bridge
+  protocol messages (`←` inbound, `→` outbound, `✗` error, `·` info) with
+  timestamps and JSON payloads.
+- **Sidebar — Window messages** (collapsed by default) — raw, unfiltered
+  recorder of every `message` event the wrapper page receives (with source
+  window + origin) plus everything it posts to the portal. Use it to debug the
+  postMessage protocol itself; the Event log above shows only the curated
+  bridge traffic.
+- **Sidebar — Last API response / Decoded JWT** (collapsed by default) —
+  read-only view of the last `portalUrl`, raw token, and decoded JWT payload.
 - **Toggle button** on the sidebar edge collapses the controls to give the
-  iframe full width.
+  iframe full width (the header view toolbar stays available).
 
 ## Visual diff overlay
 
