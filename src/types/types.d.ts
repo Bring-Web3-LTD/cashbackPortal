@@ -50,6 +50,10 @@ interface LoaderData {
     walletEmoji?: string
     walletName?: string
     useMobilePortal?: boolean
+    // Coupons iframe URL from verify. When present (mobile only) the portal
+    // shows a Coupons/Cashback switcher and embeds this src on Coupons;
+    // desktop ignores it and stays cashback-only.
+    couponsIframeSrc?: string
     variant: string
     bringTou?: string
     privacy?: string

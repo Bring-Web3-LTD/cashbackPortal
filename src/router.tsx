@@ -89,6 +89,7 @@ const rootLoader = async () => {
             walletEmoji: params.get('walletEmoji') || undefined,
             bringTou: params.get('bringTou') || undefined,
             privacy: params.get('privacy') || undefined,
+            couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()

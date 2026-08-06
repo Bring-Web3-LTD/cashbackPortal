@@ -25,6 +25,9 @@ interface Response {
         walletName?: string
         bringTou?: string
         privacy?: string
+        // Coupons iframe URL (mobile-only feature); absent when the wallet
+        // isn't connected or the platform has no coupons integration.
+        couponsIframeSrc?: string
     }
 }
 

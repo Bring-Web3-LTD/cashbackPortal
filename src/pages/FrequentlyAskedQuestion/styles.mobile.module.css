@@ -80,7 +80,7 @@
 
 .intro {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--faq-intro-f-s, 14px);
     font-weight: var(--faq-intro-f-w, 400);
     line-height: var(--faq-intro-l-h, 20px);
