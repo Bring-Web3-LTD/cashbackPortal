@@ -7,7 +7,7 @@ import type { StylesheetMode } from '../utils/loadStylesheet';
 interface WalletContextType {
     isTester: boolean
     walletAddress: string | null;
-    setWalletAddress: (address: string) => void;
+    setWalletAddress: (address: string | null) => void;
     /** Wallet display name - from the JWT (verify) or dev URL params. */
     walletName?: string;
     /** Wallet emoji asset URL - from the JWT (verify) or dev URL params. */
@@ -20,6 +20,20 @@ interface WalletContextType {
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+// Only https may reach the coupons <iframe src> - an iframe src is an
+// injection sink (a javascript: URL would run in the portal's origin), so
+// allowlist the scheme even though the value arrives via the verified JWT.
+// Parsed with the URL API so the check matches how the browser will actually
+// interpret the string (anything not parseable as an absolute URL is dropped).
+const safeIframeSrc = (src?: string): string | undefined => {
+    if (!src) return undefined
+    try {
+        return new URL(src).protocol === 'https:' ? src : undefined
+    } catch {
+        return undefined
+    }
+}
 
 export function WalletProvider({
     children,
@@ -47,7 +61,7 @@ export function WalletProvider({
     // wallet switch updates the name/emoji without a full reload.
     const [walletName, setWalletName] = useState<string | undefined>(initialWalletName)
     const [walletEmoji, setWalletEmoji] = useState<string | undefined>(initialWalletEmoji)
-    const [couponsIframeSrc, setCouponsIframeSrc] = useState<string | undefined>(initialCouponsIframeSrc)
+    const [couponsIframeSrc, setCouponsIframeSrc] = useState<string | undefined>(() => safeIframeSrc(initialCouponsIframeSrc))
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
@@ -79,7 +93,7 @@ export function WalletProvider({
                     if (res.info.walletEmoji) setWalletEmoji(res.info.walletEmoji)
                     // Replace, don't merge: a verify without couponsIframeSrc
                     // (e.g. wallet disconnected) must clear the stale URL.
-                    setCouponsIframeSrc(res.info.couponsIframeSrc || undefined)
+                    setCouponsIframeSrc(safeIframeSrc(res.info.couponsIframeSrc))
                     if (res.info.theme) {
                         loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT', mode)
                     }
