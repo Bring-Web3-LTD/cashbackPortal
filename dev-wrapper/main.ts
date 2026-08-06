@@ -238,6 +238,49 @@ styleAsEl.addEventListener('change', () => {
     void refresh()
 })
 
+// Backdrop behind the portal. A theme whose --bg is transparent
+// onto whatever the embedding page provides, so the wrapper has to stand in for
+// that host — otherwise the portal renders onto the wrapper's own chrome.
+// Stored per platform, since each one embeds against a different host.
+const stageBgEl = $<HTMLInputElement>('stageBg')
+const stageBgTextEl = $<HTMLInputElement>('stageBgText')
+const stageBgSwatchEl = $<HTMLElement>('stageBgSwatch')
+const stageBgKey = (provider: WalletProviderId) => `bring-dev-wrapper:stage-bg:${provider}`
+
+const applyStageBg = () => {
+    const saved = localStorage.getItem(stageBgKey(activeProvider))
+    // No value = leave the stage transparent, i.e. the wrapper's own default.
+    frameStageEl.style.setProperty('--stage-bg', saved ?? '')
+    stageBgTextEl.value = saved ?? ''
+    stageBgTextEl.removeAttribute('aria-invalid')
+    // type=color only holds #rrggbb, so #rgb is expanded and anything it can't
+    // represent (transparent, rgba(...)) falls back to the checkerboard —
+    // otherwise the swatch would keep painting a stale colour.
+    const hex = saved?.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)?.[1]
+    const pickerValue = hex && `#${hex.length === 3 ? hex.replace(/./g, '$&$&') : hex}`
+    if (pickerValue) stageBgEl.value = pickerValue
+    stageBgSwatchEl.classList.toggle('is-unset', !pickerValue)
+}
+
+const setStageBg = (raw: string) => {
+    const value = raw.trim()
+    if (!value) {
+        localStorage.removeItem(stageBgKey(activeProvider))
+    } else if (!CSS.supports('color', value)) {
+        // Keep what was typed so it can be corrected rather than silently reset.
+        stageBgTextEl.setAttribute('aria-invalid', 'true')
+        return
+    } else {
+        localStorage.setItem(stageBgKey(activeProvider), value)
+    }
+    applyStageBg()
+}
+
+// Live while dragging the picker; on commit for the text field, so half-typed
+// values like "#16" don't flash as invalid.
+stageBgEl.addEventListener('input', () => setStageBg(stageBgEl.value))
+stageBgTextEl.addEventListener('change', () => setStageBg(stageBgTextEl.value))
+
 // Adds `?test=status` to the portal URL, which shows the portal's claim
 // status-modal preview buttons. The portal ignores the flag on a prod build.
 const STATUS_PREVIEW_KEY = 'bring-dev-wrapper:status-preview'
@@ -442,6 +485,9 @@ const applyProviderUi = () => {
             : 'Click to connect mock wallet')
 }
 applyProviderUi()
+// Defined earlier but called here: it reads activeProvider, which only exists
+// once the provider has been resolved above.
+applyStageBg()
 
 walletProviderEl.addEventListener('change', async () => {
     const next = walletProviderEl.value as WalletProviderId
@@ -452,6 +498,7 @@ walletProviderEl.addEventListener('change', async () => {
     localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
     appendLog('info', `Wallet provider → ${activeProvider}`)
     applyProviderUi()
+    applyStageBg()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
     apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
