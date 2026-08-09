@@ -310,7 +310,10 @@ const saveImageOn = () => localStorage.setItem(PAGE_BG_IMAGE_ON_KEY, pageBgImage
 // Tiny key-value IndexedDB store for the image. All operations are
 // best-effort: if IDB is unavailable the image simply doesn't survive a
 // reload, everything else keeps working.
-const openBgDb = () => new Promise<IDBDatabase>((resolve, reject) => {
+// One lazily-opened connection, reused for every operation - a fresh open()
+// per call would pile up connections that are never closed.
+let bgDbPromise: Promise<IDBDatabase> | null = null
+const openBgDb = () => bgDbPromise ??= new Promise<IDBDatabase>((resolve, reject) => {
     const req = indexedDB.open('bring-dev-wrapper', 1)
     req.onupgradeneeded = () => req.result.createObjectStore('pageBgImage')
     req.onsuccess = () => resolve(req.result)
@@ -412,8 +415,10 @@ const applyPageBg = (live?: string) => {
     frameEl.style.background = ''
     frameStageEl.style.background = ''
     // While the colour picker is open, preview the colour even over an image.
+    // JSON.stringify escapes quotes/backslashes an Alt+click-typed URL could
+    // contain, which would otherwise invalidate the whole declaration.
     const fill = live
-        ?? (imageShown ? `url("${pageBgImageUrl}") top center / cover no-repeat` : pageBgColor)
+        ?? (imageShown ? `url(${JSON.stringify(pageBgImageUrl)}) top center / cover no-repeat` : pageBgColor)
     if (!fill) return
     const target = pageBgScope === 'frame' ? frameEl : frameStageEl
     target.style.background = fill
@@ -485,6 +490,9 @@ const applyViewMode = (mode: string) => {
     frameEl.classList.toggle('responsive', mode === 'responsive')
     responsiveWidthEl.disabled = mode !== 'responsive'
     responsiveHeightEl.disabled = mode !== 'responsive'
+    // In Desktop the stage covers the whole frame, so the stage-vs-full-
+    // wrapper backdrop scope makes no visible difference — gray it out.
+    pageBgImageScopeBtn.disabled = mode !== 'mobile' && mode !== 'responsive'
     applyDevice(mode)
 }
 const savedViewMode = localStorage.getItem(VIEW_MODE_KEY)

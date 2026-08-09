@@ -96,11 +96,11 @@ Open <http://localhost:5174>.
 - **Header — view toolbar** — centred display controls: view mode
   (Desktop / Mobile / Responsive), device preset + rotate, stage width×height,
   and the backdrop controls. Controls that don't apply to the current mode
-  stay visible but grayed out (e.g. the device and size controls in Desktop,
-  where the iframe covers the whole frame). The colour swatch and 🖼 image
+  stay visible but grayed out (e.g. the device, size and backdrop-area
+  controls in Desktop, where the iframe covers the whole frame). The color swatch and 🖼 image
   choose what shows *under the portal* (visible wherever the portal page is
   transparent), while the wrapper surround around the stage keeps a fixed
-  grey hatch; the ▣/⛶ button extends the colour/image from the stage to the
+  grey hatch; the ▣/⛶ button extends the color/image from the stage to the
   full wrapper. 🖼 gestures: click to pick a file — or toggle a loaded image
   off/on (the colour shows while it's off) — Shift+click to paste from the
   clipboard (image data or a copied image URL), Alt+click to enter a URL,
