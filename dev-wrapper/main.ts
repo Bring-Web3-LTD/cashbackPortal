@@ -271,78 +271,220 @@ rotateBtn.addEventListener('click', () => {
     void refresh()
 })
 
-// Stage background: colour + hatch of the #frame surround around the portal
-// stage. Grayed out in Desktop mode — the iframe covers the frame edge-to-
-// edge there, so there's nothing to colour. Nothing stored = default
-// colour WITH hatching; the ↺ button returns to that default. (Same storage
-// key as when this control lived in the visual-diff panel, so an already-
-// picked colour carries over.)
+// Portal backdrop: what shows under the portal iframe, visible wherever the
+// portal page is transparent — a flat colour or an image (both persisted);
+// the image wins while loaded and switched on. The wrapper
+// surround around the stage keeps a fixed grey+hatch (see .frame in
+// style.css); the ▣/⛶ scope button extends the colour/image from the stage
+// to the full wrapper instead. ↺ removes colour and image together.
+// (PAGE_BG_KEY predates this control — same storage key as when it lived in
+// the visual-diff panel, so an already-picked colour carries over.)
 const PAGE_BG_KEY = 'bring.visualDiff.pageBg'
 const PAGE_BG_DEFAULT = '#0f0f1a'
 const pageBgColorEl = $<HTMLInputElement>('pageBgColor')
-const pageBgHatchBtn = $<HTMLButtonElement>('pageBgHatch')
 const pageBgResetBtn = $<HTMLButtonElement>('pageBgReset')
+const pageBgImageBtn = $<HTMLButtonElement>('pageBgImage')
+const pageBgImageScopeBtn = $<HTMLButtonElement>('pageBgImageScope')
+const pageBgImageFileEl = $<HTMLInputElement>('pageBgImageFile')
+// Declared here (not at the drag-resize code) because applyPageBg paints the
+// stage-scoped backdrop image onto it at module init.
+const frameStageEl = $<HTMLDivElement>('frameStage')
 
-type PageBg = { color: string; hatch: boolean }
-let pageBg: PageBg | null = (() => {
+// Backdrop image (e.g. a partner-site screenshot behind a transparent
+// portal). Click = file picker when none is loaded, or toggle the loaded
+// image off/on (the colour shows while off); Shift+click = paste from the
+// clipboard (image data or a copied URL); Alt+click = type/paste a URL;
+// Ctrl+click = clear/forget the image. Paste is scoped to the button — a
+// page-wide Ctrl+V is already claimed by the visual-diff overlay. The image
+// persists across reloads in IndexedDB — localStorage can't hold a
+// screenshot-sized blob. Remote URLs are stored as plain strings; the
+// off/on and scope choices persist in localStorage.
+const PAGE_BG_SCOPE_KEY = 'bring-dev-wrapper:page-bg-scope'
+const PAGE_BG_IMAGE_ON_KEY = 'bring-dev-wrapper:page-bg-image-on'
+let pageBgScope: 'frame' | 'stage' =
+    localStorage.getItem(PAGE_BG_SCOPE_KEY) === 'frame' ? 'frame' : 'stage'
+let pageBgImageUrl: string | null = null
+let pageBgImageOn = localStorage.getItem(PAGE_BG_IMAGE_ON_KEY) !== '0'
+const saveImageOn = () => localStorage.setItem(PAGE_BG_IMAGE_ON_KEY, pageBgImageOn ? '1' : '0')
+
+// Tiny key-value IndexedDB store for the image. All operations are
+// best-effort: if IDB is unavailable the image simply doesn't survive a
+// reload, everything else keeps working.
+const openBgDb = () => new Promise<IDBDatabase>((resolve, reject) => {
+    const req = indexedDB.open('bring-dev-wrapper', 1)
+    req.onupgradeneeded = () => req.result.createObjectStore('pageBgImage')
+    req.onsuccess = () => resolve(req.result)
+    req.onerror = () => reject(req.error)
+})
+const idbDone = <T>(req: IDBRequest<T>) => new Promise<T>((resolve, reject) => {
+    req.onsuccess = () => resolve(req.result)
+    req.onerror = () => reject(req.error)
+})
+const bgImageStore = async (mode: IDBTransactionMode) =>
+    (await openBgDb()).transaction('pageBgImage', mode).objectStore('pageBgImage')
+const persistBgImage = async (value: Blob | string) => {
+    try { await idbDone((await bgImageStore('readwrite')).put(value, 'image')) } catch { /* best-effort */ }
+}
+const deletePersistedBgImage = async () => {
+    try { await idbDone((await bgImageStore('readwrite')).delete('image')) } catch { /* best-effort */ }
+}
+const restoreBgImage = async () => {
     try {
-        const parsed = JSON.parse(localStorage.getItem(PAGE_BG_KEY) || '') as Partial<PageBg>
-        if (typeof parsed.color === 'string') return { color: parsed.color, hatch: !!parsed.hatch }
+        const stored = await idbDone<Blob | string | undefined>((await bgImageStore('readonly')).get('image'))
+        if (!stored) return
+        pageBgImageUrl = typeof stored === 'string' ? stored : URL.createObjectURL(stored)
+        applyPageBg()
+    } catch { /* best-effort */ }
+}
+
+// Drop the in-memory image (revoking a blob's object URL; remote URLs from
+// the Shift/Alt+click paths have nothing to revoke).
+const revokeBgImageUrl = () => {
+    if (!pageBgImageUrl) return
+    if (pageBgImageUrl.startsWith('blob:')) URL.revokeObjectURL(pageBgImageUrl)
+    pageBgImageUrl = null
+}
+// User-facing clear (Ctrl+click / ↺): forget the image everywhere.
+const clearPageBgImage = () => {
+    revokeBgImageUrl()
+    void deletePersistedBgImage()
+}
+// `source` is what gets persisted: the image Blob itself, or the remote URL.
+const setPageBgImage = (url: string, source: Blob | string) => {
+    revokeBgImageUrl()
+    pageBgImageUrl = url
+    pageBgImageOn = true
+    saveImageOn()
+    void persistBgImage(source)
+    applyPageBg()
+}
+// Async Clipboard API (needs clipboard-read permission): prefer image data,
+// fall back to a copied http(s) URL used directly as the background source.
+const pasteBgFromClipboard = async () => {
+    if (!navigator.clipboard?.read) {
+        setStatus('Clipboard API unavailable — use Alt+click to enter a URL', true)
+        return
+    }
+    try {
+        for (const item of await navigator.clipboard.read()) {
+            const type = item.types.find(t => t.startsWith('image/'))
+            if (!type) continue
+            const blob = await item.getType(type)
+            setPageBgImage(URL.createObjectURL(blob), blob)
+            setStatus('Backdrop image pasted from clipboard')
+            return
+        }
+        const text = (await navigator.clipboard.readText().catch(() => '')).trim()
+        if (/^https?:\/\//.test(text)) {
+            setPageBgImage(text, text)
+            setStatus('Backdrop image set from copied URL')
+            return
+        }
+        setStatus('Clipboard has no image or URL', true)
+    } catch (err) {
+        setStatus(`Paste failed: ${err instanceof Error ? err.message : String(err)}`, true)
+    }
+}
+
+let pageBgColor: string | null = (() => {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(PAGE_BG_KEY) || '') as { color?: string }
+        if (typeof parsed.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(parsed.color)) return parsed.color
     } catch { /* nothing stored / corrupt — use the default */ }
     return null
 })()
-const savePageBg = () => {
-    if (pageBg) localStorage.setItem(PAGE_BG_KEY, JSON.stringify(pageBg))
+const savePageBgColor = () => {
+    if (pageBgColor) localStorage.setItem(PAGE_BG_KEY, JSON.stringify({ color: pageBgColor }))
     else localStorage.removeItem(PAGE_BG_KEY)
 }
 // `live` paints a not-yet-committed picker value while the colour wheel is
-// open. Inline styles override the `.frame.*` stylesheet backgrounds. The
-// hatch stripe tint flips with the colour's luminance so the texture stays
-// visible on both dark and light picks.
+// open. The fill goes on the scoped target as an inline style (overriding
+// the stylesheet grey+hatch when the scope is the full wrapper); the other
+// element keeps its stylesheet look.
 const applyPageBg = (live?: string) => {
-    const active = live !== undefined
-        ? { color: live, hatch: pageBg?.hatch ?? true }
-        : pageBg ?? { color: PAGE_BG_DEFAULT, hatch: true }
-    pageBgColorEl.value = active.color
-    pageBgHatchBtn.classList.toggle('active', active.hatch)
-    const hex = /^#[0-9a-fA-F]{6}$/.test(active.color) ? active.color : PAGE_BG_DEFAULT
-    const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
-    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
-    const stripe = luminance > 0.55 ? 'rgba(0,0,0,0.07)' : 'rgba(255,255,255,0.05)'
-    frameEl.style.background = hex
-    frameEl.style.backgroundImage = active.hatch
-        ? `repeating-linear-gradient(45deg, ${stripe} 0 8px, transparent 8px 16px)`
-        : 'none'
+    const imageShown = Boolean(pageBgImageUrl) && pageBgImageOn
+    pageBgColorEl.value = live ?? pageBgColor ?? PAGE_BG_DEFAULT
+    pageBgImageBtn.classList.toggle('active', imageShown)
+    pageBgImageScopeBtn.textContent = pageBgScope === 'stage' ? '▣' : '⛶'
+    pageBgImageScopeBtn.title = pageBgScope === 'stage'
+        ? 'Backdrop colour/image covers the portal stage only — click for full wrapper'
+        : 'Backdrop colour/image covers the full wrapper — click for portal stage only'
+    frameEl.style.background = ''
+    frameStageEl.style.background = ''
+    // While the colour picker is open, preview the colour even over an image.
+    const fill = live
+        ?? (imageShown ? `url("${pageBgImageUrl}") top center / cover no-repeat` : pageBgColor)
+    if (!fill) return
+    const target = pageBgScope === 'frame' ? frameEl : frameStageEl
+    target.style.background = fill
 }
 // Repaint live while the picker is open; persist only on commit, so dragging
 // through the colour wheel doesn't write on every frame.
 pageBgColorEl.addEventListener('input', () => applyPageBg(pageBgColorEl.value))
 pageBgColorEl.addEventListener('change', () => {
-    pageBg = { color: pageBgColorEl.value, hatch: pageBg?.hatch ?? true }
-    savePageBg()
+    // Committing a colour is an explicit "show the colour": switch a loaded
+    // image off (it stays loaded — click 🖼 to bring it back).
+    pageBgImageOn = false
+    saveImageOn()
+    pageBgColor = pageBgColorEl.value
+    savePageBgColor()
     applyPageBg()
 })
-pageBgHatchBtn.addEventListener('click', () => {
-    pageBg = { color: pageBgColorEl.value, hatch: !(pageBg?.hatch ?? true) }
-    savePageBg()
-    applyPageBg()
-})
+// Dismissing the colour picker without picking: repaint the current state
+// (restores an image the live preview painted over).
+pageBgColorEl.addEventListener('cancel', () => applyPageBg())
 pageBgResetBtn.addEventListener('click', () => {
-    pageBg = null
-    savePageBg()
+    clearPageBgImage()
+    pageBgColor = null
+    savePageBgColor()
     applyPageBg()
+})
+pageBgImageBtn.addEventListener('click', (e) => {
+    if (e.ctrlKey) {
+        clearPageBgImage()
+        applyPageBg()
+        return
+    }
+    if (e.shiftKey) {
+        void pasteBgFromClipboard()
+        return
+    }
+    if (e.altKey) {
+        const url = prompt('Backdrop image URL:')?.trim()
+        if (url) setPageBgImage(url, url)
+        return
+    }
+    // A loaded image toggles off/on (colour shows while off); with none
+    // loaded, plain click opens the file picker.
+    if (pageBgImageUrl) {
+        pageBgImageOn = !pageBgImageOn
+        saveImageOn()
+        applyPageBg()
+        return
+    }
+    pageBgImageFileEl.click()
+})
+pageBgImageScopeBtn.addEventListener('click', () => {
+    pageBgScope = pageBgScope === 'stage' ? 'frame' : 'stage'
+    localStorage.setItem(PAGE_BG_SCOPE_KEY, pageBgScope)
+    applyPageBg()
+})
+pageBgImageFileEl.addEventListener('change', () => {
+    const file = pageBgImageFileEl.files?.[0]
+    if (!file) return
+    setPageBgImage(URL.createObjectURL(file), file)
+    // Reset the input so picking the same file again still fires `change`.
+    pageBgImageFileEl.value = ''
 })
 applyPageBg()
+// Async: repaints with the persisted image once (if) it loads from IndexedDB.
+void restoreBgImage()
 
 const applyViewMode = (mode: string) => {
     frameEl.classList.toggle('mobile', mode === 'mobile')
     frameEl.classList.toggle('responsive', mode === 'responsive')
-    const framed = mode === 'mobile' || mode === 'responsive'
     responsiveWidthEl.disabled = mode !== 'responsive'
     responsiveHeightEl.disabled = mode !== 'responsive'
-    pageBgColorEl.disabled = !framed
-    pageBgHatchBtn.disabled = !framed
-    pageBgResetBtn.disabled = !framed
     applyDevice(mode)
 }
 const savedViewMode = localStorage.getItem(VIEW_MODE_KEY)
@@ -386,14 +528,14 @@ for (const el of [responsiveWidthEl, responsiveHeightEl]) {
     el.addEventListener('change', onSizeCommit)
 }
 
-// Drag-resize: east/south edges and the SE corner of the responsive stage.
+// Drag-resize: east/west/south edges and the SE/SW corners of the responsive
+// stage.
 // Sizes are computed from the cursor position against the stage rect (not
 // deltas) so the dragged edge tracks the cursor even though the stage is
 // centered and shifts as it grows.
-const frameStageEl = $<HTMLDivElement>('frameStage')
 const clampNum = (value: number, el: HTMLInputElement) =>
     Math.min(Number(el.max), Math.max(Number(el.min), Math.round(value)))
-const setupResizeHandle = (id: string, axes: { x?: boolean; y?: boolean }) => {
+const setupResizeHandle = (id: string, axes: { x?: 'e' | 'w'; y?: boolean }) => {
     const handle = $<HTMLDivElement>(id)
     handle.addEventListener('pointerdown', (e) => {
         e.preventDefault()
@@ -403,7 +545,10 @@ const setupResizeHandle = (id: string, axes: { x?: boolean; y?: boolean }) => {
         const startH = savedSize.h
         const onMove = (ev: PointerEvent) => {
             const rect = frameStageEl.getBoundingClientRect()
-            if (axes.x) savedSize.w = clampNum(ev.clientX - rect.left, responsiveWidthEl)
+            // The stage is centered, so a west drag mirrors the east math:
+            // width is measured from the cursor to the opposite edge.
+            if (axes.x === 'e') savedSize.w = clampNum(ev.clientX - rect.left, responsiveWidthEl)
+            if (axes.x === 'w') savedSize.w = clampNum(rect.right - ev.clientX, responsiveWidthEl)
             if (axes.y) savedSize.h = clampNum(ev.clientY - rect.top, responsiveHeightEl)
             applyResponsiveSize()
             responsiveWidthEl.value = String(savedSize.w)
@@ -423,9 +568,11 @@ const setupResizeHandle = (id: string, axes: { x?: boolean; y?: boolean }) => {
         handle.addEventListener('pointercancel', onUp, { once: true })
     })
 }
-setupResizeHandle('resizeE', { x: true })
+setupResizeHandle('resizeE', { x: 'e' })
+setupResizeHandle('resizeW', { x: 'w' })
 setupResizeHandle('resizeS', { y: true })
-setupResizeHandle('resizeSE', { x: true, y: true })
+setupResizeHandle('resizeSE', { x: 'e', y: true })
+setupResizeHandle('resizeSW', { x: 'w', y: true })
 
 const STYLE_AS_KEY = 'bring-dev-wrapper:style-as'
 styleAsEl.value = localStorage.getItem(STYLE_AS_KEY) || ''

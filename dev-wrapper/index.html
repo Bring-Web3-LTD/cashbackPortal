@@ -33,9 +33,11 @@
                     <input id="responsiveHeight" type="number" min="200" max="2400" step="1" title="Stage height (px, Responsive mode)" aria-label="Stage height in pixels" />
                 </div>
                 <div class="tb-group" id="pageBgRow">
-                    <input id="pageBgColor" type="color" title="Colour of the wrapper area around the portal stage (Mobile/Responsive modes — in Desktop the portal fills the frame)" aria-label="Wrapper background colour" />
-                    <button id="pageBgHatch" type="button" title="Toggle diagonal hatching on the area around the stage" aria-label="Toggle background hatching">&#9640;</button>
-                    <button id="pageBgReset" type="button" title="Reset to the default colour with hatching" aria-label="Reset wrapper background">&#8634;</button>
+                    <input id="pageBgColor" type="color" title="Backdrop colour under the portal (shows wherever the portal page is transparent). Committing a colour switches a loaded image off." aria-label="Backdrop colour" />
+                    <button id="pageBgImage" type="button" title="Backdrop image under the portal (e.g. a partner-site screenshot). Click: pick a file, or toggle a loaded image off/on · Shift+click: paste from clipboard (image or copied URL) · Alt+click: enter a URL · Ctrl+click: clear." aria-label="Backdrop image">&#128444;&#xFE0E;</button>
+                    <button id="pageBgImageScope" type="button" title="Backdrop area: portal stage only &#8646; full wrapper" aria-label="Toggle backdrop area">&#9635;&#xFE0E;</button>
+                    <button id="pageBgReset" type="button" title="Remove backdrop colour and image (the wrapper surround keeps its default grey hatch)" aria-label="Reset backdrop">&#8634;</button>
+                    <input id="pageBgImageFile" type="file" accept="image/*" hidden />
                 </div>
             </div>
             <div class="bar-actions">
@@ -178,8 +180,10 @@
                 <div class="frame-stage" id="frameStage">
                     <iframe id="portal" title="Bring Cashback Portal"></iframe>
                     <div class="resize-handle handle-e" id="resizeE" title="Drag to resize"></div>
+                    <div class="resize-handle handle-w" id="resizeW" title="Drag to resize"></div>
                     <div class="resize-handle handle-s" id="resizeS" title="Drag to resize"></div>
                     <div class="resize-handle handle-se" id="resizeSE" title="Drag to resize"></div>
+                    <div class="resize-handle handle-sw" id="resizeSW" title="Drag to resize"></div>
                 </div>
             </section>
         </main>

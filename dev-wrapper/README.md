@@ -95,9 +95,20 @@ Open <http://localhost:5174>.
 
 - **Header — view toolbar** — centred display controls: view mode
   (Desktop / Mobile / Responsive), device preset + rotate, stage width×height,
-  and the wrapper-background swatch / hatch / reset. Controls that don't apply
-  to the current mode stay visible but grayed out (e.g. everything but the
-  mode select in Desktop, where the iframe covers the whole frame).
+  and the backdrop controls. Controls that don't apply to the current mode
+  stay visible but grayed out (e.g. the device and size controls in Desktop,
+  where the iframe covers the whole frame). The colour swatch and 🖼 image
+  choose what shows *under the portal* (visible wherever the portal page is
+  transparent), while the wrapper surround around the stage keeps a fixed
+  grey hatch; the ▣/⛶ button extends the colour/image from the stage to the
+  full wrapper. 🖼 gestures: click to pick a file — or toggle a loaded image
+  off/on (the colour shows while it's off) — Shift+click to paste from the
+  clipboard (image data or a copied image URL), Alt+click to enter a URL,
+  Ctrl+click to clear. Committing a colour also switches the image off.
+  Everything persists across reloads (the image in IndexedDB — too big for
+  localStorage; colour, off/on and area choice in localStorage), and ↺
+  removes colour + image together. (Page-wide Ctrl+V belongs to the
+  visual-diff overlay, so background paste lives on the button.)
 - **Header / wallet button** — top-right. Click to connect (sends
   `SESSION_UPDATE`) or, when connected, click the short `0xab12…cdef`
   pill to disconnect.
