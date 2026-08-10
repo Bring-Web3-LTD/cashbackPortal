@@ -604,8 +604,12 @@ html, body {
 
 .status.error { color: #ff7196; }
 
+/* The wrapper surround is a fixed grey + hatch, defined here only. The
+   toolbar's colour/image controls paint inline styles over the stage (or, in
+   full-wrapper scope, over this whole element) — see applyPageBg in main.ts. */
 .frame {
-    background: #fff;
+    background: #0f0f1a;
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0 8px, transparent 8px 16px);
     overflow: hidden;
 }
 
@@ -618,13 +622,14 @@ html, body {
 /* Mobile view: constrain the iframe so the portal's `window.innerWidth <=
    MOBILE_PORTAL_MAX_WIDTH` check fires and the mobile portal renders. */
 .frame.mobile {
-    background: #0f0f1a;
     display: flex;
     align-items: stretch;
     justify-content: center;
     padding: 16px 0;
 }
 
+/* No stage background: transparent portal pages show the wrapper background
+   through the device screen, same as Desktop mode. */
 .frame.mobile .frame-stage {
     width: 360px;
     max-width: 100%;
@@ -632,7 +637,6 @@ html, body {
     box-shadow: 0 0 0 1px #2b344d, 0 12px 40px rgba(0, 0, 0, 0.5);
     border-radius: 16px;
     overflow: hidden;
-    background: #fff;
 }
 
 /* Mobile view with a device preset: exact device viewport, centered, scroll
@@ -652,7 +656,6 @@ html, body {
 /* Responsive view: exact user-set dimensions via CSS variables, centered in
    the frame with scroll overflow when the stage is larger than the viewport. */
 .frame.responsive {
-    background: #0f0f1a;
     display: flex;
     align-items: safe center;
     justify-content: safe center;
@@ -667,7 +670,6 @@ html, body {
     box-shadow: 0 0 0 1px #2b344d, 0 12px 40px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     overflow: hidden;
-    background: #fff;
 }
 
 /* Collapsible drawers nested inside a fieldset (e.g. the Wallet group's
@@ -755,6 +757,14 @@ html, body {
     cursor: ew-resize;
 }
 
+.handle-w {
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    cursor: ew-resize;
+}
+
 .handle-s {
     bottom: 0;
     left: 0;
@@ -769,6 +779,14 @@ html, body {
     width: 18px;
     height: 18px;
     cursor: nwse-resize;
+}
+
+.handle-sw {
+    left: 0;
+    bottom: 0;
+    width: 18px;
+    height: 18px;
+    cursor: nesw-resize;
 }
 
 .resize-handle:hover,
