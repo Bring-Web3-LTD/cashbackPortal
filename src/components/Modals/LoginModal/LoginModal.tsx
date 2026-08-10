@@ -7,11 +7,14 @@ import Icon from '../../Icon/Icon'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
+    /** Fired only when the user hits "connect" — not when the modal is dismissed. */
+    onConnect?: () => void,
 }
 
 const LoginModal = ({
     open,
-    closeFn
+    closeFn,
+    onConnect
 }: Props) => {
 
     const { t } = useTranslation()
@@ -23,6 +26,7 @@ const LoginModal = ({
 
     const promptLogin = () => {
         message({ action: 'LOGIN' })
+        onConnect?.()
         closeFn()
     }
 
