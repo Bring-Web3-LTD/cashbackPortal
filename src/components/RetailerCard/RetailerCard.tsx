@@ -57,6 +57,9 @@ const RetailerCard = ({
     const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
+    // Set when the user hits "connect" from this card's login modal, so the
+    // card can re-open itself once the wallet address lands.
+    const [reopenAfterConnect, setReopenAfterConnect] = useState(false)
     const [terms, setTerms] = useState('')
 
     const cashback = useMemo(() => formatCashback(maxCashback, cashbackSymbol, cashbackCurrency), [cashbackCurrency, cashbackSymbol, maxCashback])
@@ -129,6 +132,13 @@ const RetailerCard = ({
     }
 
     useEffect(() => {
+        if (!reopenAfterConnect || !walletAddress) return
+        setReopenAfterConnect(false)
+        handleClick()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reopenAfterConnect, walletAddress])
+
+    useEffect(() => {
         if (!termsUrl || terms.length || modalState === 'close') return
 
         const fetches = [fetchTerms(termsUrl)]
@@ -193,6 +203,7 @@ const RetailerCard = ({
             />
             <LoginModal
                 open={loginModalState !== 'close'}
+                onConnect={() => setReopenAfterConnect(true)}
                 closeFn={() => setLoginModalState('close')}
             />
         </>
