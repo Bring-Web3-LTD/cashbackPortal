@@ -79,6 +79,9 @@ const Failure = ({ closeFn }: StatusProps) => {
 const shellOverrides = {
     '--custom-modal-bg': 'var(--modal-status-bg, var(--modal-bg))',
     '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
+    '--custom-modal-h': 'var(--modal-status-h, var(--modal-h, auto))',
+    '--custom-modal-close-top': 'var(--modal-status-close-top, var(--modal-close-top, 32px))',
+    '--custom-modal-close-right': 'var(--modal-status-close-right, var(--modal-close-right, 32px))',
 }
 
 const StatusModal = ({ open, closeFn, status }: Props) => {

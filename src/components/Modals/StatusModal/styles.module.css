@@ -2,18 +2,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 42px;
-    margin-bottom: 95px;
+    margin-top: var(--modal-status-mt, 42px);
+    margin-bottom: var(--modal-status-mb, 95px);
 }
 
 .loader {
-    width: 40px;
-    height: 40px;
+    --_size: var(--modal-status-loader-size, 40px);
+    width: var(--_size);
+    height: var(--_size);
+    margin: calc((40px - var(--_size)) / 2) 0;
+    --_stroke: var(--modal-status-loader-stroke, 3px);
     border-radius: 50%;
     color: var(--modal-status-loader-c, #4B6DDE);
-    background: conic-gradient(from 0deg, transparent 0%, currentColor 100%);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    background: conic-gradient(from 0deg, var(--modal-status-loader-track-c, transparent) 0%, currentColor 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--_stroke)), #000 calc(100% - var(--_stroke)));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--_stroke)), #000 calc(100% - var(--_stroke)));
     animation: status-modal-spin 0.7s linear infinite;
 }
 
@@ -24,10 +27,10 @@
 }
 
 .title {
-    margin-top: 14px;
+    margin-top: var(--modal-status-title-mt, 14px);
     font-size: var(--modal-status-title-f-s);
     font-weight: var(--modal-status-title-f-w);
-    line-height: 40px;
+    line-height: var(--modal-status-title-l-h, 40px);
 }
 
 .title_loading {
@@ -44,9 +47,9 @@
 
 .msg {
     text-align: center;
-    margin-top: 18px;
-    margin-bottom: 50px;
-    line-height: 22px;
+    margin-top: var(--modal-status-msg-mt, 18px);
+    margin-bottom: var(--modal-status-msg-mb, 50px);
+    line-height: var(--modal-status-msg-l-h, 22px);
     font-size: var(--modal-status-msg-f-s);
     font-weight: var(--modal-status-msg-f-w);
     color: var(--modal-status-msg-f-c);
@@ -54,7 +57,7 @@
 
 .btn {
     width: 160px;
-    height: 46px;
+    height: var(--modal-status-btn-height, 46px);
     color: var(--modal-status-btn-f-c);
     border-radius: var(--modal-status-btn-radius);
     border-width: var(--modal-status-btn-border-w);
