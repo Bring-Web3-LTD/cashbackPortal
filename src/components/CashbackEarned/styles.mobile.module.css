@@ -85,7 +85,7 @@
 .label {
     margin: 0;
     color: var(--cashback-earned-label-f-c, #AFBBFF);
-    font-family: 'Prompt', sans-serif;
+    font-family: var(--font-family, 'Prompt', sans-serif);
     font-size: var(--cashback-earned-label-f-s, 14px);
     font-weight: var(--cashback-earned-label-f-w, 400);
     line-height: var(--cashback-earned-label-l-h, 20px);
@@ -98,7 +98,7 @@
     display: flex;
     align-items: center;
     color: var(--cashback-earned-amount-f-c, #F7F7F7);
-    font-family: 'Prompt', sans-serif;
+    font-family: var(--font-family, 'Prompt', sans-serif);
     font-size: var(--cashback-earned-amount-f-s, 24px);
     font-weight: var(--cashback-earned-amount-f-w, 700);
     line-height: var(--cashback-earned-amount-l-h, 24px);
@@ -108,7 +108,7 @@
 .sub {
     margin: 0;
     color: var(--cashback-earned-sub-f-c, #8793FF);
-    font-family: 'Prompt', sans-serif;
+    font-family: var(--font-family, 'Prompt', sans-serif);
     font-size: var(--cashback-earned-sub-f-s, 12px);
     font-weight: var(--cashback-earned-sub-f-w, 400);
     line-height: var(--cashback-earned-sub-l-h, 16px);

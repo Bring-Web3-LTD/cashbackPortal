@@ -1,5 +1,8 @@
 {
     "title": "Cashback",
+    "coupons": "Coupons",
+    "cashback": "Cashback",
+    "connectYourWallet": "Connect your wallet",
     "back": "Back",
     "rewards": "Rewards",
     "claimable": "Claimable",

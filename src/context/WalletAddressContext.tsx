@@ -7,14 +7,33 @@ import type { StylesheetMode } from '../utils/loadStylesheet';
 interface WalletContextType {
     isTester: boolean
     walletAddress: string | null;
-    setWalletAddress: (address: string) => void;
-    /** Wallet display name — from the JWT (verify) or dev URL params. */
+    setWalletAddress: (address: string | null) => void;
+    /** Wallet display name - from the JWT (verify) or dev URL params. */
     walletName?: string;
-    /** Wallet emoji asset URL — from the JWT (verify) or dev URL params. */
+    /** Wallet emoji asset URL - from the JWT (verify) or dev URL params. */
     walletEmoji?: string;
+    /** Coupons iframe URL - refreshed wholesale on every SESSION_UPDATE
+     *  verify: absent in the new response means absent here (unlike
+     *  walletName/Emoji it does NOT keep the stale value, so the UI can
+     *  fall back to its connect placeholder). */
+    couponsIframeSrc?: string;
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+// Only https may reach the coupons <iframe src> - an iframe src is an
+// injection sink (a javascript: URL would run in the portal's origin), so
+// allowlist the scheme even though the value arrives via the verified JWT.
+// Parsed with the URL API so the check matches how the browser will actually
+// interpret the string (anything not parseable as an absolute URL is dropped).
+const safeIframeSrc = (src?: string): string | undefined => {
+    if (!src) return undefined
+    try {
+        return new URL(src).protocol === 'https:' ? src : undefined
+    } catch {
+        return undefined
+    }
+}
 
 export function WalletProvider({
     children,
@@ -22,6 +41,7 @@ export function WalletProvider({
     initIsTester,
     initialWalletName,
     initialWalletEmoji,
+    initialCouponsIframeSrc,
     mode = 'desktop',
 }: {
     children: ReactNode,
@@ -29,7 +49,8 @@ export function WalletProvider({
     initIsTester: boolean,
     initialWalletName?: string,
     initialWalletEmoji?: string,
-    // Current portal mode — preserved when a SESSION_UPDATE re-themes, so the
+    initialCouponsIframeSrc?: string,
+    // Current portal mode - preserved when a SESSION_UPDATE re-themes, so the
     // mobile stylesheet tags aren't stripped by a default 'desktop' call.
     mode?: StylesheetMode,
 }) {
@@ -40,9 +61,19 @@ export function WalletProvider({
     // wallet switch updates the name/emoji without a full reload.
     const [walletName, setWalletName] = useState<string | undefined>(initialWalletName)
     const [walletEmoji, setWalletEmoji] = useState<string | undefined>(initialWalletEmoji)
+    const [couponsIframeSrc, setCouponsIframeSrc] = useState<string | undefined>(() => safeIframeSrc(initialCouponsIframeSrc))
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
+            // Only the embedding host page may drive the session. When the
+            // portal is embedded, the host is `window.parent`; anything else -
+            // the nested coupons iframe (its messages arrive with `source` set
+            // to that iframe's window), wallet-extension content scripts
+            // posting to this window (`source === window`), or any other
+            // frame — must not be able to swap the session or re-theme the
+            // portal. When the portal runs top-level, `window.parent` is the
+            // window itself, so dev/console posts still work.
+            if (event.source !== window.parent) return
             const data = event.data
             // Validate message shape before trusting the payload.
             if (!data || typeof data !== 'object') return
@@ -56,10 +87,13 @@ export function WalletProvider({
                     setWalletAddress(res.info.walletAddress || null)
                     setIsTester(!!res.info.isTester && ENV !== 'prod')
                     // Only overwrite when the new token actually carries the
-                    // field — otherwise keep the value seeded from the loader
+                    // field - otherwise keep the value seeded from the loader
                     // (e.g. dev URL params the JWT doesn't echo).
                     if (res.info.walletName) setWalletName(res.info.walletName)
                     if (res.info.walletEmoji) setWalletEmoji(res.info.walletEmoji)
+                    // Replace, don't merge: a verify without couponsIframeSrc
+                    // (e.g. wallet disconnected) must clear the stale URL.
+                    setCouponsIframeSrc(safeIframeSrc(res.info.couponsIframeSrc))
                     if (res.info.theme) {
                         loadStylesheet(res.info.theme.toLowerCase(), res.info.platform || 'DEFAULT', mode)
                     }
@@ -78,7 +112,7 @@ export function WalletProvider({
     }, [mode])
 
     return (
-        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji }}>
+        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc }}>
             {children}
         </WalletContext.Provider>
     );

@@ -16,7 +16,7 @@
     border-radius: var(--filter-chip-radius, 4px);
     background: var(--filter-chip-bg, rgba(62, 72, 100, 0.50));
     color: var(--filter-chip-f-c, #F7F7F7);
-    font-family: 'Prompt', system-ui, sans-serif;
+    font-family: var(--font-family, 'Prompt', system-ui, sans-serif);
     font-size: var(--filter-chip-f-s, 14px);
     font-weight: 400;
     line-height: var(--filter-chip-l-h, 20px);
