@@ -32,9 +32,10 @@ export interface MobileHistoryRow {
     amountDisplay: string
     /** Token symbol (used as a stable key for claims aggregation). */
     tokenSymbol: string
-    /** Formatted status: "Claimed" | "Completed" | "Cancelled" | "In X days". */
+
+    /** Formatted status: "Claimed" | "Claimable" | "Canceled" | "In X days". */
     status: string
-    /** Lowercased raw status for styling hooks (claimed/completed/cancelled/pending). */
+    /** Status key for styling hooks (claimed/claimable/cancelled/pending). */
     rawStatus: string
     /** Description rows shown when the item is expanded; mirrors desktop. */
     description: string[][]
@@ -54,7 +55,7 @@ const formatRowDate = (date: string): string => {
 const statusKey = (raw: string, formatted: string): string => {
     const r = raw.toLowerCase()
     if (r === 'claimed') return 'claimed'
-    if (r === 'completed') return 'completed'
+    if (r === 'completed') return 'claimable'
     if (r === 'cancelled' || r === 'canceled') return 'cancelled'
     if (formatted.startsWith('In ')) return 'pending'
     return r || 'pending'

@@ -168,12 +168,18 @@
 }
 
 .claimed {
-    color: var(--history-status-claimed-f-c, var(--history-status-f-c));
+    color: var(--history-status-claimed-f-c);
     font-weight: var(--history-status-claimed-f-w, var(--history-status-f-w));
 }
 
 .pending {
     color: var(--history-status-pending-f-c, var(--history-status-f-c));
+}
+
+/* "Total claims" also reads "Claimed" but is a heading, not a status. */
+.total_claims {
+    color: var(--history-status-total-claims-f-c);
+    font-weight: var(--history-status-total-claims-f-w);
 }
 
 .description {

@@ -13,6 +13,8 @@ import { getInitials } from '../../utils/getInitials'
 
 interface HistoryDesktop {
     status: string
+    /** Aggregated "Total claims" row, not a purchase. Both render the status "Claimed". */
+    isClaim?: boolean
     tokenAmount: string;
     imgSrc: string
     imgSrcFallback?: string
@@ -37,7 +39,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, isClaim = false, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     return (
         <div id="history-desktop-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
@@ -48,14 +50,14 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                 <div className={styles.name_container}>
                     <div
                         className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''}`}
-                        style={fallbackLogo || status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
+                        style={fallbackLogo || isClaim ? {} : { background: imgBg || 'white' }}
                     >
                         {fallbackLogo ?
                             <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                             :
                             <img
-                                style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
-                                className={`${styles.img} ${status.toLowerCase() === 'claimed' ? styles.img_claim : ''}`}
+                                style={{ height: `${isClaim ? 'auto' : '100%'}` }}
+                                className={`${styles.img} ${isClaim ? styles.img_claim : ''}`}
                                 src={imgSrc}
                                 alt="logo"
                                 onError={(e) => {
@@ -89,7 +91,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                         <span>{tokenAmount}</span>
                     }
                 </div>
-                <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
+                <div className={`${styles.status} ${isClaim ? styles.total_claims : status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
                 <button
                     id="history-desktop-details-btn"
                     className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
@@ -186,6 +188,7 @@ const HistoryDesktop = () => {
             imgSrcFallback: `${defaultIconsPath}/gift.svg`,
             tokenSymbol: key,
             status: formatStatus('claimed'),
+            isClaim: true,
         }))
 
         return arr

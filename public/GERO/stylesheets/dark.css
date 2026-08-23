@@ -417,7 +417,7 @@
     --history-table-row-active-bg: transparent;
     /* History rows. Sizes follow the deal row (14/400); the aggregate
        "Total claims" row shares these vars, so only its status cell can be
-       bolded. Claimed and pending read white; only canceled and completed
+       bolded. Claimable and pending read white; only canceled and claimed
        carry a status colour. */
     --history-claimed-icon-bg: #00DFF3;
     --history-details-btn-bg: #1B1E23;
@@ -434,8 +434,9 @@
     --history-status-f-c: #39CB98;
     --history-status-pending-f-c: #FFFFFF;
     --history-status-canceled-f-c: #FF6464;
-    --history-status-claimed-f-c: #FFFFFF;
-    --history-status-claimed-f-w: 700;
+    --history-status-claimed-f-c: #FFF59E;
+    --history-status-total-claims-f-c: #FFFFFF;
+    --history-status-total-claims-f-w: 700;
 
     --history-description-f-s: 14px;
     --history-description-f-w: 400;

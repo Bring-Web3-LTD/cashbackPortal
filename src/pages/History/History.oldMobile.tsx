@@ -13,6 +13,8 @@ import { getInitials } from '../../utils/getInitials'
 
 interface HistoryMobile {
     status: string
+    /** Aggregated "Total claims" row, not a purchase. Both render the status "Claimed". */
+    isClaim?: boolean
     tokenAmount: string;
     imgSrc: string
     imgSrcFallback?: string
@@ -37,7 +39,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, isClaim = false, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     return (
         <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
@@ -48,13 +50,13 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                 <div className={styles.name_container}>
                     <div
                         className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''}`}
-                        style={fallbackLogo || status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
+                        style={fallbackLogo || isClaim ? {} : { background: imgBg || 'white' }}
                     >
                         {fallbackLogo ?
                             <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                             :
                             <img
-                                style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
+                                style={{ height: `${isClaim ? 'auto' : '100%'}` }}
                                 className={styles.img}
                                 src={imgSrc}
                                 alt="logo"
@@ -91,7 +93,7 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
             <hr className={styles.breakline} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 20px' }}>
                 <div>Status:</div>
-                <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
+                <div className={`${styles.status} ${isClaim ? styles.total_claims : status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
             </div>
             <AnimatePresence>
                 {isActive && <motion.div
@@ -182,6 +184,7 @@ const HistoryMobile = () => {
             imgSrcFallback: `${defaultIconsPath}/gift.svg`,
             tokenSymbol: key,
             status: formatStatus('claimed'),
+            isClaim: true,
         }))
 
         return arr
