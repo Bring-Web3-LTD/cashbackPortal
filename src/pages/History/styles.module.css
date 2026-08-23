@@ -87,6 +87,11 @@
     background: var(--history-table-row-bg, transparent);
 }
 
+/* Last row keeps the border box but not the line — the table edge closes it. */
+.collapsible:last-child {
+    border-bottom-color: transparent;
+}
+
 .collapsible_open {
     background: var(--history-table-row-active-bg);
 }
