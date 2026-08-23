@@ -278,8 +278,10 @@
     --history-back-x-location: 64px;
 
     --history-table-header-bg: #1A1E3E;
-    --history-table-header-border-c: transparent;
-    --history-table-header-border-w: 0;
+    /* Bottom-only rule: the width shorthand zeroes the other three sides,
+       so the colour lands on the bottom edge alone. */
+    --history-table-header-border-c: rgba(174, 176, 187, 0.50);
+    --history-table-header-border-w: 0 0 1px;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 14px;
