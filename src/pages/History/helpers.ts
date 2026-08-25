@@ -46,8 +46,8 @@ export const formatStatus = (status: string, eligibleDate?: string) => {
     switch (status) {
         case "claimed":
             return "Claimed";
-        // "completed" is an APPROVED purchase: eligible, not yet withdrawn.
-        case "completed":
+        // An APPROVED purchase: eligible, not yet claimed.
+        case "claimable":
             return "Claimable";
         case "pending":
             return `In ${days} ${days && days > 1 ? "days" : "day"}`;

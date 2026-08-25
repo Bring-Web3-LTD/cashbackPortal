@@ -55,7 +55,7 @@ const formatRowDate = (date: string): string => {
 const statusKey = (raw: string, formatted: string): string => {
     const r = raw.toLowerCase()
     if (r === 'claimed') return 'claimed'
-    if (r === 'completed') return 'claimable'
+    if (r === 'claimable') return 'claimable'
     if (r === 'cancelled' || r === 'canceled') return 'cancelled'
     if (formatted.startsWith('In ')) return 'pending'
     return r || 'pending'
