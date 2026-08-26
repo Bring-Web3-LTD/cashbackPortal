@@ -27,5 +27,7 @@
   "connect": "CONNECT",
   "termsAndExclusions": "Terms and Exclusions",
   "privacy": "Privacy",
-  "termsOfUse": "Terms of Use"
+  "termsOfUse": "Terms of Use",
+  "searchNoResults": "No results.",
+  "searchNoResultsHint": "Try a different search term"
 }
