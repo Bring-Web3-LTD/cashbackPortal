@@ -6,17 +6,26 @@
     display: flex;
     flex-direction: column;
     background: var(--history-item-bg, #171C2F);
+    border: 1px solid var(--history-item-border-c, transparent);
     border-radius: var(--history-item-radius, 6px);
-    padding: 8px 12px;
+    padding: 7px 11px;
     transition: background 0.15s ease;
     overflow: hidden;
 }
 
 @media (hover: hover) {
     .item:hover {
-        background: var(--history-item-hover-bg, #2B344D);
+        background: var(--history-item-hover-bg, #282B30);
     }
+}
 
+.item:active {
+    background: var(--history-item-hover-bg, #282B30);
+}
+
+.itemOpen,
+.itemOpen:active {
+    background: var(--history-item-open-bg, #12151A);
 }
 
 /* Collapsed row — toggles the panel. */
@@ -33,8 +42,8 @@
     cursor: pointer;
     text-align: left;
     color: inherit;
-    font-family: 'Prompt', system-ui, sans-serif;
-    min-height: 40px;
+    font-family: inherit;
+    min-height: 50px;
 }
 
 .row:disabled {
@@ -61,20 +70,20 @@
 .avatarImg {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
 }
 
 .avatarClaim .avatarImg {
     /* Inset gift glyph so it doesn't touch the edge. */
-    width: 57.14%;
-    height: 57.14%;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
 }
 
-/* Initials fallback when a retailer logo is missing or fails — mirrors RetailerCard,
-   including its light icon background so the initials stay readable on dark themes. */
+/* Initials fallback when a retailer logo is missing or fails — mirrors RetailerCard. */
 .avatarHasFallback {
-    background: var(--retailer-icon-bg, #FFFFFF);
+    background: var(--history-avatar-bg, #FFEF46);
 }
 
 .avatarFallback {
@@ -129,6 +138,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: center;
     gap: 4px;
     flex: 0 0 auto;
 }
@@ -136,6 +146,7 @@
 .amount {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 6px 10px;
     border-radius: var(--history-amount-radius, 6px);
     background: var(--history-amount-bg, rgba(96, 103, 249, 0.25));
@@ -143,7 +154,7 @@
     font-size: var(--history-amount-f-s, 14px);
     font-weight: var(--history-amount-f-w, 700);
     line-height: var(--history-amount-l-h, 20px);
-    letter-spacing: 0.28px;
+    letter-spacing: var(--history-amount-l-s, 0);
     white-space: nowrap;
 }
 
@@ -200,20 +211,18 @@
     display: block;
     width: 100%;
     height: var(--history-divider-w, 1px);
-    margin-top: 8px;
+    margin-top: 12px;
     background: var(--history-divider-c, #2B344D);
 }
 
 .panelBody {
-    margin-top: 8px;
+    margin-top: 11px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
 }
 
 .descriptionLine {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--history-description-f-s, 12px);
     font-weight: var(--history-description-f-w, 400);
     line-height: var(--history-description-l-h, 16px);

@@ -3,12 +3,13 @@
  * `useMobilePortal` loader flag. Mobile pages are the `.mobile` views
  * colocated with their desktop counterparts under `src/pages/`.
  */
-import { useRouteLoaderData } from 'react-router-dom'
+import { Navigate, useRouteLoaderData } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import MobileHome from './pages/Home/Home.mobile'
 import MobileHistory from './pages/History/History.mobile'
+import MobilePending from './pages/Pending/Pending.mobile'
 import MobileFaq from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion.mobile'
 
 export const HomeDispatcher = () => {
@@ -19,6 +20,12 @@ export const HomeDispatcher = () => {
 export const HistoryDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
     return useMobilePortal ? <MobileHistory /> : <History />
+}
+
+/** Mobile-only screen — desktop has no pending view, so it goes back home. */
+export const PendingDispatcher = () => {
+    const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
+    return useMobilePortal ? <MobilePending /> : <Navigate to="/" replace />
 }
 
 export const FaqDispatcher = () => {

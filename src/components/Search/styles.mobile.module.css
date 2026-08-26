@@ -3,8 +3,6 @@
 .wrapper {
     position: relative;
     width: 100%;
-    /* Figma: 8px gap below the open search bar, not the page's 16px. */
-    margin-bottom: -8px;
 }
 
 .root {
@@ -13,9 +11,11 @@
     align-items: center;
     gap: 8px;
     height: 32px;
-    padding: 0 8px;
+    padding: 0 16px;
     background: var(--search-bar-bg, #040407);
-    border: var(--search-bar-border-w, 1px) solid var(--search-bar-border-c, #2B344D);
+
+    box-shadow: inset 0 0 0 var(--search-bar-border-w, 1px)
+        var(--search-bar-border-c, #2B344D);
     border-radius: var(--search-bar-radius, 6px);
 }
 
@@ -78,12 +78,10 @@
     color: var(--search-bar-placeholder-f-c, #7685A0);
 }
 
-/* Autocomplete dropdown — overlays the cards list below the input. */
 .dropdown {
-    position: absolute;
-    top: calc(32px + 8px);
-    left: 0;
-    right: 0;
+    position: relative;
+
+    margin-top: 4px;
     z-index: 20;
     box-sizing: border-box;
     display: flex;
@@ -93,6 +91,7 @@
     border-radius: var(--search-dropdown-radius, 8px);
     box-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
     max-height: 244px;
+
     /* Static container: the inner list scrolls so the bottom fade can overlay
        the visible edge instead of scrolling away with the content. */
     overflow: hidden;
@@ -104,8 +103,9 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 8px;
+
+    gap: 0;
+    padding: 8px 0;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -140,7 +140,7 @@
     border: none;
     background: transparent;
     text-align: left;
-    padding: 6px 8px;
+    padding: 6px 20px;
     border-radius: 6px;
     font-family: inherit;
     font-size: var(--search-bar-f-s, 14px);
@@ -157,8 +157,7 @@
 }
 
 .empty {
-    /* Align with the suggestion rows (same 8px horizontal inset). */
-    padding: 6px 8px;
+    padding: 6px 20px;
     font-family: inherit;
     font-size: var(--search-bar-f-s, 14px);
     line-height: var(--search-bar-l-h, 20px);

@@ -8,6 +8,7 @@
     height: 32px;
 }
 
+/* Skeleton pill */
 .rootLoading {
     height: var(--tabs-loading-h, 16px);
 }
@@ -55,12 +56,12 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 6px 10px;
-    border: none;
+    padding: 4px 8px;
+
+    border: var(--tab-border-w, 0) solid var(--tab-border-c, transparent);
     border-radius: var(--tab-radius, 6px);
     background: var(--tab-bg, transparent);
     color: var(--tab-f-c, #7685A0);
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--tab-f-s, 14px);
     font-weight: var(--tab-f-w, 400);
     line-height: var(--tab-l-h, 20px);
@@ -71,13 +72,11 @@
 .tab:hover:not(.tabActive) {
     color: var(--tab-hover-f-c, var(--tab-f-c, #7685A0));
     background: var(--tab-hover-bg, transparent);
-    padding: 4px 8px;
 }
 
 .tabActive {
     background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
     color: var(--tab-active-f-c, #8793FF);
-    padding: 4px 8px;
 }
 
 /* Trailing search icon — bare 16px glyph, overlaid flush right. Default and
@@ -124,4 +123,3 @@
     opacity: 1;
 }
 
-/* Skeleton pill */

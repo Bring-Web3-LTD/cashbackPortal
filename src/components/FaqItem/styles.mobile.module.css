@@ -6,6 +6,8 @@
     display: flex;
     flex-direction: column;
     background: var(--faq-item-bg, #171C2F);
+
+    border: var(--faq-item-border-w, 0) solid var(--faq-item-border-c, transparent);
     border-radius: var(--faq-item-radius, 6px);
     padding: 8px 8px 8px 12px;
     transition: background 0.15s ease;
@@ -23,7 +25,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+
+    gap: 35px;
     width: 100%;
     min-height: 24px;
     margin: 0;
@@ -33,7 +36,6 @@
     cursor: pointer;
     text-align: left;
     color: inherit;
-    font-family: 'Prompt', system-ui, sans-serif;
 }
 
 .questionText {
@@ -52,6 +54,7 @@
     justify-content: center;
     width: 16px;
     height: 16px;
+
     /* Default: Grey/300. Turns Grey/100 on hover or when expanded. */
     color: var(--faq-chevron-f-c, #7685A0);
     transition: transform 0.2s ease, color 0.15s ease;
@@ -87,7 +90,6 @@
 
 .answerLine {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--faq-answer-f-s, 12px);
     font-weight: var(--faq-answer-f-w, 400);
     line-height: var(--faq-answer-l-h, 16px);

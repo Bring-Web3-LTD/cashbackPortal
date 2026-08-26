@@ -7,6 +7,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { DashboardMode } from '../../components/Dashboard/useDashboard'
 import { CategoriesItem } from '../../components/Categories/useCategories'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
@@ -22,10 +24,12 @@ import { ClaimModalState } from '../../utils/claimFlow'
 const SEARCH_MIN_CHARS = 2
 
 export const useHomePage = () => {
+    const { t } = useTranslation()
     const { platform, userId, flowId, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
+    const [mode, setMode] = useState<DashboardMode>('cashback')
     const [category, setCategory] = useState<CategoriesItem | null>(null)
     const [searchOpen, setSearchOpen] = useState(false)
     // Text currently typed in the input — drives the autocomplete dropdown only.
@@ -105,6 +109,11 @@ export const useHomePage = () => {
     }
 
     const handleOpenClaim = () => {
+        // No wallet paired yet — show the pairing steps instead of the flow.
+        if (!walletAddress) {
+            setClaimState('instructions')
+            return
+        }
         if (!eligible || claimAmount <= 0) return
         if (claimAmount < minimumClaimThreshold) {
             setClaimState('minimum')
@@ -204,6 +213,10 @@ export const useHomePage = () => {
     ])
 
     return {
+        // dashboard
+        labels: { title: t('rewardsHub') },
+        mode,
+        setMode,
         // filter row
         category,
         setCategory,
@@ -234,6 +247,7 @@ export const useHomePage = () => {
         claimDisplay,
         claimAmount,
         minimumClaimThreshold,
+        totalEstimatedUsd: eligible?.totalEstimatedUsd ?? 0,
         walletAddress,
         walletName,
         walletEmoji,

@@ -35,7 +35,7 @@ export const useCategories = ({ selectedId, onSelect }: CategoriesProps) => {
         modules: [FreeMode, Mousewheel],
         freeMode: { enabled: true, momentum: true, momentumBounce: false },
         slidesPerView: 'auto',
-        spaceBetween: 0,
+        spaceBetween: 8,
         grabCursor: true,
         simulateTouch: true,
         mousewheel: { forceToAxis: false, releaseOnEdges: true },

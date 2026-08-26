@@ -8,6 +8,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import fetchCache from '../api/fetchCache'
+import { getMockCache } from '../api/mockCache'
 import { useWalletAddress } from './useWalletAddress'
 
 type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
@@ -15,15 +16,18 @@ type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
 export const useBalance = (): UseQueryResult<BalanceResponse> => {
     const { platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
+    // Temporary — see api/mockCache.ts. Remove once /cache serves per-email data.
+    const mock = getMockCache()
 
     return useQuery({
         queryFn: async () => {
+            if (mock) return mock
             const body: Parameters<typeof fetchCache>[0] = { platform, userId, flowId }
             if (walletAddress) body.walletAddress = walletAddress
             return await fetchCache(body)
         },
-        queryKey: ['balance', walletAddress],
-        enabled: !!walletAddress,
+        queryKey: ['balance', walletAddress, mock ? 'mock' : ''],
+        enabled: !!mock || !!walletAddress,
     })
 }
 
@@ -41,3 +45,11 @@ export const selectPending = (data: BalanceResponse | undefined) =>
  */
 export const selectTotalEarned = (data: BalanceResponse | undefined) =>
     data?.data?.totalEarned?.[0]
+
+/**
+ * True while the user has no rewards and no history at all. Read from the
+ * query rather than the loader so it re-evaluates live — the post-claim
+ * `invalidateQueries(['balance', …])` already refreshes it within the session.
+ */
+export const selectFirstTimeUser = (data: BalanceResponse | undefined) =>
+    data?.data?.firstTimeUser === true

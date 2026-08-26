@@ -10,12 +10,14 @@
 
 .panel {
     width: 100%;
-    max-width: 360px;
-    height: calc(100% - 32px);
-    max-height: calc(100dvh - 32px);
+    max-width: var(--mobile-portal-max-w, 360px);
+
+    height: calc(100% - 27px);
+    max-height: calc(100dvh - 27px);
     background: var(--claim-modal-panel-bg, #0f0f1a);
-    border: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-panel-border-c, #2b344d);
-    border-bottom: none;
+
+    box-shadow: inset 0 0 0 var(--claim-modal-panel-border-w, 1px)
+        var(--claim-modal-panel-border-c, #2b344d);
     border-top-left-radius: var(--claim-modal-panel-radius, 16px);
     border-top-right-radius: var(--claim-modal-panel-radius, 16px);
     display: flex;
@@ -24,7 +26,8 @@
 }
 
 .header {
-    height: 56px;
+    box-sizing: border-box;
+    height: 46px;
     border-bottom: var(--claim-modal-panel-border-w, 1px) solid var(--claim-modal-header-border-c, #2b344d);
     display: flex;
     align-items: center;
@@ -68,7 +71,7 @@
     font-size: var(--claim-modal-header-title-f-s, 16px);
     font-weight: var(--claim-modal-header-title-f-w, 700);
     line-height: var(--claim-modal-header-title-l-h, 22px);
-    letter-spacing: 0.32px;
+    letter-spacing: var(--claim-modal-header-title-l-s, 0.32px);
     text-align: center;
     flex: 1;
 }
@@ -192,9 +195,12 @@
 
 .btnSecondary,
 .btnPrimary,
-.btnSecondaryWide {
+.btnSecondaryWide,
+.btnPrimaryWide {
+    box-sizing: border-box;
     height: 40px;
-    border: none;
+
+    border: var(--claim-modal-btn-secondary-border-w, 0) solid transparent;
     border-radius: var(--claim-modal-btn-radius, 8px);
     color: var(--claim-modal-btn-f-c, #f7f7f7);
     font-family: var(--claim-modal-font, 'Prompt', system-ui, sans-serif);
@@ -207,6 +213,7 @@
 .btnSecondary {
     flex: 1;
     background: var(--claim-modal-btn-secondary-bg, #2b344d);
+    border-color: var(--claim-modal-btn-secondary-border-c, transparent);
 }
 
 .btnSecondary:hover:not(:disabled) {
@@ -216,6 +223,7 @@
 .btnPrimary {
     flex: 1;
     background: var(--claim-modal-btn-primary-bg, #6067f9);
+    color: var(--claim-modal-btn-primary-f-c, var(--claim-modal-btn-f-c, #f7f7f7));
 }
 
 /* Minimum claim screen */
@@ -223,13 +231,15 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 32px 16px 0;
+    padding: 32px 20px 0;
 }
 
 .minimumText {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 8px;
+    text-align: center;
 }
 
 .minimumTitle {
@@ -239,7 +249,7 @@
     font-size: var(--claim-modal-min-title-f-s, 20px);
     font-weight: var(--claim-modal-min-title-f-w, 700);
     line-height: var(--claim-modal-min-title-l-h, 26px);
-    letter-spacing: 0.4px;
+    letter-spacing: var(--claim-modal-min-title-l-s, 0.4px);
 }
 
 .minimumPara {
@@ -264,12 +274,19 @@
 }
 
 .footerOneButton {
-    padding: 0 16px 16px;
+    padding: 0 16px 30px;
+}
+
+.btnPrimaryWide {
+    width: 100%;
+    background: var(--claim-modal-btn-primary-bg, #6067f9);
+    color: var(--claim-modal-btn-primary-f-c, var(--claim-modal-btn-f-c, #f7f7f7));
 }
 
 .btnSecondaryWide {
     width: 100%;
     background: var(--claim-modal-btn-secondary-bg, #2b344d);
+    border-color: var(--claim-modal-btn-secondary-border-c, transparent);
 }
 
 .btnSecondaryWide:hover:not(:disabled) {
@@ -307,12 +324,15 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    padding: 16px 16px 0;
+
+    padding: 29px 16px 0;
     position: relative;
 }
 
 .successDesign {
     position: relative;
+
+    box-sizing: border-box;
     width: 100%;
     height: 144px;
     display: flex;
@@ -361,10 +381,6 @@
     height: 100%;
 }
 
-/* Sparkle stars (Figma Design frame 1863:9452, 328×144).
-   The span is the position anchor at the Figma box coords; the img is rendered
-   at its natural viewBox px size (which already includes the drop-shadow
-   padding) and centered, so the visible star core matches the Figma size. */
 .successStar {
     position: absolute;
     display: flex;
@@ -484,8 +500,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    width: 328px;
-    max-width: 100%;
+    width: 100%;
 }
 
 .successTitle {
@@ -495,7 +510,7 @@
     font-size: var(--claim-modal-status-title-f-s, 22px);
     font-weight: var(--claim-modal-status-title-f-w, 700);
     line-height: var(--claim-modal-status-title-l-h, 28px);
-    letter-spacing: 0.44px;
+    letter-spacing: var(--claim-modal-status-title-l-s, 0.44px);
     text-align: center;
 }
 
@@ -564,6 +579,7 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
+
     /* 24px top + the header's 8px margin-bottom + 16px icon-wrap centering =
        48px from header to the icon (Figma 1863:9857). */
     padding: 24px 16px 0;
@@ -600,8 +616,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    width: 328px;
-    max-width: 100%;
+    width: 100%;
 }
 
 .failureTitle {
@@ -611,7 +626,7 @@
     font-size: var(--claim-modal-status-title-f-s, 22px);
     font-weight: var(--claim-modal-status-title-f-w, 700);
     line-height: var(--claim-modal-status-title-l-h, 28px);
-    letter-spacing: 0.44px;
+    letter-spacing: var(--claim-modal-status-title-l-s, 0.44px);
     text-align: center;
 }
 
@@ -639,18 +654,299 @@
     justify-content: center;
 }
 
-
-.footerTwoButtonsStatus {
-    margin-top: auto;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 16px 16px;
-    display: flex;
-    gap: 16px;
-}
-
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
+}
+
+.panelSheet {
+    height: calc(100% - 27px);
+    max-height: calc(100dvh - 27px);
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 30px;
+    background: var(--claim-sheet-bg, #090C11);
+    border-color: var(--claim-sheet-border-c, rgba(11, 16, 32, 0.1));
+    border-top-left-radius: var(--claim-sheet-radius, 25px);
+    border-top-right-radius: var(--claim-sheet-radius, 25px);
+}
+
+.sheetHeader {
+    box-sizing: border-box;
+    width: 100%;
+    height: 46px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--claim-sheet-header-border-c, rgba(138, 142, 148, 0.3));
+    flex-shrink: 0;
+}
+
+.sheetHeaderSpacer {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.sheetHeaderTitle {
+    margin: 0;
+    flex: 0 1 232px;
+    min-width: 0;
+    text-align: center;
+    font-size: var(--header-title-f-s, 17px);
+    font-weight: var(--header-title-f-w, 700);
+    line-height: var(--header-title-l-h, 22px);
+    color: var(--header-title-f-c, #F5F8FF);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sheetHeaderClose {
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: var(--header-action-close-radius, 5px);
+    background: var(--header-action-bg, transparent);
+    cursor: pointer;
+}
+
+.sheetHeaderCloseIcon {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.instructionsBody {
+    box-sizing: border-box;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 20px;
+    overflow: hidden;
+}
+
+.balanceCard {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 34px;
+    padding: 24px;
+    border-radius: 24px;
+    background: var(--claim-card-bg, linear-gradient(94.03deg, #2C2F36 9.09%, #12151A 90.91%));
+
+    box-shadow: var(--claim-card-shadow, 0 16px 32px rgba(0, 0, 0, 0.5)),
+        inset 0 0 0 1px var(--claim-card-border-c, rgba(245, 248, 255, 0.1));
+    overflow: hidden;
+}
+
+.balanceTop {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.walletBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+
+    box-shadow: inset 0 0 0 1px var(--claim-badge-border-c, rgba(245, 248, 255, 0.1));
+    border-radius: 12px;
+    background: var(--claim-badge-bg, rgba(245, 248, 255, 0.08));
+}
+
+.walletBadgeIcon {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+.claimNowBadge {
+    box-sizing: border-box;
+    width: 99px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border: 1px solid var(--claim-now-bg, rgba(8, 194, 157, 0.15));
+    border-radius: 20px;
+    background: var(--claim-now-bg, rgba(8, 194, 157, 0.15));
+    color: var(--claim-now-f-c, #08C29D);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+.balanceSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.balanceLabel {
+    margin: 0;
+    width: 100%;
+    color: var(--claim-label-f-c, #B1B4BB);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+}
+
+.balanceGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.heroRow {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.heroAmount {
+    margin: 0;
+    color: var(--claim-hero-f-c, #F5F8FF);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 48px;
+    white-space: nowrap;
+}
+
+.sparkle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.sparkleIcon {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.currentValue {
+    margin: 0;
+    padding-left: 3px;
+    color: var(--claim-label-f-c, #B1B4BB);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+.cardDivider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--claim-card-divider-c, rgba(255, 255, 255, 0.12));
+}
+
+.stepsBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.stepsTitle {
+    margin: 0;
+    width: 100%;
+    color: var(--claim-hero-f-c, #F5F8FF);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.stepsList {
+    min-height: 115px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.step {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stepNumber {
+    box-sizing: border-box;
+    flex: 0 0 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--claim-badge-border-c, rgba(245, 248, 255, 0.1));
+    border-radius: 14px;
+    background: var(--claim-badge-bg, rgba(245, 248, 255, 0.08));
+    color: var(--claim-label-f-c, #B1B4BB);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.stepTitle {
+    flex: 1 0 0;
+    min-width: 0;
+    color: var(--claim-label-f-c, #B1B4BB);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+.downloadBtn {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 100px;
+    background: var(--claim-cta-bg, #E6D73F);
+    color: var(--claim-cta-f-c, #090C11);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
 }

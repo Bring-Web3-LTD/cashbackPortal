@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
+import { formatCurrency } from '../../pages/History/helpers'
 import {
     formatSignedAmount,
     ClaimModalState,
@@ -25,6 +26,8 @@ export interface ClaimModalProps {
     /** Wallet emoji asset URL from the backend token (verify response). */
     walletEmoji?: string
     explorerLink: string | null
+    /** USD value of the claimable balance — shown on the instructions state. */
+    totalEstimatedUsd?: number
     onClose: () => void
     onConfirm: () => void
     onTryAgain: () => void
@@ -35,9 +38,11 @@ export const useClaimModal = ({
     tokenSymbol,
     tokenAmountDisplay,
     tokenAmount,
+    minimumClaimThreshold,
     walletAddress,
     walletName,
     walletEmoji,
+    totalEstimatedUsd,
 }: ClaimModalProps) => {
     const { t } = useTranslation()
     const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
@@ -71,8 +76,9 @@ export const useClaimModal = ({
         confirm: t('claimRewardsTitle'),
         minimum: t('minimumClaimTitle'),
         success: t('rewardClaimedHeader'),
-        failure: t('claimRewardsTitle'),
+        failure: t('claimFailedHeader'),
         processing: t('claimingHeader'),
+        instructions: t('claimTitle'),
     }
     const title = state ? titles[state] : ''
 
@@ -87,7 +93,12 @@ export const useClaimModal = ({
         networkFeeWaived: t('networkFeeWaived'),
         minimalAmountClaim: t('minimalAmountClaim'),
         minimumOnWayTitle: t('minimumOnWayTitle'),
-        minimumOnWayMsg1: t('minimumOnWayMsg1'),
+        // `amount`/`symbol` let a platform phrase the threshold inline instead
+        // of hardcoding it — Solflare's copy does, DEFAULT's ignores them.
+        minimumOnWayMsg1: t('minimumOnWayMsg1', {
+            amount: minimumClaimThreshold,
+            symbol: tokenSymbol,
+        }),
         minimumOnWayMsg2: t('minimumOnWayMsg2'),
         minimumKeepShopping: t('minimumKeepShopping'),
         claiming: t('claiming'),
@@ -98,10 +109,23 @@ export const useClaimModal = ({
         rewardClaimedMsg: t('rewardClaimedMsg', { address: shortAddress || walletName }),
         claimFailedTitle: t('claimFailedTitle'),
         claimFailedMsg: t('claimFailedMsg'),
+        claimNow: t('claimNow'),
+        yourBalance: t('yourBalance'),
+        currentValue: `${t('currentValue')} ${formatCurrency(totalEstimatedUsd ?? 0)}`,
+        claimYourToken: t('claimYourToken', { symbol: tokenSymbol }),
+        downloadWallet: t('downloadWallet'),
     }
+
+    const claimSteps = [
+        t('claimStep1'),
+        t('claimStep2'),
+        t('claimStep3'),
+        t('claimStep4'),
+    ]
 
     return {
         labels,
+        claimSteps,
         open,
         cryptoToken,
         emojiFailed,

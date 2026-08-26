@@ -41,6 +41,7 @@ const ClaimModal = (props: ClaimModalProps) => {
     } = props
     const {
         labels,
+        claimSteps,
         open,
         cryptoToken,
         emojiFailed,
@@ -58,12 +59,79 @@ const ClaimModal = (props: ClaimModalProps) => {
             onClick={onClose}
         >
             <section
-                className={styles.panel}
+                className={`${styles.panel} ${state === 'instructions' ? styles.panelSheet : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="mobile-claim-modal-title"
                 onClick={(e) => e.stopPropagation()}
             >
+                    {state === 'instructions' && (
+                        <>
+                            <header className={styles.sheetHeader}>
+                                <span className={styles.sheetHeaderSpacer} aria-hidden="true" />
+                                <h2 id="mobile-claim-modal-title" className={styles.sheetHeaderTitle}>
+                                    {title}
+                                </h2>
+                                <button
+                                    type="button"
+                                    className={styles.sheetHeaderClose}
+                                    aria-label={labels.close}
+                                    onClick={onClose}
+                                >
+                                    <Icon name="x-close.svg" className={styles.sheetHeaderCloseIcon} alt="" />
+                                </button>
+                            </header>
+
+                            <div className={styles.instructionsBody}>
+                                <div className={styles.balanceCard}>
+                                    <div className={styles.balanceTop}>
+                                        <div className={styles.cardHeader}>
+                                            <span className={styles.walletBadge}>
+                                                <Icon name="wallet-badge.svg" className={styles.walletBadgeIcon} alt="" />
+                                            </span>
+                                            <span className={styles.claimNowBadge}>{labels.claimNow}</span>
+                                        </div>
+                                        <div className={styles.balanceSection}>
+                                            <p className={styles.balanceLabel}>{labels.yourBalance}</p>
+                                            <div className={styles.balanceGroup}>
+                                                <div className={styles.heroRow}>
+                                                    <p className={styles.heroAmount}>
+                                                        {tokenAmountDisplay} {tokenSymbol}
+                                                    </p>
+                                                    <span className={styles.sparkle}>
+                                                        <Icon name="sparkle.svg" className={styles.sparkleIcon} alt="" />
+                                                    </span>
+                                                </div>
+                                                <p className={styles.currentValue}>{labels.currentValue}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <span className={styles.cardDivider} aria-hidden="true" />
+
+                                    <div className={styles.stepsBlock}>
+                                        <p className={styles.stepsTitle}>{labels.claimYourToken}</p>
+                                        <ol className={styles.stepsList}>
+                                            {claimSteps.map((step, i) => (
+                                                <li key={step} className={styles.step}>
+                                                    <span className={styles.stepNumber}>{i + 1}</span>
+                                                    <span className={styles.stepTitle}>{step}</span>
+                                                </li>
+                                            ))}
+                                        </ol>
+                                        <button
+                                            type="button"
+                                            className={styles.downloadBtn}
+                                            onClick={onConfirm}
+                                        >
+                                            {labels.downloadWallet}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
                     {(state === 'confirm' || state === 'minimum' || state === 'success' || state === 'failure' || state === 'processing') && (
                         <header className={styles.header}>
                             <span className={styles.headerSpacer} aria-hidden="true" />
@@ -153,15 +221,25 @@ const ClaimModal = (props: ClaimModalProps) => {
                                     <h3 className={styles.minimumTitle}>
                                         {labels.minimumOnWayTitle}
                                     </h3>
-                                    <p className={styles.minimumPara}>
-                                        {labels.minimumOnWayMsg1}
-                                    </p>
-                                    <p className={styles.minimumPara}>
-                                        {labels.minimumOnWayMsg2}
-                                    </p>
-                                    <p className={styles.minimumHint}>
-                                        {labels.minimumKeepShopping}
-                                    </p>
+                                    {/* A platform may collapse this to a single
+                                        line — an empty string means "not part
+                                        of this platform's copy", not a blank
+                                        paragraph holding a line-height. */}
+                                    {labels.minimumOnWayMsg1 ? (
+                                        <p className={styles.minimumPara}>
+                                            {labels.minimumOnWayMsg1}
+                                        </p>
+                                    ) : null}
+                                    {labels.minimumOnWayMsg2 ? (
+                                        <p className={styles.minimumPara}>
+                                            {labels.minimumOnWayMsg2}
+                                        </p>
+                                    ) : null}
+                                    {labels.minimumKeepShopping ? (
+                                        <p className={styles.minimumHint}>
+                                            {labels.minimumKeepShopping}
+                                        </p>
+                                    ) : null}
                                 </div>
                             </div>
                             <footer className={styles.footerOneButton}>
@@ -261,11 +339,9 @@ const ClaimModal = (props: ClaimModalProps) => {
                                     ) : null}
                                 </div>
                             </div>
-                            <footer className={styles.footerTwoButtonsStatus}>
-                                <button type="button" className={styles.btnSecondary} onClick={onClose}>
-                                    {labels.close}
-                                </button>
-                                <button type="button" className={styles.btnPrimary} onClick={onTryAgain}>
+                            {/* Figma 278:5071 — a single full-width accent CTA. */}
+                            <footer className={styles.footerOneButton}>
+                                <button type="button" className={styles.btnPrimaryWide} onClick={onTryAgain}>
                                     {labels.tryAgain}
                                 </button>
                             </footer>
