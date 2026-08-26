@@ -154,7 +154,6 @@
     --category-btn-hover-border-c: transparent;
     --category-btn-hover-radius: 8px;
 
-    --modal-offset-top: -112px;
     /* Popup surface is one step brighter than the page (--bg #1E2328) so the
        modal reads as a distinct panel rather than blending in. */
     --modal-bg: #252B33;
@@ -218,13 +217,24 @@
     --modal-deal-consent-f-c: #D1D5DB;
     --modal-deal-terms-btn-hover-f-c: #7B9AEB;
 
+    --modal-status-amount-f-c: #F3F4F6;
+
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 26px;
+
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 600;
-    --modal-status-title-success-f-c: #66F2D6;
+    --modal-status-title-l-h: 38px;
+    --modal-status-title-success-f-c: #F3F4F6;
     --modal-status-title-failure-f-c: #FF7196;
 
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
+    --modal-status-msg-l-h: 24px;
     --modal-status-msg-f-c: #F3F4F6;
 
     --modal-status-btn-bg: #3D5AEB;

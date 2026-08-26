@@ -252,6 +252,8 @@ const Rewards = () => {
             </div>
             <StatusModal
                 status={claimStatus}
+                amount={`${claimAmount} ${currentCryptoSymbol}`}
+                address={walletAddress}
                 open={modalState !== 'close'}
                 closeFn={() => {
                     setModalState('close')

@@ -4,50 +4,67 @@ import Modal from '../../Modal/Modal'
 import message from '../../../utils/message'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../Icon/Icon'
+import { shortenWalletAddress } from '../../../utils/claimFlow'
 
-interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
+interface ClaimInfo {
+    amount?: string
+    address?: string | null
+}
+
+interface Props extends Omit<ComponentProps<typeof Modal>, 'children'>, ClaimInfo {
     status: 'success' | "failure" | 'loading'
 }
 
 interface StatusProps { closeFn: () => void }
 
-const Loading = () => {
+const Loading = ({ closeFn }: StatusProps) => {
     const { t } = useTranslation()
 
     return (
         <div className={styles.card}>
-            <span className={styles.loader} role="status" aria-label="oval-loading" />
+            <span className={styles.loader} role="status" aria-label={t('statusProcessingTitle')} />
             <div className={`${styles.title} ${styles.title_loading}`}>
-                Processing
+                {t('statusProcessingTitle')}
             </div>
-            <div className={styles.msg}>
-                We are processing your request.<br />It could take a few seconds.
+            <div className={`${styles.msg} ${styles.msg_wide}`}>
+                <div>{t('statusProcessingMsg')}</div>
+                <div>{t('statusProcessingMsg2')}</div>
             </div>
             <button
                 id="status-modal-loading-btn"
-                disabled
+                onClick={() => closeFn()}
                 className={styles.btn}
-            >{t('doneBtn')}</button>
+            >{t('statusCloseBtn')}</button>
         </div>
     )
 }
 
-const Success = ({ closeFn }: StatusProps) => {
+const STARS = ['a', 'b', 'c', 'd', 'e', 'f']
+
+const Success = ({ closeFn, amount, address }: StatusProps & ClaimInfo) => {
     const { t } = useTranslation()
     return (
-        <div className={styles.card}>
-            <Icon name="success.svg" alt="icon" />
-            <div className={`${styles.title} ${styles.title_success}`}>
-                Success
+        <div className={styles.success_card}>
+            <div className={styles.art}>
+                <Icon className={styles.glow} name="success-glow.svg" alt="" />
+                {amount ? <div className={styles.amount}>{amount}</div> : null}
+                <div className={styles.stars}>
+                    {STARS.map(s => (
+                        <Icon key={s} className={styles[`star_${s}`]} name={`star-${s}.svg`} alt="" />
+                    ))}
+                </div>
             </div>
-            <div className={styles.msg}>
-                The rewards have been successfully<br />deposited into your wallet.
+            <div className={styles.success_title}>
+                {t('statusSuccessTitle')}
+            </div>
+            <div className={styles.success_msg}>
+                {t('statusSuccessMsg', { address: shortenWalletAddress(address) })}
             </div>
             <button
                 id="status-modal-success-btn"
                 onClick={() => closeFn()}
-                className={styles.btn}
-            >{t('doneBtn')}</button>
+                className={`${styles.btn} ${styles.success_btn}`}
+            >{t('statusCloseBtn')}</button>
         </div>
     )
 }
@@ -58,51 +75,48 @@ const Failure = ({ closeFn }: StatusProps) => {
 
     return (
         <div className={styles.card}>
-            <Icon name="error.svg" alt="icon" />
+            <Icon className={styles.icon} name="error.svg" alt="" />
             <div className={`${styles.title} ${styles.title_error}`}>
-                Error
+                {t('statusErrorTitle')}
             </div>
             <div className={styles.msg}>
-                Something went wrong.<br />Please try again later.
+                {t('statusErrorMsg')}
             </div>
             <button
                 id="status-modal-failure-btn"
                 onClick={() => closeFn()}
                 className={styles.btn}
-            >{t('doneBtn')}</button>
+            >{t('statusCloseBtn')}</button>
         </div>
     )
 }
 
-// The status modal can sit on its own surface, separate from the other modals.
-// Both fall back to the shared shell, so platforms that set neither are unchanged.
 const shellOverrides = {
     '--custom-modal-bg': 'var(--modal-status-bg, var(--modal-bg))',
     '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
-    '--custom-modal-h': 'var(--modal-status-h, var(--modal-h, auto))',
-    '--custom-modal-close-top': 'var(--modal-status-close-top, var(--modal-close-top, 32px))',
-    '--custom-modal-close-right': 'var(--modal-status-close-right, var(--modal-close-right, 32px))',
 }
 
-const StatusModal = ({ open, closeFn, status }: Props) => {
+const StatusModal = ({ open, closeFn, status, amount, address }: Props) => {
+    const close = () => {
+        message({ action: 'POPUP_CLOSED' })
+        closeFn()
+    }
+
     return (
         <Modal
             open={open}
             closeFn={closeFn}
+            className={styles.overlay}
+            contentClassName={styles.shell}
+            closeBtnClassName={styles.close}
             style={shellOverrides}
         >
             {status === 'loading' ?
-                <Loading />
+                <Loading closeFn={close} />
                 : status === 'failure' ?
-                    <Failure closeFn={() => {
-                        message({ action: 'POPUP_CLOSED' })
-                        closeFn()
-                    }} />
+                    <Failure closeFn={close} />
                     : status === 'success' ?
-                        <Success closeFn={() => {
-                            message({ action: 'POPUP_CLOSED' })
-                            closeFn()
-                        }} />
+                        <Success amount={amount} address={address} closeFn={close} />
                         : null
             }
         </Modal>

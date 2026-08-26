@@ -3,13 +3,25 @@
     --custom-modal-radius: var(--retailer-custom-modal-radius, var(--modal-radius));
 }
 
-.retailer_overlay_desktop {
-    --modal-pt: 40px;
-    --modal-px: 24px;
-    --modal-close-top: 16px;
-    --modal-close-right: 24px;
-    --modal-close-size: 24px;
-    --modal-close-pad: 0px;
+.retailer_overlay_desktop .shell,
+.retailer_overlay_desktop .shell_terms {
+    height: 288px;
+    padding: 40px 24px 24px;
+}
+
+.retailer_overlay_desktop .shell_terms {
+    padding-bottom: 6px;
+}
+
+.retailer_overlay_desktop .close {
+    top: 16px;
+    right: 24px;
+    padding: 0;
+}
+
+.retailer_overlay_desktop .close img {
+    width: 24px;
+    height: 24px;
 }
 
 .modal_container {
