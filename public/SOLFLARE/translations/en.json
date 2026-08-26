@@ -17,5 +17,13 @@
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
   "connect": "Connect",
-  "termsAndExclusions": "Terms"
+  "termsAndExclusions": "Terms",
+  "statusProcessingTitle": "Claiming",
+  "statusProcessingMsg": "Your reward will be ready soon.",
+  "statusProcessingMsg2": "Please wait...",
+  "statusErrorTitle": "Failed",
+  "statusErrorMsg": "Something went wrong while claiming your reward. Make sure you have stable Internet connection and try again.",
+  "statusCloseBtn": "Close",
+  "statusSuccessTitle": "Reward claimed!",
+  "statusSuccessMsg": "Your reward has been successfully claimed to {{address}}. Please wait..."
 }

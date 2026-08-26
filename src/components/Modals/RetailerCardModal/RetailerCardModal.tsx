@@ -83,11 +83,9 @@ const RetailerCardModal = ({
                 showCloseBtn={!showingTerms}
                 xMarkPath='x-mark-light.svg'
                 className={`${styles.retailer_overlay} ${styles.retailer_overlay_desktop}`}
-                style={{
-                    '--modal-h': showingTerms ? 'calc(288px - 40px - 6px)' : 'calc(288px - 40px - 24px)',
-                    '--modal-pb': showingTerms ? '6px' : '24px',
-                    ...(showingTerms ? termsShellOverrides : {}),
-                }}
+                contentClassName={showingTerms ? styles.shell_terms : styles.shell}
+                closeBtnClassName={styles.close}
+                style={showingTerms ? termsShellOverrides : undefined}
                 open={open}
                 closeFn={onClose}
             >

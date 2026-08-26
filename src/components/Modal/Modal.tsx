@@ -9,12 +9,14 @@ interface Props {
     open: boolean
     style?: { [key: string]: string }
     className?: string
+    contentClassName?: string
+    closeBtnClassName?: string
     xMarkPath?: string
     showCloseBtn?: boolean
     closeFn: () => void
 }
 
-const Modal = ({ children, style, className, open, closeFn, xMarkPath = 'x-mark.svg', showCloseBtn = true }: Props) => {
+const Modal = ({ children, style, className, contentClassName, closeBtnClassName, open, closeFn, xMarkPath = 'x-mark.svg', showCloseBtn = true }: Props) => {
     const closePopup = useCallback(() => {
         closeFn()
         message({ action: 'POPUP_CLOSED' })
@@ -63,11 +65,11 @@ const Modal = ({ children, style, className, open, closeFn, xMarkPath = 'x-mark.
             className={[styles.overlay, className].filter(Boolean).join(' ')}
             onClick={handleOverlayClick}
         >
-            <div id="modal-content" className={styles.modal}>
+            <div id="modal-content" className={[styles.modal, contentClassName].filter(Boolean).join(' ')}>
                 {showCloseBtn ?
                     <button
                         id="modal-close-btn"
-                        className={styles.close_btn}
+                        className={[styles.close_btn, closeBtnClassName].filter(Boolean).join(' ')}
                         onClick={closePopup}
                     >
                         <Icon

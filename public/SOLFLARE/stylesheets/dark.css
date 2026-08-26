@@ -195,7 +195,6 @@
     --category-btn-hover-radius: 8px;
     --category-skeleton-bg: #1B1E23;
 
-    --modal-offset-top: -112px;
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(8, 10, 14, 0.75);
     --modal-border-w: 0;
@@ -265,35 +264,43 @@
     --modal-deal-terms-btn-f-c: rgba(245, 248, 255, 0.85);
     --modal-deal-terms-btn-hover-f-c: #F5F8FF;
 
+    --modal-status-radius: 30px;
+    --modal-status-amount-f-c: #F5F8FF;
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 26px;
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 700;
     --modal-status-title-loading-f-c: #F5F8FF;
-    --modal-status-title-success-f-c: #08C29D;
-    --modal-status-title-failure-f-c: #DA493F;
+    --modal-status-title-success-f-c: #F5F8FF;
+    --modal-status-title-failure-f-c: #DA3F49;
 
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
     --modal-status-msg-f-c: #F5F8FF;
 
     --modal-status-btn-bg: rgba(245, 248, 255, 0.08);
-    --modal-status-btn-f-s: 17px;
-    --modal-status-btn-f-w: 700;
+    --modal-status-btn-f-s: 16px;
+    --modal-status-btn-f-w: 400;
     --modal-status-btn-f-c: #F5F8FF;
     --modal-status-btn-border-w: 0;
     --modal-status-btn-border-c: transparent;
     --modal-status-btn-radius: 100px;
 
-    --modal-status-btn-hover-bg: rgba(245, 248, 255, 0.12);
-    --modal-status-btn-hover-f-s: 17px;
-    --modal-status-btn-hover-f-w: 700;
+    --modal-status-btn-hover-bg: rgba(245, 248, 255, 0.16);
+    --modal-status-btn-hover-f-s: 16px;
+    --modal-status-btn-hover-f-w: 400;
     --modal-status-btn-hover-f-c: #F5F8FF;
     --modal-status-btn-hover-border-w: 0;
     --modal-status-btn-hover-border-c: transparent;
     --modal-status-btn-hover-radius: 100px;
 
     --modal-status-btn-disabled-bg: rgba(245, 248, 255, 0.08);
-    --modal-status-btn-disabled-f-s: 17px;
-    --modal-status-btn-disabled-f-w: 700;
+    --modal-status-btn-disabled-f-s: 16px;
+    --modal-status-btn-disabled-f-w: 400;
     --modal-status-btn-disabled-f-c: #F5F8FF;
     --modal-status-btn-disabled-border-w: 0;
     --modal-status-btn-disabled-border-c: transparent;
