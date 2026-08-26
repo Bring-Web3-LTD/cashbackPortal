@@ -253,9 +253,10 @@
 
     --history-back-x-location: 64px;
 
+    --history-table-radius: 12px;
     --history-table-header-bg: #242424;
-    --history-table-header-border-c: transparent;
-    --history-table-header-border-w: 0;
+    --history-table-header-border-c: rgba(0, 0, 0, 0.30);
+    --history-table-header-border-w: 1px;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 15px;
@@ -263,7 +264,7 @@
     --history-table-header-f-c: #8C8C8C;
 
     --history-table-row-border-w: 1px;
-    --history-table-row-border-c: #171717;
+    --history-table-row-border-c: #DCE0E9;
     --history-table-row-bg: #242424;
 
     --history-table-row-hover-bg: #242424D9;
@@ -282,6 +283,10 @@
     --history-status-f-w: 400;
     --history-status-f-c: #0BA;
     --history-status-canceled-f-c: #FF5C71;
+    --history-status-claimed-f-c: #FFC95C;
+    --history-status-pending-f-c: #FBFBFB;
+    --history-status-total-claims-f-c: #FBFBFB;
+    --history-status-total-claims-f-w: 700;
 
     --history-description-f-s: 16px;
     --history-description-f-w: 400;

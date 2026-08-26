@@ -311,10 +311,10 @@
     --history-amount-f-w: 700;
     --history-amount-l-h: 20px;
     --history-amount-l-s: 0.28px;
-    --history-amount-claimed-bg: rgba(74, 222, 128, 0.15);
-    --history-amount-claimed-f-c: #4ADE80;
-    --history-amount-completed-bg: rgba(250, 204, 21, 0.15);
-    --history-amount-completed-f-c: #FDE047;
+    --history-amount-claimed-bg: rgba(250, 204, 21, 0.15);
+    --history-amount-claimed-f-c: #FDE047;
+    --history-amount-claimable-bg: rgba(74, 222, 128, 0.15);
+    --history-amount-claimable-f-c: #4ADE80;
     --history-amount-cancelled-bg: rgba(248, 113, 113, 0.20);
     --history-amount-cancelled-f-c: #FCA5A5;
     --history-amount-pending-bg: rgba(161, 161, 170, 0.15);
@@ -324,8 +324,8 @@
     --history-status-f-w: 400;
     --history-status-l-h: 13px;
     --history-status-f-c: #64748B;
-    --history-status-claimed-f-c: #4ADE80;
-    --history-status-completed-f-c: #FACC15;
+    --history-status-claimed-f-c: #FACC15;
+    --history-status-claimable-f-c: #4ADE80;
     --history-status-cancelled-f-c: #F87171;
     --history-status-pending-f-c: #94A3B8;
 

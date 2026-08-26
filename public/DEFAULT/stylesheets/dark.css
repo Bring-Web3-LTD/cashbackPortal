@@ -315,6 +315,10 @@
     --history-status-f-w: 400;
     --history-status-f-c: #66F2D6;
     --history-status-canceled-f-c: #FF7196;
+    --history-status-claimed-f-c: #FFD666;
+    --history-status-pending-f-c: #F3F4F6;
+    --history-status-total-claims-f-c: #F3F4F6;
+    --history-status-total-claims-f-w: 700;
 
     --history-description-f-s: 14px;
     --history-description-f-w: 400;
