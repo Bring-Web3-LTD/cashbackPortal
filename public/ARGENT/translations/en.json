@@ -11,6 +11,7 @@
   "loading": "Loading...",
   "loadingBtn": "LOADING...",
   "doneBtn": "DONE",
+  "statusCloseBtn": "DONE",
   "back": "Back",
   "historyTitle": "Cashback history",
   "emptyHistory": "No cashback history",

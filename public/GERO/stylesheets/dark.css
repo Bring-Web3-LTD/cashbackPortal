@@ -220,14 +220,12 @@
 
     /* Modal shell + copy, shared by every modal. The claim popups sit centred
        in the viewport, so no vertical nudge. */
-    --modal-offset-top: 0px;
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(0, 0, 0, 0.8);
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 12px;
     /* Modal.tsx renders the close icon at 20px; this bumps it to 24. */
-    --modal-close-size: 24px;
     --modal-title-f-s: 18px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #FFFFFF;

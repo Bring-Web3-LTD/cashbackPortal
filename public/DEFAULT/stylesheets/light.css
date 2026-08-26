@@ -154,7 +154,6 @@
     --category-btn-hover-border-c: transparent;
     --category-btn-hover-radius: 8px;
 
-    --modal-offset-top: -112px;
     --modal-bg: #FFFFFF;
     --modal-overlay-bg: rgba(31, 41, 55, 0.55);
     --modal-border-w: 0;
@@ -216,13 +215,24 @@
     --modal-deal-consent-f-c: #4B5563;
     --modal-deal-terms-btn-hover-f-c: #3D5AEB;
 
+    --modal-status-amount-f-c: #1F2937;
+
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 26px;
+
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 600;
-    --modal-status-title-success-f-c: #08C29D;
+    --modal-status-title-l-h: 38px;
+    --modal-status-title-success-f-c: #1F2937;
     --modal-status-title-failure-f-c: #FF1351;
 
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
+    --modal-status-msg-l-h: 24px;
     --modal-status-msg-f-c: #1F2937;
 
     --modal-status-btn-bg: #3D5AEB;

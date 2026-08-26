@@ -9,33 +9,28 @@
 }
 
 .modal {
-    --_modal-bg: var(--custom-modal-bg, var(--modal-bg));
-    --_modal-radius: var(--custom-modal-radius, var(--modal-radius));
-    --_modal-h: var(--custom-modal-h, var(--modal-h, auto));
-    --padding: 24px;
-    margin-top: var(--modal-offset-top);
+    box-sizing: border-box;
     position: relative;
-    height: var(--_modal-h);
-    max-height: calc(621px - var(--padding) * 2);
-    width: calc(512px - var(--modal-px, var(--padding)) * 2);
+    width: 100%;
+    min-width: 420px;
+    max-width: 512px;
     display: flex;
     justify-content: center;
-    padding: var(--modal-pt, var(--padding)) var(--modal-px, var(--padding)) var(--modal-pb, var(--padding));
-    background: var(--_modal-bg);
+    padding: 24px;
+    background: var(--custom-modal-bg, var(--modal-bg));
     border-width: var(--modal-border-w);
     border-style: solid;
     border-color: var(--modal-border-c);
-    border-radius: var(--_modal-radius);
+    border-radius: var(--custom-modal-radius, var(--modal-radius));
     user-select: none;
     -webkit-user-select: none;
 }
 
 .close_btn {
-    --corner: 32px;
     position: absolute;
-    top: var(--custom-modal-close-top, var(--modal-close-top, 32px));
-    right: var(--custom-modal-close-right, var(--modal-close-right, 32px));
-    padding: var(--modal-close-pad, 1px 6px);
+    top: 32px;
+    right: 32px;
+    padding: 1px 6px;
     z-index: 11;
     cursor: pointer;
     background: transparent;
@@ -44,18 +39,6 @@
 }
 
 .close_btn img {
-    width: var(--modal-close-size, 20px);
-    height: var(--modal-close-size, 20px);
-}
-
-@media screen and (max-width: 768px) {
-    .modal {
-        width: calc(345px - var(--padding) * 2);
-    }
-}
-
-@media screen and (max-height: 710px) {
-    .modal {
-        margin-top: 0;
-    }
+    width: 20px;
+    height: 20px;
 }
