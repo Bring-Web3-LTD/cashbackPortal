@@ -25,12 +25,21 @@ interface Props {
 }
 
 const optionRowStyle = {
+    display: "flex",
+    alignItems: "center",
     fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
-    fontSize: "var(--search-option-f-s, 15px)",
-    lineHeight: "22px",
+    fontSize: "var(--search-option-f-s, 14px)",
+    lineHeight: "var(--search-option-l-h, 20px)",
     height: "33px",
     color: "var(--search-option-f-c)",
-    padding: "5px 20px 5px 39px",
+    padding: "0 20px 0 39px",
+} as const
+
+const singleOptionRowStyle = {
+    fontWeight: "var(--search-single-option-f-w, 500)",
+    fontSize: "var(--search-single-option-f-s, 15px)",
+    lineHeight: "var(--search-single-option-l-h, 22px)",
+    height: "42px",
 } as const
 
 const customStyles: StylesConfig<ReactSelectOptionType> = {
@@ -47,18 +56,16 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
-        width: "438px",
+        width: "100%",
         height: "46px",
-        padding: "8px 8px 8px 17px",
-        gap: "6px",
+        padding: "11px 14px",
+        gap: "8px",
         fontSize: "var(--search-f-s)",
         fontWeight: "var(--search-f-w)",
+        lineHeight: "var(--search-l-h, 24px)",
         cursor: "text",
         boxShadow: "none",
         outline: "none !important",
-        "@media only screen and (max-width: 1280px)": {
-            width: "342px",
-        }
         }
     },
     menuList: (base) => ({
@@ -75,14 +82,14 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     }),
     menu: (base) => ({
         ...base,
-        marginTop: "6px",
+        marginTop: "4px",
         backgroundColor: "var(--search-menu-bg, var(--search-bg))",
-        border: "var(--search-menu-border-w, 0) solid var(--search-menu-border-c, transparent)",
+        border: "var(--search-menu-border-w, 1px) solid var(--search-menu-border-c, transparent)",
         boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
-        borderRadius: "var(--search-menu-radius, 12px)",
+        borderRadius: "var(--search-menu-radius, 10px)",
         overflow: "hidden",
-        paddingTop: "10px",
-        paddingBottom: "15px",
+        paddingTop: "8px",
+        paddingBottom: "8px",
         fontSize: "var(--search-f-s)",
         zIndex: 10,
     }),
@@ -91,6 +98,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         return {
             ...base,
             ...optionRowStyle,
+            ...(isSingleOption ? singleOptionRowStyle : {}),
             backgroundColor: isSingleOption
                 ? "transparent"
                 : state.isFocused
@@ -107,14 +115,18 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
         color: "var(--search-f-c)",
+        margin: 0,
+        padding: 0,
     }),
     placeholder: (base) => ({
         ...base,
-        color: 'var(--search-placeholder-f-c)'
+        color: 'var(--search-placeholder-f-c)',
+        margin: 0,
     }),
     singleValue: (base) => ({
         ...base,
         color: 'var(--search-f-c)',
+        margin: 0,
     }),
     valueContainer: (base) => ({
         ...base,
@@ -122,7 +134,10 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     }),
     noOptionsMessage: (base) => ({
         ...base,
-        padding: "5px 20px 5px 39px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+        padding: "12px 14px",
         textAlign: "left",
         color: "var(--search-option-f-c)",
     }),
@@ -138,17 +153,19 @@ const CustomSingleValue = (
 }
 
 const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
+    const { t } = useTranslation()
+
     if (props.selectProps.inputValue.length <= 1) {
         return null
     }
 
     return (
         <components.NoOptionsMessage {...props}>
-            <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
-                No results.
+            <div className={styles.no_results_title}>
+                {t('searchNoResults')}
             </div>
-            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-no-results-hint-f-c, var(--search-option-f-c))" }}>
-                Try a different search term
+            <div className={styles.no_results_hint}>
+                {t('searchNoResultsHint')}
             </div>
         </components.NoOptionsMessage>
     )
