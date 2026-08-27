@@ -317,10 +317,10 @@
     --history-amount-f-s: 14px;
     --history-amount-f-w: 700;
     --history-amount-l-h: 20px;
-    --history-amount-claimed-bg: rgba(90, 184, 139, 0.25);
-    --history-amount-claimed-f-c: #70D1A3;
-    --history-amount-completed-bg: rgba(234, 207, 65, 0.25);
-    --history-amount-completed-f-c: #FBE158;
+    --history-amount-claimed-bg: rgba(234, 207, 65, 0.25);
+    --history-amount-claimed-f-c: #FBE158;
+    --history-amount-claimable-bg: rgba(90, 184, 139, 0.25);
+    --history-amount-claimable-f-c: #70D1A3;
     --history-amount-cancelled-bg: rgba(210, 88, 88, 0.25);
     --history-amount-cancelled-f-c: #F08282;
     --history-amount-pending-bg: rgba(62, 72, 100, 0.5);
@@ -330,8 +330,8 @@
     --history-status-f-w: 400;
     --history-status-l-h: 13px;
     --history-status-f-c: #7685A0;
-    --history-status-claimed-f-c: #5AB88B;
-    --history-status-completed-f-c: #EACF41;
+    --history-status-claimed-f-c: #EACF41;
+    --history-status-claimable-f-c: #5AB88B;
     --history-status-cancelled-f-c: #D25858;
     --history-status-pending-f-c: #7685A0;
 

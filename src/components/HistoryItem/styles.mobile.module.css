@@ -159,13 +159,13 @@
 }
 
 .amount_claimed {
-    background: var(--history-amount-claimed-bg, rgba(90, 184, 139, 0.25));
-    color: var(--history-amount-claimed-f-c, #70D1A3);
+    background: var(--history-amount-claimed-bg, rgba(234, 207, 65, 0.25));
+    color: var(--history-amount-claimed-f-c, #FBE158);
 }
 
-.amount_completed {
-    background: var(--history-amount-completed-bg, rgba(234, 207, 65, 0.25));
-    color: var(--history-amount-completed-f-c, #FBE158);
+.amount_claimable {
+    background: var(--history-amount-claimable-bg, rgba(90, 184, 139, 0.25));
+    color: var(--history-amount-claimable-f-c, #70D1A3);
 }
 
 .amount_cancelled {
@@ -187,11 +187,11 @@
 }
 
 .status_claimed {
-    color: var(--history-status-claimed-f-c, #5AB88B);
+    color: var(--history-status-claimed-f-c, #EACF41);
 }
 
-.status_completed {
-    color: var(--history-status-completed-f-c, #EACF41);
+.status_claimable {
+    color: var(--history-status-claimable-f-c, #5AB88B);
 }
 
 .status_cancelled {
