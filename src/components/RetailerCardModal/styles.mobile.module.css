@@ -255,6 +255,13 @@
     margin: 0 0 4px;
 }
 
+/* Anchors don't inherit color from the UA stylesheet — without this they'd
+   render as default browser blue instead of the terms text color. */
+.terms_body a {
+    color: inherit;
+    text-decoration: underline;
+}
+
 .terms_loading {
     color: var(--retailer-modal-terms-body-f-c);
     opacity: 0.7;

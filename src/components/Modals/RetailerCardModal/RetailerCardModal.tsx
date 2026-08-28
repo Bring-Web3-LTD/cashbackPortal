@@ -1,6 +1,6 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
-import Markdown from 'react-markdown'
+import TermsMarkdown from '../../TermsMarkdown/TermsMarkdown'
 import { ComponentProps, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import message from '../../../utils/message'
@@ -130,9 +130,10 @@ const RetailerCardModal = ({
                                 className={styles.modal}
                             >
                                 {terms ? (
-                                    <Markdown className={`${styles.markdown} ${styles.markdown_short}`}>
-                                        {terms}
-                                    </Markdown>
+                            <TermsMarkdown
+                                terms={terms}
+                                className={`${styles.markdown} ${styles.markdown_short}`}
+                            />
                                 ) : (
                                     <div className={`${styles.markdown} ${styles.center}`}>
                                         Loading...
@@ -241,9 +242,10 @@ const RetailerCardModal = ({
                     </div>
                 </div>
                 {terms ?
-                    <Markdown className={styles.markdown}>
-                        {terms}
-                    </Markdown>
+                    <TermsMarkdown
+                        terms={terms}
+                        className={styles.markdown}
+                    />
                     :
                     <div className={`${styles.markdown} ${styles.center}`}>
                         Loading...
