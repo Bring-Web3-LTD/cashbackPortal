@@ -11,6 +11,11 @@ interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     onConnect?: () => void,
 }
 
+const shellOverrides = {
+    '--custom-modal-bg': 'var(--modal-popup-frame-bg, var(--modal-bg))',
+    '--custom-modal-radius': 'var(--modal-popup-radius, var(--modal-radius))',
+}
+
 const LoginModal = ({
     open,
     closeFn,
@@ -34,11 +39,24 @@ const LoginModal = ({
         <Modal
             open={open}
             closeFn={onClose}
+            className={styles.overlay}
+            contentClassName={styles.shell}
+            closeBtnClassName={styles.close}
+            style={shellOverrides}
         >
-            <div className={styles.modal}>
-                <Icon name="wallet.svg" alt="wallet icon" />
-                <div className={styles.title}>{t('connectYourWallet')}</div>
-                <div className={styles.subtitle}>Please login to your wallet to proceed</div>
+            <div className={styles.header} />
+            <div className={styles.content}>
+                <div className={styles.icon_area}>
+                    <div className={styles.icon}>
+                        <Icon className={styles.icon_img} name="wallet.svg" alt="" />
+                    </div>
+                </div>
+                <div className={styles.paragraph}>
+                    <div className={styles.title}>{t('connectYourWallet')}</div>
+                    <div className={styles.subtitle}>{t('connectWalletHint')}</div>
+                </div>
+            </div>
+            <div className={styles.footer}>
                 <button id="login-modal-btn" className={styles.btn} onClick={promptLogin}>{t('connect')}</button>
             </div>
         </Modal>

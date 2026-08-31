@@ -43,12 +43,13 @@
     --subtitle-f-s: 18px;
     --subtitle-f-w: 400;
     --subtitle-f-c: #F5F8FF;
-    --legal-link-f-s: 10px;
+    --legal-link-f-s: 12px;
     --legal-link-f-w: 400;
-    --legal-link-f-c: #7A7D83;
-    --legal-link-decoration: none;
+    --legal-link-l-h: 16px;
+    --legal-link-f-c: #B1B4BB;
+    --legal-link-decoration: underline;
     --header-btn-bg: rgba(245, 248, 255, 0.08);
-    --header-btn-hover-bg: rgba(245, 248, 255, 0.12);
+    --header-btn-hover-bg: rgba(245, 248, 255, 0.16);
     --header-btn-f-s: 14px;
     --header-btn-f-w: 700;
     --header-btn-l-h: 20px;
@@ -205,6 +206,28 @@
     --back-to-top-border-w: 1px;
     --back-to-top-border-c: rgba(102, 104, 110, 0.3);
     --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    --modal-popup-frame-bg: #161B26;
+    --modal-popup-radius: 12px;
+    --modal-popup-avatar-border-w: 1px;
+    --modal-popup-avatar-border-c: rgba(86, 98, 99, 0.75);
+    --modal-popup-loader-track-c: rgba(31, 32, 24, 0.2);
+    --modal-popup-title-f-s: 18px;
+    --modal-popup-title-f-w: 700;
+    --modal-popup-title-l-h: 22px;
+    --modal-popup-title-f-c: #F5F8FF;
+    --modal-popup-text-f-s: 16px;
+    --modal-popup-text-f-w: 500;
+    --modal-popup-text-l-h: 20px;
+    --modal-popup-text-f-c: #F5F8FF;
+    --modal-popup-btn-f-s: 18px;
+    --modal-popup-btn-f-w: 700;
+    --modal-popup-btn-l-h: 22px;
+    --modal-popup-terms-f-s: 12px;
+    --modal-popup-terms-f-w: 400;
+    --modal-popup-terms-l-h: 16px;
+    --modal-popup-terms-f-c: #66686E;
+    --modal-popup-terms-link-f-c: #FFFFFF;
 
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(8, 10, 14, 0.75);

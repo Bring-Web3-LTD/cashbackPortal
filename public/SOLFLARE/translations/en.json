@@ -25,5 +25,7 @@
   "statusErrorMsg": "Something went wrong while claiming your reward. Make sure you have stable Internet connection and try again.",
   "statusCloseBtn": "Close",
   "statusSuccessTitle": "Reward claimed!",
-  "statusSuccessMsg": "Your reward has been successfully claimed to {{address}}. Please wait..."
+  "statusSuccessMsg": "Your reward has been successfully claimed to {{address}}. Please wait...",
+  "termsConsent": "By clicking Go Shopping you accept the",
+  "shopAndEarn": "Shop and earn up to {{cashback}} {{symbol}} cashback"
 }

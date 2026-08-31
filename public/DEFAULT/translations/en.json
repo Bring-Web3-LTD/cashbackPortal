@@ -29,5 +29,8 @@
   "privacy": "Privacy",
   "termsOfUse": "Terms of Use",
   "searchNoResults": "No results.",
-  "searchNoResultsHint": "Try a different search term"
+  "searchNoResultsHint": "Try a different search term",
+  "connectWalletHint": "Please login to your wallet to proceed",
+  "termsConsent": "By clicking Go Shopping, you accept the",
+  "shopAndEarn": "Shop and earn up to {{cashback}} {{symbol}} cashback"
 }
