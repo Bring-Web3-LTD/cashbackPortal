@@ -161,6 +161,28 @@
 
     /* Popup surface is one step brighter than the page (--bg #1E2328) so the
        modal reads as a distinct panel rather than blending in. */
+    --modal-popup-frame-bg: #1E2328;
+    --modal-popup-radius: 12px;
+    --modal-popup-avatar-border-w: 1px;
+    --modal-popup-avatar-border-c: rgba(86, 98, 99, 0.75);
+    --modal-popup-loader-track-c: rgba(0, 0, 0, 0.2);
+    --modal-popup-title-f-s: 18px;
+    --modal-popup-title-f-w: 700;
+    --modal-popup-title-l-h: 22px;
+    --modal-popup-title-f-c: #F3F4F6;
+    --modal-popup-text-f-s: 16px;
+    --modal-popup-text-f-w: 500;
+    --modal-popup-text-l-h: 20px;
+    --modal-popup-text-f-c: #F3F4F6;
+    --modal-popup-btn-f-s: 18px;
+    --modal-popup-btn-f-w: 700;
+    --modal-popup-btn-l-h: 22px;
+    --modal-popup-terms-f-s: 12px;
+    --modal-popup-terms-f-w: 400;
+    --modal-popup-terms-l-h: 16px;
+    --modal-popup-terms-f-c: #9CA3AF;
+    --modal-popup-terms-link-f-c: #F3F4F6;
+
     --modal-bg: #252B33;
     --modal-overlay-bg: rgba(10, 12, 16, 0.75);
     --modal-border-w: 1px;
