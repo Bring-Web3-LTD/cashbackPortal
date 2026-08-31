@@ -3,14 +3,27 @@
     --custom-modal-radius: var(--retailer-custom-modal-radius, var(--modal-radius));
 }
 
-.retailer_overlay_desktop .shell,
-.retailer_overlay_desktop .shell_terms {
-    height: 288px;
-    padding: 40px 24px 24px;
+/* Popup frame sits behind the sections; the terms view overrides both inline. */
+.retailer_overlay_desktop {
+    --custom-modal-bg: var(--modal-popup-frame-bg, var(--modal-bg));
+    --custom-modal-radius: var(--modal-popup-radius, var(--modal-radius));
+}
+
+/* Type A shell: fixed 280 tall, content fills, 81px footer pinned below.
+   The 10px sides and 24px bottom expose the frame colour behind the sections. */
+.retailer_overlay_desktop .shell {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 280px;
+    min-height: 280px;
+    max-height: 348px;
+    padding: 0 10px 24px;
+    overflow: hidden;
 }
 
 .retailer_overlay_desktop .shell_terms {
-    padding-bottom: 6px;
+    height: 288px;
+    padding: 40px 24px 6px;
 }
 
 .retailer_overlay_desktop .close {
@@ -20,8 +33,22 @@
 }
 
 .retailer_overlay_desktop .close img {
+    display: block;
     width: 24px;
     height: 24px;
+}
+
+/* Header spans the full 512 and so paints the shell's 10px sides for its
+   own height. Sits under the content, which covers the middle 492. */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    width: 512px;
+    height: 40px;
+    background: var(--modal-bg);
 }
 
 .modal_container {
@@ -38,40 +65,189 @@
     width: 100%;
 }
 
+/* Go Shopping fills the shell so the footer can pin to the bottom edge. */
+.shell .modal_container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
 .go_shop {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    min-height: 0;
+}
+
+/* Sections paint the modal surface; the frame colour shows through the
+   shell's 10px sides and 24px bottom. */
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    min-height: 0;
+    background: var(--modal-bg);
+}
+
+/* Empty in the design; absorbs the slack above the body. */
+.spacer {
+    flex: 1;
+    min-height: 0;
+}
+
+.body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
     gap: 24px;
+    height: 137px;
     width: 100%;
+    background: var(--modal-bg);
 }
 
-.go_shop_top {
+.text_section {
+    box-sizing: border-box;
     display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    gap: 16px;
+    width: 100%;
+    padding: 0 24px;
+}
+
+.provider {
+    display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    width: 100%;
+    min-width: 0;
 }
 
-.go_shop_top .logo_container {
-    margin-bottom: 0;
-}
-
-.go_shop_top .retailer_name {
+.avatar {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    line-height: 1.2;
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-width: var(--modal-popup-avatar-border-w);
+    border-style: solid;
+    border-color: var(--modal-popup-avatar-border-c);
+    border-radius: 80px;
 }
 
-.go_shop_bottom {
+/* Only the inner disc is filled; the 70px frame is a ring over the modal bg. */
+.avatar_image {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: 100px;
+}
+
+.avatar_logo,
+.avatar_fallback {
+    width: 56px;
+    height: 56px;
+    border-radius: 100px;
+}
+
+.avatar_logo {
+    object-fit: contain;
+}
+
+.avatar_fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-size: var(--retailer-logo-fallback-f-s);
+    font-weight: var(--retailer-logo-fallback-f-w);
+    text-transform: uppercase;
+}
+
+.wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 4px;
     width: 100%;
+}
+
+.title_row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 8px;
+    height: 30px;
+    width: 100%;
+}
+
+.title {
+    font-size: var(--modal-popup-title-f-s);
+    font-weight: var(--modal-popup-title-f-w);
+    line-height: var(--modal-popup-title-l-h);
+    color: var(--modal-popup-title-f-c);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.footer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 16px;
+    height: 81px;
+    width: 100%;
+    padding: 0 24px;
+    background: var(--modal-bg);
+}
+
+/* 46 + 16 + 20 overflows the 81px footer by 1px; centring splits it. */
+.footer .start_btn {
+    flex-shrink: 0;
+    height: 46px;
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 20px;
+    width: 100%;
+}
+
+.terms_text {
+    font-size: var(--modal-popup-terms-f-s);
+    font-weight: var(--modal-popup-terms-f-w);
+    line-height: var(--modal-popup-terms-l-h);
+    color: var(--modal-popup-terms-f-c);
 }
 
 .back_btn {
@@ -232,10 +408,11 @@
 .loader {
     width: 20px;
     height: 20px;
+    --stroke: 2.5px;
     border-radius: 50%;
-    background: conic-gradient(from 0deg, transparent 0%, currentColor 100%);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    background: conic-gradient(from 0deg, var(--modal-popup-loader-track-c, transparent) 0%, currentColor 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
     animation: go-shop-spin 0.7s linear infinite;
 }
 
@@ -292,11 +469,6 @@
     border-radius: 50%;
 }
 
-.logo_big {
-    width: 68px;
-    height: 68px;
-}
-
 .fallback_logo {
     display: flex;
     width: 56px;
@@ -330,4 +502,18 @@
 
 .terms_btn:hover {
     color: var(--modal-deal-terms-btn-hover-f-c);
+}
+
+/* Link inherits the consent line's type; only the colour differs. The
+   underline follows the font's own metrics instead of the browser default,
+   which sits tighter to the baseline and renders thinner. */
+.terms_text .terms_btn {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: var(--modal-popup-terms-link-f-c);
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
 }
