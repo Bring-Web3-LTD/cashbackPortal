@@ -2,13 +2,30 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
+    /* Side padding sits here, not on .main, so the header aligns with the body. */
+    padding: 0 48px;
+}
+
+@media screen and (max-width: 1111px) {
+    .container {
+        padding: 0 32px;
+    }
+}
+
+@media screen and (max-width: 839px) {
+    .container {
+        padding: 0 20px;
+    }
 }
 
 .main {
     display: flex;
     align-items: center;
     flex-direction: column;
-    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1440px;
 }
 
 .filters_section {
@@ -19,20 +36,30 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 32px;
     background: var(--bg);
-    padding-bottom: 11px;
+    padding-bottom: 32px;
 }
 
 .search_section {
-    margin-top: 16px;
+    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.search_section::-webkit-scrollbar {
+    display: none;
 }
 
 .deals_amount {
+    flex-shrink: 0;
+    white-space: nowrap;
     font-size: var(--deals-amount-f-s);
     font-weight: var(--deals-amount-f-w);
     color: var(--deals-amount-f-c);
@@ -49,6 +76,8 @@
     display: flex;
     align-items: flex-end;
     gap: 16px;
+    /* Clears the min-content floor so the field can shrink to its own minimum. */
+    min-width: 0;
 }
 
 .filter {
@@ -111,18 +140,3 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-    .search_section {
-        flex-direction: column-reverse;
-        gap: 22px;
-    }
-
-    .search_container {
-        flex-direction: column;
-    }
-
-    .filter {
-        width: 100%;
-        justify-content: space-between;
-    }
-}

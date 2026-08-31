@@ -1,0 +1,33 @@
+/* Floats over the legal bar, so it outranks the bar's z-index. */
+.button {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 6;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 100px;
+    border-width: var(--back-to-top-border-w);
+    border-style: solid;
+    border-color: var(--back-to-top-border-c);
+    background: var(--back-to-top-bg);
+    box-shadow: var(--back-to-top-shadow);
+    cursor: pointer;
+    transition: .2s;
+}
+
+@media (hover: hover) {
+    .button:hover {
+        background: var(--back-to-top-hover-bg);
+    }
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}

@@ -116,7 +116,7 @@
     border-style: solid;
     border-radius: var(--rewards-btn-radius);
     height: 46px;
-    width: var(--rewards-btn-width, 172px);
+    width: var(--rewards-btn-width);
     font-size: var(--rewards-btn-f-s);
     font-weight: var(--rewards-btn-f-w);
     line-height: var(--rewards-btn-l-h, normal);

@@ -2,7 +2,7 @@ import styles from './styles.module.css'
 
 const RetailerCardSkeleton = () => {
     return (
-        <div className={`${styles.card} ${styles.skeleton_card}`}>
+        <div className={styles.skeleton_card}>
             <div className={styles.skeleton_logo} />
             <div className={styles.skeleton_text}>
                 <div className={styles.skeleton_retailer_name} />

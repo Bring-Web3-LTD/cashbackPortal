@@ -122,6 +122,11 @@
     --retailer-card-amount-campaign-f-w: 600;
     --retailer-card-amount-campaign-bg: rgba(255, 107, 53, 0.20);
 
+    --retailer-card-skeleton-card-bg: #252B33;
+    --retailer-card-skeleton-bg: #2A3038;
+    --retailer-card-skeleton-radius: 10px;
+    --retailer-card-skeleton-border-w: 0;
+
     --deals-amount-f-s: 16px;
     --deals-amount-f-w: 500;
     --deals-amount-f-c: #F3F4F6;
@@ -260,6 +265,12 @@
     --modal-status-btn-disabled-border-w: 0;
     --modal-status-btn-disabled-border-c: transparent;
     --modal-status-btn-disabled-radius: 8px;
+
+    --back-to-top-bg: #252B33;
+    --back-to-top-hover-bg: #2A3038;
+    --back-to-top-border-w: 1px;
+    --back-to-top-border-c: rgba(255, 255, 255, 0.12);
+    --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
     --scrollbar-bg: #2A3038;
     --scrollbar-w: 12px;

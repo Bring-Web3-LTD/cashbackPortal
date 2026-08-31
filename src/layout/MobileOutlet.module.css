@@ -15,15 +15,14 @@
     display: none;
 }
 
-/* Also hide the scrollbar on html/body while the mobile layout is mounted. */
-:global(html),
-:global(body) {
+/* :global rules apply on import, so these hang off a body class this outlet
+   sets on mount — otherwise they strip the desktop tree's scrollbars too. */
+:global(body.mobile-portal) {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-:global(html)::-webkit-scrollbar,
-:global(body)::-webkit-scrollbar {
+:global(body.mobile-portal)::-webkit-scrollbar {
     width: 0;
     height: 0;
     display: none;

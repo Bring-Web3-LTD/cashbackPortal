@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import useWindowSize from '../../hooks/useWindowSize';
 
@@ -18,6 +18,7 @@ const sizes = [
 const Categories = ({ categories, category, onClickFn }: Props) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [maxCategories, setMaxCategories] = useState(10)
+    const [overflow, setOverflow] = useState({ left: false, right: false })
     const view = useWindowSize()
 
     useEffect(() => {
@@ -28,6 +29,20 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
             }
         }
     }, [view.width])
+
+    // Affordances follow measured overflow, not a category count.
+    const measure = useCallback(() => {
+        const el = scrollRef.current
+        if (!el) return
+        setOverflow({
+            left: el.scrollLeft > 1,
+            right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
+        })
+    }, [])
+
+    useEffect(() => {
+        measure()
+    }, [measure, categories, view.width])
 
     const scrollLeft = (): void => {
         if (scrollRef.current) {
@@ -56,37 +71,14 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         )
     }
 
-    if (categories.length <= maxCategories) {
-        return (
-            <div className={styles.container}>
-                {categories.map(cat => (
-                    <button
-                        id={`category-${cat.name}`}
-                        onClick={() => onClickFn(cat)}
-                        key={cat.id}
-                        className={`${styles.category} ${cat === category ? styles.selected : ''}`}
-                    >
-                        {cat.name}
-                    </button>
-                ))}
-            </div>
-        )
-    }
-
     return (
         <div className={styles.container}>
-            <button
-                id="categories-arrow-left"
-                className={`${styles.arrow} ${styles.arrow_left}`}
-                onClick={scrollLeft}
-            >
-                &#8249;
-            </button>
             <div
                 id="categories-scrollable"
                 className={styles.categories}
                 {...handlers}
                 ref={scrollRef}
+                onScroll={measure}
             >
                 {categories.map(cat => (
                     <button
@@ -99,13 +91,30 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                     </button>
                 ))}
             </div>
-            <button
-                id="categories-arrow-right"
-                className={`${styles.arrow} ${styles.arrow_right}`}
-                onClick={scrollRight}
-            >
-                &#8250;
-            </button>
+            {overflow.left ? (
+                <>
+                    <div className={`${styles.veil} ${styles.veil_left}`} />
+                    <button
+                        id="categories-arrow-left"
+                        className={`${styles.arrow} ${styles.arrow_left}`}
+                        onClick={scrollLeft}
+                    >
+                        &#8249;
+                    </button>
+                </>
+            ) : null}
+            {overflow.right ? (
+                <>
+                    <div className={`${styles.veil} ${styles.veil_right}`} />
+                    <button
+                        id="categories-arrow-right"
+                        className={`${styles.arrow} ${styles.arrow_right}`}
+                        onClick={scrollRight}
+                    >
+                        &#8250;
+                    </button>
+                </>
+            ) : null}
         </div>
     );
 };
