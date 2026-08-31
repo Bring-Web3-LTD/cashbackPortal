@@ -5,13 +5,20 @@ button:disabled {
 body {
     margin: 0;
     background: var(--bg);
-    /* For always having scrollbar */
-    min-height: calc(100vh + 1px);
 }
 
 body::-webkit-scrollbar {
     background: var(--bg);
-    width: var(--scrollbar-w);
+}
+
+/* Hidden but still scrollable. */
+body::-webkit-scrollbar:vertical {
+    width: 0;
+}
+
+/* Kept visible; only appears below the 500px floor. */
+body::-webkit-scrollbar:horizontal {
+    height: var(--scrollbar-w);
 }
 
 body::-webkit-scrollbar-thumb {
@@ -21,13 +28,7 @@ body::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-bg);
 }
 
+/* No gutter to compensate for; the vertical bar is hidden. */
 .no_scroll {
     overflow: hidden;
-    margin-right: var(--scrollbar-w);
-}
-
-@media screen and (max-width: 768px) {
-    .no_scroll {
-        margin-right: 0;
-    }
 }

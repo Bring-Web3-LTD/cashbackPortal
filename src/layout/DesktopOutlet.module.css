@@ -1,0 +1,4 @@
+/* Fills the screen column so the legal bar drops to the bottom on short pages. */
+.root {
+    flex: 1;
+}

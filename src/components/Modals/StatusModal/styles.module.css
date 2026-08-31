@@ -51,10 +51,10 @@
     right: 0;
     text-align: center;
     white-space: nowrap;
-    font-size: var(--modal-status-amount-f-s, 38px);
-    font-weight: var(--modal-status-amount-f-w, 700);
-    line-height: var(--modal-status-amount-l-h, 48px);
-    color: var(--modal-status-amount-f-c, var(--modal-status-msg-f-c));
+    font-size: var(--modal-status-amount-f-s);
+    font-weight: var(--modal-status-amount-f-w);
+    line-height: var(--modal-status-amount-l-h);
+    color: var(--modal-status-amount-f-c);
 }
 
 .stars {
@@ -83,9 +83,9 @@
     left: 0;
     right: 0;
     text-align: center;
-    font-size: var(--modal-status-success-title-f-s, 20px);
-    font-weight: var(--modal-status-success-title-f-w, 700);
-    line-height: var(--modal-status-success-title-l-h, 26px);
+    font-size: var(--modal-status-success-title-f-s);
+    font-weight: var(--modal-status-success-title-f-w);
+    line-height: var(--modal-status-success-title-l-h);
     color: var(--modal-status-title-success-f-c);
 }
 
@@ -98,7 +98,7 @@
     text-align: center;
     font-size: var(--modal-status-msg-f-s);
     font-weight: var(--modal-status-msg-f-w);
-    line-height: var(--modal-status-msg-l-h, 24px);
+    line-height: var(--modal-status-msg-l-h);
     color: var(--modal-status-msg-f-c);
 }
 
@@ -140,7 +140,7 @@
     text-align: center;
     font-size: var(--modal-status-title-f-s);
     font-weight: var(--modal-status-title-f-w);
-    line-height: var(--modal-status-title-l-h, 38px);
+    line-height: var(--modal-status-title-l-h);
 }
 
 .title_loading {
@@ -161,7 +161,7 @@
     width: 100%;
     max-width: 328px;
     min-height: 100px;
-    line-height: var(--modal-status-msg-l-h, 24px);
+    line-height: var(--modal-status-msg-l-h);
     font-size: var(--modal-status-msg-f-s);
     font-weight: var(--modal-status-msg-f-w);
     color: var(--modal-status-msg-f-c);

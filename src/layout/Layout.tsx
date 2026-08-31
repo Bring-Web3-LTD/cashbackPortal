@@ -6,6 +6,9 @@ import { WalletProvider } from '../context/WalletAddressContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
 import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
+import LegalBar from '../components/LegalBar/LegalBar';
+import BackToTop from '../components/BackToTop/BackToTop';
+import styles from './Layout.module.css';
 
 /**
  * Root layout. Hosts the shared providers (Wallet, Analytics) once for both
@@ -40,7 +43,11 @@ const Layout = () => {
             >
                 {data.useMobilePortal
                     ? <MobileOutlet pathname={location.pathname} />
-                    : <DesktopOutlet pathname={location.pathname} />}
+                    : <div className={styles.screen}>
+                        <DesktopOutlet pathname={location.pathname} />
+                        <LegalBar />
+                        <BackToTop />
+                    </div>}
             </AnalyticsProvider>
         </WalletProvider>
     );
