@@ -4,6 +4,7 @@
  * live in Layout; only the outlet is split per platform.
  */
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import styles from './MobileOutlet.module.css'
 
@@ -11,7 +12,15 @@ interface Props {
     pathname: string
 }
 
-const MobileOutlet = ({ pathname }: Props) => (
+/** Scopes the module's :global scrollbar rules to the mobile tree. */
+const useMobileBodyClass = () => {
+    useEffect(() => {
+        document.body.classList.add('mobile-portal')
+        return () => document.body.classList.remove('mobile-portal')
+    }, [])
+}
+
+const MobileOutletView = ({ pathname }: Props) => (
     <motion.div
         key={pathname}
         className={styles.root}
@@ -23,5 +32,10 @@ const MobileOutlet = ({ pathname }: Props) => (
         <Outlet />
     </motion.div>
 )
+
+const MobileOutlet = (props: Props) => {
+    useMobileBodyClass()
+    return <MobileOutletView {...props} />
+}
 
 export default MobileOutlet

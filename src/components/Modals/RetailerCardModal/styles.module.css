@@ -131,7 +131,7 @@
     border-style: solid;
     border-color: var(--modal-deal-markdown-border-c);
     height: calc(300px - var(--padding) * 2);
-    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w, 0px) * 2);
+    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w) * 2);
     padding: var(--padding);
     overflow-y: auto;
     font-size: var(--modal-deal-markdown-f-s);
@@ -308,11 +308,11 @@
     border-radius: 50%;
     text-align: center;
     font-style: normal;
-    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, rgba(64, 74, 141, 0.50));
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-    color: var(--retailer-logo-fallback-f-c, white);
-    font-size: var(--retailer-logo-fallback-f-s, 24px);
-    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-size: var(--retailer-logo-fallback-f-s);
+    font-weight: var(--retailer-logo-fallback-f-w);
     text-transform: uppercase;
 }
 
@@ -329,5 +329,5 @@
 }
 
 .terms_btn:hover {
-    color: var(--modal-deal-terms-btn-hover-f-c, var(--primary-btn-bg));
+    color: var(--modal-deal-terms-btn-hover-f-c);
 }

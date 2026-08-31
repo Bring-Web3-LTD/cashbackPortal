@@ -5,6 +5,7 @@
  */
 import { motion } from 'framer-motion'
 import { Outlet } from 'react-router-dom'
+import styles from './DesktopOutlet.module.css'
 
 interface Props {
     pathname: string
@@ -12,6 +13,7 @@ interface Props {
 
 const DesktopOutlet = ({ pathname }: Props) => (
     <motion.div
+        className={styles.root}
         key={pathname}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

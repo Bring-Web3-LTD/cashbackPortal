@@ -84,7 +84,7 @@
     border-bottom-color: var(--history-table-row-border-c);
     transition: .2s;
     min-height: 62px;
-    background: var(--history-table-row-bg, transparent);
+    background: var(--history-table-row-bg);
 }
 
 .collapsible_open {
@@ -141,15 +141,15 @@
     border-radius: 50%;
     text-align: center;
     text-transform: uppercase;
-    background: var(--retailer-logo-fallback-bg, var(--retailer-card-img-border-c));
-    color: var(--retailer-logo-fallback-f-c, white);
-    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-weight: var(--retailer-logo-fallback-f-w);
     font-size: 21px;
 }
 
 .fallback_logo_two_letters {
     font-size: 26px;
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    background: var(--retailer-logo-fallback-bg);
 }
 
 .details_btn {
@@ -253,7 +253,7 @@ b {
     .back_btn:hover {
         font-size: var(--history-back-hover-f-s);
         font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c, var(--history-page-back-f-c));
+        color: var(--history-back-hover-f-c);
     }
 
     .back_btn:hover .back_icon::after {

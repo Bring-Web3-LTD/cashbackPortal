@@ -147,7 +147,7 @@
     .back_btn:hover {
         font-size: var(--history-back-hover-f-s);
         font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c, var(--history-page-back-f-c));
+        color: var(--history-back-hover-f-c);
     }
 
     .back_btn:hover .back_icon::after {

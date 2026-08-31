@@ -1,13 +1,17 @@
 .container {
-    width: 1176px;
+    position: relative;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 16px;
 }
 
 .categories {
     display: flex;
-    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    gap: 16px;
     overflow-x: scroll;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
@@ -22,9 +26,15 @@
     font-size: var(--category-btn-f-s);
     font-weight: var(--category-btn-f-w);
     color: var(--category-btn-f-c);
-    width: 108px;
-    height: 38px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 120px;
+    height: 36px;
+    padding: 8px 16px;
+    line-height: var(--category-btn-l-h, normal);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
     border-width: var(--category-btn-border-w);
     border-style: solid;
@@ -54,47 +64,54 @@
 }
 
 .arrow {
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
     background: none;
     border: none;
-    border-radius: 12px;
     outline: none;
-    color: #fff;
+    color: var(--category-btn-f-c);
     cursor: pointer;
-    font-size: 30px;
-    z-index: 1;
-}
-
-/* .arrow_right {
-    box-shadow: -8px 0px 20px 20px var(--bg);
+    font-size: 20px;
+    line-height: 20px;
+    z-index: 2;
 }
 
 .arrow_left {
-    box-shadow: 8px 0px 20px 20px var(--bg);
-} */
+    left: 0;
+}
+
+.arrow_right {
+    right: 0;
+}
+
+/* Fade under the scroll button; chips dissolve instead of clipping. */
+.veil {
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 36px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.veil_left {
+    left: 0;
+    background: linear-gradient(to left, transparent, var(--bg));
+}
+
+.veil_right {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--bg));
+}
 
 .skeleton {
     background: var(--category-skeleton-bg, var(--retailer-card-amount-bg));
     border: none;
 }
 
-@media screen and (max-width: 1190px) {
-    .container {
-        width: 931px;
-    }
-}
-
-@media screen and (max-width: 990px) {
-    .container {
-        width: 695px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        width: 352px;
-    }
-
-    .arrow {
-        display: none;
-    }
-}

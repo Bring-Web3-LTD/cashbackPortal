@@ -1,0 +1,8 @@
+/* Screen column: outlet, then the legal bar as the last child. The 500px floor
+   lives here so the bar spans the full scrollable width, not just the viewport. */
+.screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    min-width: 500px;
+}

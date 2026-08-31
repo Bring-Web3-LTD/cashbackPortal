@@ -102,15 +102,15 @@
     border-radius: 50%;
     text-align: center;
     text-transform: uppercase;
-    background: var(--retailer-logo-fallback-bg, var(--retailer-card-img-border-c));
-    color: var(--retailer-logo-fallback-f-c, white);
-    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-weight: var(--retailer-logo-fallback-f-w);
     font-size: 15px;
 }
 
 .fallback_logo_two_letters {
     font-size: 19px;
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    background: var(--retailer-logo-fallback-bg);
 }
 
 .details_btn {

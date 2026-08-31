@@ -143,7 +143,7 @@
     --retailer-logo-fallback-border-w: 1px;
     --retailer-logo-fallback-border-c: rgba(177, 190, 213, 0.5);
 
-    --retailer-card-flag-f-s: 12px;
+    --retailer-card-flag-f-s: 14px;
     --retailer-card-flag-f-w: 700;
     --retailer-card-flag-f-c: #FFEF46;
     --retailer-card-flag-bg: #282B30;
@@ -158,9 +158,14 @@
     --retailer-card-amount-f-s: 12px;
     --retailer-card-amount-f-c: #F5F8FF;
     --retailer-card-amount-f-w: 500;
-    --retailer-card-amount-bg: #2C2F36;
+    --retailer-card-amount-bg: #282B30;
     --retailer-card-amount-campaign-f-w: 700;
     --retailer-card-amount-campaign-bg: rgba(255, 239, 70, 0.18);
+
+    --retailer-card-skeleton-card-bg: #141414;
+    --retailer-card-skeleton-bg: #262931;
+    --retailer-card-skeleton-radius: 10px;
+    --retailer-card-skeleton-border-w: 0;
 
     --deals-amount-f-s: 15px;
     --deals-amount-f-w: 500;
@@ -180,20 +185,26 @@
     --filter-btn-border-c: transparent;
     --filter-btn-radius: 10px;
 
-    --category-btn-bg: #1B1E23;
+    --category-btn-bg: rgba(0, 0, 0, 0.75);
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
-    --category-btn-f-c: #B1B4BB;
-    --category-btn-border-w: 0;
-    --category-btn-border-c: transparent;
-    --category-btn-radius: 8px;
+    --category-btn-f-c: #A8ADBF;
+    --category-btn-border-w: 1px;
+    --category-btn-border-c: rgba(86, 98, 99, 0.75);
+    --category-btn-radius: 100px;
     --category-btn-hover-bg: #2C2F36;
     --category-btn-hover-f-c: #F5F8FF;
     --category-btn-hover-f-w: 500;
-    --category-btn-hover-border-w: 0;
-    --category-btn-hover-border-c: transparent;
-    --category-btn-hover-radius: 8px;
+    --category-btn-hover-border-w: 1px;
+    --category-btn-hover-border-c: rgba(86, 98, 99, 0.75);
+    --category-btn-hover-radius: 100px;
     --category-skeleton-bg: #1B1E23;
+
+    --back-to-top-bg: #12151A;
+    --back-to-top-hover-bg: #16181D;
+    --back-to-top-border-w: 1px;
+    --back-to-top-border-c: rgba(102, 104, 110, 0.3);
+    --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(8, 10, 14, 0.75);
