@@ -61,6 +61,6 @@ export const useDashboard = () => {
         labels,
         goToPending: () => navigate('/pending'),
         goToMore: () => navigate('/history'),
-        goToWhatsThis: () => navigate('/faq'),
+        goToWhatsThis: () => navigate('/whats-this'),
     }
 }

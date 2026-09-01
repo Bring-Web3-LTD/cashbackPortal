@@ -1,0 +1,176 @@
+/* "What's This?" overlay (Figma 278:3244) — bottom-sheet, same structure as
+   MobileFaq. Layout/spacing is hardcoded to the Figma frame; only colors,
+   fonts and radii come from the platform theme. */
+
+.root {
+    position: fixed;
+    inset: 0;
+    max-width: var(--mobile-portal-max-w, 360px);
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.behind {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    isolation: isolate;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.darken {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--whats-this-darken-bg, #040407);
+    opacity: 0.65;
+}
+
+/* Figma frame: 375×607, pinned to the bottom. Height stays auto so the sheet is
+   exactly as tall as the three cards make it (46 header + 10 + 527 content + 24
+   = 607); the max-height is only a guard for long translations. The 24px bottom
+   is what the frame actually leaves under the CTA — its auto-layout says 30,
+   but the frame is resized to 607 and clips the difference. */
+.sheet {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: calc(100% - 32px);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 24px;
+    background: var(--whats-this-sheet-bg, #090C11);
+    /* Inset shadow, not `border`: Figma's stroke overlays the frame instead of
+       displacing it, so a real border would shift the 46px header by a pixel. */
+    box-shadow: inset 0 0 0 var(--whats-this-sheet-border-w, 1px)
+        var(--whats-this-sheet-border-c, rgba(11, 16, 32, 0.1));
+    border-top-left-radius: var(--whats-this-sheet-radius, 25px);
+    border-top-right-radius: var(--whats-this-sheet-radius, 25px);
+    overflow: hidden;
+}
+
+.content {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 15px 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Subtitle + cards share one 18px-gap column (Figma 278:3247). */
+.block {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.intro {
+    margin: 0;
+    font-size: var(--whats-this-intro-f-s, 14px);
+    font-weight: var(--whats-this-intro-f-w, 400);
+    line-height: var(--whats-this-intro-l-h, 20px);
+    color: var(--whats-this-intro-f-c, #B1B4BB);
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 335×auto, 16px padding all round. The stroke is an inset shadow (same reason
+   as `.sheet`) so the icon container still starts exactly 16px in. */
+.card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    border-radius: var(--whats-this-card-radius, 12px);
+    background: var(--whats-this-card-bg, rgba(255, 255, 255, 0.04));
+    box-shadow:
+        inset 0 0 0 var(--whats-this-card-border-w, 1px)
+            var(--whats-this-card-border-c, rgba(138, 142, 148, 0.3)),
+        var(--whats-this-card-shadow, 0 4px 16px rgba(139, 92, 246, 0.1));
+}
+
+/* 42×42 = 10px padding + the 22px glyph. */
+.cardIcon {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: var(--whats-this-icon-radius, 12px);
+    background: var(--whats-this-icon-bg, rgba(245, 248, 255, 0.08));
+    box-shadow: inset 0 0 0 var(--whats-this-icon-border-w, 1px)
+        var(--whats-this-icon-border-c, rgba(245, 248, 255, 0.1));
+}
+
+.icon {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+.cardText {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: var(--whats-this-card-title-f-s, 15px);
+    font-weight: var(--whats-this-card-title-f-w, 900);
+    line-height: var(--whats-this-card-title-l-h, 22px);
+    color: var(--whats-this-card-title-f-c, #F5F8FF);
+}
+
+.cardDescription {
+    margin: 0;
+    font-size: var(--whats-this-card-text-f-s, 14px);
+    font-weight: var(--whats-this-card-text-f-w, 400);
+    line-height: var(--whats-this-card-text-l-h, 20px);
+    color: var(--whats-this-card-text-f-c, #B1B4BB);
+}
+
+.cta {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 20px;
+    border: none;
+    border-radius: var(--whats-this-cta-radius, 100px);
+    background: var(--whats-this-cta-bg, #E6D73F);
+    color: var(--whats-this-cta-f-c, #090C11);
+    font-family: inherit;
+    font-size: var(--whats-this-cta-f-s, 15px);
+    font-weight: var(--whats-this-cta-f-w, 500);
+    line-height: var(--whats-this-cta-l-h, 20px);
+    cursor: pointer;
+}

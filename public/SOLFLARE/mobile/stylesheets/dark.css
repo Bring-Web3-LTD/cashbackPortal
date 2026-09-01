@@ -348,4 +348,46 @@
     --retailer-modal-terms-radius: 12px;
     --retailer-modal-terms-shadow: none;
     --retailer-modal-terms-title-f-c: #F5F8FF;
+
+    /* ── "What's This?" sheet ── */
+    --whats-this-darken-bg: #040407;
+    --whats-this-sheet-bg: #090C11;
+    --whats-this-sheet-border-w: 1px;
+    --whats-this-sheet-border-c: rgba(11, 16, 32, 0.1);
+    --whats-this-sheet-radius: 25px;
+
+    --whats-this-intro-f-s: 14px;
+    --whats-this-intro-f-w: 400;
+    --whats-this-intro-l-h: 20px;
+    --whats-this-intro-f-c: #B1B4BB;
+
+    --whats-this-card-bg: rgba(255, 255, 255, 0.04);
+    --whats-this-card-border-w: 1px;
+    --whats-this-card-border-c: rgba(138, 142, 148, 0.3);
+    --whats-this-card-radius: 12px;
+    --whats-this-card-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+
+    --whats-this-icon-bg: rgba(245, 248, 255, 0.08);
+    --whats-this-icon-border-w: 1px;
+    --whats-this-icon-border-c: rgba(245, 248, 255, 0.1);
+    --whats-this-icon-radius: 12px;
+
+    --whats-this-card-title-f-s: 15px;
+    /* Figma calls for FK Grotesk Black; the theme only ships 400/500/700, so
+       700 is the heaviest real face — 900 would only be synthesised. */
+    --whats-this-card-title-f-w: 700;
+    --whats-this-card-title-l-h: 22px;
+    --whats-this-card-title-f-c: #F5F8FF;
+
+    --whats-this-card-text-f-s: 14px;
+    --whats-this-card-text-f-w: 400;
+    --whats-this-card-text-l-h: 20px;
+    --whats-this-card-text-f-c: #B1B4BB;
+
+    --whats-this-cta-bg: #E6D73F;
+    --whats-this-cta-f-c: #090C11;
+    --whats-this-cta-radius: 100px;
+    --whats-this-cta-f-s: 15px;
+    --whats-this-cta-f-w: 500;
+    --whats-this-cta-l-h: 20px;
 }

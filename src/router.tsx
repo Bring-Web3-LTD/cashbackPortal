@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from './layout/Layout';
-import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher } from './dispatchers';
+import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher, WhatsThisDispatcher } from './dispatchers';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
@@ -171,6 +171,10 @@ const router = createBrowserRouter([
             {
                 path: 'faq',
                 element: <FaqDispatcher />,
+            },
+            {
+                path: 'whats-this',
+                element: <WhatsThisDispatcher />,
             },
         ],
     },

@@ -11,6 +11,7 @@ import MobileHome from './pages/Home/Home.mobile'
 import MobileHistory from './pages/History/History.mobile'
 import MobilePending from './pages/Pending/Pending.mobile'
 import MobileFaq from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion.mobile'
+import MobileWhatsThis from './pages/WhatsThis/WhatsThis.mobile'
 
 export const HomeDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
@@ -31,4 +32,10 @@ export const PendingDispatcher = () => {
 export const FaqDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
     return useMobilePortal ? <MobileFaq /> : <FrequentlyAskedQuestion />
+}
+
+/** Mobile-only screen — desktop has no "What's This?" view, so it goes back home. */
+export const WhatsThisDispatcher = () => {
+    const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
+    return useMobilePortal ? <MobileWhatsThis /> : <Navigate to="/" replace />
 }
