@@ -10,15 +10,25 @@
 
 .tabs {
     flex: 0 0 90px;
+    /* Flex items default to `min-width: auto`, so the longest label's
+       min-content overrides the 90px basis — the Coupons tab came out 92.14px
+       because the inactive "Cashback" label carries 10px of side padding. */
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 4px;
     height: 100%;
     padding: 6px 8px;
+    /* Figma ships two states of `tab-switcher`: 4px between the rows when the
+       chip is at the bottom (Cashback active), 6px when it's on top. */
     box-sizing: border-box;
     background: var(--dashboard-tabs-bg, #1B1E23);
     border-radius: var(--dashboard-radius, 8px);
+}
+
+.tabs:has(> .tabActive:first-child) {
+    gap: 6px;
 }
 
 .tab {
@@ -173,6 +183,7 @@
 
 .brand {
     flex: 0 0 90px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

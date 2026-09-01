@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F7F7F7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 18 5 12 11 6"/></svg>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Arrow_Left">
+<path id="shape" d="M9.07452 3.38702C9.39183 3.06972 9.39183 2.55528 9.07452 2.23798C8.75722 1.92067 8.24278 1.92067 7.92548 2.23798L2.23798 7.92548C1.92067 8.24278 1.92067 8.75722 2.23798 9.07452L7.92548 14.762C8.24278 15.0793 8.75722 15.0793 9.07452 14.762C9.39183 14.4447 9.39183 13.9303 9.07452 13.613L4.77405 9.3125H14.1875C14.6362 9.3125 15 8.94873 15 8.5C15 8.05127 14.6362 7.6875 14.1875 7.6875H4.77405L9.07452 3.38702Z" fill="#F5F8FF"/>
+</g>
+</svg>
