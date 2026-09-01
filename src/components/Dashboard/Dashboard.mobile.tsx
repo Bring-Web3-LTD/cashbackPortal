@@ -6,7 +6,7 @@ import styles from './styles.mobile.module.css'
 
 const TABS: DashboardMode[] = ['coupons', 'cashback']
 
-const Dashboard = ({ mode, onModeChange, onClaim }: DashboardProps) => {
+const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps) => {
     const {
         firstTimeUser,
         couponsEnabled,
@@ -51,7 +51,11 @@ const Dashboard = ({ mode, onModeChange, onClaim }: DashboardProps) => {
                         </div>
                     ) : null}
                     {isHub ? null : (
-                        <button type="button" className={`${styles.pill} ${styles.pillAccent}`}>
+                        <button
+                            type="button"
+                            className={`${styles.pill} ${styles.pillAccent}`}
+                            onClick={onPairWallet}
+                        >
                             {labels.pairWallet}
                         </button>
                     )}

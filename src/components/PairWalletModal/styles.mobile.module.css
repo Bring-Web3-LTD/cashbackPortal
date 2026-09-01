@@ -1,0 +1,359 @@
+/* Pair Wallet sheet (Figma 278:5033 → 278:5040). Layout/spacing is hardcoded;
+   only colors, fonts and radii come from the platform theme. */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--modal-backdrop-bg, rgba(9, 12, 17, 0.75));
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.panel {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--mobile-portal-max-w, 360px);
+    height: calc(100% - 27px);
+    max-height: calc(100dvh - 27px);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    background: var(--pair-sheet-bg, #090C11);
+    box-shadow: inset 0 0 0 1px var(--pair-sheet-border-c, rgba(11, 16, 32, 0.1));
+    border-top-left-radius: var(--pair-sheet-radius, 25px);
+    border-top-right-radius: var(--pair-sheet-radius, 25px);
+    overflow: hidden;
+}
+
+/* ── Header ── */
+.header {
+    box-sizing: border-box;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    /* Inset shadow, not `border-bottom`: Figma's 46px header centres its
+       children on the full 46 (button at y=7), while a real border would eat a
+       pixel of the content box and land them half a pixel high. Same reason as
+       `.input` below. */
+    box-shadow: inset 0 -1px 0 var(--pair-sheet-header-border-c, rgba(138, 142, 148, 0.3));
+}
+
+.headerBtn {
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: var(--header-action-close-radius, 5px);
+    background: var(--header-action-bg, transparent);
+    cursor: pointer;
+}
+
+.headerBtn:hover {
+    background: var(--header-action-hover-bg, rgba(138, 142, 148, 0.15));
+}
+
+/* Figma rounds the back button fully (16px on a 32px square) and the close
+   button at 5px — the two are different components, not one reused. */
+.headerBtnBack {
+    border-radius: var(--header-action-back-radius, 16px);
+}
+
+.headerIcon {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.headerSpacer {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.headerTitle {
+    margin: 0;
+    flex: 0 1 232px;
+    min-width: 0;
+    text-align: center;
+    font-size: var(--header-title-f-s, 17px);
+    font-weight: var(--header-title-f-w, 700);
+    line-height: var(--header-title-l-h, 22px);
+    color: var(--header-title-f-c, #F5F8FF);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Email / code steps ── */
+.content {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* 10px sheet gap + the 76px Figma top padding. */
+    padding: 86px 20px 0;
+    overflow-y: auto;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding-top: 15px;
+}
+
+.stepTitle {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: var(--pair-title-f-s, 22px);
+    font-weight: var(--pair-title-f-w, 700);
+    line-height: var(--pair-title-l-h, 28px);
+    color: var(--pair-title-f-c, #F5F8FF);
+}
+
+.stepTitleNarrow {
+    max-width: 270px;
+}
+
+.field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Figma's stroke overlays the padding instead of displacing it (frame 335×50 =
+   14 + 22 + 14, with no room for a border), so the outline is an inset shadow —
+   a real `border` would push the text 1px right and down. */
+.input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 50px;
+    padding: 14px 16px;
+    border: none;
+    box-shadow: inset 0 0 0 var(--pair-input-border-w, 1px) var(--pair-input-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--pair-input-radius, 8px);
+    background: var(--pair-input-bg, #12151A);
+    color: var(--pair-input-f-c, #F5F8FF);
+    font-family: inherit;
+    font-size: var(--pair-input-f-s, 16px);
+    font-weight: var(--pair-input-f-w, 400);
+    line-height: var(--pair-input-l-h, 20px);
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--pair-input-placeholder-f-c, #7A7D83);
+}
+
+.inputError {
+    box-shadow: inset 0 0 0 var(--pair-input-border-w, 1px) var(--pair-error-f-c, #DA493F);
+}
+
+.errorText {
+    margin: 0;
+    color: var(--pair-error-f-c, #DA493F);
+    font-size: var(--pair-error-f-s, 12px);
+    font-weight: var(--pair-error-f-w, 500);
+    line-height: var(--pair-error-l-h, 16px);
+}
+
+/* ── One-time code boxes ── */
+.otpRow {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.otpBox {
+    box-sizing: border-box;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 48px;
+    height: 56px;
+    padding: 0;
+    text-align: center;
+    border: var(--pair-otp-border-w, 1px) solid var(--pair-otp-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--pair-otp-radius, 8px);
+    background: var(--pair-otp-bg, #12151A);
+    color: var(--pair-otp-f-c, #F5F8FF);
+    font-family: inherit;
+    font-size: var(--pair-otp-f-s, 22px);
+    font-weight: var(--pair-otp-f-w, 700);
+    line-height: var(--pair-otp-l-h, 28px);
+    outline: none;
+}
+
+.otpBoxError {
+    border-width: var(--pair-otp-error-border-w, 1.5px);
+    border-color: var(--pair-error-f-c, #DA493F);
+}
+
+.resend {
+    padding: 0;
+    border: none;
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--pair-resend-f-c, #B1B4BB);
+    font-family: inherit;
+    font-size: var(--pair-resend-f-s, 14px);
+    font-weight: var(--pair-resend-f-w, 500);
+    line-height: var(--pair-resend-l-h, 22px);
+}
+
+.resend:hover:not(:disabled) {
+    color: var(--pair-resend-hover-f-c, #F5F8FF);
+}
+
+.resend:disabled {
+    opacity: 0.5;
+}
+
+/* ── Success / error steps ── */
+.statusContent {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 16px;
+    overflow-y: auto;
+}
+
+.status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 85px;
+}
+
+/* Figma 278:5040: icon block at y=116 h=144, title at y=270 — a 10px gap, not
+   the 8px the design system's Text frame uses internally. */
+.statusSuccess {
+    padding-top: 116px;
+    gap: 10px;
+}
+
+.statusIconWrap {
+    width: 100%;
+    height: 144px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statusCircle {
+    box-sizing: border-box;
+    width: 112px;
+    height: 112px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1000px;
+    background: var(--pair-status-circle-bg, rgba(245, 248, 255, 0.08));
+}
+
+.statusCircle img {
+    display: block;
+    width: 56px;
+    height: 56px;
+}
+
+.statusIcon {
+    display: block;
+    width: 112px;
+    height: 112px;
+}
+
+.statusTitle {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: var(--pair-status-title-f-s, 20px);
+    font-weight: var(--pair-status-title-f-w, 700);
+    line-height: var(--pair-status-title-l-h, 26px);
+    color: var(--pair-status-title-f-c, #F5F8FF);
+}
+
+/* Figma: card 304×98, text at x=37 y=16 w=230 h=66 — the stroke displaces
+   nothing, so it is an inset shadow here too and the paddings are the Figma
+   insets as drawn. 37px horizontal is the 16px frame padding plus the 21px
+   that centres a 230px text column inside one element instead of two. */
+.note {
+    box-sizing: border-box;
+    margin: 0;
+    max-width: 304px;
+    padding: 16px 37px;
+    text-align: center;
+    white-space: pre-line;
+    box-shadow: inset 0 0 0 var(--pair-note-border-w, 1px) var(--pair-note-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--pair-note-radius, 12px);
+    background: var(--pair-note-bg, #12151A);
+    color: var(--pair-note-f-c, #F5F8FF);
+    font-size: var(--pair-note-f-s, 14px);
+    font-weight: var(--pair-note-f-w, 500);
+    line-height: var(--pair-note-l-h, 22px);
+}
+
+/* ── Footer buttons ── */
+.btnPrimary,
+.btnSecondary {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    flex-shrink: 0;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 20px;
+    border: none;
+    border-radius: var(--pair-btn-radius, 100px);
+    font-family: inherit;
+    font-size: var(--pair-btn-f-s, 15px);
+    font-weight: var(--pair-btn-f-w, 500);
+    line-height: var(--pair-btn-l-h, 20px);
+    cursor: pointer;
+}
+
+.btnPrimary {
+    background: var(--pair-btn-primary-bg, #FFEF46);
+    color: var(--pair-btn-primary-f-c, #1F2018);
+}
+
+.btnPrimary:hover:not(:disabled) {
+    background: var(--pair-btn-primary-hover-bg, #EEDA0F);
+}
+
+.btnPrimary:disabled {
+    background: var(--pair-btn-primary-disabled-bg, rgba(255, 239, 70, 0.3));
+    color: var(--pair-btn-primary-disabled-f-c, #1F2018);
+}
+
+.btnSecondary {
+    border: var(--pair-btn-secondary-border-w, 1px) solid var(--pair-btn-secondary-border-c, rgba(138, 142, 148, 0.3));
+    background: var(--pair-btn-secondary-bg, rgba(245, 248, 255, 0.08));
+    color: var(--pair-btn-secondary-f-c, #F5F8FF);
+}
+
+.btnSecondary:hover {
+    background: var(--pair-btn-secondary-hover-bg, rgba(245, 248, 255, 0.14));
+}

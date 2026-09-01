@@ -20,6 +20,8 @@ export interface DashboardProps {
     onModeChange: (mode: DashboardMode) => void
     /** Opens the claim flow from the Claim tile. */
     onClaim: () => void
+    /** Opens the email pairing flow from the Pair Wallet pill. */
+    onPairWallet: () => void
 }
 
 export const useDashboard = () => {

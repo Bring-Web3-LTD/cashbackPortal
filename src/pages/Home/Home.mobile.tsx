@@ -6,6 +6,7 @@ import MobileSearchBar from '../../components/Search/Search.mobile'
 import MobileFilterChip from '../../components/FilterChip/FilterChip.mobile'
 import MobileCardsList from '../../components/CardsList/CardsList.mobile'
 import MobileClaimModal from '../../components/ClaimModal/ClaimModal.mobile'
+import MobilePairWalletModal from '../../components/PairWalletModal/PairWalletModal.mobile'
 import { useHomePage } from './useHomePage'
 import styles from './styles.mobile.module.css'
 
@@ -49,6 +50,9 @@ const MobileHome = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
+        pairOpen,
+        handleOpenPair,
+        handleClosePair,
     } = useHomePage()
 
     // Decide what occupies the tabs-row slot. Priority: open input >
@@ -96,6 +100,7 @@ const MobileHome = () => {
                     onClaim={handleOpenClaim}
                 />
                 {renderFilterRow()}
+                    onPairWallet={handleOpenPair}
                 <MobileCardsList
                     retailers={retailers}
                     metadata={metadata}
@@ -126,3 +131,4 @@ const MobileHome = () => {
 }
 
 export default MobileHome
+            <MobilePairWalletModal open={pairOpen} onClose={handleClosePair} />
