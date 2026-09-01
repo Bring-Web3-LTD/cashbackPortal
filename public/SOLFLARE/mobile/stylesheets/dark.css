@@ -349,6 +349,79 @@
     --retailer-modal-terms-shadow: none;
     --retailer-modal-terms-title-f-c: #F5F8FF;
 
+    /* ── Pair Wallet (email pairing) sheet ── */
+    --pair-sheet-bg: #090C11;
+    --pair-sheet-border-c: rgba(11, 16, 32, 0.1);
+    --pair-sheet-radius: 25px;
+    --pair-sheet-header-border-c: rgba(138, 142, 148, 0.3);
+
+    --pair-title-f-s: 22px;
+    --pair-title-f-w: 700;
+    --pair-title-l-h: 28px;
+    --pair-title-f-c: #F5F8FF;
+
+    --pair-input-bg: #12151A;
+    --pair-input-border-w: 1px;
+    --pair-input-border-c: rgba(138, 142, 148, 0.3);
+    --pair-input-radius: 8px;
+    --pair-input-f-s: 16px;
+    --pair-input-f-w: 400;
+    --pair-input-l-h: 20px;
+    --pair-input-f-c: #F5F8FF;
+    --pair-input-placeholder-f-c: #7A7D83;
+
+    --pair-error-f-c: #DA493F;
+    --pair-error-f-s: 12px;
+    --pair-error-f-w: 500;
+    --pair-error-l-h: 16px;
+
+    --pair-otp-bg: #12151A;
+    --pair-otp-border-w: 1px;
+    --pair-otp-border-c: rgba(138, 142, 148, 0.3);
+    --pair-otp-error-border-w: 1.5px;
+    --pair-otp-radius: 8px;
+    --pair-otp-f-s: 22px;
+    --pair-otp-f-w: 700;
+    --pair-otp-l-h: 28px;
+    --pair-otp-f-c: #F5F8FF;
+
+    --pair-resend-f-s: 14px;
+    --pair-resend-f-w: 500;
+    --pair-resend-l-h: 22px;
+    --pair-resend-f-c: #B1B4BB;
+    --pair-resend-hover-f-c: #F5F8FF;
+
+    --pair-btn-radius: 100px;
+    --pair-btn-f-s: 15px;
+    --pair-btn-f-w: 500;
+    --pair-btn-l-h: 20px;
+    --pair-btn-primary-bg: #FFEF46;
+    --pair-btn-primary-hover-bg: #EEDA0F;
+    --pair-btn-primary-f-c: #1F2018;
+    --pair-btn-primary-disabled-bg: rgba(255, 239, 70, 0.3);
+    --pair-btn-primary-disabled-f-c: #1F2018;
+    --pair-btn-secondary-bg: rgba(245, 248, 255, 0.08);
+    --pair-btn-secondary-hover-bg: rgba(245, 248, 255, 0.14);
+    --pair-btn-secondary-border-w: 1px;
+    --pair-btn-secondary-border-c: rgba(138, 142, 148, 0.3);
+    --pair-btn-secondary-f-c: #F5F8FF;
+
+    --pair-status-circle-bg: rgba(245, 248, 255, 0.08);
+    --pair-spinner-c: #FFEF46;
+    --pair-status-title-f-s: 20px;
+    --pair-status-title-f-w: 700;
+    --pair-status-title-l-h: 26px;
+    --pair-status-title-f-c: #F5F8FF;
+
+    --pair-note-bg: #12151A;
+    --pair-note-border-w: 1px;
+    --pair-note-border-c: rgba(138, 142, 148, 0.3);
+    --pair-note-radius: 12px;
+    --pair-note-f-s: 14px;
+    --pair-note-f-w: 500;
+    --pair-note-l-h: 22px;
+    --pair-note-f-c: #F5F8FF;
+
     /* ── "What's This?" sheet ── */
     --whats-this-darken-bg: #040407;
     --whats-this-sheet-bg: #090C11;

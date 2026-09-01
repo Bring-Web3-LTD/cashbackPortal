@@ -525,4 +525,77 @@
     --dashboard-tab-active-f-c: #F8FAFC;
     --dashboard-tile-bg: #1E293B;
     --dashboard-tile-border-c: #334155;
+
+    /* ── Pair Wallet (email pairing) sheet ── */
+    --pair-sheet-bg: #0F172A;
+    --pair-sheet-border-c: #334155;
+    --pair-sheet-radius: 16px;
+    --pair-sheet-header-border-c: #334155;
+
+    --pair-title-f-s: 22px;
+    --pair-title-f-w: 700;
+    --pair-title-l-h: 30px;
+    --pair-title-f-c: #F8FAFC;
+
+    --pair-input-bg: #080F1E;
+    --pair-input-border-w: 1px;
+    --pair-input-border-c: #334155;
+    --pair-input-radius: 6px;
+    --pair-input-f-s: 16px;
+    --pair-input-f-w: 400;
+    --pair-input-l-h: 22px;
+    --pair-input-f-c: #F8FAFC;
+    --pair-input-placeholder-f-c: rgba(248, 250, 252, 0.25);
+
+    --pair-error-f-c: #F87171;
+    --pair-error-f-s: 12px;
+    --pair-error-f-w: 400;
+    --pair-error-l-h: 16px;
+
+    --pair-otp-bg: #080F1E;
+    --pair-otp-border-w: 1px;
+    --pair-otp-border-c: #334155;
+    --pair-otp-error-border-w: 1.5px;
+    --pair-otp-radius: 6px;
+    --pair-otp-f-s: 22px;
+    --pair-otp-f-w: 700;
+    --pair-otp-l-h: 30px;
+    --pair-otp-f-c: #F8FAFC;
+
+    --pair-resend-f-s: 14px;
+    --pair-resend-f-w: 400;
+    --pair-resend-l-h: 20px;
+    --pair-resend-f-c: #94A3B8;
+    --pair-resend-hover-f-c: #F8FAFC;
+
+    --pair-btn-radius: 8px;
+    --pair-btn-f-s: 16px;
+    --pair-btn-f-w: 400;
+    --pair-btn-l-h: 22px;
+    --pair-btn-primary-bg: #06B6D4;
+    --pair-btn-primary-hover-bg: #0891B2;
+    --pair-btn-primary-f-c: #F8FAFC;
+    --pair-btn-primary-disabled-bg: rgba(6, 182, 212, 0.35);
+    --pair-btn-primary-disabled-f-c: #64748B;
+    --pair-btn-secondary-bg: #1E293B;
+    --pair-btn-secondary-hover-bg: #334155;
+    --pair-btn-secondary-border-w: 0;
+    --pair-btn-secondary-border-c: transparent;
+    --pair-btn-secondary-f-c: #F8FAFC;
+
+    --pair-status-circle-bg: rgba(239, 68, 68, 0.20);
+    --pair-spinner-c: #06B6D4;
+    --pair-status-title-f-s: 22px;
+    --pair-status-title-f-w: 700;
+    --pair-status-title-l-h: 28px;
+    --pair-status-title-f-c: #F8FAFC;
+
+    --pair-note-bg: #080F1E;
+    --pair-note-border-w: 1px;
+    --pair-note-border-c: #334155;
+    --pair-note-radius: 8px;
+    --pair-note-f-s: 14px;
+    --pair-note-f-w: 400;
+    --pair-note-l-h: 20px;
+    --pair-note-f-c: #F8FAFC;
 }
