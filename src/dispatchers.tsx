@@ -9,7 +9,6 @@ import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import MobileHome from './pages/Home/Home.mobile'
 import MobileHistory from './pages/History/History.mobile'
-import MobilePending from './pages/Pending/Pending.mobile'
 import MobileFaq from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion.mobile'
 import MobileWhatsThis from './pages/WhatsThis/WhatsThis.mobile'
 
@@ -23,10 +22,10 @@ export const HistoryDispatcher = () => {
     return useMobilePortal ? <MobileHistory /> : <History />
 }
 
-/** Mobile-only screen — desktop has no pending view, so it goes back home. */
+/** The History sheet filtered to pending rows. Mobile-only — desktop goes home. */
 export const PendingDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
-    return useMobilePortal ? <MobilePending /> : <Navigate to="/" replace />
+    return useMobilePortal ? <MobileHistory only="pending" /> : <Navigate to="/" replace />
 }
 
 export const FaqDispatcher = () => {

@@ -62,7 +62,9 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: 22px 0 16px;
+    /* Top spacing lives on the children, not here — the actions row and the
+       Pending variant (no actions) sit at different distances from the header. */
+    padding: 0 0 16px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -80,7 +82,7 @@
     display: flex;
     flex-shrink: 0;
     gap: 8px;
-    padding: 0 10px;
+    padding: 22px 10px 0;
 }
 
 .actionBtn {
@@ -108,6 +110,11 @@
     flex-direction: column;
     gap: 8px;
     padding: 16px 16px 0;
+}
+
+/* Pending variant — no actions row above, so the list takes the header gap. */
+.body:first-child {
+    padding-top: 20px;
 }
 
 .intro {
