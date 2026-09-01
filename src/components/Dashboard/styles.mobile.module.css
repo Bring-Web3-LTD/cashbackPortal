@@ -1,0 +1,213 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 65px;
+    padding: 2px 0;
+    box-sizing: border-box;
+}
+
+.tabs {
+    flex: 0 0 90px;
+    /* Flex items default to `min-width: auto`, so the longest label's
+       min-content overrides the 90px basis — the Coupons tab came out 92.14px
+       because the inactive "Cashback" label carries 10px of side padding. */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    height: 100%;
+    padding: 6px 8px;
+    /* Figma ships two states of `tab-switcher`: 4px between the rows when the
+       chip is at the bottom (Cashback active), 6px when it's on top. */
+    box-sizing: border-box;
+    background: var(--dashboard-tabs-bg, #1B1E23);
+    border-radius: var(--dashboard-radius, 8px);
+}
+
+.tabs:has(> .tabActive:first-child) {
+    gap: 6px;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    flex-shrink: 0;
+    height: 16px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--dashboard-tab-f-c, #7A7D83);
+    font-size: var(--dashboard-tab-f-s, 12px);
+    font-weight: var(--dashboard-tab-f-w, 500);
+    line-height: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tabActive {
+    width: calc(100% - 2px);
+    height: 30px;
+    margin: 0 1px;
+    padding: 4px 8px;
+    border-radius: var(--dashboard-radius, 8px);
+    background: var(--dashboard-accent, #FFEF46);
+    color: var(--dashboard-tab-active-f-c, #1F2018);
+}
+
+.tile {
+    flex: 1 0 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    height: 100%;
+    padding: 5px 9px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
+    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--dashboard-radius, 8px);
+    cursor: pointer;
+}
+
+.tileLabel {
+    color: var(--dashboard-label-f-c, #7A7D83);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+.tileValue {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+}
+
+.amountRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    max-width: 100%;
+    color: var(--dashboard-amount-f-c, #F5F8FF);
+}
+
+.amount {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.symbol {
+    height: 15px;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    white-space: nowrap;
+}
+
+.usd {
+    color: var(--dashboard-accent, #FFEF46);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    white-space: nowrap;
+}
+
+.pill {
+    flex: 1 0 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 4px 10px;
+    box-sizing: border-box;
+    background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
+    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--dashboard-radius, 8px);
+    color: var(--dashboard-pill-f-c, #B1B4BB);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.pillAccent {
+    background: var(--dashboard-accent-soft, rgba(255, 239, 70, 0.12));
+    border-color: var(--dashboard-accent-soft, rgba(255, 239, 70, 0.12));
+    color: var(--dashboard-accent, #FFEF46);
+}
+
+.pillNarrow {
+    flex: 0 0 68px;
+    margin-left: auto;
+}
+
+.iconBtn {
+    flex: 0 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+    background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
+    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border-radius: var(--dashboard-radius, 8px);
+    cursor: pointer;
+}
+
+.moreIcon {
+    display: block;
+    width: 18px;
+    height: 4px;
+}
+
+.chatIcon {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+.brand {
+    flex: 0 0 90px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    height: 100%;
+    padding: 8px 7px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.brandIcon {
+    display: block;
+    width: 15.155px;
+    height: 15px;
+    margin-left: 1px;
+    transform: rotate(-10.17deg);
+}
+
+.brandText {
+    width: 100%;
+    margin: 0;
+    color: var(--dashboard-accent, #FFEF46);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    text-transform: uppercase;
+}

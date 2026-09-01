@@ -3,7 +3,7 @@
 .root {
     position: fixed;
     inset: 0;
-    max-width: 360px;
+    max-width: var(--mobile-portal-max-w, 360px);
     margin: 0 auto;
     overflow: hidden;
 }
@@ -34,6 +34,8 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
+
+    gap: 10px;
     background: var(--faq-sheet-bg, #0F0F1A);
     border: var(--faq-sheet-border-w, 1px) solid var(--faq-sheet-border-c, #2B344D);
     border-bottom: none;
@@ -61,7 +63,8 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: 16px 16px 0 16px;
+
+    padding: 32px 16px 0 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -80,17 +83,60 @@
 
 .intro {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--faq-intro-f-s, 14px);
     font-weight: var(--faq-intro-f-w, 400);
     line-height: var(--faq-intro-l-h, 20px);
     color: var(--faq-intro-f-c, #7685A0);
 }
 
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 69px;
+}
+
 .list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.contactText {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: var(--faq-contact-text-f-s, 14px);
+    font-weight: var(--faq-contact-text-f-w, 400);
+    line-height: var(--faq-contact-text-l-h, 20px);
+    color: var(--faq-contact-text-f-c, #7685A0);
+}
+
+.contactBtn {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 135px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    background: var(--faq-contact-btn-bg, transparent);
+    border: var(--faq-contact-btn-border-w, 1px) solid
+        var(--faq-contact-btn-border-c, #2B344D);
+    border-radius: var(--faq-contact-btn-radius, 100px);
+    color: var(--faq-contact-btn-f-c, #F7F7F7);
+    font-size: var(--faq-contact-btn-f-s, 14px);
+    font-weight: var(--faq-contact-btn-f-w, 400);
+    line-height: var(--faq-contact-btn-l-h, 20px);
+    white-space: nowrap;
+    cursor: pointer;
 }
 
 .skeletonItem {

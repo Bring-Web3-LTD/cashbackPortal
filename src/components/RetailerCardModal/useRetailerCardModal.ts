@@ -78,6 +78,7 @@ export const useRetailerCardModal = ({
         cancel: t('cancel'),
         goToShop: t('goToShop'),
         agreeTerms: t('agreeTerms'),
+        termsWord: t('termsWord'),
     }
 
     return {

@@ -16,8 +16,13 @@ const Header = ({ title, onBack, onClose }: HeaderProps) => (
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.side}>
             {onClose ? (
-                <button type="button" className={styles.action} onClick={onClose} aria-label="Close">
-                    <Icon name="x-mark.svg" className={styles.actionIcon} />
+                <button
+                    type="button"
+                    className={`${styles.action} ${styles.actionClose}`}
+                    onClick={onClose}
+                    aria-label="Close"
+                >
+                    <Icon name="x-close.svg" className={styles.actionIcon} />
                 </button>
             ) : (
                 <span className={styles.actionSpacer} aria-hidden="true" />

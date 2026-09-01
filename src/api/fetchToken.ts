@@ -19,6 +19,12 @@ interface Response {
         theme?: string
         terms?: boolean
         extensionId?: string
+        // Resolved server-side from the /check/portal API key.
+        couponsEnabled?: boolean
+        // Partner coupon storefront embedded in the Coupons tab. Resolved per
+        // platform (and per `devicePlatform`) by /check/portal.
+        couponsIframeSrc?: string
+        isHub?: boolean
         // Optional wallet identity fields passed through from /check/portal
         // and embedded in the issued JWT. Surfaced in the Mobile Portal UI.
         walletEmoji?: string

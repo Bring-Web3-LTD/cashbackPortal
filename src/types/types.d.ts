@@ -50,6 +50,9 @@ interface LoaderData {
     walletEmoji?: string
     walletName?: string
     useMobilePortal?: boolean
+    // Resolved server-side from the /check/portal API key, returned by /verify.
+    couponsEnabled?: boolean
+    isHub?: boolean
     variant: string
     bringTou?: string
     privacy?: string

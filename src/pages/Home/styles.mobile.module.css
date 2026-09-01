@@ -1,6 +1,30 @@
 /* Home page layout. Hero + rewards + helper buttons + tabs row are fixed at
    the top; only the retailer list scrolls. */
 
+.header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background: var(--bg);
+}
+
+.title {
+    width: 232px;
+    margin: 0;
+    color: var(--header-title-f-c, #F5F8FF);
+    font-size: var(--header-title-f-s, 17px);
+    font-weight: var(--header-title-f-w, 700);
+    line-height: var(--header-title-l-h, 22px);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .root {
     display: flex;
     flex-direction: column;
@@ -12,10 +36,11 @@
 .content {
     flex: 1 1 auto;
     min-height: 0;
-    padding: 16px 16px;
+    padding: 0 16px 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+
+    gap: 8px;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -25,4 +50,8 @@
    the remaining space and scroll. */
 .content > *:not(:last-child) {
     flex-shrink: 0;
+}
+
+.content > *:nth-child(2) {
+    margin-top: 8px;
 }

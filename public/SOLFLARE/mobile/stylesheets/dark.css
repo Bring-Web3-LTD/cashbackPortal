@@ -1,0 +1,393 @@
+@font-face {
+    font-family: 'FK Grotesk';
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FK Grotesk';
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FK Grotesk';
+    src: url('https://media.bringweb3.io/fonts/solflare/FKGrotesk-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    font-family: 'FK Grotesk', system-ui, sans-serif;
+}
+
+:root {
+    --bg: #090C11;
+    --scrollbar-bg: rgba(138, 142, 148, 0.3);
+
+    --tabs-fog-color: #090C11;
+    --cards-fog-color: #090C11;
+
+    --tab-bg: transparent;
+    --tab-border-w: 1px;
+    --tab-border-c: rgba(138, 142, 148, 0.3);
+    --tab-radius: 100px;
+    --tab-f-s: 13px;
+    --tab-f-w: 500;
+    --tab-l-h: 15px;
+    --tab-f-c: #B1B4BB;
+    --tab-hover-f-c: #F5F8FF;
+    --tab-hover-bg: rgba(245, 248, 255, 0.08);
+    --tab-active-bg: rgba(245, 248, 255, 0.08);
+    --tab-active-f-c: #F5F8FF;
+
+    --filter-chip-bg: #1B1E23;
+    --filter-chip-border-w: 1px;
+    --filter-chip-border-c: rgba(138, 142, 148, 0.3);
+    --filter-chip-radius: 8px;
+    --filter-chip-f-s: 14px;
+    --filter-chip-l-h: 20px;
+    --filter-chip-f-c: #F5F8FF;
+
+    --search-bar-bg: #0C0F14;
+    --search-bar-border-c: rgba(138, 142, 148, 0.3);
+    --search-bar-radius: 8px;
+    --search-input-f-s: 14px;
+    --search-bar-f-s: 14px;
+    --search-bar-l-h: 20px;
+    --search-bar-f-c: #F5F8FF;
+    --search-bar-placeholder-f-c: #7A7D83;
+    --search-bar-close-c: #F5F8FF;
+    --search-empty-f-c: #7A7D83;
+    --search-suggestion-f-c: #B1B4BB;
+    --search-dropdown-bg: #0C0F14;
+    --search-dropdown-border-c: rgba(138, 142, 148, 0.3);
+    --search-dropdown-hover-bg: rgba(245, 248, 255, 0.08);
+    --search-dropdown-fade-bg: linear-gradient(180deg, rgba(12, 15, 20, 0) 0%, #0C0F14 100%);
+
+    --retailer-card-bg: #12151A;
+    --retailer-card-radius: 10px;
+    --retailer-card-border-w: 1px;
+    --retailer-card-border-c: rgba(138, 142, 148, 0.3);
+    --retailer-icon-radius: 100px;
+    --retailer-fallback-f-c: #12151A;
+
+    --retailer-name-f-s: 15px;
+    --retailer-name-f-w: 500;
+    --retailer-name-l-h: 22px;
+    --retailer-name-f-c: #F5F8FF;
+
+    --retailer-sub-f-s: 13px;
+    --retailer-sub-l-h: 18px;
+    --retailer-sub-label-f-w: 700;
+    --retailer-sub-l-s: 0;
+    --retailer-sub-label-f-c: #F5F8FF;
+    --retailer-sub-amount-f-c: #FFEF46;
+
+    --shop-btn-bg: rgba(245, 248, 255, 0.08);
+    --shop-btn-border-w: 1px;
+    --shop-btn-border-c: rgba(138, 142, 148, 0.3);
+    --shop-btn-radius: 5px;
+    --shop-btn-f-s: 13px;
+    --shop-btn-f-w: 700;
+    --shop-btn-l-h: 18px;
+    --shop-btn-f-c: #F5F8FF;
+    --shop-btn-hover-f-c: #F5F8FF;
+    --shop-btn-hover-bg: rgba(245, 248, 255, 0.14);
+
+    --faq-sheet-bg: #090C11;
+    --faq-sheet-border-c: rgba(138, 142, 148, 0.3);
+    --faq-sheet-radius: 20px;
+    --faq-sheet-fade-from: rgba(9, 12, 17, 0);
+    --faq-sheet-fade-to: #090C11;
+
+    --faq-intro-f-s: 13px;
+    --faq-intro-f-w: 400;
+    --faq-intro-l-h: 20px;
+    --faq-intro-f-c: #F5F8FF;
+
+    --faq-item-bg: #090C11;
+    --faq-item-hover-bg: #16181D;
+    --faq-item-radius: 8px;
+    --faq-item-border-w: 1px;
+    --faq-item-border-c: rgba(138, 142, 148, 0.3);
+
+    --faq-contact-text-f-s: 13px;
+    --faq-contact-text-f-w: 400;
+    --faq-contact-text-l-h: 20px;
+    --faq-contact-text-f-c: #F5F8FF;
+    --faq-contact-btn-bg: #12151A;
+    --faq-contact-btn-border-w: 1px;
+    --faq-contact-btn-border-c: rgba(138, 142, 148, 0.3);
+    --faq-contact-btn-radius: 100px;
+    --faq-contact-btn-f-s: 14px;
+    --faq-contact-btn-f-w: 400;
+    --faq-contact-btn-l-h: 20px;
+    --faq-contact-btn-f-c: #F5F8FF;
+
+    --faq-question-f-s: 14px;
+    --faq-question-f-w: 500;
+    --faq-question-l-h: 22px;
+    --faq-question-f-c: #F5F8FF;
+
+    --faq-chevron-f-c: #B1B4BB;
+    --faq-chevron-active-f-c: #F5F8FF;
+
+    --faq-answer-f-s: 12px;
+    --faq-answer-f-w: 400;
+    --faq-answer-l-h: 16px;
+    --faq-answer-f-c: #B1B4BB;
+    --faq-answer-hover-f-c: #F5F8FF;
+
+    --faq-divider-c: rgba(138, 142, 148, 0.3);
+    --faq-link-f-c: #FFEF46;
+
+    --faq-skeleton-bg: rgba(138, 142, 148, 0.15);
+    --faq-skeleton-bar-bg: #2C2F36;
+
+    --claim-modal-font: 'FK Grotesk', system-ui, sans-serif;
+
+    --claim-modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+    --claim-modal-panel-bg: #090C11;
+    --claim-modal-panel-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-panel-radius: 25px;
+    --claim-modal-header-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-header-title-f-s: 17px;
+    --claim-modal-header-title-f-w: 700;
+    --claim-modal-header-title-l-h: 22px;
+    --claim-modal-header-title-f-c: #F5F8FF;
+    --claim-modal-header-title-l-s: 0;
+
+    --claim-modal-header-action-bg: transparent;
+    --claim-modal-header-action-radius: 5px;
+
+    --claim-modal-status-title-f-s: 20px;
+    --claim-modal-status-title-f-w: 700;
+    --claim-modal-status-title-l-h: 26px;
+    --claim-modal-status-title-l-s: 0;
+    --claim-modal-status-title-f-c: #F5F8FF;
+    --claim-modal-status-msg-f-s: 14px;
+    --claim-modal-status-msg-f-w: 400;
+    --claim-modal-status-msg-l-h: 20px;
+    --claim-modal-status-msg-f-c: #B1B4BB;
+    --claim-modal-failure-circle-bg: rgba(245, 248, 255, 0.08);
+    --claim-modal-spinner-circle-bg: rgba(245, 248, 255, 0.08);
+    --claim-modal-spinner-c: #FFEF46;
+    --claim-modal-success-amount-f-s: 38px;
+    --claim-modal-success-amount-f-w: 700;
+    --claim-modal-success-amount-l-h: 48px;
+    --claim-modal-success-amount-f-c: #F5F8FF;
+
+    --claim-modal-explorer-f-s: 14px;
+    --claim-modal-explorer-f-w: 400;
+    --claim-modal-explorer-l-h: 20px;
+    --claim-modal-explorer-f-c: #FFEF46;
+    --claim-modal-explorer-hover-f-c: #EEDA0F;
+
+    --claim-modal-min-title-f-s: 20px;
+    --claim-modal-min-title-f-w: 700;
+    --claim-modal-min-title-l-h: 26px;
+    --claim-modal-min-title-l-s: 0;
+    --claim-modal-min-title-f-c: #F5F8FF;
+    --claim-modal-min-para-f-s: 14px;
+    --claim-modal-min-para-f-w: 400;
+    --claim-modal-min-para-l-h: 20px;
+    --claim-modal-min-para-f-c: #B1B4BB;
+    --claim-modal-min-hint-f-s: 14px;
+    --claim-modal-min-hint-f-w: 400;
+    --claim-modal-min-hint-l-h: 20px;
+    --claim-modal-min-hint-f-c: #B1B4BB;
+
+    --claim-modal-btn-radius: 100px;
+    --claim-modal-btn-f-s: 15px;
+    --claim-modal-btn-f-w: 500;
+    --claim-modal-btn-l-h: 20px;
+
+    --claim-modal-btn-f-c: #F5F8FF;
+    --claim-modal-btn-secondary-bg: #12151A;
+    --claim-modal-btn-secondary-hover-bg: #16181D;
+    --claim-modal-btn-secondary-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-btn-secondary-border-w: 1px;
+
+    --claim-modal-btn-primary-bg: #FFEF46;
+    --claim-modal-btn-primary-f-c: #1F2018;
+    --modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+
+    --claim-badge-bg: rgba(245, 248, 255, 0.08);
+    --claim-badge-border-c: rgba(245, 248, 255, 0.1);
+    --claim-card-bg: linear-gradient(94.03deg, #2C2F36 9.09%, #12151A 90.91%);
+    --claim-card-border-c: rgba(245, 248, 255, 0.1);
+    --claim-card-divider-c: rgba(255, 255, 255, 0.12);
+    --claim-card-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+    --claim-cta-bg: #E6D73F;
+    --claim-cta-f-c: #090C11;
+    --claim-hero-f-c: #F5F8FF;
+    --claim-label-f-c: #B1B4BB;
+    --claim-now-bg: rgba(8, 194, 157, 0.15);
+    --claim-now-f-c: #08C29D;
+    --claim-sheet-bg: #090C11;
+    --claim-sheet-border-c: rgba(11, 16, 32, 0.1);
+    --claim-sheet-header-border-c: rgba(138, 142, 148, 0.3);
+    --claim-sheet-radius: 25px;
+    --dashboard-accent: #FFEF46;
+    --dashboard-accent-soft: rgba(255, 239, 70, 0.12);
+    --dashboard-amount-f-c: #F5F8FF;
+    --dashboard-label-f-c: #7A7D83;
+    --dashboard-pill-f-c: #B1B4BB;
+    --dashboard-radius: 8px;
+    --dashboard-tab-active-f-c: #1F2018;
+    --dashboard-tab-f-c: #7A7D83;
+    --dashboard-tab-f-s: 12px;
+    --dashboard-tab-f-w: 500;
+    --dashboard-tabs-bg: #1B1E23;
+    --dashboard-tile-bg: rgba(177, 180, 187, 0.15);
+    --dashboard-tile-border-c: rgba(138, 142, 148, 0.3);
+    --header-action-bg: transparent;
+    --header-action-close-radius: 5px;
+    --header-action-hover-bg: rgba(138, 142, 148, 0.15);
+    --header-action-icon-c: #F5F8FF;
+    --header-bg: transparent;
+    --header-border-c: rgba(138, 142, 148, 0.3);
+    --header-title-f-c: #F5F8FF;
+    --header-title-f-s: 17px;
+    --history-amount-bg: rgba(177, 180, 187, 0.15);
+    --history-amount-cancelled-bg: rgba(218, 73, 63, 0.15);
+    --history-amount-cancelled-f-c: #DA493F;
+    --history-amount-claimed-bg: rgba(255, 239, 70, 0.3);
+    --history-amount-claimed-f-c: #E6D73F;
+    --history-amount-completed-bg: rgba(8, 194, 157, 0.15);
+    --history-amount-completed-f-c: #08C29D;
+    --history-amount-f-c: #B1B4BB;
+    --history-amount-f-s: 13px;
+    --history-amount-l-h: 18px;
+    --history-amount-l-s: 0;
+    --history-amount-pending-bg: rgba(177, 180, 187, 0.15);
+    --history-amount-pending-f-c: #B1B4BB;
+    --history-amount-radius: 8px;
+    --history-avatar-bg: #FFEF46;
+    --history-avatar-claim-bg: #FFEF46;
+    --history-avatar-radius: 100px;
+    --history-date-f-c: #B1B4BB;
+    --history-date-f-s: 13px;
+    --history-description-f-c: #B1B4BB;
+    --history-description-f-w: 500;
+    --history-divider-c: rgba(138, 142, 148, 0.3);
+    --history-empty-bg: transparent;
+    --history-empty-f-c: #B1B4BB;
+    --history-intro-f-c: #F5F8FF;
+    --history-intro-f-s: 13px;
+    --history-intro-l-h: 20px;
+    --history-item-bg: #16181D;
+    --history-item-border-c: rgba(138, 142, 148, 0.1);
+    --history-item-hover-bg: #282B30;
+    --history-item-open-bg: #12151A;
+    --history-item-radius: 12px;
+    --history-name-f-c: #F5F8FF;
+    --history-name-f-s: 15px;
+    --history-name-f-w: 500;
+    --history-sheet-bg: #090C11;
+    --history-sheet-border-c: rgba(138, 142, 148, 0.3);
+    --history-sheet-fade-from: rgba(9, 12, 17, 0);
+    --history-sheet-fade-to: #090C11;
+    --history-sheet-radius: 20px;
+    --history-sheet-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
+    --history-status-cancelled-f-c: #DA493F;
+    --history-status-claimed-f-c: #E6D73F;
+    --history-status-completed-f-c: #08C29D;
+    --history-status-f-c: #8C95A1;
+    --history-status-l-h: 12px;
+    --history-status-pending-f-c: #8C95A1;
+    --more-action-bg: #12151A;
+    --more-action-border-c: rgba(245, 245, 245, 0.1);
+    --more-action-f-c: #F5F8FF;
+    --more-action-f-s: 12px;
+    --more-action-f-w: 700;
+    --more-action-radius: 5px;
+    --retailer-modal-bg: #090C11;
+    --retailer-modal-border-c: rgba(11, 16, 32, 0.1);
+    --retailer-modal-btn-f-c: #F5F8FF;
+    --retailer-modal-btn-f-s: 15px;
+    --retailer-modal-btn-f-w: 500;
+    --retailer-modal-btn-l-h: 20px;
+    --retailer-modal-btn-radius: 100px;
+    --retailer-modal-cancel-bg: rgba(245, 248, 255, 0.08);
+    --retailer-modal-cancel-border-c: rgba(138, 142, 148, 0.3);
+    --retailer-modal-cancel-hover-bg: rgba(245, 248, 255, 0.14);
+    --retailer-modal-disclaimer-f-c: #B1B4BB;
+    --retailer-modal-disclaimer-hover-f-c: #F5F8FF;
+    --retailer-modal-disclaimer-l-h: 12px;
+    --retailer-modal-header-border-c: rgba(138, 142, 148, 0.3);
+    --retailer-modal-header-title-f-c: #F5F8FF;
+    --retailer-modal-header-title-f-s: 17px;
+    --retailer-modal-logo-radius: 100px;
+    --retailer-modal-name-f-c: #F5F8FF;
+    --retailer-modal-name-f-w: 700;
+    --retailer-modal-name-l-h: 28px;
+    --retailer-modal-pill-bg: rgba(255, 239, 70, 0.12);
+    --retailer-modal-pill-f-c: #E6D73F;
+    --retailer-modal-pill-f-s: 13px;
+    --retailer-modal-pill-f-w: 700;
+    --retailer-modal-pill-l-h: 18px;
+    --retailer-modal-pill-radius: 100px;
+    --retailer-modal-radius: 25px;
+    --retailer-modal-shop-bg: #FFEF46;
+    --retailer-modal-shop-disabled-bg: rgba(255, 239, 70, 0.3);
+    --retailer-modal-shop-f-c: #1F2018;
+    --retailer-modal-shop-hover-bg: #EEDA0F;
+    --retailer-modal-terms-bg: #12151A;
+    --retailer-modal-terms-body-f-c: #B1B4BB;
+    --retailer-modal-terms-body-f-s: 12px;
+    --retailer-modal-terms-body-f-w: 500;
+    --retailer-modal-terms-body-l-h: 16px;
+    --retailer-modal-terms-border-c: rgba(138, 142, 148, 0.3);
+    --retailer-modal-terms-radius: 12px;
+    --retailer-modal-terms-shadow: none;
+    --retailer-modal-terms-title-f-c: #F5F8FF;
+
+    /* ── "What's This?" sheet ── */
+    --whats-this-darken-bg: #040407;
+    --whats-this-sheet-bg: #090C11;
+    --whats-this-sheet-border-w: 1px;
+    --whats-this-sheet-border-c: rgba(11, 16, 32, 0.1);
+    --whats-this-sheet-radius: 25px;
+
+    --whats-this-intro-f-s: 14px;
+    --whats-this-intro-f-w: 400;
+    --whats-this-intro-l-h: 20px;
+    --whats-this-intro-f-c: #B1B4BB;
+
+    --whats-this-card-bg: rgba(255, 255, 255, 0.04);
+    --whats-this-card-border-w: 1px;
+    --whats-this-card-border-c: rgba(138, 142, 148, 0.3);
+    --whats-this-card-radius: 12px;
+    --whats-this-card-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+
+    --whats-this-icon-bg: rgba(245, 248, 255, 0.08);
+    --whats-this-icon-border-w: 1px;
+    --whats-this-icon-border-c: rgba(245, 248, 255, 0.1);
+    --whats-this-icon-radius: 12px;
+
+    --whats-this-card-title-f-s: 15px;
+    /* Figma calls for FK Grotesk Black; the theme only ships 400/500/700, so
+       700 is the heaviest real face — 900 would only be synthesised. */
+    --whats-this-card-title-f-w: 700;
+    --whats-this-card-title-l-h: 22px;
+    --whats-this-card-title-f-c: #F5F8FF;
+
+    --whats-this-card-text-f-s: 14px;
+    --whats-this-card-text-f-w: 400;
+    --whats-this-card-text-l-h: 20px;
+    --whats-this-card-text-f-c: #B1B4BB;
+
+    --whats-this-cta-bg: #E6D73F;
+    --whats-this-cta-f-c: #090C11;
+    --whats-this-cta-radius: 100px;
+    --whats-this-cta-f-s: 15px;
+    --whats-this-cta-f-w: 500;
+    --whats-this-cta-l-h: 20px;
+}

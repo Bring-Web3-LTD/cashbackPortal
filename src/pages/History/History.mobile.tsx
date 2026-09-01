@@ -1,11 +1,10 @@
 /*
- * Mobile History — bottom-sheet overlay.
+ * More — bottom-sheet overlay. Holds the three help actions (Need Help?,
+ * Missing Reward, What's This?) above the full reward history. The previous
+ * page renders behind a darkening layer. Pure UI — logic in useHistoryPage.
  *
- * Presented as a modal sheet anchored to the bottom: the previous page
- * (Home) renders behind a darkening layer, and the History sheet slides
- * up leaving an ~88px gap at the top so the darkened page peeks through.
- * Rounded top corners + 1px border per the design. Pure UI — logic in
- * useHistoryPage.
+ * `only="pending"` renders the same sheet as the dashboard's Pending view:
+ * the rows filtered to that status, with the help actions dropped.
  */
 import MobileHeader from '../../components/Header/Header.mobile'
 import MobileHistoryItem from '../../components/HistoryItem/HistoryItem.mobile'
@@ -13,13 +12,24 @@ import MobileHome from '../Home/Home.mobile'
 import { useHistoryPage } from './useHistoryPage'
 import styles from './styles.mobile.module.css'
 
-const SKELETON_COUNT = 8
+interface Props {
+    only?: 'pending'
+}
 
-const MobileHistory = () => {
-    const { labels, rows, isLoading, openId, close, onToggle } = useHistoryPage()
+const MobileHistory = ({ only }: Props) => {
+    const {
+        labels,
+        rows,
+        isLoading,
+        openId,
+        close,
+        onToggle,
+        goToFaq,
+        openSupport,
+    } = useHistoryPage(only)
 
     return (
-        <div className={styles.root} data-testid="mobile-history">
+        <div className={styles.root} data-testid={only ? `mobile-${only}` : 'mobile-history'}>
             {/* Previous page, rendered behind and made inert. */}
             <div className={styles.behind} aria-hidden="true">
                 <MobileHome />
@@ -30,39 +40,30 @@ const MobileHistory = () => {
 
             {/* Bottom-sheet overlay. */}
             <div className={styles.sheet} role="dialog" aria-modal="true">
-                <MobileHeader
-                    title={labels.title}
-                    onClose={close}
-                />
+                <MobileHeader title={labels.title} onClose={close} />
                 <main className={styles.content}>
-                    {!isLoading && rows.length === 0 ? (
-                        <div className={styles.empty}>
-                            <p className={styles.emptyText}>
-                                {labels.empty}
-                            </p>
+                    {only ? null : (
+                        <div className={styles.actions}>
+                            <button type="button" className={styles.actionBtn} onClick={goToFaq}>
+                                {labels.needHelp}
+                            </button>
+                            <button type="button" className={styles.actionBtn} onClick={openSupport}>
+                                {labels.missingReward}
+                            </button>
+                            <button type="button" className={styles.actionBtn} onClick={goToFaq}>
+                                {labels.whatsThis}
+                            </button>
                         </div>
-                    ) : (
-                        <>
-                            {isLoading ? (
-                                <>
-                                    <div className={styles.list} aria-hidden="true">
-                                        {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                                            <div key={i} className={styles.skeletonItem}>
-                                                <div className={styles.skeletonAvatar} />
-                                                <div className={styles.skeletonBody}>
-                                                    <div className={styles.skeletonBar1} />
-                                                    <div className={styles.skeletonBar2} />
-                                                </div>
-                                                <div className={styles.skeletonRight} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                <p className={styles.intro}>
-                                    {labels.rewardHistory}
-                                </p>
+                    )}
+
+                    <div className={styles.body}>
+                        {isLoading ? null : rows.length === 0 ? (
+                            <div className={styles.empty}>
+                                <p className={styles.emptyText}>{labels.empty}</p>
+                            </div>
+                        ) : (
+                            <>
+                                <p className={styles.intro}>{labels.rewardHistory}</p>
                                 <div className={styles.list}>
                                     {rows.map((row) => (
                                         <MobileHistoryItem
@@ -73,10 +74,9 @@ const MobileHistory = () => {
                                         />
                                     ))}
                                 </div>
-                                </>
-                            )}
-                        </>
-                    )}
+                            </>
+                        )}
+                    </div>
                 </main>
             </div>
         </div>

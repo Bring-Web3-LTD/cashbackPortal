@@ -4,7 +4,6 @@
  * top-level tab). Pure UI — logic in useRetailerCardModal. */
 import { createPortal } from 'react-dom'
 import Markdown from 'react-markdown'
-import Icon from '../Icon/Icon'
 import { useRetailerCardModal, RetailerCardModalProps } from './useRetailerCardModal'
 import styles from './styles.mobile.module.css'
 
@@ -22,7 +21,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
 
     // Portal to <body> so ancestor `transform`s (framer-motion on the
     // MobileOutlet root) don't make `position: fixed` resolve against the
-    // 360px-wide layout container instead of the viewport — which would
+    // width-capped layout container instead of the viewport — which would
     // push the action buttons below the visible area.
     return createPortal(
         <>
@@ -39,18 +38,9 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <header className={styles.header}>
-                            <span className={styles.header_spacer} aria-hidden="true" />
                             <h2 id="mobile-retailer-modal-title" className={styles.header_title}>
                                 {labels.title}
                             </h2>
-                            <button
-                                type="button"
-                                className={styles.header_close}
-                                onClick={onCancel}
-                                aria-label={labels.close}
-                            >
-                                <Icon name="x-mark.svg" alt="" />
-                            </button>
                         </header>
 
                         <div className={styles.body}>
@@ -84,10 +74,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                     <div className={styles.retailer_info}>
                                         <span className={styles.name}>{retailer.displayName}</span>
                                         <span className={styles.cashback_pill}>
-                                            <span className={styles.cashback_label}>{labels.upTo}</span>
-                                            <span className={styles.cashback_amount}>
-                                                {cashback} {labels.in} {tokenSymbol}
-                                            </span>
+                                            {labels.upTo} {cashback} {labels.in} {tokenSymbol}
                                         </span>
                                     </div>
                                 </div>
@@ -101,7 +88,6 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                             <span className={styles.terms_loading}>{labels.loading}</span>
                                         )}
                                     </div>
-                                    <span className={styles.terms_fade} aria-hidden="true" />
                                 </section>
                             </div>
 
@@ -140,7 +126,10 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                         </button>
                                     )}
                                 </div>
-                                <p className={styles.disclaimer}>{labels.agreeTerms}</p>
+                                <p className={styles.disclaimer}>
+                                    {labels.agreeTerms}{' '}
+                                    <span className={styles.disclaimer_link}>{labels.termsWord}</span>
+                                </p>
                             </div>
                         </div>
                     </div>

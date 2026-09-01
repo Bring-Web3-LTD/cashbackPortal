@@ -15,8 +15,10 @@
     padding: 4px 8px;
     border-radius: var(--filter-chip-radius, 4px);
     background: var(--filter-chip-bg, rgba(62, 72, 100, 0.50));
+
+    box-shadow: inset 0 0 0 var(--filter-chip-border-w, 0)
+        var(--filter-chip-border-c, transparent);
     color: var(--filter-chip-f-c, #F7F7F7);
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--filter-chip-f-s, 14px);
     font-weight: 400;
     line-height: var(--filter-chip-l-h, 20px);
