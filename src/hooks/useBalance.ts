@@ -28,6 +28,11 @@ export const useBalance = (): UseQueryResult<BalanceResponse> => {
         },
         queryKey: ['balance', walletAddress, mock ? 'mock' : ''],
         enabled: !!mock || !!walletAddress,
+        // A reward earned while the tab sat in the background only shows up on
+        // the next fetch, and nothing pushes it to us — coming back to the
+        // portal is the signal. Opted in here rather than globally (main.tsx
+        // turns it off) because only the balance goes stale on its own.
+        refetchOnWindowFocus: true,
     })
 }
 
@@ -50,6 +55,21 @@ export const selectTotalEarned = (data: BalanceResponse | undefined) =>
  * True while the user has no rewards and no history at all. Read from the
  * query rather than the loader so it re-evaluates live — the post-claim
  * `invalidateQueries(['balance', …])` already refreshes it within the session.
+ *
+ * The backend flag alone isn't enough: it can still read `true` in a payload
+ * that already carries a reward, which would strand the dashboard in the
+ * first-time state. So the flag only holds while the rest of the response
+ * agrees — the first reward drops it without waiting for the flag to catch up.
  */
-export const selectFirstTimeUser = (data: BalanceResponse | undefined) =>
-    data?.data?.firstTimeUser === true
+export const selectFirstTimeUser = (data: BalanceResponse | undefined) => {
+    const d = data?.data
+    if (!d) return false
+    const earned = (tokens: Token[] | undefined) => (tokens?.[0]?.tokenAmount ?? 0) > 0
+
+    return d.firstTimeUser === true
+        && !earned(d.eligible)
+        && !earned(d.totalPendings)
+        && !earned(d.totalEarned)
+        && !d.movements?.deals?.length
+        && !d.movements?.claims?.length
+}
