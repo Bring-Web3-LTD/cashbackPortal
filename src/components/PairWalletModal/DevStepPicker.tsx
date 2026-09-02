@@ -7,8 +7,9 @@
  * design underneath can be compared unobstructed.
  *
  * Delete this file, the `DEV_SCREENS` / `devJump` block in
- * usePairWalletModal.ts, and the two lines rendering it in
- * PairWalletModal.mobile.tsx once the pairing designs are signed off.
+ * src/hooks/usePairWallet.ts (and its re-export from usePairWalletModal.ts),
+ * and the two lines rendering it in PairWalletModal.mobile.tsx once the
+ * pairing designs are signed off.
  */
 import { useState, CSSProperties } from 'react'
 import { ENV } from '../../config'
