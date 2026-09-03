@@ -12,9 +12,6 @@
     --title-f-w: 700;
     --title-f-c: #FFFFFF;
 
-    --subtitle-f-s: 18px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #FFFFFF;
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
     --legal-link-f-c: #7A7D83;
@@ -30,12 +27,8 @@
     --header-btn-radius: 100px;
     /* 12px insets, not 16 — at 16 the longer label stops fitting the fixed
        160px pill and wraps out of it. */
-    --header-btn-p: 9px 12px;
-    --header-btn-w: 160px;
     /* 9px insets + 20px line box; the portal's 29px default clipped the label. */
-    --header-btn-h: 38px;
     /* Sentence case — capitalize would give "Missing A Reward?". */
-    --header-btn-transform: none;
 
     --header-btn-hover-bg: rgba(30, 35, 48, 0.35);
     --header-btn-hover-f-c: #00C8DB;
