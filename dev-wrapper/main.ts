@@ -603,6 +603,48 @@ statusPreviewEl.addEventListener('change', () => {
     void refresh()
 })
 
+// Dashboard state flags. The backend owns these (couponsEnabled / isHub from
+// verify, firstTimeUser from cache); the checkbox is seeded from whatever it
+// returned. Ticking it away from that value pins an override on the portal
+// URL for testing; ticking it back to the backend value clears the override.
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub'] as const
+type DashboardFlag = typeof DASHBOARD_FLAGS[number]
+
+// The portal owns these. A box is only an *override* while the developer has
+// deliberately moved it away from the backend value, and that lives in memory
+// only — persisting it meant a stale "0" from an old session kept masking the
+// backend on every later load, which is exactly the bug this replaces.
+const overrides = new Map<DashboardFlag, boolean>()
+const backendFlags: Partial<Record<DashboardFlag, boolean>> = { firstTimeUser: true }
+
+// Drop the keys the persisted version left behind; nothing reads them now.
+for (const name of DASHBOARD_FLAGS) localStorage.removeItem(`bring-dev-wrapper:${name}`)
+
+const dashboardFlagEls = DASHBOARD_FLAGS.map(name => {
+    const el = $<HTMLInputElement>(name)
+    el.checked = Boolean(backendFlags[name])
+    el.addEventListener('change', () => {
+        // Back on the backend value means "no override".
+        if (el.checked === backendFlags[name]) overrides.delete(name)
+        else overrides.set(name, el.checked)
+        // Read from the query string at bootstrap — reload to apply.
+        isFirstLoad = true
+        void refresh()
+    })
+    return [name, el] as const
+})
+
+// Applies the flags the portal resolved from verify / cache, leaving any
+// developer override in place.
+function applyPortalFlags(flags: Record<string, boolean>) {
+    for (const [name, el] of dashboardFlagEls) {
+        const value = flags[name]
+        if (typeof value !== 'boolean') continue
+        backendFlags[name] = value
+        if (!overrides.has(name)) el.checked = value
+    }
+}
+
 const startConnectedEl = $<HTMLInputElement>('startConnected')
 startConnectedEl.checked = startConnected
 startConnectedEl.addEventListener('change', () => {
@@ -892,6 +934,7 @@ const bridge = createPortalBridge({
         appendLog(kind, label, payload)
         if (kind === 'out') recordMessage('out', 'to portal', payload)
     },
+    onPortalFlags: applyPortalFlags,
     // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
     // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
@@ -1157,6 +1200,7 @@ async function refresh() {
         const u = new URL(src)
         if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
         if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+        for (const [name, value] of overrides) u.searchParams.set(name, String(value))
         iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')

@@ -7,7 +7,7 @@
  * passed in (MetaMask, ethers signer, …).
  *
  * Protocol summary:
- *   ← from portal: { from: 'bringweb3', action: 'LOGIN' | 'SIGN_MESSAGE' | 'POPUP_CLOSED', ... }
+ *   ← from portal: { from: 'bringweb3', action: 'LOGIN' | 'SIGN_MESSAGE' | 'POPUP_CLOSED' | 'PORTAL_FLAGS', ... }
  *   → to portal:   { to:   'bringweb3', action: 'SESSION_UPDATE' | 'SIGNATURE' | 'ABORT_SIGN_MESSAGE', ... }
  */
 
@@ -38,6 +38,12 @@ export interface PortalBridgeOptions {
     shouldAutoConnect?: () => boolean
     /** If false, the bridge will not auto-call `wallet.signMessage()` on `SIGN_MESSAGE`. */
     shouldAutoSign?: () => boolean
+    /**
+     * Dashboard flags the portal resolved at runtime. Only the portal calls
+     * /cache, so values sourced from it (firstTimeUser) are reported back here
+     * rather than being readable from the bootstrap token.
+     */
+    onPortalFlags?: (flags: Record<string, boolean>) => void
 }
 
 export function createPortalBridge(opts: PortalBridgeOptions) {
@@ -49,6 +55,7 @@ export function createPortalBridge(opts: PortalBridgeOptions) {
         onAddressChange,
         shouldAutoConnect = () => true,
         shouldAutoSign = () => true,
+        onPortalFlags,
     } = opts
 
     const post = (data: Record<string, unknown>, label: string) => {
@@ -121,6 +128,14 @@ export function createPortalBridge(opts: PortalBridgeOptions) {
             case 'POPUP_CLOSED':
                 // Visibility only.
                 break
+            case 'PORTAL_FLAGS': {
+                const flags: Record<string, boolean> = {}
+                for (const [key, value] of Object.entries(data)) {
+                    if (key !== 'from' && key !== 'action' && typeof value === 'boolean') flags[key] = value
+                }
+                if (Object.keys(flags).length) onPortalFlags?.(flags)
+                break
+            }
             default:
                 break
         }
