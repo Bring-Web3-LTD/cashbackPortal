@@ -25,6 +25,8 @@ interface Response {
         walletName?: string
         bringTou?: string
         privacy?: string
+        /** Coupon partner iframe. Null when coupons are off or outside the US. */
+        couponsIframeSrc?: string | null
     }
 }
 

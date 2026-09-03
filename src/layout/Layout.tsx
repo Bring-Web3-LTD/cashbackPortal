@@ -33,6 +33,7 @@ const Layout = () => {
             initIsTester={data.isTester}
             initialWalletName={data.walletName}
             initialWalletEmoji={data.walletEmoji}
+            initialCouponsIframeSrc={data.couponsIframeSrc ?? undefined}
             mode={data.useMobilePortal ? 'mobile' : 'desktop'}
         >
             <AnalyticsProvider
