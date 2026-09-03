@@ -5,10 +5,30 @@
 
 :root {
     --bg: #1E2328;
+    --title-l-h: 28px;
+    --header-btn-l-h: 20px;
+    --header-logo-radius: 12px;
+    --header-more-bg: #1E2328;
+    --header-more-hover-bg: #252B33;
+    --header-more-dot-c: #F3F4F6;
+    --header-menu-bg: #12151A;
+    --header-menu-border-w: 1px;
+    --header-menu-border-c: #2A3038;
+    --header-menu-radius: 12px;
     --header-bg: #1E2328;
+    --header-more-border-w: 1px;
+    --header-more-border-c: #2A3038;
+    --header-more-pressed-bg: #2F3640;
+    --header-menu-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+    --header-menu-item-f-s: 15px;
+    --header-menu-item-f-w: 500;
+    --header-menu-item-l-h: 22px;
+    --header-menu-item-f-c: #F3F4F6;
+    --header-menu-item-hover-bg: rgba(255, 255, 255, 0.08);
+    --header-menu-item-radius: 8px;
 
-    --title-f-s: 20px;
-    --title-f-w: 600;
+    --title-f-s: 22px;
+    --title-f-w: 700;
     --title-f-c: #F3F4F6;
 
     --legal-link-f-s: 10px;
@@ -20,7 +40,7 @@
     --header-btn-f-c: #7B9AEB;
     --header-btn-border-w: 1px;
     --header-btn-border-c: #7B9AEB;
-    --header-btn-radius: 8px;
+    --header-btn-radius: 100px;
 
     --rewards-bg: linear-gradient(195deg, rgba(123, 154, 235, 0.20) 0%, rgba(61, 90, 235, 0.10) 50%, rgba(61, 90, 235, 0.16) 100%);
     --rewards-img-size: 20px;

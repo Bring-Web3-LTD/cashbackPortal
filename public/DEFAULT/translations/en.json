@@ -32,5 +32,7 @@
   "searchNoResultsHint": "Try a different search term",
   "connectWalletHint": "Please login to your wallet to proceed",
   "termsConsent": "By clicking Go Shopping, you accept the",
-  "shopAndEarn": "Shop and earn up to {{cashback}} {{symbol}} cashback"
+  "shopAndEarn": "Shop and earn up to {{cashback}} {{symbol}} cashback",
+  "whatsThis": "What’s This?",
+  "moreActions": "More"
 }
