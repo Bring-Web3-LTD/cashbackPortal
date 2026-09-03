@@ -45,6 +45,12 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    // Dashboard state. `isHub` and `couponsEnabled` come from /verify,
+    // `firstTimeUser` from /cache. The dev wrapper can pin any of them via a
+    // URL override outside prod.
+    isHub?: boolean
+    couponsEnabled?: boolean
+    firstTimeUser?: boolean
     /** Coupon partner iframe. Null when coupons are off or outside the US. */
     couponsIframeSrc?: string | null
     // Mobile Portal — optional wallet identity surfaced from the JWT, plus the
@@ -67,7 +73,7 @@ interface Token {
     tokenInUsd: number
     totalEstimatedUsd: number
     // Backend-formatted display string for the amount. May contain Unicode
-    // subscript digits (₀–₉) — render via <TokenAmount /> on mobile.
+    // subscript digits (₀–₉), which render as-is.
     tokenAmountDisplay?: string
 }
 

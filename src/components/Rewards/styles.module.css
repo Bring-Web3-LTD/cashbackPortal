@@ -1,64 +1,3 @@
-.container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 34px;
-}
-
-.subcontainer {
-    --padding: 22px;
-    border-radius: 12px;
-    height: 98px;
-    width: calc(570px - (var(--padding) * 2));
-    background: var(--rewards-bg);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 var(--padding);
-    align-items: center;
-}
-
-.reward_details {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    user-select: none;
-}
-
-.reward_details_subcontainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* gap: 8px; */
-}
-
-.icon_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-style: solid;
-    width: var(--rewards-icon-container-width, 35px);
-    height: var(--rewards-icon-container-height, 35px);
-}
-
-.claim_icon {
-    background: var(--claim-img-bg);
-    border-radius: var(--claim-img-radius);
-    border-width: var(--claim-img-border-w);
-    border-color: var(--claim-img-border-c);
-}
-
-.pending_icon {
-    background: var(--pending-img-bg);
-    border-radius: var(--pending-img-radius);
-    border-width: var(--pending-img-border-w);
-    border-color: var(--pending-img-border-c);
-}
-
-.icon {
-    width: var(--rewards-img-size);
-    height: var(--rewards-img-size);
-}
-
 .amount {
     font-size: var(--rewards-amount-f-s);
     font-weight: var(--rewards-amount-f-w);
@@ -69,62 +8,6 @@
     padding-right: 1px;
 }
 
-.amount_claim {
-    background: var(--claim-amount-f-c);
-    background-clip: text;
-    color: transparent;
-}
-
-.amount_pending {
-    background: var(--pending-amount-f-c);
-    background-clip: text;
-    color: transparent;
-}
-
-.rewards_text {
-    font-size: var(--rewards-text-f-s);
-    font-weight: var(--rewards-text-f-w);
-    line-height: 24px;
-}
-
-.claim_text {
-    color: var(--claim-text-f-c);
-}
-
-.pending_text {
-    color: var(--pending-text-f-c);
-}
-
-.rewards_usd {
-    font-size: var(--rewards-usd-f-s);
-    font-weight: var(--rewards-usd-f-w);
-    line-height: 16px;
-}
-
-.claim_usd {
-    color: var(--claim-usd-f-c);
-}
-
-.pending_usd {
-    color: var(--pending-usd-f-c);
-}
-
-.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-style: solid;
-    border-radius: var(--rewards-btn-radius);
-    height: 46px;
-    width: var(--rewards-btn-width);
-    font-size: var(--rewards-btn-f-s);
-    font-weight: var(--rewards-btn-f-w);
-    line-height: var(--rewards-btn-l-h, normal);
-    cursor: pointer;
-    padding: 0;
-    transition: .2s;
-}
-
 /* Spinner arc colour. Falls back to the white it has always been, so
    platforms that don't set the variable are unchanged. */
 .loader {
@@ -132,101 +15,194 @@
     color: var(--rewards-loader-c, #fff);
 }
 
-.claim_btn {
-    background: var(--primary-btn-bg);
-    color: var(--primary-btn-f-c);
-    border-width: var(--primary-btn-border-w);
-    border-color: var(--primary-btn-border-c);
+/* Dashboard summary card: label + amount + $ badge, action pinned right. */
+.card {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    /* Minimum gap; grows with available space. */
+    gap: 20px;
+    /* Floor: 22 + 122 + 18, left cluster only. */
+    min-width: 162px;
+    height: 100%;
+    padding: 12px 18px 12px 22px;
+    overflow: hidden;
+    background: var(--dashboard-card-bg);
+    /* Inset so the stroke does not add to the 86px row height. */
+    box-shadow: inset 0 0 0 var(--dashboard-card-border-w) var(--dashboard-card-border-c);
+    border-radius: var(--dashboard-card-radius);
 }
 
-.claim_btn:hover {
-    background: var(--primary-btn-hover-bg);
+.left_cluster {
+    display: flex;
+    align-items: flex-end;
+    gap: 13px;
+    /* Never shrinks, never hides. */
+    flex: 0 0 auto;
+    min-width: 122px;
 }
 
-.claim_btn:active {
-    background: var(--primary-btn-pressed-bg);
+.values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex-shrink: 0;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.claim_btn:disabled {
-    background: var(--primary-btn-disabled-bg);
-    color: var(--primary-btn-disabled-f-c);
+.card_label {
+    font-size: var(--dashboard-card-label-f-s);
+    font-weight: var(--dashboard-card-label-f-w);
+    line-height: var(--dashboard-card-label-l-h);
+    color: var(--dashboard-card-label-f-c);
+    white-space: nowrap;
 }
 
-/* Loading is not "disabled" visually — the button keeps its resting fill and
-   only swaps the label for the spinner. Must follow :disabled to win. */
-.loading_btn:disabled {
-    background: var(--primary-btn-bg);
-    color: var(--primary-btn-f-c);
+.amount_row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    flex-shrink: 0;
+    overflow: hidden;
+    font-size: var(--dashboard-card-amount-f-s);
+    font-weight: var(--dashboard-card-amount-f-w);
+    line-height: var(--dashboard-card-amount-l-h);
+    color: var(--dashboard-card-amount-f-c);
+    white-space: nowrap;
+}
+
+.badge {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Content-driven width. */
+    flex: 0 0 auto;
+    padding: 4px 10px;
+    overflow: hidden;
+    background: var(--dashboard-badge-bg);
+    border-radius: var(--dashboard-badge-radius);
+    font-size: var(--dashboard-badge-f-s);
+    font-weight: var(--dashboard-badge-f-w);
+    line-height: var(--dashboard-badge-l-h);
+    color: var(--dashboard-badge-f-c);
+    white-space: nowrap;
+}
+
+.card_btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Starts at 150 and absorbs whatever the left cluster leaves. */
+    flex: 0 1 150px;
+    min-width: 80px;
+    height: 46px;
+    padding: 0;
+    border: none;
+    border-radius: 100px;
+    background: var(--dashboard-card-btn-bg);
+    font-size: var(--dashboard-card-btn-f-s);
+    font-weight: var(--dashboard-card-btn-f-w);
+    line-height: var(--dashboard-card-btn-l-h);
+    color: var(--dashboard-card-btn-f-c);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.card_btn:hover:not(:disabled) {
+    background: var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg));
+}
+
+.card_btn:disabled {
+    background: var(--dashboard-card-btn-disabled-bg, var(--dashboard-card-btn-bg));
+    color: var(--dashboard-card-btn-disabled-f-c, var(--dashboard-card-btn-f-c));
     cursor: default;
 }
 
-.pending_btn {
-    background: var(--pending-btn-bg);
-    color: var(--pending-btn-f-c);
-    border-width: var(--pending-btn-border-w);
-    border-color: var(--pending-btn-border-c);
+/* Whole card is the tap target; width hugs the label. */
+.history_card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 85px;
+    height: 100%;
+    padding: 16px 20px;
+    overflow: hidden;
+    background: var(--dashboard-card-bg);
+    box-shadow: inset 0 0 0 var(--dashboard-card-border-w) var(--dashboard-card-border-c);
+    border: none;
+    border-radius: var(--dashboard-history-radius);
+    font-size: var(--dashboard-history-f-s);
+    font-weight: var(--dashboard-history-f-w);
+    line-height: var(--dashboard-history-l-h);
+    color: var(--dashboard-history-f-c);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.pending_btn:hover {
-    background: var(--pending-btn-hover-bg);
-    color: var(--pending-btn-hover-f-c);
-    border-width: var(--pending-btn-hover-border-w);
-    border-color: var(--pending-btn-hover-border-c);
+.history_card:hover {
+    background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
 }
 
-.pending_btn:active {
-    background: var(--pending-btn-pressed-bg);
-    color: var(--pending-btn-pressed-f-c);
-    border-width: var(--pending-btn-pressed-border-w);
-    border-color: var(--pending-btn-pressed-border-c);
+/* Hover tints the card and lifts the action fill. */
+.card:hover:not(.card_disabled) {
+    background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
 }
 
-.full_width {
-    width: calc((570px) * 2);
+.card:hover:not(.card_disabled) .card_btn:not(:disabled) {
+    background: var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg));
 }
 
-.br {
-    display: none;
+/* Disabled mutes the label and the action; the fill and stroke stay. */
+.card_disabled .card_label {
+    font-weight: var(--dashboard-card-label-disabled-f-w);
+    line-height: var(--dashboard-card-label-disabled-l-h);
+    color: var(--dashboard-card-label-disabled-f-c);
 }
 
-@media screen and (max-width:1190px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .full_width {
-        width: calc(701px - (var(--padding) * 2));
-    }
+.card_disabled .card_btn {
+    line-height: var(--dashboard-card-btn-disabled-l-h);
 }
 
-@media screen and (max-width: 768px) {
-    .container {
-        gap: 10px;
-    }
+/* Disabled history drops the stroke as well as muting the label. */
+.history_card:disabled {
+    box-shadow: none;
+    background: var(--dashboard-card-bg);
+    color: var(--dashboard-history-disabled-f-c);
+    cursor: default;
+}
 
-    .icon_container {
-        display: none;
-    }
+/* A disabled button swallows clicks, so let them through to the card, which
+   explains why claiming is unavailable. */
+.card_btn:disabled {
+    pointer-events: none;
+}
 
-    .subcontainer {
-        --padding: 16px;
-        padding-left: 20px;
-        width: calc(352px - (var(--padding) * 2));
-    }
-
-    .full_width {
-        width: calc(352px - (var(--padding) * 2));
-    }
-
-    .pending_rewards_text {
-        display: none;
-    }
-
-    .rewards_usd {
-        font-size: 14px;
-    }
-
-    .br {
-        display: block;
-    }
+/* Anchored above the trigger and centred on it. Fixed because the card clips
+   its overflow and establishes a containing block via container-type. */
+.tooltip {
+    position: fixed;
+    z-index: 20;
+    transform: translate(-50%, calc(-100% - 8px));
+    box-sizing: border-box;
+    padding: 10px 14px;
+    background: var(--tooltip-bg);
+    box-shadow: inset 0 0 0 var(--tooltip-border-w) var(--tooltip-border-c);
+    border-radius: var(--tooltip-radius);
+    font-size: var(--tooltip-f-s);
+    font-weight: var(--tooltip-f-w);
+    line-height: var(--tooltip-l-h);
+    color: var(--tooltip-f-c);
+    white-space: nowrap;
+    pointer-events: none;
 }

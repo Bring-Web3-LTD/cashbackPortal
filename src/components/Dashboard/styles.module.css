@@ -1,0 +1,160 @@
+/* Dashboard row: optional tab switcher, then the banner filling the rest. */
+.bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    /* Explicit: the cards size off it with height 100%, which needs a
+       definite height to resolve against. */
+    height: 86px;
+    /* No max-width: the row fills the body column so its side padding matches
+       the grid. The design's 1344 is 1440 minus the page gutter, which the
+       page container already applies.
+       No min-width either: the parent centres its children, so a row wider
+       than the column spills into both gutters and breaks that alignment.
+       The cards absorb the loss instead, collapsing per the container queries. */
+    min-width: 0;
+}
+
+.switcher {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    width: 127px;
+    padding: 12px 10px;
+    background: var(--dashboard-switcher-bg);
+    border-radius: var(--dashboard-switcher-radius);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+}
+
+.tab {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: var(--dashboard-tab-f-s);
+    font-weight: var(--dashboard-tab-f-w);
+    line-height: var(--dashboard-tab-l-h);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tab_active {
+    height: 30px;
+    padding: 4px 8px;
+    overflow: hidden;
+    background: var(--dashboard-tab-active-bg);
+    color: var(--dashboard-tab-active-f-c);
+    border-radius: var(--dashboard-tab-active-radius);
+}
+
+.tab_idle {
+    padding: 0 10px;
+    color: var(--dashboard-tab-idle-f-c);
+    border-radius: var(--dashboard-tab-idle-radius);
+}
+
+.banner {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 86px;
+    padding: 24px;
+    background: var(--dashboard-banner-bg);
+    /* Inset so the stroke does not add to the 86px row height. */
+    box-shadow: inset 0 0 0 var(--dashboard-banner-border-w) var(--dashboard-banner-border-c);
+    border-radius: var(--dashboard-banner-radius);
+}
+
+.banner_content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex-shrink: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.banner_title {
+    font-size: var(--dashboard-banner-title-f-s);
+    font-weight: var(--dashboard-banner-title-f-w);
+    line-height: var(--dashboard-banner-title-l-h);
+    color: var(--dashboard-banner-title-f-c);
+}
+
+.banner_text {
+    font-size: var(--dashboard-banner-text-f-s);
+    font-weight: var(--dashboard-banner-text-f-w);
+    line-height: var(--dashboard-banner-text-l-h);
+    color: var(--dashboard-banner-text-f-c);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.action {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 160px;
+    min-width: 100px;
+    height: 46px;
+    padding: 0;
+    border-radius: 100px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action_primary {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-f-c);
+    border: none;
+    font-size: var(--dashboard-action-f-s);
+    font-weight: var(--dashboard-action-f-w);
+    line-height: var(--dashboard-action-l-h);
+}
+
+.action_primary:hover {
+    background: var(--primary-btn-hover-bg, var(--primary-btn-bg));
+}
+
+.action_secondary {
+    background: var(--dashboard-action-secondary-bg);
+    color: var(--dashboard-action-secondary-f-c);
+    border-width: var(--dashboard-action-secondary-border-w);
+    border-style: solid;
+    border-color: var(--dashboard-action-secondary-border-c);
+    font-size: var(--dashboard-action-secondary-f-s);
+    font-weight: var(--dashboard-action-secondary-f-w);
+    line-height: var(--dashboard-action-secondary-l-h);
+}
+
+.action_secondary:hover {
+    background: var(--dashboard-action-secondary-hover-bg, var(--dashboard-action-secondary-bg));
+}
