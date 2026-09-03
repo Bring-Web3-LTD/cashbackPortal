@@ -197,19 +197,21 @@
     --filter-btn-border-c: transparent;
     --filter-btn-radius: 10px;
 
-    --category-btn-bg: rgba(0, 0, 0, 0.75);
+    --category-btn-bg: #282B30;
+    --category-arrow-bg: transparent;
+    --category-arrow-radius: 8px;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
-    --category-btn-f-c: #A8ADBF;
-    --category-btn-border-w: 1px;
-    --category-btn-border-c: rgba(86, 98, 99, 0.75);
-    --category-btn-radius: 100px;
+    --category-btn-f-c: #B1B4BB;
+    --category-btn-border-w: 0;
+    --category-btn-border-c: transparent;
+    --category-btn-radius: 8px;
     --category-btn-hover-bg: #2C2F36;
     --category-btn-hover-f-c: #F5F8FF;
-    --category-btn-hover-f-w: 500;
-    --category-btn-hover-border-w: 1px;
-    --category-btn-hover-border-c: rgba(86, 98, 99, 0.75);
-    --category-btn-hover-radius: 100px;
+    --category-btn-hover-f-w: 400;
+    --category-btn-hover-border-w: 0;
+    --category-btn-hover-border-c: transparent;
+    --category-btn-hover-radius: 8px;
     --category-skeleton-bg: #1B1E23;
 
     --back-to-top-bg: #12151A;
