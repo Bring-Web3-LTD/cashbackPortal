@@ -1,81 +1,189 @@
+/* Single bar, title left and help actions right. Side padding comes from the
+   page container so the header aligns with the body. */
 .header {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1440px;
     background: var(--header-bg);
-    width: 100vw;
-    max-width: 100%;
-    /* height: 208px; */
-    position: relative;
-    margin-top: 20px;
-    margin-bottom: 45.5px;
+}
+
+/* No wallet mark; the bar carries its own height. */
+.in_app {
+    height: 94px;
+    padding: 20px 0;
+}
+
+/* The 48px mark hugs the bar to 96. */
+.hub {
+    padding: 24px 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.wallet_logo {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--header-logo-radius);
 }
 
 .title {
-    color: var(--title-f-c);
+    margin: 0;
     font-size: var(--title-f-s);
     font-weight: var(--title-f-w);
-    margin: 0;
+    line-height: var(--title-l-h);
+    color: var(--title-f-c);
+    white-space: nowrap;
 }
 
-.subtitle {
-    font-size: var(--subtitle-f-s);
-    font-weight: var(--subtitle-f-w);
-    color: var(--subtitle-f-c);
-    margin: 0;
-    text-align: center;
-}
-
-.btns {
+.help {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: var(--header-btns-gap, 8px);
-    margin-top: 24px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     box-sizing: border-box;
-    min-width: 90px;
-    width: var(--header-btn-w, auto);
-    height: var(--header-btn-h, 29px);
-    padding: var(--header-btn-p, 0 16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 35px;
+    padding: 0 16px;
     font-size: var(--header-btn-f-s);
     font-weight: var(--header-btn-f-w);
-    line-height: var(--header-btn-l-h, normal);
-    text-transform: var(--header-btn-transform, none);
+    line-height: var(--header-btn-l-h);
     color: var(--header-btn-f-c);
+    background: var(--header-btn-bg);
     border-width: var(--header-btn-border-w);
     border-style: solid;
     border-color: var(--header-btn-border-c);
     border-radius: var(--header-btn-radius);
-    background: var(--header-btn-bg);
+    white-space: nowrap;
+    text-decoration: none;
     cursor: pointer;
     outline: none;
     transition: .2s;
-    text-decoration: none;
 }
 
 .btn:hover {
-    background: var(--header-btn-hover-bg,var(--header-btn-bg));
-    color: var(--header-btn-hover-f-c,var(--header-btn-f-c));
-    border-width: var(--header-btn-hover-border-w,var(--header-btn-border-w));
-    border-color: var(--header-btn-hover-border-c,var(--header-btn-border-c));
+    background: var(--header-btn-hover-bg, var(--header-btn-bg));
+    color: var(--header-btn-hover-f-c, var(--header-btn-f-c));
+    border-width: var(--header-btn-hover-border-w, var(--header-btn-border-w));
+    border-color: var(--header-btn-hover-border-c, var(--header-btn-border-c));
 }
 
 .btn:active {
-    background: var(--header-btn-pressed-bg,var(--header-btn-bg));
-    color: var(--header-btn-pressed-f-c,var(--header-btn-f-c));
-    border-width: var(--header-btn-pressed-border-w,var(--header-btn-border-w));
-    border-color: var(--header-btn-pressed-border-c,var(--header-btn-border-c));
+    background: var(--header-btn-pressed-bg, var(--header-btn-bg));
+    color: var(--header-btn-pressed-f-c, var(--header-btn-f-c));
+    border-width: var(--header-btn-pressed-border-w, var(--header-btn-border-w));
+    border-color: var(--header-btn-pressed-border-c, var(--header-btn-border-c));
 }
 
-@media screen and (max-width:1190px) {
-    .header {
-        margin-bottom: 27px;
+.more {
+    display: none;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 9px 14px;
+    background: var(--header-more-bg);
+    border-width: var(--header-more-border-w);
+    border-style: solid;
+    border-color: var(--header-more-border-c);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.more:hover {
+    background: var(--header-more-hover-bg, var(--header-more-bg));
+}
+
+.more:active {
+    background: var(--header-more-pressed-bg, var(--header-more-hover-bg));
+}
+
+/* Three 4px dots at 0/7/14 across an 18x4 box. */
+.dots {
+    display: block;
+    width: 18px;
+    height: 4px;
+    background: radial-gradient(circle at 2px 2px, var(--header-more-dot-c) 2px, transparent 2px) 0 0 / 7px 4px repeat-x;
+}
+
+/* Panel is only reachable below the breakpoint, where .more is shown. */
+.menu {
+    display: none;
+}
+
+.menu_row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    border-radius: var(--header-menu-item-radius);
+    font-size: var(--header-menu-item-f-s);
+    font-weight: var(--header-menu-item-f-w);
+    line-height: var(--header-menu-item-l-h);
+    color: var(--header-menu-item-f-c);
+    white-space: nowrap;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.menu_row:hover {
+    background: var(--header-menu-item-hover-bg);
+}
+
+/* Below this the three actions no longer fit beside the title. */
+@media screen and (max-width: 736px) {
+    .actions {
+        display: none;
+    }
+
+    .more {
+        display: flex;
+    }
+
+    .menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        z-index: 3;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 240px;
+        padding: 8px 6px;
+        background: var(--header-menu-bg);
+        border-width: var(--header-menu-border-w);
+        border-style: solid;
+        border-color: var(--header-menu-border-c);
+        border-radius: var(--header-menu-radius);
+        box-shadow: var(--header-menu-shadow);
     }
 }
