@@ -117,7 +117,7 @@
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #FFEF46;
-    --primary-btn-hover-bg: #EEDA0F;
+    --primary-btn-hover-bg: rgba(255, 239, 70, 0.85);
     --primary-btn-pressed-bg: #E6D73F;
     --primary-btn-disabled-bg: rgba(255, 239, 70, 0.3);
     --primary-btn-disabled-f-c: #1F2018;
