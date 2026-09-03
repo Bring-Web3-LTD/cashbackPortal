@@ -29,5 +29,13 @@
   "termsConsent": "By clicking Go Shopping you accept the",
   "shopAndEarn": "Shop and earn up to {{cashback}} {{symbol}} cashback",
   "whatsThis": "What’s This?",
-  "moreActions": "More"
+  "moreActions": "More",
+  "explainTitle": "Coupons & Cashback",
+  "explainSubtitle": "This App offers two ways to earn: clip coupons on your grocery shopping, or earn cashback shopping through partner links - both build toward the same claimable balance.",
+  "explain_coupons_title": "Coupons",
+  "explain_coupons_text": "Pick a supermarket, clip coupons, then shop in-store or online.",
+  "explain_cashback_title": "Cashback",
+  "explain_cashback_text": "Shop through partner links to earn a percentage back instantly.",
+  "explain_claim_title": "Claim",
+  "explain_claim_text": "Reach the minimum balance, and tap Claim to receive your Asset."
 }

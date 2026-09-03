@@ -1,18 +1,226 @@
-.modal_container {
-    max-width: 400px;
-    color: white;
+/* Wide layout: 580 shell, cards in a row. Below Figma's 546 min the shell
+   narrows to 22px sides and the cards stack. */
+.overlay .shell {
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 546px;
+    max-width: 580px;
+    padding: 32px 32px 40px;
 }
 
-.modal_title {
-    font-size: var(--modal-title-f-s);
-    font-weight: var(--modal-title-f-w);
-    color: var(--modal-title-f-c);
+/* Header frame is 72 tall (25 + 22 + 25); the glyph centres at 36. */
+.overlay .close {
+    top: 24px;
+    right: 22px;
+    padding: 0;
+}
+
+.overlay .close img {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+/* 32 + 436 + 40 = the 508 frame. The block is taller than its content, and
+   centring distributes the slack above and below. */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    height: 436px;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+.header_area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.title {
+    font-size: var(--modal-explain-title-f-s);
+    font-weight: var(--modal-explain-title-f-w);
+    line-height: var(--modal-explain-title-l-h);
+    color: var(--modal-explain-title-f-c);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.subtitle_row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.subtitle {
+    flex: 1;
+    min-width: 0;
     margin: 0;
-    line-height: 24px;
+    font-size: var(--modal-explain-text-f-s);
+    font-weight: var(--modal-explain-text-f-w);
+    line-height: var(--modal-explain-text-l-h);
+    color: var(--modal-explain-text-f-c);
+    text-align: center;
 }
 
-.p {
-    font-size: var(--modal-paragraph-f-s);
-    font-weight: var(--modal-paragraph-f-w);
-    color: var(--modal-paragraph-f-c);
+.grid {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    height: 204px;
+}
+
+.card {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    height: 100%;
+    padding: 20px;
+    background: var(--modal-explain-card-bg);
+    /* Inset: the design's stroke sits inside the box, so it must not add to
+       the 108px card height the way a CSS border would. */
+    box-shadow: inset 0 0 0 var(--modal-explain-card-border-w) var(--modal-explain-card-border-c);
+    border-radius: var(--modal-explain-card-radius);
+}
+
+.icon_container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 10px;
+    background: var(--modal-explain-icon-bg);
+    /* Inset for the same reason: the container measures 40x40, not 42. */
+    box-shadow: inset 0 0 0 var(--modal-explain-icon-border-w) var(--modal-explain-icon-border-c);
+    border-radius: var(--modal-explain-icon-radius);
+}
+
+.icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.card_content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 0;
+    width: 100%;
+}
+
+.card_title {
+    width: 100%;
+    font-size: var(--modal-explain-card-title-f-s);
+    font-weight: var(--modal-explain-card-title-f-w);
+    line-height: var(--modal-explain-card-title-l-h);
+    color: var(--modal-explain-card-title-f-c);
+}
+
+.card_text {
+    width: 100%;
+    font-size: var(--modal-explain-card-text-f-s);
+    font-weight: var(--modal-explain-card-text-f-w);
+    line-height: var(--modal-explain-card-text-l-h);
+    color: var(--modal-explain-card-text-f-c);
+}
+
+.action_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 100px;
+    height: 46px;
+    padding: 0;
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-style: solid;
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
+}
+
+.btn:disabled {
+    background: var(--modal-primary-btn-disabled-bg, var(--primary-btn-disabled-bg));
+    color: var(--primary-btn-disabled-f-c);
+    cursor: default;
+}
+
+/* Narrow layout: the row cannot hold three cards, so they stack and the icon
+   moves beside the text. */
+@media screen and (max-width: 546px) {
+    .overlay .shell {
+        min-width: 420px;
+        padding: 32px 22px 40px;
+    }
+
+    /* Stacked cards make the block taller than 436; it hugs instead. */
+    .content {
+        height: auto;
+    }
+
+    .grid {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        height: auto;
+    }
+
+    .card {
+        flex: none;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 16px;
+        width: 100%;
+        height: auto;
+    }
+
+    .card_content {
+        flex: 1;
+        align-self: stretch;
+        min-width: 0;
+    }
 }
