@@ -41,3 +41,11 @@ export const selectPending = (data: BalanceResponse | undefined) =>
  */
 export const selectTotalEarned = (data: BalanceResponse | undefined) =>
     data?.data?.totalEarned?.[0]
+
+/**
+ * Whether the user has no rewards and no history. Optimistically `true` until
+ * /cache resolves, so onboarding shows first and is replaced once the backend
+ * says the user already has activity.
+ */
+export const selectFirstTimeUser = (data: BalanceResponse | undefined) =>
+    typeof data?.data?.firstTimeUser === 'boolean' ? data.data.firstTimeUser : true

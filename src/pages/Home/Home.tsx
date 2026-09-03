@@ -2,7 +2,7 @@
 import styles from './styles.module.css'
 // Components
 import Header from '../../components/Header/Header'
-import Rewards from '../../components/Rewards/Rewards'
+import Dashboard from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
@@ -19,16 +19,23 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useTranslation } from 'react-i18next'
 import { parseCampaignId } from '../../utils/campaigns'
 import Icon from '../../components/Icon/Icon'
 import { ENV } from '../../config'
 
 const Home = () => {
-    const { platform, isCountryAvailable, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, userId, flowId, couponsEnabled } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams();
-    const { walletAddress, isTester } = useWalletAddress()
+    const { walletAddress, isTester, couponsIframeSrc } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
+
+    // Coupons live src comes from the wallet context, so a SESSION_UPDATE
+    // verify replaces it (and clears it when the wallet disconnects).
+    const { t } = useTranslation()
+    const [view, setView] = useState<'coupons' | 'cashback'>('cashback')
+    const showCoupons = Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons')
     const campaign = parseCampaignId(searchParams.get('campaignId'))
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
@@ -215,7 +222,15 @@ const Home = () => {
                 : null}
             <Header />
             <main ref={scrollRef} className={styles.main}>
-                <Rewards />
+                <Dashboard view={view} onViewChange={setView} />
+                {showCoupons ? (
+                    <iframe
+                        id="coupons-frame"
+                        className={styles.coupons_frame}
+                        src={couponsIframeSrc}
+                        title={t('couponsTab')}
+                    />
+                ) : (<>
                 <div className={styles.filters_section}>
                     <div className={styles.search_section}>
                         <div className={styles.search_container}>
@@ -263,6 +278,7 @@ const Home = () => {
                     className={styles.load}
                     ref={paginationRef}
                 >{isFetchingNextPage ? "Loading..." : ''}</div>
+                </>)}
             </main>
             <CampaignEndModal
                 open={Boolean(campaign) && campaignEndModalStatus === 'show'}

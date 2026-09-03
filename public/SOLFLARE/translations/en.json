@@ -37,5 +37,16 @@
   "explain_cashback_title": "Cashback",
   "explain_cashback_text": "Shop through partner links to earn a percentage back instantly.",
   "explain_claim_title": "Claim",
-  "explain_claim_text": "Reach the minimum balance, and tap Claim to receive your Asset."
+  "explain_claim_text": "Reach the minimum balance, and tap Claim to receive your Asset.",
+  "couponsTab": "Coupons",
+  "cashbackTab": "Cashback",
+  "welcomeTitle": "Welcome!",
+  "welcomeText": "Start earning desirable assets as part of your everyday shopping",
+  "pairWallet": "Pair Wallet",
+  "pending": "Pending",
+  "claimable": "Claimable",
+  "details": "Details",
+  "claim": "Claim",
+  "historyCard": "History",
+  "minimumClaimTooltip": "Minimum claiming amount: {{amount}} {{symbol}}"
 }

@@ -20,6 +20,28 @@ const rootLoader = async () => {
     const urlTheme = params.get('theme')?.toLowerCase()
     const flowId = v4()
 
+    // Dashboard state. The backend owns these — couponsEnabled / isHub from
+    // verify, firstTimeUser from cache. Outside prod the dev wrapper may pin a
+    // flag by putting an explicit true/false on the URL; anything else falls
+    // through to the backend value. The override is prod-gated so a crafted
+    // URL cannot flip hub/coupons behaviour for a real user.
+    // firstTimeUser has no verify value — it comes from /cache at render time,
+    // so the loader only carries an explicit dev override (undefined = none).
+    const readOverride = (name: string): boolean | undefined => {
+        if (ENV === 'prod') return undefined
+        const value = params.get(name)
+        return value === 'true' ? true : value === 'false' ? false : undefined
+    }
+
+    const readFlag = (name: string, fromBackend?: boolean) => {
+        if (ENV !== 'prod') {
+            const override = params.get(name)
+            if (override === 'true') return true
+            if (override === 'false') return false
+        }
+        return Boolean(fromBackend)
+    }
+
     // If token is provided, use it (works in both dev and prod mode)
     if (token) {
         const res = await fetchToken({ token });
@@ -69,7 +91,10 @@ const rootLoader = async () => {
             autoclaim,
             useMobilePortal,
             flowId,
-            variant
+            variant,
+            isHub: readFlag('isHub', res.info.isHub),
+            couponsEnabled: readFlag('couponsEnabled', res.info.couponsEnabled),
+            firstTimeUser: readOverride('firstTimeUser')
         }
     }
 
@@ -122,7 +147,10 @@ const rootLoader = async () => {
             autoclaim,
             useMobilePortal,
             extensionId: urlExtensionId,
-            variant
+            variant,
+            isHub: readFlag('isHub'),
+            couponsEnabled: readFlag('couponsEnabled'),
+            firstTimeUser: readOverride('firstTimeUser')
         }
     }
 
