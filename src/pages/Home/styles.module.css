@@ -42,7 +42,12 @@
 }
 
 .search_section {
-    margin-top: 32px;
+    /* overflow-x makes this a scroll container on both axes, whose scrollport
+       clips the search control's border flush at the edge. Pad the scrollport
+       and cancel it with margin so the row sits exactly where it did. */
+    padding: 2px 0;
+    margin-top: 30px;
+    margin-bottom: -2px;
     width: 100%;
     display: flex;
     align-items: center;
