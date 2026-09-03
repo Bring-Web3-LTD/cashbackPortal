@@ -163,6 +163,8 @@
     --filter-btn-radius: 8px;
 
     --category-btn-bg: transparent;
+    --category-arrow-bg: transparent;
+    --category-arrow-radius: 8px;
     --category-btn-f-s: 14px;
     --category-btn-f-w: 500;
     --category-btn-f-c: #7B9AEB;

@@ -1,4 +1,5 @@
 import styles from './styles.module.css'
+import Icon from '../Icon/Icon'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -99,7 +100,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                         className={`${styles.arrow} ${styles.arrow_left}`}
                         onClick={scrollLeft}
                     >
-                        &#8249;
+                        <Icon className={styles.arrow_icon} name="chevron-left.svg" alt="" />
                     </button>
                 </>
             ) : null}
@@ -111,7 +112,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                         className={`${styles.arrow} ${styles.arrow_right}`}
                         onClick={scrollRight}
                     >
-                        &#8250;
+                        <Icon className={styles.arrow_icon} name="chevron-right.svg" alt="" />
                     </button>
                 </>
             ) : null}
