@@ -45,6 +45,8 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    /** Coupon partner iframe. Null when coupons are off or outside the US. */
+    couponsIframeSrc?: string | null
     // Mobile Portal — optional wallet identity surfaced from the JWT, plus the
     // computed flag that drives whether the mobile UI is rendered for this load.
     walletEmoji?: string
