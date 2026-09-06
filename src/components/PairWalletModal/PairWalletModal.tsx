@@ -2,6 +2,7 @@ import styles from './styles.module.css'
 import Modal from '../Modal/Modal'
 import { ComponentProps, FormEvent, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import Icon from '../Icon/Icon'
 import { usePairWallet } from './usePairWallet'
 import { useOtpInputs } from './useOtpInputs'
 
@@ -18,7 +19,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
     // sheet; only this view is desktop-specific.
     const {
         step, busy,
-        email, setEmail, emailErrorKey, submitEmail, canSubmitEmail,
+        email, setEmail, emailErrorKey, submitEmail, canSubmitEmail, continueWithGoogle,
         code, setCode, codeLength, codeErrorKey, clearCodeError, canSubmitCode,
         submitCode, resendCode,
     } = usePairWallet({ open })
@@ -97,6 +98,23 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                 ) : (
                     <div className={styles.content}>
                         <div className={styles.title}>{t('pairWallet')}</div>
+                        {/* Google's branding guidelines fix the fill, border,
+                            radius and type, so this button is not themed. */}
+                        <button
+                            id="pair-wallet-google-btn"
+                            type="button"
+                            className={styles.google}
+                            disabled={busy}
+                            onClick={continueWithGoogle}
+                        >
+                            <Icon className={styles.google_logo} name="google.svg" alt="" />
+                            <span className={styles.google_label}>{t('signInWithGoogle')}</span>
+                        </button>
+                        <div className={styles.divider}>
+                            <span className={styles.divider_line} />
+                            <span className={styles.divider_label}>{t('or')}</span>
+                            <span className={styles.divider_line} />
+                        </div>
                         <input
                             id="pair-wallet-email"
                             className={`${styles.input} ${emailErrorKey ? styles.input_error : ''}`}

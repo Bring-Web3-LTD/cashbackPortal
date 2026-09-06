@@ -22,7 +22,8 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import message from '../../utils/message'
-import { pairInitiate, pairVerifyOtp, pairConfirm, PairReason } from '../../api/pair'
+import { pairInitiate, pairVerifyOtp, pairConfirm, pairGoogle, PairReason } from '../../api/pair'
+import { loadGoogleIdentity, requestGoogleCode } from '../../utils/google'
 import { ENV } from '../../config'
 
 export type PairStep = 'email' | 'code' | 'success' | 'error'
@@ -102,6 +103,9 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
     // sent; the address arriving resumes it (same as the desktop portal's
     // `reopenAfterConnect` in RetailerCard).
     const [awaitingWallet, setAwaitingWallet] = useState(false)
+    // Which path to resume once that address lands. Google's popup has already
+    // been through, so its code is held rather than asking the user again.
+    const googleCodeRef = useRef<string | null>(null)
     // The Cognito session and the pair nonce never render, so they live in refs
     // — a re-render mid-flow must not race them.
     const sessionRef = useRef('')
@@ -118,6 +122,14 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         nonceRef.current = ''
         awaitingSignatureRef.current = false
     }
+
+    // Fetch Google's script while the modal opens, not on the click. Awaiting a
+    // network round-trip inside the click handler spends the user gesture, and
+    // the browser then blocks the popup — silently, since a blocked popup comes
+    // back through the same callback as a declined one.
+    useEffect(() => {
+        if (open) loadGoogleIdentity().catch(err => console.warn(err))
+    }, [open])
 
     // Reopening always starts a fresh pairing attempt.
     useEffect(() => {
@@ -196,10 +208,44 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         startChallenge('code')
     }
 
+    /** Google proves the email, so this replaces the OTP round-trip: the code
+     *  buys a nonce, and the wallet signature that follows is identical. */
+    const startGoogle = async (code: string, address: string) => {
+        setBusy(true)
+        const res = await pairGoogle({ platform, flowId, code, address })
+        if (!res.ok) {
+            setBusy(false)
+            failWith(res.reason)
+            return
+        }
+        nonceRef.current = res.nonce
+        awaitingSignatureRef.current = true
+        message({ action: 'SIGN_MESSAGE', messageToSign: res.message })
+    }
+
+    const continueWithGoogle = async () => {
+        if (busy) return
+        // Straight from the click, so the browser still counts it as a user
+        // gesture and lets the popup open.
+        const code = await requestGoogleCode()
+        // Declined, dismissed or popup-blocked — leave the screen as it was.
+        if (!code) return
+        if (!walletAddress) {
+            googleCodeRef.current = code
+            setAwaitingWallet(true)
+            message({ action: 'LOGIN' })
+            return
+        }
+        startGoogle(code, walletAddress)
+    }
+
     useEffect(() => {
         if (!awaitingWallet || !walletAddress) return
         setAwaitingWallet(false)
-        startChallenge('code')
+        const code = googleCodeRef.current
+        googleCodeRef.current = null
+        if (code) startGoogle(code, walletAddress)
+        else startChallenge('code')
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [awaitingWallet, walletAddress])
 
@@ -331,6 +377,7 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         /** i18n key, not a rendered string — the view translates. */
         emailErrorKey,
         submitEmail,
+        continueWithGoogle,
         canSubmitEmail: email.trim().length > 0,
         /** One entry per box; a view with a single field can join/split it. */
         code,

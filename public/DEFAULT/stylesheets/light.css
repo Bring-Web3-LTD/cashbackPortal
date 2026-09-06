@@ -204,6 +204,11 @@
     --modal-pair-title-f-w: 700;
     --modal-pair-title-l-h: 26px;
     --modal-pair-title-f-c: #1F2937;
+    --modal-pair-divider-c: #E5E7EB;
+    --modal-pair-divider-f-s: 13px;
+    --modal-pair-divider-f-w: 500;
+    --modal-pair-divider-l-h: 15px;
+    --modal-pair-divider-f-c: #6B7280;
     --modal-pair-input-bg: #FFFFFF;
     --modal-pair-input-border-w: 1px;
     --modal-pair-input-border-c: #E5E7EB;

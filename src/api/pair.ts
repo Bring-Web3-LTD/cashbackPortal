@@ -119,6 +119,17 @@ export const pairVerifyOtp = (
 ) => authPost<PairNonce>('pair/verify-otp', body)
 
 /**
+ * Google sign-in stands in for initiate + verify-otp: the ID token the backend
+ * exchanges the code for already proves the address is the user's, so there is
+ * no code to mail. The address still has to be proved, so this answers with the
+ * same nonce shape and the flow continues into `pairConfirm` unchanged.
+ *
+ * `code` is the popup's one-time authorization code — see utils/google.ts.
+ */
+export const pairGoogle = (body: AuthBody & { code: string; address: string }) =>
+    authPost<PairNonce>('pair/google', body)
+
+/**
  * Consumes the nonce and persists the pair. Everything trusted comes from the
  * nonce row — the request adds only what the wallet answered with.
  *
