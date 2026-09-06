@@ -48,5 +48,13 @@
   "details": "Details",
   "claim": "Claim",
   "historyCard": "History",
-  "minimumClaimTooltip": "Minimum claiming amount: {{amount}} {{symbol}}"
+  "minimumClaimTooltip": "Minimum claiming amount: {{amount}} {{symbol}}",
+  "emailPlaceholder": "Enter your email",
+  "pair": "Pair",
+  "enterCode": "Enter Code",
+  "resendCode": "Resend code",
+  "confirm": "Confirm",
+  "pairCodeInvalid": "Invalid code. Please try again.",
+  "pairCodeExpired": "That code has expired. Send a new one.",
+  "pairSessionInvalid": "This attempt timed out. Send a new code."
 }

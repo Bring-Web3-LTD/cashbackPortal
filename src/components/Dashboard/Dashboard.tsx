@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
 import ExplainModal from '../Modals/ExplainModal/ExplainModal'
+import PairWalletModal from '../PairWalletModal/PairWalletModal'
 import Rewards from '../Rewards/Rewards'
 import { useBalance, selectFirstTimeUser } from '../../hooks/useBalance'
 import { ENV } from '../../config'
@@ -42,8 +43,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
         })
     }, [isHub, couponsEnabled, backendFirstTimeUser])
     const [explainOpen, setExplainOpen] = useState(false)
-
-    const pairWallet = () => message({ action: 'LOGIN' })
+    const [pairOpen, setPairOpen] = useState(false)
 
     const renderTab = (name: PortalView, label: string) => (
         <button
@@ -76,7 +76,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
                         <button
                             id="dashboard-pair-wallet-btn"
                             className={`${styles.action} ${styles.action_primary}`}
-                            onClick={pairWallet}
+                            onClick={() => setPairOpen(true)}
                         >
                             {t('pairWallet')}
                         </button>
@@ -91,6 +91,8 @@ const Dashboard = ({ view, onViewChange }: Props) => {
                 </div>
             </div> : <Rewards />}
             <ExplainModal open={explainOpen} closeFn={() => setExplainOpen(false)} />
+            {/* Both routes run against /v1/auth/pair inside the modal. */}
+            <PairWalletModal open={pairOpen} closeFn={() => setPairOpen(false)} />
         </div>
     )
 }

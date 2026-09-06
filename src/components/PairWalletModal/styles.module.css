@@ -1,0 +1,329 @@
+/* Type A shell. Only the 10px sides show the frame colour; the header, content
+   and footer paint the rest. */
+.overlay .shell {
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 280px;
+    padding: 0 10px;
+    overflow: hidden;
+}
+
+/* Hugs its content: header 40 + content 209 + footer 81. */
+.overlay .shell_email {
+    height: auto;
+}
+
+/* Fixed 280: header 40 + content 140 + footer 76, then 24 of frame below. The
+   sections span the full 512 here, so the 10px inset moves onto the content. */
+.overlay .shell_code {
+    height: 280px;
+    padding: 0 0 24px;
+}
+
+/* In flow, inside the shell's 10px sides — so the frame colour shows in the
+   top corners. Only the close button sits on it. */
+.header {
+    flex-shrink: 0;
+    height: 40px;
+    width: 100%;
+    background: var(--modal-bg);
+}
+
+/* 24 from the header's own edge. The email frame insets its header by the
+   shell's 10px padding and the code frame does not, so the two land 10 apart. */
+.overlay .close {
+    top: 16px;
+    right: 34px;
+    padding: 0;
+}
+
+.overlay .shell_code .close {
+    right: 24px;
+}
+
+.overlay .close img {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+/* Carries both sections so Enter in the field submits. */
+.form {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Fills what the fixed-height shell leaves below the header. */
+.form_code {
+    flex: 1;
+    min-height: 0;
+}
+
+.content_code {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    min-height: 0;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+/* Reuses the shared popup title: the design's 18/22 here is already what
+   those tokens carry (the email step's 20/26 is the odd one out). */
+.code_title {
+    font-size: var(--modal-popup-title-f-s);
+    font-weight: var(--modal-popup-title-f-w);
+    line-height: var(--modal-popup-title-l-h);
+    color: var(--modal-popup-title-f-c);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* 76 = the 52 row plus the 8 gap and 16 line the error state needs, so the
+   message appears without the boxes moving. */
+.code_group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 76px;
+    width: 464px;
+    max-width: 100%;
+}
+
+/* The row and its message are one unit: the error state stacks them at 8. Sized
+   to the row so the message starts on the first box, and so `stretch` cannot
+   park the row against the group's left edge. */
+.otp_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 460px;
+    max-width: 100%;
+}
+
+/* Boxes share the row evenly, so a 6- or 8-digit code both fit the same 460. */
+.otp {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+/* border-box so the error's thicker rule doesn't grow the 56. */
+.otp_box {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 52px;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--modal-pair-otp-bg);
+    border-width: var(--modal-pair-otp-border-w);
+    border-style: solid;
+    border-color: var(--modal-pair-otp-border-c);
+    border-radius: var(--modal-pair-otp-radius);
+    outline: none;
+    font-size: var(--modal-pair-otp-f-s);
+    font-weight: var(--modal-pair-otp-f-w);
+    line-height: var(--modal-pair-otp-l-h);
+    color: var(--modal-pair-otp-f-c);
+    text-align: center;
+}
+
+/* Same autofill override as the email field — the boxes carry
+   autocomplete="one-time-code", so the OS fills them the same way. */
+.otp_box:-webkit-autofill,
+.otp_box:-webkit-autofill:hover,
+.otp_box:-webkit-autofill:focus,
+.otp_box:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--modal-pair-otp-bg) inset;
+    -webkit-text-fill-color: var(--modal-pair-otp-f-c);
+    caret-color: var(--modal-pair-otp-f-c);
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Only a box that holds a digit brightens its rule and squares off less —
+   focus is not a state in the design, and treating it as one lit up the empty
+   box the caret had just moved to. */
+.otp_box_filled {
+    border-color: var(--modal-pair-otp-filled-border-c);
+    border-radius: var(--modal-pair-otp-filled-radius);
+}
+
+.otp_box_error,
+.otp_box_error:focus {
+    border-width: var(--modal-pair-otp-error-border-w);
+    border-color: var(--modal-pair-otp-error-border-c);
+    border-radius: var(--modal-pair-otp-filled-radius);
+}
+
+.error {
+    font-size: var(--modal-pair-error-f-s);
+    font-weight: var(--modal-pair-error-f-w);
+    line-height: var(--modal-pair-error-l-h);
+    color: var(--modal-pair-error-f-c);
+    text-align: left;
+}
+
+.resend {
+    flex-shrink: 0;
+    padding: 0 8px;
+    background: none;
+    border: 0;
+    border-radius: var(--modal-pair-resend-radius);
+    font-size: var(--modal-pair-resend-f-s);
+    font-weight: var(--modal-pair-resend-f-w);
+    line-height: var(--modal-pair-resend-l-h);
+    color: var(--modal-pair-resend-f-c);
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .resend:hover:not(:disabled) {
+        color: var(--modal-pair-resend-hover-f-c, var(--modal-pair-resend-f-c));
+    }
+}
+
+.resend:disabled {
+    color: var(--modal-pair-resend-disabled-f-c, var(--modal-pair-resend-f-c));
+    cursor: default;
+}
+
+/* Sized by its rows, not fixed: 8 + 26 + 20 + 40 + 20 + 15 + 20 + 52 + 8. */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+    width: 100%;
+    padding: 8px 24px;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+.title {
+    font-size: var(--modal-pair-title-f-s);
+    font-weight: var(--modal-pair-title-f-w);
+    line-height: var(--modal-pair-title-l-h);
+    color: var(--modal-pair-title-f-c);
+    white-space: nowrap;
+}
+
+.input {
+    flex-shrink: 0;
+    height: 52px;
+    width: 100%;
+    min-width: 180px;
+    max-width: 400px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    background: var(--modal-pair-input-bg);
+    border-width: var(--modal-pair-input-border-w);
+    border-style: solid;
+    border-color: var(--modal-pair-input-border-c);
+    border-radius: var(--modal-pair-input-radius);
+    outline: none;
+    font-size: var(--modal-pair-input-f-s);
+    font-weight: var(--modal-pair-input-f-w);
+    line-height: var(--modal-pair-input-l-h);
+    color: var(--modal-pair-input-f-c);
+}
+
+/* Three states: empty carries the bright border, a filled one drops back to
+   the default. The error is the hook's verdict, not the browser's, so that
+   what the border says and what the API accepts stay the same rule. */
+.input:placeholder-shown {
+    border-color: var(--modal-pair-input-empty-border-c);
+}
+
+.input_error,
+.input_error:placeholder-shown {
+    border-color: var(--modal-pair-input-error-border-c);
+}
+
+.input::placeholder {
+    color: var(--modal-pair-input-placeholder-f-c);
+}
+
+/* Chrome paints an autofilled field with its own pale fill and ignores
+   background-color; an inset shadow is the only way to cover it, and
+   text-fill-color the only way to recolour the text. The long transition stops
+   it flashing back when the field takes focus. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--modal-pair-input-bg) inset;
+    -webkit-text-fill-color: var(--modal-pair-input-f-c);
+    caret-color: var(--modal-pair-input-f-c);
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-shrink: 0;
+    height: 81px;
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+/* Shorter, and the button sits at the top so the resend link below it can
+   overhang into the frame's 24px skirt — which is where the design puts it. */
+.footer_code {
+    justify-content: flex-start;
+    height: 76px;
+    padding-top: 2px;
+}
+
+/* flex-shrink: 0 or the code step's footer, which is deliberately shorter than
+   button + gap + resend, shrinks the button instead of letting the link overhang
+   into the frame's skirt. */
+.btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 120px;
+    max-width: 464px;
+    height: 46px;
+    padding: 0;
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-style: solid;
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
+}
+
+.btn:disabled {
+    background: var(--modal-primary-btn-disabled-bg, var(--primary-btn-disabled-bg));
+    color: var(--primary-btn-disabled-f-c);
+    cursor: default;
+}
