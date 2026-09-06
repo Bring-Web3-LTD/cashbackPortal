@@ -220,6 +220,67 @@
     white-space: nowrap;
 }
 
+/* Google's sign-in branding guidelines: white fill, 1px #747775, radius 4,
+   Roboto Medium 14 at 0.25 tracking, 20px logo. Fixed, not themed. */
+.google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+    height: 40px;
+    width: 100%;
+    min-width: 180px;
+    max-width: 400px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #747775;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.google_logo {
+    display: block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.google_label {
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    color: #1F1F1F;
+    white-space: nowrap;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.divider_line {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 1px;
+    background: var(--modal-pair-divider-c);
+}
+
+.divider_label {
+    flex-shrink: 0;
+    font-size: var(--modal-pair-divider-f-s);
+    font-weight: var(--modal-pair-divider-f-w);
+    line-height: var(--modal-pair-divider-l-h);
+    color: var(--modal-pair-divider-f-c);
+    white-space: nowrap;
+}
+
 .input {
     flex-shrink: 0;
     height: 52px;

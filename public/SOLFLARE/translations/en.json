@@ -56,5 +56,7 @@
   "confirm": "Confirm",
   "pairCodeInvalid": "Invalid code. Please try again.",
   "pairCodeExpired": "That code has expired. Send a new one.",
-  "pairSessionInvalid": "This attempt timed out. Send a new code."
+  "pairSessionInvalid": "This attempt timed out. Send a new code.",
+  "signInWithGoogle": "Sign in with Google",
+  "or": "or"
 }
