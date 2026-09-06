@@ -23,6 +23,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import message from '../../utils/message'
 import { pairInitiate, pairVerifyOtp, pairConfirm, PairReason } from '../../api/pair'
+import { ENV } from '../../config'
 
 export type PairStep = 'email' | 'code' | 'success' | 'error'
 
@@ -58,6 +59,28 @@ const FATAL_ERROR_KEYS: Partial<Record<PairReason, string>> = {
 }
 
 const emptyCode = (length: number) => Array<string>(length).fill('')
+
+/**
+ * Screens the dev wrapper can jump to, so a state can be held against its
+ * design without walking the real flow (which needs a registered email, a live
+ * OTP and a wallet signature). Driven from outside the bundle: the wrapper
+ * posts PAIR_DEV_SCREEN and nothing here ships to production but this map.
+ */
+export type DevScreen =
+    | 'email' | 'emailFilled' | 'emailInvalid'
+    | 'code' | 'codeFilled' | 'codeInvalid'
+    | 'error' | 'success'
+
+const DEV_SCREEN_STEP: Record<DevScreen, PairStep> = {
+    email: 'email',
+    emailFilled: 'email',
+    emailInvalid: 'email',
+    code: 'code',
+    codeFilled: 'code',
+    codeInvalid: 'code',
+    error: 'error',
+    success: 'success',
+}
 
 /** `open` drives the reset: closing the sheet abandons the attempt. */
 export const usePairWallet = ({ open }: { open: boolean }) => {
@@ -265,6 +288,40 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
     }, [platform, flowId, queryClient, walletAddress])
 
     const clearCodeError = () => setCodeErrorKey(null)
+
+    // Jumps to a screen on the dev wrapper's request. Prod never registers the
+    // listener, so the picker cannot be driven against a real session.
+    useEffect(() => {
+        if (ENV === 'prod') return
+
+        const handleDevScreen = (event: MessageEvent) => {
+            if (event.source !== window.parent) return
+            const { to, action, screen } = event.data ?? {}
+            if (to !== 'bringweb3' || action !== 'PAIR_DEV_SCREEN') return
+            if (!(screen in DEV_SCREEN_STEP)) return
+            const name = screen as DevScreen
+
+            setEmailErrorKey(null)
+            setCodeErrorKey(null)
+            setBusy(false)
+            if (name === 'email') setEmailValue('')
+            if (name === 'emailFilled') setEmailValue('priya@gmail.com')
+            if (name === 'emailInvalid') {
+                setEmailValue('priya@gmail.cofgn')
+                setEmailErrorKey('pairEmailInvalid')
+            }
+            if (name === 'code') setCode(emptyCode(codeLength))
+            if (name === 'codeFilled' || name === 'codeInvalid') {
+                setCode(Array<string>(codeLength).fill('8'))
+            }
+            if (name === 'codeInvalid') setCodeErrorKey('pairCodeInvalid')
+            if (name === 'error') setFatalErrorKey('pairNotFound')
+            setStep(DEV_SCREEN_STEP[name])
+        }
+
+        window.addEventListener('message', handleDevScreen)
+        return () => window.removeEventListener('message', handleDevScreen)
+    }, [codeLength])
 
     return {
         step,
