@@ -45,6 +45,19 @@ const Dashboard = ({ view, onViewChange }: Props) => {
     const [explainOpen, setExplainOpen] = useState(false)
     const [pairOpen, setPairOpen] = useState(false)
 
+    // The dev wrapper's screen picker jumps into the pairing flow, which needs
+    // the modal open first. usePairWallet applies the screen itself.
+    useEffect(() => {
+        if (ENV === 'prod') return
+        const openForDev = (event: MessageEvent) => {
+            if (event.source !== window.parent) return
+            if (event.data?.to !== 'bringweb3' || event.data.action !== 'PAIR_DEV_OPEN') return
+            setPairOpen(true)
+        }
+        window.addEventListener('message', openForDev)
+        return () => window.removeEventListener('message', openForDev)
+    }, [])
+
     const renderTab = (name: PortalView, label: string) => (
         <button
             id={`dashboard-tab-${name}`}

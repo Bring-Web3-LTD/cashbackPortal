@@ -634,6 +634,44 @@ const dashboardFlagEls = DASHBOARD_FLAGS.map(name => {
     return [name, el] as const
 })
 
+// Pair Wallet screens. Reaching one for real needs a registered email, a live
+// OTP and a wallet signature, so each chip posts the portal straight to that
+// state. The portal only listens for this outside prod.
+const PAIR_SCREENS: readonly (readonly [string, string])[] = [
+    ['email', 'Email'],
+    ['emailFilled', 'Email·typed'],
+    ['emailInvalid', 'Email·error'],
+    ['code', 'Code'],
+    ['codeFilled', 'Code·typed'],
+    ['codeInvalid', 'Code·error'],
+    ['error', 'Not found'],
+    ['success', 'Paired'],
+]
+
+const postToPortal = (data: Record<string, unknown>, label: string) => {
+    if (!iframeEl.contentWindow || !iframeEl.src) return setStatus('Portal not loaded.', true)
+    try {
+        const msg = { ...data, to: 'bringweb3' }
+        iframeEl.contentWindow.postMessage(msg, new URL(iframeEl.src).origin)
+        recordMessage('out', 'to portal', msg)
+    } catch (err) {
+        setStatus(`${label} failed: ${(err as Error).message}`, true)
+    }
+}
+
+const pairScreensEl = $<HTMLDivElement>('pairScreens')
+for (const [screen, label] of PAIR_SCREENS) {
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.textContent = label
+    btn.addEventListener('click', () => {
+        // Opens the modal first — a jump into a closed one renders nothing.
+        postToPortal({ action: 'PAIR_DEV_OPEN' }, 'pair dev open')
+        postToPortal({ action: 'PAIR_DEV_SCREEN', screen }, `pair dev screen: ${screen}`)
+    })
+    pairScreensEl.append(btn)
+}
+
 // Applies the flags the portal resolved from verify / cache, leaving any
 // developer override in place.
 function applyPortalFlags(flags: Record<string, boolean>) {
@@ -1136,6 +1174,10 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         // Platform of the emulated device, so the backend can pass it through
         // to platform-sensitive iframe URLs (e.g. AppCard coupons).
         devicePlatform: getDevicePlatform(),
+        // TEMP: coupons are US-only, so a non-US dev machine gets a null
+        // couponsIframeSrc. Pinned to US until the flag is drivable from the
+        // Dashboard flags panel. Ignored if the backend resolves country by IP.
+        country: 'US',
     }
 
     const requestId = ++pendingId
