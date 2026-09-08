@@ -328,6 +328,7 @@
 }
 
 .disclaimer_link {
+    color: inherit;
     text-decoration: underline;
     text-underline-position: from-font;
 }

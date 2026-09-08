@@ -75,7 +75,7 @@ export const useHistory = (): UseHistoryResult => {
     const statusLabel = (key: string): string =>
         ({
             claimed: t('statusClaimed'),
-            completed: t('statusClaimable'),
+            claimable: t('statusClaimable'),
             cancelled: t('statusCancelled'),
             pending: t('statusPending'),
         })[key] ?? key

@@ -75,7 +75,7 @@ const Dashboard = ({ mode, onModeChange, onClaim }: DashboardProps) => {
                             <span className={styles.usd}>{pending.usd}</span>
                         </span>
                     </button>
-                    <button type="button" className={styles.tile} onClick={onClaim}>
+                    <button type="button" className={`${styles.tile} ${styles.tileClaim}`} onClick={onClaim}>
                         <span className={styles.tileLabel}>{labels.claim}</span>
                         <span className={styles.tileValue}>
                             <span className={styles.amountRow}>

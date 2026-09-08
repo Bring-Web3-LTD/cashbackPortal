@@ -85,9 +85,9 @@ const deals: Deal[] = [
     // No icon → initials fallback (2 letters) + name truncation.
     deal({ retailerName: 'long', retailerDisplayName: 'Very Long Retailer Name Ltd', retailerIconPath: '', startDate: '2026-07-28T10:00:00.000Z', tokenAmount: 128.4567, tokenAmountDisplay: '128.4567', totalEstimatedUsd: 128.46 }),
 
-    // ── completed → shown as "Claimable" ──
-    deal({ status: 'completed', startDate: '2026-03-14T10:00:00.000Z', tokenAmount: 0.021, history: history(0.021) }),
-    deal({ ...at('upwork', 'Upwork', '#14A800'), status: 'completed', startDate: '2026-04-05T10:00:00.000Z', tokenAmount: 7.25, tokenAmountDisplay: '7.25', totalEstimatedUsd: 7.25 }),
+    // ── claimable (green pill) ──
+    deal({ status: 'claimable', startDate: '2026-03-14T10:00:00.000Z', tokenAmount: 0.021, history: history(0.021) }),
+    deal({ ...at('upwork', 'Upwork', '#14A800'), status: 'claimable', startDate: '2026-04-05T10:00:00.000Z', tokenAmount: 7.25, tokenAmountDisplay: '7.25', totalEstimatedUsd: 7.25 }),
 
     // ── cancelled (red pill) ──
     deal({ status: 'cancelled', startDate: '2026-02-19T10:00:00.000Z', tokenAmount: 0.021 }),
@@ -125,9 +125,11 @@ const base = (data: CacheResponse['data']): CacheResponse => ({
 
 const VARIANTS: Record<string, CacheResponse> = {
     full: base({
-        eligible: [token({ tokenAmount: 25.25, tokenAmountDisplay: '25.25', totalEstimatedUsd: 25.25 })],
-        totalPendings: [token({ tokenAmount: 132.4777, tokenAmountDisplay: '132.4777', totalEstimatedUsd: 132.48 })],
-        totalEarned: [token({ tokenAmount: 157.75, tokenAmountDisplay: '157.75', totalEstimatedUsd: 157.75 })],
+        // Exactly the values in the Figma header (278:4547), so the design can
+        // be overlaid on the running portal without the text differing.
+        eligible: [token({ tokenAmount: 25.295, tokenAmountDisplay: '25.295', totalEstimatedUsd: 25.295 })],
+        totalPendings: [token({ tokenAmount: 0, tokenAmountDisplay: '0.00', totalEstimatedUsd: 0 })],
+        totalEarned: [token({ tokenAmount: 25.295, tokenAmountDisplay: '25.295', totalEstimatedUsd: 25.295 })],
         movements: { claims, deals },
         firstTimeUser: false,
     }),

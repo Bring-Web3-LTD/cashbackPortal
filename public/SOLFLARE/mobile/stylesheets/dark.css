@@ -42,7 +42,8 @@
     --tab-l-h: 15px;
     --tab-f-c: #B1B4BB;
     --tab-hover-f-c: #F5F8FF;
-    --tab-hover-bg: rgba(245, 248, 255, 0.08);
+    --tab-hover-bg: #2C2F36;
+    --tab-hover-border-w: 0;
     --tab-active-bg: rgba(245, 248, 255, 0.08);
     --tab-active-f-c: #F5F8FF;
 
@@ -112,7 +113,10 @@
     --faq-intro-f-c: #F5F8FF;
 
     --faq-item-bg: #090C11;
-    --faq-item-hover-bg: #16181D;
+    /* Figma's hover fill is rgba(245,248,255,0.1) laid over the #090C11 page
+       bg — flattened to the equivalent solid color here. */
+    --faq-item-hover-bg: #212429;
+    --faq-item-hover-border-c: rgba(102, 104, 110, 0.45);
     --faq-item-radius: 8px;
     --faq-item-border-w: 1px;
     --faq-item-border-c: rgba(138, 142, 148, 0.3);
@@ -146,6 +150,7 @@
 
     --faq-divider-c: rgba(138, 142, 148, 0.3);
     --faq-link-f-c: #FFEF46;
+    --faq-link-underline-c: #F5F8FF;
 
     --faq-skeleton-bg: rgba(138, 142, 148, 0.15);
     --faq-skeleton-bar-bg: #2C2F36;
@@ -258,10 +263,10 @@
     --history-amount-bg: rgba(177, 180, 187, 0.15);
     --history-amount-cancelled-bg: rgba(218, 73, 63, 0.15);
     --history-amount-cancelled-f-c: #DA493F;
+    --history-amount-claimable-bg: rgba(8, 194, 157, 0.15);
+    --history-amount-claimable-f-c: #08C29D;
     --history-amount-claimed-bg: rgba(255, 239, 70, 0.3);
     --history-amount-claimed-f-c: #E6D73F;
-    --history-amount-completed-bg: rgba(8, 194, 157, 0.15);
-    --history-amount-completed-f-c: #08C29D;
     --history-amount-f-c: #B1B4BB;
     --history-amount-f-s: 13px;
     --history-amount-l-h: 18px;
@@ -297,8 +302,8 @@
     --history-sheet-radius: 20px;
     --history-sheet-shadow: 0 4px 16px rgba(4, 4, 7, 0.5);
     --history-status-cancelled-f-c: #DA493F;
+    --history-status-claimable-f-c: #08C29D;
     --history-status-claimed-f-c: #E6D73F;
-    --history-status-completed-f-c: #08C29D;
     --history-status-f-c: #8C95A1;
     --history-status-l-h: 12px;
     --history-status-pending-f-c: #8C95A1;
