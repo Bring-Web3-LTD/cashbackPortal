@@ -1,6 +1,14 @@
 /* Single bar, title left and help actions right. Side padding comes from the
-   page container so the header aligns with the body. */
+   page container so the header aligns with the body.
+
+   The only thing that pins while the cards scroll: the dashboard bar, the
+   search row and the categories all leave with the content. Needs the opaque
+   --header-bg to stay readable over the rows passing under it. */
 .header {
+    position: sticky;
+    top: 0;
+    /* Above the cards, below the legal bar's dock (5) and the modals (10). */
+    z-index: 4;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -10,10 +18,26 @@
     background: var(--header-bg);
 }
 
-/* No wallet mark; the bar carries its own height. */
+/* Scrolled: the bar's own last 20px dissolve, so rows passing under it fade out
+   instead of being cut off. The fade is part of the bar, not a strip below it —
+   the solid fill stops 20px short and the gradient covers the rest, so the
+   height never changes. Both contexts leave that band empty: 96 with content
+   at 24-72, 94 with content at 20-74. */
+.scrolled {
+    background-color: transparent;
+    background-image:
+        var(--header-scroll-fade),
+        linear-gradient(var(--header-bg), var(--header-bg));
+    background-repeat: no-repeat, no-repeat;
+    background-position: bottom, top;
+    background-size: 100% 20px, 100% calc(100% - 20px);
+}
+
+/* No wallet mark, so the tallest control sets the height rather than a fixed
+   value: the three buttons are 35, giving 94. Swapping them for the 38-tall
+   dots below 736 shrinks the bar to 78, which is what the design draws. */
 .in_app {
-    height: 94px;
-    padding: 20px 0;
+    padding: 29.5px 0;
 }
 
 /* The 48px mark hugs the bar to 96. */
@@ -166,6 +190,11 @@
 
     .more {
         display: flex;
+    }
+
+    /* 38 + 40 = 78. */
+    .in_app {
+        padding: 20px 0;
     }
 
     .menu {

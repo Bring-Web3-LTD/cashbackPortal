@@ -44,6 +44,7 @@
     --header-menu-border-c: rgba(102, 104, 110, 0.3);
     --header-menu-radius: 12px;
     --header-bg: #090C11;
+    --header-scroll-fade: linear-gradient(180deg, #090C11 30.9%, rgba(9, 12, 17, 0) 68.75%);
     --header-more-border-w: 1px;
     --header-more-border-c: rgba(138, 142, 148, 0.3);
     --header-more-pressed-bg: #7A7D83;
@@ -59,6 +60,7 @@
     --title-f-w: 700;
     --title-f-c: #F5F8FF;
 
+    --legal-bar-bg: linear-gradient(180deg, rgba(9, 12, 17, 0) 0%, #090C11 63.5%);
     --legal-link-f-s: 12px;
     --legal-link-f-w: 400;
     --legal-link-l-h: 16px;
