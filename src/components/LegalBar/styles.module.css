@@ -1,26 +1,26 @@
 /* Sticky last child of the screen column: an endless feed has no reachable
-   footer. The 32px top pad renders the gap at every scroll position, not just
-   at the end of the list. */
+   footer. No backdrop of its own — the bar's own gradient is what separates it
+   from the rows passing underneath. */
 .dock {
     position: sticky;
     bottom: 0;
-    /* Above the sticky filters row, below the modal overlay. */
+    /* Above the content and the sticky header, below the modal overlay. */
     z-index: 5;
     box-sizing: border-box;
     width: 100%;
     flex-shrink: 0;
-    padding-top: 32px;
-    background: var(--bg);
 }
 
+/* Fades in rather than butting against the content: the gradient runs from a
+   transparent --bg to a solid one, reaching it at 63.5% of the 45. */
 .bar {
     box-sizing: border-box;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     gap: 20px;
-    height: 40px;
-    padding: 10px 48px;
+    height: 45px;
+    padding: 16px 48px 10px;
     background: var(--legal-bar-bg, var(--bg));
     white-space: nowrap;
 }

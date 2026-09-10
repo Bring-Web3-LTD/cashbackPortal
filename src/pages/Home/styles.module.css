@@ -28,16 +28,12 @@
     max-width: 1440px;
 }
 
+/* Scrolls away with the cards — the header is the only thing that pins. */
 .filters_section {
-    /* sticky needs opaque --bg behind it; transparent-bg themes opt out */
-    position: var(--filters-position, sticky);
-    z-index: 1;
-    top: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 32px;
-    background: var(--bg);
     padding-bottom: 32px;
 }
 

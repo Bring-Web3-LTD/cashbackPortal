@@ -16,6 +16,7 @@
     --header-menu-border-c: #E5E7EB;
     --header-menu-radius: 12px;
     --header-bg: #F9FAFB;
+    --header-scroll-fade: linear-gradient(180deg, #F9FAFB 30.9%, rgba(249, 250, 251, 0) 68.75%);
     --header-more-border-w: 1px;
     --header-more-border-c: #E5E7EB;
     --header-more-pressed-bg: #E5E7EB;
@@ -31,6 +32,7 @@
     --title-f-w: 700;
     --title-f-c: #1F2937;
 
+    --legal-bar-bg: linear-gradient(180deg, rgba(249, 250, 251, 0) 0%, #F9FAFB 63.5%);
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
     --legal-link-f-c: #4B5563;
