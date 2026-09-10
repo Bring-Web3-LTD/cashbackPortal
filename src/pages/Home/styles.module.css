@@ -66,10 +66,18 @@
     color: var(--deals-amount-f-c);
 }
 
+/* Centred under the last row while the next page arrives. Keeps its height
+   when idle: this is also the sentinel the pagination observer watches. */
 .load {
-    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 20px;
+    margin-top: 24px;
     font-size: var(--loading-msg-f-s);
     font-weight: var(--loading-msg-f-w);
+    line-height: var(--loading-msg-l-h, 16px);
     color: var(--loading-msg-f-c);
 }
 

@@ -277,7 +277,7 @@ const Home = () => {
                 <div
                     className={styles.load}
                     ref={paginationRef}
-                >{isFetchingNextPage ? "Loading..." : ''}</div>
+                >{isFetchingNextPage ? t('loading') : ''}</div>
                 </>)}
             </main>
             <CampaignEndModal
