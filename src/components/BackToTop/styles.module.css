@@ -1,8 +1,9 @@
-/* Floats over the legal bar, so it outranks the bar's z-index. */
+/* Sits flush on top of the legal bar — the offset is the bar's height, which
+   does not change with width. Outranks the bar's z-index so it stays visible. */
 .button {
     position: fixed;
     right: 24px;
-    bottom: 24px;
+    bottom: 45px;
     z-index: 6;
     box-sizing: border-box;
     display: flex;

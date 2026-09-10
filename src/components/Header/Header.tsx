@@ -21,8 +21,17 @@ const Header = () => {
     const { walletAddress } = useWalletAddress()
     const [menuOpen, setMenuOpen] = useState(false)
     const [explainOpen, setExplainOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
     const helpRef = useRef<HTMLDivElement>(null)
     const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+
+    // The fade only belongs there once rows are actually passing underneath.
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 0)
+        onScroll()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
 
     useEffect(() => {
         if (!menuOpen) return
@@ -77,7 +86,11 @@ const Header = () => {
     const title = <h1 className={styles.title}>{t('title')}</h1>
 
     return (
-        <header className={`${styles.header} ${isHub ? styles.hub : styles.in_app}`}>
+        <header className={[
+            styles.header,
+            isHub ? styles.hub : styles.in_app,
+            scrolled ? styles.scrolled : '',
+        ].filter(Boolean).join(' ')}>
             {isHub ? (
                 <div className={styles.brand}>
                     {/* Platforms ship a raster mark; DEFAULT carries the generic SVG. */}
