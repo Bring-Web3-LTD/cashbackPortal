@@ -37,25 +37,17 @@
     padding-bottom: 32px;
 }
 
+/* No overflow here: it would make the row a scroll container on both axes, and
+   a scroll container clips absolutely-positioned descendants — which is exactly
+   what the search dropdown is. It also clipped the field's own border, which the
+   old 2px scrollport padding was compensating for. */
 .search_section {
-    /* overflow-x makes this a scroll container on both axes, whose scrollport
-       clips the search control's border flush at the edge. Pad the scrollport
-       and cancel it with margin so the row sits exactly where it did. */
-    padding: 2px 0;
-    margin-top: 30px;
-    margin-bottom: -2px;
+    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.search_section::-webkit-scrollbar {
-    display: none;
 }
 
 .deals_amount {
