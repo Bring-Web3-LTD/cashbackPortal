@@ -27,8 +27,10 @@
     font-weight: var(--category-btn-f-w);
     color: var(--category-btn-f-c);
     box-sizing: border-box;
-    flex-shrink: 0;
-    width: 120px;
+    /* Grows to share the row; never shrinks past its 80px label plus padding,
+       so a row that cannot be spaced sensibly overflows and scrolls instead. */
+    flex: 1 0 auto;
+    min-width: 112px;
     height: 36px;
     padding: 8px 16px;
     line-height: var(--category-btn-l-h, normal);
@@ -53,12 +55,15 @@
     border-radius: var(--category-btn-hover-radius);
 }
 
-/* Selected falls back to the hover look, so platforms that never defined a
-   selected state keep rendering exactly as before. */
-.selected {
+/* Its own state, not the hover one: the default surface with an accent outline.
+   Each token still falls back to the hover value, so platforms that never
+   defined a selected look keep rendering exactly as before. */
+/* .category.selected, not .selected: .category:hover outranks a lone class and
+   would drop the outline the moment the pointer crossed the selected chip. */
+.category.selected {
     color: var(--category-btn-selected-f-c, var(--category-btn-hover-f-c));
     font-weight: var(--category-btn-hover-f-w);
-    border-width: var(--category-btn-hover-border-w);
+    border-width: var(--category-btn-selected-border-w, var(--category-btn-hover-border-w));
     border-color: var(--category-btn-selected-border-c, var(--category-btn-border-c));
     background: var(--category-btn-selected-bg, var(--category-btn-hover-bg));
 }
@@ -97,7 +102,8 @@
     right: 0;
 }
 
-/* Fade under the scroll button; chips dissolve instead of clipping. */
+/* Chips dissolve behind this rather than clipping, and the chevron sits on top
+   of it and stays readable. */
 .veil {
     position: absolute;
     top: 0;
@@ -105,16 +111,17 @@
     height: 36px;
     pointer-events: none;
     z-index: 1;
+    background: var(--category-veil);
 }
 
+/* Same gradient mirrored, so it goes solid at the edge it hides. */
 .veil_left {
     left: 0;
-    background: linear-gradient(to left, transparent, var(--bg));
+    transform: scaleX(-1);
 }
 
 .veil_right {
     right: 0;
-    background: linear-gradient(to right, transparent, var(--bg));
 }
 
 .skeleton {
