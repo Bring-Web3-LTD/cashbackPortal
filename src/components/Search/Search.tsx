@@ -27,6 +27,9 @@ interface Props {
 const optionRowStyle = {
     display: "flex",
     alignItems: "center",
+    // The list is a flex column with a max height: without this the rows shrink
+    // to fit once there are enough of them, instead of keeping 33 and scrolling.
+    flexShrink: 0,
     fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
     fontSize: "var(--search-option-f-s, 14px)",
     lineHeight: "var(--search-option-l-h, 20px)",
@@ -56,6 +59,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
+        boxSizing: "border-box",
         width: "100%",
         height: "46px",
         padding: "11px 14px",
@@ -85,7 +89,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         marginTop: "4px",
         backgroundColor: "var(--search-menu-bg, var(--search-bg))",
         border: "var(--search-menu-border-w, 1px) solid var(--search-menu-border-c, transparent)",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
+        boxShadow: "var(--search-menu-shadow, 0 8px 24px rgba(0, 0, 0, 0.4))",
         borderRadius: "var(--search-menu-radius, 10px)",
         overflow: "hidden",
         paddingTop: "8px",

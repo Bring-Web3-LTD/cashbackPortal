@@ -5,9 +5,11 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* Capped to the track so the grid cannot overflow its gutter. */
+    /* 210-256 is the design's range. Some widths cannot be tiled inside it —
+       at 1209 four columns give a 266 track and five give 210 minus a hair —
+       so the card stops at 256 and the grid centres the slack. */
     min-width: min(210px, 100%);
-    max-width: 335px;
+    max-width: 256px;
     height: 154px;
     padding: 15px 16px 14px;
     background: var(--retailer-card-bg);
@@ -18,12 +20,6 @@
     transition: .2s;
 }
 
-/* Compact: narrower inset keeps the badge width once the card is at its min. */
-@media screen and (max-width: 500px) {
-    .card {
-        padding: 15px 6px 14px;
-    }
-}
 
 .card:hover {
     box-shadow: inset 0 0 0 var(--retailer-card-border-w) var(--retailer-card--hover-border-color);
@@ -45,12 +41,14 @@
     margin-top: 3px;
     flex-shrink: 0;
     overflow: hidden;
-    background-color: white;
+    background-color: var(--retailer-card-img-bg, #FFFFFF);
     border-width: var(--retailer-card-img-border-w);
     border-style: solid;
     border-color: var(--retailer-card-img-border-c);
     border-radius: 50%;
 }
+/* One box, not two: the 58 disc carries the fill and the ring, and the initials
+   sit straight in it. A nested inner disc left a halo of the outer fill. */
 .fallback_logo_container {
     display: flex;
     align-items: center;
@@ -61,10 +59,7 @@
     margin-top: 3px;
     flex-shrink: 0;
     overflow: hidden;
-    background-color: white;
-    border-width: var(--retailer-card-img-border-w);
-    border-style: solid;
-    border-color: var(--retailer-card-img-border-c);
+    background: var(--retailer-logo-fallback-bg);
     border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);
     border-radius: 50%;
 }
@@ -81,25 +76,17 @@
 }
 
 .fallback_logo {
-    display: flex;
-    width: 56px;
-    height: 56px;
-    padding: 4px 3.9px 4px 4.1px;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 50%;
-    text-align: center;
-    font-style: normal;
-    background: var(--retailer-logo-fallback-bg);
     color: var(--retailer-logo-fallback-f-c);
     font-size: var(--retailer-logo-fallback-f-s);
     font-weight: var(--retailer-logo-fallback-f-w);
+    line-height: var(--retailer-logo-fallback-l-h, 22px);
+    text-align: center;
     text-transform: uppercase;
 }
+
+/* Two letters drop a size so the pair still fits the same disc. */
 .fallback_logo_two_letters {
-    font-size: var(--retailer-logo-fallback-f-s-two-letters); 
-    background: var(--retailer-logo-fallback-bg);  
+    font-size: var(--retailer-logo-fallback-f-s-two-letters);
 }
 
 .retailer_name {
@@ -122,6 +109,8 @@
     justify-content: center;
     margin-top: 8px;
     width: 100%;
+    min-width: 170px;
+    max-width: 175px;
     height: 26px;
     padding: 5px 8px;
     border-radius: 100px;
@@ -174,7 +163,7 @@
     gap: 12px;
     width: 100%;
     min-width: min(210px, 100%);
-    max-width: 335px;
+    max-width: 256px;
     height: 156px;
     padding: 16px;
     overflow: hidden;

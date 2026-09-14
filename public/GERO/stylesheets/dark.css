@@ -3,7 +3,9 @@
 */
 :root {
     --bg: transparent;
-    --header-bg: transparent;
+    /* Opaque: the header pins while the cards scroll under it, so a see-through
+       bar would let rows show through. Matches the card surface. */
+    --header-bg: #1A1A1A;
 
     --title-f-s: 28px;
     --title-f-w: 700;

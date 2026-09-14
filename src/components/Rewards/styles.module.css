@@ -104,7 +104,8 @@
     min-width: 80px;
     height: 46px;
     padding: 0;
-    border: none;
+    /* Secondary carries a Text/Muted outline, unlike the solid primary. */
+    border: var(--dashboard-card-btn-border-w) solid var(--dashboard-card-btn-border-c);
     border-radius: 100px;
     background: var(--dashboard-card-btn-bg);
     font-size: var(--dashboard-card-btn-f-s);
@@ -150,7 +151,9 @@
     transition: .2s;
 }
 
+/* Hover drops the stroke as well as tinting, the same way disabled does. */
 .history_card:hover {
+    box-shadow: none;
     background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
 }
 

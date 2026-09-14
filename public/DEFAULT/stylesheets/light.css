@@ -166,6 +166,7 @@
     --filter-btn-radius: 8px;
 
     --category-btn-bg: transparent;
+    --category-veil: linear-gradient(90deg, rgba(249, 250, 251, 0) 0%, rgba(249, 250, 251, 0.92) 60%, #F9FAFB 100%);
     --category-arrow-bg: transparent;
     --category-arrow-radius: 8px;
     --category-btn-f-s: 14px;
@@ -287,6 +288,8 @@
     --dashboard-card-amount-f-c: #111827;
     --dashboard-badge-bg: #F3F4F6;
     --dashboard-badge-f-c: #6B7280;
+    --dashboard-card-btn-border-w: 1px;
+    --dashboard-card-btn-border-c: #D1D5DB;
     --dashboard-card-btn-bg: rgba(17, 24, 39, 0.05);
     --dashboard-card-btn-hover-bg: rgba(17, 24, 39, 0.1);
     --dashboard-card-btn-f-c: #111827;
