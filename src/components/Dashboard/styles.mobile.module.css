@@ -19,7 +19,9 @@
     justify-content: center;
     gap: 4px;
     height: 100%;
-    padding: 6px 8px;
+    /* py must stay 2px: the two rows are flex-shrink: 0 and total 50px, so a
+       6px inset leaves only 49px and the chip overflows by a pixel. */
+    padding: 2px 8px;
     /* Figma ships two states of `tab-switcher`: 4px between the rows when the
        chip is at the bottom (Cashback active), 6px when it's on top. */
     box-sizing: border-box;
@@ -42,12 +44,12 @@
     padding: 0 10px;
     box-sizing: border-box;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--dashboard-tab-radius, 10px);
     background: transparent;
     color: var(--dashboard-tab-f-c, #7A7D83);
     font-size: var(--dashboard-tab-f-s, 12px);
     font-weight: var(--dashboard-tab-f-w, 500);
-    line-height: 16px;
+    line-height: var(--dashboard-tab-l-h, 16px);
     white-space: nowrap;
     cursor: pointer;
 }
@@ -70,24 +72,30 @@
     align-items: flex-start;
     gap: 2px;
     height: 100%;
+    /* Figma insets `pending` by 10/6, but its 1px stroke is drawn INSIDE the
+       frame and doesn't push the content — a CSS border does. Subtract it. */
     padding: 5px 9px;
     box-sizing: border-box;
     overflow: hidden;
     background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
-    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border: var(--dashboard-tile-border-w, 1px) solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
     border-radius: var(--dashboard-radius, 8px);
     cursor: pointer;
 }
 
+/* The label + value are 50px against 49px of inner height. Figma clips the
+   overflow; flex would shrink both boxes and lift the $-line by a pixel. */
 .tileLabel {
+    flex-shrink: 0;
     color: var(--dashboard-label-f-c, #7A7D83);
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
+    font-size: var(--dashboard-tile-label-f-s, 12px);
+    font-weight: var(--dashboard-tile-label-f-w, 500);
+    line-height: var(--dashboard-tile-label-l-h, 16px);
     white-space: nowrap;
 }
 
 .tileValue {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -103,25 +111,25 @@
 }
 
 .amount {
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 20px;
+    font-size: var(--dashboard-amount-f-s, 15px);
+    font-weight: var(--dashboard-amount-f-w, 500);
+    line-height: var(--dashboard-amount-l-h, 20px);
     white-space: nowrap;
 }
 
 .symbol {
     height: 15px;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 12px;
+    font-size: var(--dashboard-symbol-f-s, 10px);
+    font-weight: var(--dashboard-symbol-f-w, 400);
+    line-height: var(--dashboard-symbol-l-h, 12px);
     white-space: nowrap;
 }
 
 .usd {
     color: var(--dashboard-accent, #FFEF46);
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 12px;
+    font-size: var(--dashboard-usd-f-s, 10px);
+    font-weight: var(--dashboard-usd-f-w, 400);
+    line-height: var(--dashboard-usd-l-h, 12px);
     white-space: nowrap;
 }
 
@@ -135,12 +143,12 @@
     padding: 4px 10px;
     box-sizing: border-box;
     background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
-    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border: var(--dashboard-tile-border-w, 1px) solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
     border-radius: var(--dashboard-radius, 8px);
     color: var(--dashboard-pill-f-c, #B1B4BB);
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
+    font-size: var(--dashboard-pill-f-s, 12px);
+    font-weight: var(--dashboard-pill-f-w, 500);
+    line-height: var(--dashboard-pill-l-h, 16px);
     text-align: center;
     cursor: pointer;
 }
@@ -163,8 +171,12 @@
     justify-content: center;
     height: 100%;
     padding: 0;
+    /* There is no global border-box reset, so without this the 1px border makes
+       the button 42x63 instead of 40x61 — which steals a pixel from each tile
+       and pushes every element to its right out of place. */
+    box-sizing: border-box;
     background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
-    border: 1px solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
+    border: var(--dashboard-tile-border-w, 1px) solid var(--dashboard-tile-border-c, rgba(138, 142, 148, 0.3));
     border-radius: var(--dashboard-radius, 8px);
     cursor: pointer;
 }
@@ -206,8 +218,8 @@
     width: 100%;
     margin: 0;
     color: var(--dashboard-accent, #FFEF46);
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 15px;
+    font-size: var(--dashboard-brand-f-s, 12px);
+    font-weight: var(--dashboard-brand-f-w, 700);
+    line-height: var(--dashboard-brand-l-h, 15px);
     text-transform: uppercase;
 }

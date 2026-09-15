@@ -8,7 +8,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import fetchCache from '../api/fetchCache'
-import { getMockCache } from '../api/mockCache'
+import { getMockCache, mockVariant } from '../api/mockCache'
 import { useWalletAddress } from './useWalletAddress'
 
 type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
@@ -26,7 +26,7 @@ export const useBalance = (): UseQueryResult<BalanceResponse> => {
             if (walletAddress) body.walletAddress = walletAddress
             return await fetchCache(body)
         },
-        queryKey: ['balance', walletAddress, mock ? 'mock' : ''],
+        queryKey: ['balance', walletAddress, mockVariant ?? ''],
         enabled: !!mock || !!walletAddress,
         // A reward earned while the tab sat in the background only shows up on
         // the next fetch, and nothing pushes it to us — coming back to the

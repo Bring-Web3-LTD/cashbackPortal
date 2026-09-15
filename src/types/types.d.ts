@@ -56,6 +56,9 @@ interface LoaderData {
     variant: string
     bringTou?: string
     privacy?: string
+    // Wallet install link (e.g. Chrome Web Store), resolved server-side and
+    // returned by /verify. Powers the "Download Wallet" CTAs.
+    chromeStoreUrl?: string
 }
 
 

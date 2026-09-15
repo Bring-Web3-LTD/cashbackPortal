@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     background: var(--history-item-bg, #171C2F);
-    border: 1px solid var(--history-item-border-c, transparent);
+    border: var(--history-item-border-w, 1px) solid var(--history-item-border-c, transparent);
     border-radius: var(--history-item-radius, 6px);
     padding: 7px 11px;
     transition: background 0.15s ease;

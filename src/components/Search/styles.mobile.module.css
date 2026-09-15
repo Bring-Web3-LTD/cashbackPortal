@@ -157,7 +157,9 @@
 }
 
 .empty {
-    padding: 6px 20px;
+    /* Figma: 8px on the "No Results" container + 8px on the button row inside
+       it = 16px total to the text, flattened here onto the one element. */
+    padding: 6px 16px;
     font-family: inherit;
     font-size: var(--search-bar-f-s, 14px);
     line-height: var(--search-bar-l-h, 20px);

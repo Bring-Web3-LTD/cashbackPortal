@@ -41,6 +41,7 @@ export const useHistoryPage = (only?: 'pending') => {
         close: () => navigate(-1),
         onToggle: (id: string) => setOpenId((cur) => (cur === id ? null : id)),
         goToFaq: () => navigate('/faq'),
+        goToWhatsThis: () => navigate('/whats-this'),
         openSupport: () => window.open(supportUrl, '_blank', 'noopener,noreferrer'),
     }
 }

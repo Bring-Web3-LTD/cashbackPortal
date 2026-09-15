@@ -17,6 +17,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
         onGoToShopClick,
         cashback,
         tokenSymbol,
+        touLink,
     } = useRetailerCardModal(props)
 
     // Portal to <body> so ancestor `transform`s (framer-motion on the
@@ -128,7 +129,19 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                 </div>
                                 <p className={styles.disclaimer}>
                                     {labels.agreeTerms}{' '}
-                                    <span className={styles.disclaimer_link}>{labels.termsWord}</span>
+                                    {touLink ? (
+                                        <a
+                                            href={touLink}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className={styles.disclaimer_link}
+                                            onClick={e => e.stopPropagation()}
+                                        >
+                                            {labels.termsWord}
+                                        </a>
+                                    ) : (
+                                        <span className={styles.disclaimer_link}>{labels.termsWord}</span>
+                                    )}
                                 </p>
                             </div>
                         </div>

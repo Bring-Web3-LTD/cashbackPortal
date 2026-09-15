@@ -72,6 +72,8 @@
 .tab:hover:not(.tabActive) {
     color: var(--tab-hover-f-c, var(--tab-f-c, #7685A0));
     background: var(--tab-hover-bg, transparent);
+    border-width: var(--tab-hover-border-w, var(--tab-border-w, 0));
+    border-color: var(--tab-hover-border-c, var(--tab-border-c, transparent));
 }
 
 .tabActive {

@@ -19,6 +19,14 @@
     overflow: hidden;
 }
 
+/* Figma sizes this sheet's title at 18px — a pixel larger than the shared
+   Header's own 17px default (used as-is by FAQ/History). !important because
+   this rule and Header's same-specificity `.title` both apply to the <h1>;
+   which one wins would otherwise depend on CSS-module bundling order. */
+.headerTitle {
+    font-size: var(--whats-this-header-title-f-s, 18px) !important;
+}
+
 .darken {
     position: absolute;
     inset: 0;
@@ -172,5 +180,6 @@
     font-size: var(--whats-this-cta-f-s, 15px);
     font-weight: var(--whats-this-cta-f-w, 500);
     line-height: var(--whats-this-cta-l-h, 20px);
+    text-decoration: none;
     cursor: pointer;
 }

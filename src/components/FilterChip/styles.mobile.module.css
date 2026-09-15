@@ -5,6 +5,9 @@
     display: flex;
     align-items: center;
     width: 100%;
+    /* Figma gives this row 16px to the cards below vs the categories row's
+       8px — add to Home's own .content gap rather than touch it globally. */
+    margin-bottom: 8px;
 }
 
 .chip {

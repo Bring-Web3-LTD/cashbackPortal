@@ -31,6 +31,8 @@ interface Response {
         walletName?: string
         bringTou?: string
         privacy?: string
+        // Wallet install link (e.g. Chrome Web Store), powers "Download Wallet".
+        chromeStoreUrl?: string
     }
 }
 

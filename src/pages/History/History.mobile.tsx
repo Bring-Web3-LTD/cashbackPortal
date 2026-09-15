@@ -25,6 +25,7 @@ const MobileHistory = ({ only }: Props) => {
         close,
         onToggle,
         goToFaq,
+        goToWhatsThis,
         openSupport,
     } = useHistoryPage(only)
 
@@ -40,7 +41,7 @@ const MobileHistory = ({ only }: Props) => {
 
             {/* Bottom-sheet overlay. */}
             <div className={styles.sheet} role="dialog" aria-modal="true">
-                <MobileHeader title={labels.title} onClose={close} />
+                <MobileHeader title={labels.title} onClose={close} titleClassName={styles.headerTitle} />
                 <main className={styles.content}>
                     {only ? null : (
                         <div className={styles.actions}>
@@ -50,7 +51,7 @@ const MobileHistory = ({ only }: Props) => {
                             <button type="button" className={styles.actionBtn} onClick={openSupport}>
                                 {labels.missingReward}
                             </button>
-                            <button type="button" className={styles.actionBtn} onClick={goToFaq}>
+                            <button type="button" className={styles.actionBtn} onClick={goToWhatsThis}>
                                 {labels.whatsThis}
                             </button>
                         </div>

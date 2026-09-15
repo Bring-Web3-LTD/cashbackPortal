@@ -25,7 +25,7 @@ export const useRetailerCardModal = ({
     retailer,
     onGoToShop,
 }: RetailerCardModalProps) => {
-    const { cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, bringTou } = useRouteLoaderData('root') as LoaderData
     const { t } = useTranslation()
     const [fallbackLogo, setFallbackLogo] = useState('')
     // Spinner state set only after tapping "Go to shop"; reset on retailer change.
@@ -83,6 +83,9 @@ export const useRetailerCardModal = ({
 
     return {
         labels,
+        // Same Terms of Use URL the header links to; absent on platforms that
+        // don't supply one, in which case the word stays plain text.
+        touLink: bringTou,
         fallbackLogo,
         onLogoError: () => {
             if (retailer) setFallbackLogo(getInitials(retailer.displayName))

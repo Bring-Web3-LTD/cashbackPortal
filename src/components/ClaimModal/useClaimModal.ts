@@ -45,7 +45,7 @@ export const useClaimModal = ({
     totalEstimatedUsd,
 }: ClaimModalProps) => {
     const { t } = useTranslation()
-    const { cryptoTokens } = useRouteLoaderData('root') as LoaderData
+    const { cryptoTokens, chromeStoreUrl } = useRouteLoaderData('root') as LoaderData
     const cryptoToken = cryptoTokens?.find(ct => ct.symbol === tokenSymbol)
     const open = !!state
 
@@ -133,5 +133,6 @@ export const useClaimModal = ({
         signedAmount,
         shortAddress,
         title,
+        downloadUrl: chromeStoreUrl,
     }
 }

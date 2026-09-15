@@ -102,6 +102,7 @@ const rootLoader = async () => {
             walletEmoji: params.get('walletEmoji') || undefined,
             bringTou: params.get('bringTou') || undefined,
             privacy: params.get('privacy') || undefined,
+            chromeStoreUrl: params.get('chromeStoreUrl') || undefined,
             couponsEnabled: params.get('couponsEnabled') === 'true',
             couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
             isHub: params.get('isHub') === 'true',

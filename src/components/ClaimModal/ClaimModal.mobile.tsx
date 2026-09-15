@@ -49,6 +49,7 @@ const ClaimModal = (props: ClaimModalProps) => {
         signedAmount,
         shortAddress,
         title,
+        downloadUrl,
     } = useClaimModal(props)
 
     if (!open) return null
@@ -119,13 +120,16 @@ const ClaimModal = (props: ClaimModalProps) => {
                                                 </li>
                                             ))}
                                         </ol>
-                                        <button
-                                            type="button"
-                                            className={styles.downloadBtn}
-                                            onClick={onConfirm}
-                                        >
-                                            {labels.downloadWallet}
-                                        </button>
+                                        {downloadUrl && (
+                                            <a
+                                                href={downloadUrl}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className={styles.downloadBtn}
+                                            >
+                                                {labels.downloadWallet}
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -16,6 +16,14 @@
 /* Previous page behind the overlay — inert (no pointer events).
    `isolation: isolate` traps any fixed/sticky descendants (e.g. Home's
    rewards bar) inside this layer so they can't paint over the sheet. */
+/* Figma sizes both this page's titles ("More" and "Pending") at 18px — a
+   pixel larger than the shared Header's 17px default (correct for FAQ).
+   !important: this rule and Header's same-specificity `.title` both apply to
+   the <h1>; which wins would otherwise depend on CSS-module bundling order. */
+.headerTitle {
+    font-size: var(--history-header-title-f-s, 18px) !important;
+}
+
 .behind {
     position: absolute;
     inset: 0;
@@ -95,12 +103,12 @@
     padding: 4px 10px;
     box-sizing: border-box;
     background: var(--more-action-bg, #12151A);
-    border: 1px solid var(--more-action-border-c, rgba(245, 245, 245, 0.1));
+    border: var(--more-action-border-w, 1px) solid var(--more-action-border-c, rgba(245, 245, 245, 0.1));
     border-radius: var(--more-action-radius, 5px);
     color: var(--more-action-f-c, #F5F8FF);
     font-size: var(--more-action-f-s, 12px);
     font-weight: var(--more-action-f-w, 700);
-    line-height: 16px;
+    line-height: var(--more-action-l-h, 16px);
     white-space: nowrap;
     cursor: pointer;
 }

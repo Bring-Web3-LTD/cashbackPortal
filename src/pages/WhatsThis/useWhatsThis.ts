@@ -2,12 +2,13 @@
  * Logic hook for the "What's This?" sheet (Figma 278:3244). Owns the labels
  * and the close handler — the view stays pure UI.
  */
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 export const useWhatsThis = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { chromeStoreUrl } = useRouteLoaderData('root') as LoaderData
 
     const close = () => navigate(-1)
 
@@ -23,8 +24,6 @@ export const useWhatsThis = () => {
             { icon: 'wallet.svg', title: t('claim'), text: t('whatsThisClaim') },
         ],
         close,
-        // ponytail: the design gives no destination for the CTA, so it just
-        // dismisses the sheet. Point it at the wallet download URL once there is one.
-        onDownloadWallet: close,
+        downloadUrl: chromeStoreUrl,
     }
 }

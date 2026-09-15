@@ -9,7 +9,7 @@ import { useWhatsThis } from './useWhatsThis'
 import styles from './styles.mobile.module.css'
 
 const MobileWhatsThis = () => {
-    const { labels, cards, close, onDownloadWallet } = useWhatsThis()
+    const { labels, cards, close, downloadUrl } = useWhatsThis()
 
     return (
         <div className={styles.root} data-testid="mobile-whats-this">
@@ -18,7 +18,7 @@ const MobileWhatsThis = () => {
             </div>
             <div className={styles.darken} aria-hidden="true" onClick={close} />
             <div className={styles.sheet} role="dialog" aria-modal="true" aria-label={labels.title}>
-                <MobileHeader title={labels.title} onClose={close} />
+                <MobileHeader title={labels.title} onClose={close} titleClassName={styles.headerTitle} />
                 <main className={styles.content}>
                     <div className={styles.block}>
                         <p className={styles.intro}>{labels.intro}</p>
@@ -36,9 +36,11 @@ const MobileWhatsThis = () => {
                             ))}
                         </div>
                     </div>
-                    <button type="button" className={styles.cta} onClick={onDownloadWallet}>
-                        {labels.downloadWallet}
-                    </button>
+                    {downloadUrl && (
+                        <a href={downloadUrl} target="_blank" rel="noreferrer" className={styles.cta}>
+                            {labels.downloadWallet}
+                        </a>
+                    )}
                 </main>
             </div>
         </div>

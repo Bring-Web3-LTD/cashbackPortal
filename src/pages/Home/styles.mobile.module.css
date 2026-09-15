@@ -16,7 +16,10 @@
     width: 232px;
     margin: 0;
     color: var(--header-title-f-c, #F5F8FF);
-    font-size: var(--header-title-f-s, 17px);
+    /* Own variable, not the shared --header-title-f-s used by the reusable
+       MobileHeader (FAQ/What's This/History) — Figma sizes this page's own
+       title at 18px, a pixel larger than those modal headers. */
+    font-size: var(--home-title-f-s, 18px);
     font-weight: var(--header-title-f-w, 700);
     line-height: var(--header-title-l-h, 22px);
     text-align: center;

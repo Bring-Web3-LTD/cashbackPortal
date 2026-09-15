@@ -2,7 +2,7 @@ import Icon from '../Icon/Icon'
 import { HeaderProps } from './useHeader'
 import styles from './styles.mobile.module.css'
 
-const Header = ({ title, onBack, onClose }: HeaderProps) => (
+const Header = ({ title, onBack, onClose, titleClassName }: HeaderProps) => (
     <header className={styles.header}>
         <div className={styles.side}>
             {onBack ? (
@@ -13,7 +13,7 @@ const Header = ({ title, onBack, onClose }: HeaderProps) => (
                 <span className={styles.actionSpacer} aria-hidden="true" />
             )}
         </div>
-        <h1 className={styles.title}>{title}</h1>
+        <h1 className={`${styles.title} ${titleClassName ?? ''}`}>{title}</h1>
         <div className={styles.side}>
             {onClose ? (
                 <button

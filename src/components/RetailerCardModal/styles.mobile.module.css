@@ -256,7 +256,7 @@
     padding: 9px 20px;
     border-radius: var(--retailer-modal-btn-radius);
 
-    border: 1px solid transparent;
+    border: var(--retailer-modal-btn-border-w, 1px) solid transparent;
     font-size: var(--retailer-modal-btn-f-s);
     font-weight: var(--retailer-modal-btn-f-w);
     line-height: var(--retailer-modal-btn-l-h);
@@ -328,6 +328,10 @@
 }
 
 .disclaimer_link {
+    color: inherit;
     text-decoration: underline;
+    /* Figma sets decoration-thickness/underline-position "from-font" — see
+       the FaqItem `.link` rule for why the browser default is too thick. */
+    text-decoration-thickness: from-font;
     text-underline-position: from-font;
 }
