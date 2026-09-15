@@ -19,7 +19,7 @@
     align-items: center;
     gap: 6px;
     top: calc(32px + 37px);
-    left: var(--history-back-x-location);
+    left: 64px;
     text-decoration: none;
     font-size: var(--history-back-f-s);
     font-weight: var(--history-back-f-w);

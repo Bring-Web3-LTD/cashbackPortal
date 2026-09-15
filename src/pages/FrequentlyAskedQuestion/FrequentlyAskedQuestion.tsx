@@ -7,6 +7,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../components/Icon/Icon'
+import Header from '../../components/Header/Header'
+import Dashboard from '../../components/Dashboard/Dashboard'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 
 interface AnswerParserProps {
   answer: string[];
@@ -59,6 +62,10 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
   );
 };
 
+// The design draws five placeholder rows; the real count is unknown until the
+// FAQ answers.
+const SKELETON_ROWS = [0, 1, 2, 3, 4]
+
 const FrequentlyAskedQuestion = () => {
   const navigate = useNavigate()
   const { walletAddress, platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
@@ -66,59 +73,23 @@ const FrequentlyAskedQuestion = () => {
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(-1)
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['faq', walletAddress, platform],
     queryFn: () => fetchFaq({ walletAddress, platform, userId, flowId }),
   })
+  const skeletonPreview = useSkeletonPreview()
+  const showSkeleton = isLoading || skeletonPreview
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>
-        FAQ
-      </h1>
-      <div className={styles.faq_container}>
-        {
-          data?.faq?.map(item => (
-            <div
-              id={`faq-item-${item.id}`}
-              key={item.question + item.id}
-              className={`${styles.collapsible} ${currentIndex === item.itemOrder ? styles.collapsible_open : ''}`}
-            >
-              <div className={styles.row}>
-                <div className={styles.text_col}>
-                  <div
-                    className={styles.question}
-                    onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
-                  >
-                    {item.question}
-                  </div>
-                  <AnimatePresence>
-                    {currentIndex === item.itemOrder && <motion.div
-                      className={styles.answer_container}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <AnswerParser
-                        answer={item.answer}
-                        links={item.links || []}
-                        indentationMark={data.indentationMark}
-                      />
-                    </motion.div>}
-                  </AnimatePresence>
-                </div>
-                <button
-                  id={`faq-details-btn-${item.id}`}
-                  className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
-                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
-                >
-                  <Icon name="arrow-down.svg" alt="arrow-down" />
-                </button>
-              </div>
-            </div>
-          ))}
-      </div>
+      <Header />
+      <main className={styles.main}>
+      {/* Same row as the home page; switching view leaves for it. */}
+      <Dashboard
+        view="cashback"
+        onViewChange={view => navigate('/', { state: { view } })}
+      />
+      <div className={styles.toolbar}>
       <Link
         id="faq-back-btn"
         className={styles.back_btn}
@@ -140,6 +111,58 @@ const FrequentlyAskedQuestion = () => {
           {t('back')}
         </span>
       </Link>
+        <h1 className={styles.title}>{t('faqTitle')}</h1>
+      </div>
+      <div className={styles.faq_container}>
+        {
+          showSkeleton ? SKELETON_ROWS.map(i => (
+            <div key={i} className={`${styles.collapsible} ${styles.skeleton_row}`} aria-hidden="true">
+              <div className={styles.text_col}>
+                <span className={`${styles.skeleton_bar} skeleton_shimmer`} />
+              </div>
+            </div>
+          )) : data?.faq?.map(item => (
+            <div
+              id={`faq-item-${item.id}`}
+              key={item.question + item.id}
+              className={styles.collapsible}
+            >
+              <div className={styles.text_col}>
+                <div
+                  className={styles.question}
+                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
+                >
+                  {item.question}
+                </div>
+                <AnimatePresence>
+                  {currentIndex === item.itemOrder && <motion.div
+                    className={styles.answer_container}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <AnswerParser
+                      answer={item.answer}
+                      links={item.links || []}
+                      indentationMark={data.indentationMark}
+                    />
+                  </motion.div>}
+                </AnimatePresence>
+              </div>
+              <div className={styles.content_cell}>
+                <button
+                  id={`faq-details-btn-${item.id}`}
+                  className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
+                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
+                >
+                  <Icon name="arrow-down.svg" alt="arrow-down" />
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
+      </main>
     </div>
   )
 }

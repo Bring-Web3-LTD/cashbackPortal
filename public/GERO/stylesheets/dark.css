@@ -384,7 +384,6 @@
     --history-back-icon-src: url('/GERO/icons/dark/arrow-left.svg');
     --history-back-icon-hover-f-c: #A8ADBF;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #000000;
     /* Shorthand, so the header is divided on its bottom edge only, and with a

@@ -3,7 +3,7 @@
   "subtitle": "Shop online with any card. Get cashback in USDC.",
   "claimCashback": "Claim Cashback",
   "viewRewards": "Cashback History",
-  "frequentlyAskedQuestion": "Missing a Reward?",
+  "frequentlyAskedQuestion": "Missing a reward?",
   "searchPlaceholder": "Brand, product, destination...",
   "signNow": "Sign Now",
   "startShopping": "Go Shopping",
@@ -58,5 +58,6 @@
   "pairCodeExpired": "That code has expired. Send a new one.",
   "pairSessionInvalid": "This attempt timed out. Send a new code.",
   "signInWithGoogle": "Sign in with Google",
-  "or": "or"
+  "or": "or",
+  "faqTitle": "FAQ"
 }
