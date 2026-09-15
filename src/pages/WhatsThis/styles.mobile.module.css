@@ -32,7 +32,7 @@
     inset: 0;
     z-index: 1;
     background: var(--whats-this-darken-bg, #040407);
-    opacity: 0.65;
+    opacity: var(--overlay-darken-opacity, 0.65);
 }
 
 /* Figma frame: 375×607, pinned to the bottom. Height stays auto so the sheet is

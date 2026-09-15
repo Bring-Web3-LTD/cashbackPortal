@@ -221,6 +221,11 @@
     --claim-modal-btn-primary-bg: #FFEF46;
     --claim-modal-btn-primary-f-c: #1F2018;
     --modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+    /* Figma `Surface/Overlay` (#090C11 @ 75%) for the page sheets, which
+       darken via a solid layer + opacity instead of one rgba. */
+    --history-overlay-darken-bg: #090C11;
+    --faq-overlay-darken-bg: #090C11;
+    --overlay-darken-opacity: 0.75;
 
     --claim-badge-bg: rgba(245, 248, 255, 0.08);
     --claim-badge-border-c: rgba(245, 248, 255, 0.1);
@@ -423,7 +428,7 @@
 
     /* ── "What's This?" sheet ── */
     --whats-this-header-title-f-s: 18px;
-    --whats-this-darken-bg: #040407;
+    --whats-this-darken-bg: #090C11;
     --whats-this-sheet-bg: #090C11;
     --whats-this-sheet-border-w: 1px;
     --whats-this-sheet-border-c: rgba(102, 104, 110, 1);

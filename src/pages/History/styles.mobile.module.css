@@ -39,7 +39,7 @@
     inset: 0;
     z-index: 1;
     background: var(--history-overlay-darken-bg, #040407);
-    opacity: 0.65;
+    opacity: var(--overlay-darken-opacity, 0.65);
 }
 
 /* Bottom sheet: anchored to the bottom,
