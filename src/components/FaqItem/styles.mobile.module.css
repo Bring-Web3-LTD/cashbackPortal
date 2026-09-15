@@ -18,8 +18,13 @@
     overflow: hidden;
 }
 
+/* Marker class only — must exist here so CSS modules emit it for the .tsx. */
+.itemOpen {}
+
+/* Figma only defines hover for the collapsed item (State=Hover); the open
+   answer box has no hover state. */
 @media (hover: hover) {
-    .item:hover {
+    .item:not(.itemOpen):hover {
         background: var(--faq-item-hover-bg, #2B344D);
         box-shadow: inset 0 0 0 var(--faq-item-border-w, 0)
             var(--faq-item-hover-border-c, var(--faq-item-border-c, transparent));
