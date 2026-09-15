@@ -63,5 +63,6 @@
   "pairCodeExpired": "That code has expired. Send a new one.",
   "pairSessionInvalid": "This attempt timed out. Send a new code.",
   "signInWithGoogle": "Sign in with Google",
-  "or": "or"
+  "or": "or",
+  "faqTitle": "FAQ"
 }
