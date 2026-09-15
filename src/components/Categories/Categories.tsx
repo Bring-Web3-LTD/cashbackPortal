@@ -1,6 +1,7 @@
 import styles from './styles.module.css'
 import Icon from '../Icon/Icon'
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview';
 import { useSwipeable } from 'react-swipeable';
 import useWindowSize from '../../hooks/useWindowSize';
 
@@ -10,26 +11,24 @@ interface Props {
     onClickFn: (category: Category) => void;
 }
 
-const sizes = [
-    [1190, 10],
-    [990, 8],
-    [300, 3]
-]
+/* Placeholder chips are evenly sized, so their count has to come from the
+   width or they stretch: the design draws them ~127 wide at every size. The
+   page gutter is 48 / 32 / 20 and the body caps at 1344. */
+const SKELETON_CHIP = 127
+const SKELETON_GAP = 8
+
+const skeletonChipCount = (viewWidth: number) => {
+    const gutter = viewWidth >= 1112 ? 48 : viewWidth >= 840 ? 32 : 20
+    const available = Math.min(viewWidth, 1440) - gutter * 2
+    const fits = Math.floor((available + SKELETON_GAP) / (SKELETON_CHIP + SKELETON_GAP))
+    return Math.max(3, Math.min(10, fits))
+}
 
 const Categories = ({ categories, category, onClickFn }: Props) => {
+    const skeletonPreview = useSkeletonPreview()
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [maxCategories, setMaxCategories] = useState(10)
     const [overflow, setOverflow] = useState({ left: false, right: false })
     const view = useWindowSize()
-
-    useEffect(() => {
-        for (const item of sizes) {
-            if (view.width >= item[0]) {
-                setMaxCategories(item[1])
-                break
-            }
-        }
-    }, [view.width])
 
     // Affordances follow measured overflow, not a category count.
     const measure = useCallback(() => {
@@ -62,11 +61,11 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         onSwipedRight: () => scrollLeft(),
     });
 
-    if (!categories.length) {
+    if (!categories.length || skeletonPreview) {
         return (
-            <div className={styles.container}>
-                {Array(maxCategories).fill(0).map((_, index) => (
-                    <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton}`} key={index}></button>
+            <div className={`${styles.container} ${styles.skeleton_row}`}>
+                {Array(skeletonChipCount(view.width)).fill(0).map((_, index) => (
+                    <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton} skeleton_shimmer`} key={index}></button>
                 ))}
             </div>
         )

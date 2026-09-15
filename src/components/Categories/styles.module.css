@@ -124,8 +124,19 @@
     right: 0;
 }
 
+/* Placeholder chips: shorter and tighter than the real row, and they share the
+   width evenly rather than hugging a label that is not there yet. */
+.skeleton_row {
+    gap: 8px;
+}
+
 .skeleton {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 30px;
+    padding: 0;
     background: var(--category-skeleton-bg, var(--retailer-card-amount-bg));
     border: none;
+    border-radius: var(--category-skeleton-radius, 5px);
 }
 

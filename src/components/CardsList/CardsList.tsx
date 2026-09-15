@@ -3,6 +3,7 @@ import RetailerCard from '../RetailerCard/RetailerCard'
 import RetailerCardSkeleton from '../RetailerCard/RetailerCardSkeleton'
 import { useEffect, useState } from 'react'
 import fetchTerms from '../../utils/fetchTerms'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 
 interface Metadata {
     iconQueryParam: string
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
+    const skeletonPreview = useSkeletonPreview()
     const [generalTerms, setGeneralTerms] = useState('')
     const [topGeneralTerms, setTopGeneralTerms] = useState('')
 
@@ -48,7 +50,7 @@ const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
         return () => controller.abort()
     }, [metadata?.generalTermsUrl, metadata?.topGeneralTermsUrl, generalTerms, topGeneralTerms])
 
-    if (loading || !metadata) {
+    if (loading || skeletonPreview || !metadata) {
         return (
             <div className={styles.container}>
                 {Array.from({ length: 25 }, (_, i) => (

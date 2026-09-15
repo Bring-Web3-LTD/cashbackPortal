@@ -32,3 +32,44 @@ body::-webkit-scrollbar-thumb {
 .no_scroll {
     overflow: hidden;
 }
+
+/* Skeleton shimmer. Global rather than per-module: every placeholder on the
+   page shares one class, so they run off a single keyframe and stay in step.
+
+   A transform-driven overlay, not an animated background-position — transforms
+   run on the compositor, and there are a couple of dozen placeholders on a
+   loading page. The band is transparent at both ends so it rides over whatever
+   flat fill the placeholder already carries; only the highlight is new.
+
+   Static by default; the sweep is opt-in under `no-preference`, so a visitor
+   asking for reduced motion gets a plain placeholder rather than one that has
+   to be switched off. */
+.skeleton_shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton_shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: var(--skeleton-sweep, linear-gradient(
+        90deg,
+        rgba(34, 38, 45, 0) 0%,
+        rgba(34, 38, 45, 1) 50%,
+        rgba(34, 38, 45, 0) 100%
+    ));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .skeleton_shimmer::after {
+        animation: skeleton_sweep 1.5s ease-in-out infinite;
+    }
+}
+
+@keyframes skeleton_sweep {
+    to {
+        transform: translateX(100%);
+    }
+}

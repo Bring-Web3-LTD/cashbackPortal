@@ -659,6 +659,20 @@ const postToPortal = (data: Record<string, unknown>, label: string) => {
     }
 }
 
+// Forces every loading placeholder on. Live, not a URL param: the point is to
+// hold a skeleton against the design without waiting on a response. Re-sent
+// whenever the portal reloads, since the flag lives in the portal's memory.
+const skeletonPreviewEl = $<HTMLInputElement>('skeletonPreview')
+
+function pushSkeletonMode() {
+    postToPortal({ action: 'PORTAL_SKELETON', on: skeletonPreviewEl.checked }, 'skeleton mode')
+}
+
+skeletonPreviewEl.addEventListener('change', pushSkeletonMode)
+iframeEl.addEventListener('load', () => {
+    if (skeletonPreviewEl.checked) pushSkeletonMode()
+})
+
 const pairScreensEl = $<HTMLDivElement>('pairScreens')
 for (const [screen, label] of PAIR_SCREENS) {
     const btn = document.createElement('button')

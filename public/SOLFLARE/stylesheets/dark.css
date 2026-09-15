@@ -34,6 +34,7 @@
 
 :root {
     --bg: #090C11;
+    --skeleton-sweep: linear-gradient(90deg, rgba(34, 38, 45, 0) 0%, #22262D 50%, rgba(34, 38, 45, 0) 100%);
     --title-l-h: 28px;
     --header-logo-radius: 12px;
     --header-more-bg: #090C11;
@@ -178,10 +179,13 @@
     --retailer-card-amount-campaign-f-w: 700;
     --retailer-card-amount-campaign-bg: rgba(255, 239, 70, 0.18);
 
-    --retailer-card-skeleton-card-bg: #141414;
-    --retailer-card-skeleton-bg: #262931;
-    --retailer-card-skeleton-radius: 10px;
-    --retailer-card-skeleton-border-w: 0;
+    --retailer-card-skeleton-card-bg: #12151A;
+    --retailer-card-skeleton-bg: #1A1D22;
+    --retailer-card-skeleton-radius: 12px;
+    --retailer-card-skeleton-border-w: 1px;
+    --retailer-card-skeleton-border-c: #1E2128;
+    --retailer-card-skeleton-name-radius: 5px;
+    --retailer-card-skeleton-badge-radius: 8px;
 
     --deals-amount-f-s: 15px;
     --deals-amount-f-w: 500;
@@ -223,7 +227,8 @@
     --category-btn-selected-border-w: 1px;
     --category-btn-selected-border-c: #FFEF46;
     --category-btn-selected-f-c: #F5F8FF;
-    --category-skeleton-bg: #1B1E23;
+    --category-skeleton-bg: #1A1D22;
+    --category-skeleton-radius: 5px;
 
     --back-to-top-bg: #12151A;
     --back-to-top-hover-bg: #16181D;
@@ -331,6 +336,11 @@
     --dashboard-history-f-w: 700;
     --dashboard-history-l-h: 24px;
     --dashboard-card-bg: #12151A;
+    --dashboard-skeleton-card-bg: #12151A;
+    --dashboard-skeleton-border-c: #1E2128;
+    --dashboard-skeleton-bar-bg: #1A1D22;
+    --dashboard-skeleton-radius: 12px;
+    --dashboard-skeleton-bar-radius: 4px;
     --dashboard-card-hover-bg: #16181D;
     --dashboard-card-border-c: rgba(102, 104, 110, 0.75);
     --dashboard-card-label-f-c: #FFEF46;
@@ -520,6 +530,8 @@
     --scrollbar-w: 12px;
 
     --search-bg: transparent;
+    --search-skeleton-bg: #1A1D22;
+    --search-skeleton-radius: 4px;
     --search-menu-bg: #090C11;
     --search-f-s: 16px;
     --search-f-w: 400;

@@ -5,6 +5,8 @@ import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
 import ExplainModal from '../Modals/ExplainModal/ExplainModal'
 import PairWalletModal from '../PairWalletModal/PairWalletModal'
+import DashboardSkeleton from './DashboardSkeleton'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 import Rewards from '../Rewards/Rewards'
 import { useBalance, selectFirstTimeUser } from '../../hooks/useBalance'
 import { ENV } from '../../config'
@@ -23,7 +25,9 @@ const Dashboard = ({ view, onViewChange }: Props) => {
     // Optimistically onboarding until /cache says the user already has
     // activity. Re-derived from the live query, so earning a first reward
     // leaves the onboarding state without waiting for a reload.
-    const { data: balance } = useBalance()
+    const { data: balance, isLoading: balanceLoading } = useBalance()
+    const skeletonPreview = useSkeletonPreview()
+    const showSkeleton = balanceLoading || skeletonPreview
     const firstTimeUser = firstTimeOverride ?? selectFirstTimeUser(balance)
 
     // Only the portal calls /cache, so report the resolved flag back to the
@@ -69,7 +73,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
     )
 
     return (
-        <div className={styles.bar}>
+        <div className={`${styles.bar} ${showSkeleton ? styles.bar_skeleton : ''}`}>
             {couponsEnabled && (
                 <div className={styles.switcher}>
                     <div className={styles.tabs}>
@@ -78,7 +82,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
                     </div>
                 </div>
             )}
-            {firstTimeUser ? <div className={styles.banner}>
+            {showSkeleton ? <DashboardSkeleton /> : firstTimeUser ? <div className={styles.banner}>
                 <div className={styles.banner_content}>
                     <div className={styles.banner_title}>{t('welcomeTitle')}</div>
                     <div className={styles.banner_text}>{t('welcomeText')}</div>
