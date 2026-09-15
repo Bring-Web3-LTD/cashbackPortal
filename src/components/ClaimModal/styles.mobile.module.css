@@ -9,6 +9,9 @@
 }
 
 .panel {
+    /* border-box so .panelSheet's padding-bottom doesn't grow the panel past
+       the viewport and swallow the 27px top gap. */
+    box-sizing: border-box;
     width: 100%;
     max-width: var(--mobile-portal-max-w, 360px);
 
@@ -667,7 +670,9 @@
     gap: 10px;
     padding-bottom: 30px;
     background: var(--claim-sheet-bg, #090C11);
-    border-color: var(--claim-sheet-border-c, rgba(11, 16, 32, 0.1));
+    /* .panel draws its border as an inset shadow, so override that, not border-color. */
+    box-shadow: inset 0 0 0 var(--claim-modal-panel-border-w, 1px)
+        var(--claim-sheet-border-c, rgba(11, 16, 32, 0.1));
     border-top-left-radius: var(--claim-sheet-radius, 25px);
     border-top-right-radius: var(--claim-sheet-radius, 25px);
 }
@@ -680,7 +685,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: var(--claim-sheet-header-border-w, 1px) solid var(--claim-sheet-header-border-c, rgba(138, 142, 148, 0.3));
+    /* Inset shadow, not border: Figma's stroke isn't in layout, so a real
+       border would push the title/X up by half a pixel. */
+    box-shadow: inset 0 calc(-1 * var(--claim-sheet-header-border-w, 1px)) 0
+        var(--claim-sheet-header-border-c, rgba(102, 104, 110, 0.75));
     flex-shrink: 0;
 }
 
@@ -793,7 +801,7 @@
     align-items: center;
     justify-content: center;
     padding: 4px 10px;
-    border: var(--claim-now-border-w, 1px) solid var(--claim-now-bg, rgba(8, 194, 157, 0.15));
+    border: var(--claim-now-border-w, 1px) solid var(--claim-now-border-c, var(--claim-now-f-c, #08C29D));
     border-radius: var(--claim-now-radius, 20px);
     background: var(--claim-now-bg, rgba(8, 194, 157, 0.15));
     color: var(--claim-now-f-c, #08C29D);
@@ -887,7 +895,7 @@
     color: var(--claim-hero-f-c, #F5F8FF);
     font-size: var(--claim-steps-title-f-s, 16px);
     font-weight: var(--claim-steps-title-f-w, 700);
-    line-height: var(--claim-steps-title-l-h, 20px);
+    line-height: var(--claim-steps-title-l-h, 24px);
 }
 
 .stepsList {

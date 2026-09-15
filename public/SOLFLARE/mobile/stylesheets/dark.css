@@ -162,7 +162,7 @@
     --claim-modal-panel-border-c: rgba(138, 142, 148, 0.3);
     --claim-modal-panel-radius: 25px;
     --claim-modal-header-border-c: rgba(138, 142, 148, 0.3);
-    --claim-modal-header-title-f-s: 17px;
+    --claim-modal-header-title-f-s: 18px;
     --claim-modal-header-title-f-w: 700;
     --claim-modal-header-title-l-h: 22px;
     --claim-modal-header-title-f-c: #F5F8FF;
@@ -258,7 +258,7 @@
     --claim-now-radius: 20px;
     --claim-sheet-bg: #090C11;
     --claim-sheet-border-c: rgba(11, 16, 32, 0.1);
-    --claim-sheet-header-border-c: rgba(138, 142, 148, 0.3);
+    --claim-sheet-header-border-c: rgba(102, 104, 110, 0.75);
     --claim-sheet-header-border-w: 1px;
     --claim-sheet-radius: 25px;
     --claim-step-number-border-w: 1px;
@@ -271,7 +271,7 @@
     --claim-step-title-l-h: 15px;
     --claim-steps-title-f-s: 16px;
     --claim-steps-title-f-w: 700;
-    --claim-steps-title-l-h: 20px;
+    --claim-steps-title-l-h: 24px;
     --claim-wallet-badge-radius: 12px;
     --dashboard-accent: #FFEF46;
     --dashboard-accent-soft: rgba(255, 239, 70, 0.12);
@@ -314,7 +314,7 @@
     --header-bg: transparent;
     --header-border-c: rgba(138, 142, 148, 0.3);
     --header-title-f-c: #F5F8FF;
-    --header-title-f-s: 17px;
+    --header-title-f-s: 18px;
     --home-title-f-s: 18px;
     --history-amount-bg: rgba(177, 180, 187, 0.15);
     --history-amount-cancelled-bg: rgba(218, 73, 63, 0.15);
