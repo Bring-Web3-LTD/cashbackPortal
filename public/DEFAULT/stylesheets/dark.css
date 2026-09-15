@@ -499,6 +499,14 @@
     --search-placeholder-f-c: #9CA3AF;
     --search-scrollbar-bg: #2A3038;
 
+    --page-toolbar-title-f-s: 18px;
+    --page-toolbar-title-f-w: 700;
+    --page-toolbar-title-l-h: 22px;
+    --page-toolbar-title-f-c: #F3F4F6;
+    --page-toolbar-back-f-s: 13px;
+    --page-toolbar-back-f-w: 500;
+    --page-toolbar-back-l-h: 15px;
+    --page-toolbar-back-f-c: #9CA3AF;
     --history-title-f-s: 20px;
     --history-title-f-w: 600;
     --history-title-f-c: #F3F4F6;
@@ -511,7 +519,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: var(--history-back-f-c);
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #1E2328;
     --history-table-header-border-c: transparent;

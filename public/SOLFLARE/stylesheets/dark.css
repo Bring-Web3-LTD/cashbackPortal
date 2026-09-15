@@ -552,6 +552,14 @@
     --search-placeholder-f-c: #66686E;
     --search-scrollbar-bg: #282B30;
 
+    --page-toolbar-title-f-s: 18px;
+    --page-toolbar-title-f-w: 700;
+    --page-toolbar-title-l-h: 22px;
+    --page-toolbar-title-f-c: #F5F8FF;
+    --page-toolbar-back-f-s: 13px;
+    --page-toolbar-back-f-w: 500;
+    --page-toolbar-back-l-h: 15px;
+    --page-toolbar-back-f-c: #B1B4BB;
     --history-title-f-s: 22px;
     --history-title-f-w: 700;
     --history-title-f-c: #F5F8FF;
@@ -567,7 +575,6 @@
        shift colour on hover. */
     --history-back-hover-f-c: #797A7D;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #090C11;
     --history-table-header-border-c: transparent;
@@ -611,16 +618,25 @@
     --history-empty-f-w: 400;
     --history-empty-f-c: #7A7D83;
 
+    --faq-row-hover-bg: #16181D;
+    --faq-details-btn-bg: #2C2F36;
+    --faq-skeleton-bg: #2C2F36;
+    --faq-skeleton-radius: 4px;
+
     --faq-question-f-s: 16px;
     --faq-question-f-w: 700;
     --faq-question-f-c: #F5F8FF;
+    --faq-question-l-h: 24px;
 
     --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
-    --faq-answer-f-c: #F5F8FF;
+    --faq-answer-f-c: #B1B4BB;
+    --faq-answer-l-h: 24px;
 
     --faq-link-f-s: 16px;
-    --faq-link-f-w: 700;
+    --faq-link-f-w: 400;
+    --faq-link-l-h: 24px;
+    --faq-link-f-c: #FFEF46;
 }
 
 * {
