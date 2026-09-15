@@ -19,13 +19,15 @@
     }
 }
 
+/* 1344 is the 1440 design width less its two 48px gutters, which the container
+   applies. Capping at 1440 here would have stacked the gutters on top of it. */
 .main {
     display: flex;
     align-items: center;
     flex-direction: column;
     box-sizing: border-box;
     width: 100%;
-    max-width: 1440px;
+    max-width: 1344px;
 }
 
 /* Scrolls away with the cards — the header is the only thing that pins. */
