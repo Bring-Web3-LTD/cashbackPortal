@@ -1,6 +1,6 @@
 /* History — bottom-sheet overlay. The previous page (Home) renders behind a
    darkening layer; the sheet is anchored to the bottom with rounded top
-   corners + border, leaving a 25px gap so the darkened page peeks through. */
+   corners + border, leaving a 27px gap so the darkened page peeks through. */
 
 .root {
     position: fixed;
@@ -39,7 +39,7 @@
     inset: 0;
     z-index: 1;
     background: var(--history-overlay-darken-bg, #040407);
-    opacity: 0.65;
+    opacity: var(--overlay-darken-opacity, 0.65);
 }
 
 /* Bottom sheet: anchored to the bottom,
@@ -49,7 +49,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    top: 25px;
+    top: 27px;
     z-index: 2;
     display: flex;
     flex-direction: column;

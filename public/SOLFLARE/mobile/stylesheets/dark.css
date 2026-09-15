@@ -102,7 +102,7 @@
     --shop-btn-hover-bg: rgba(245, 248, 255, 0.14);
 
     --faq-sheet-bg: #090C11;
-    --faq-sheet-border-c: rgba(102, 104, 110, 0.3);
+    --faq-sheet-border-c: rgba(102, 104, 110, 1);
     --faq-sheet-radius: 20px;
     --faq-sheet-fade-from: rgba(9, 12, 17, 0);
     --faq-sheet-fade-to: #090C11;
@@ -158,9 +158,9 @@
 
     --claim-modal-backdrop-bg: rgba(9, 12, 17, 0.75);
     --claim-modal-panel-bg: #090C11;
-    --claim-modal-panel-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-panel-border-c: rgba(102, 104, 110, 1);
     --claim-modal-panel-radius: 25px;
-    --claim-modal-header-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-header-border-c: rgba(102, 104, 110, 1);
     --claim-modal-header-title-f-s: 18px;
     --claim-modal-header-title-f-w: 700;
     --claim-modal-header-title-l-h: 22px;
@@ -221,6 +221,11 @@
     --claim-modal-btn-primary-bg: #FFEF46;
     --claim-modal-btn-primary-f-c: #1F2018;
     --modal-backdrop-bg: rgba(9, 12, 17, 0.75);
+    /* Figma `Surface/Overlay` = #090C11 @ 75% behind every sheet. The page
+       sheets (History/FAQ/What's This) darken via a solid layer + opacity. */
+    --history-overlay-darken-bg: #090C11;
+    --faq-overlay-darken-bg: #090C11;
+    --overlay-darken-opacity: 0.75;
 
     --claim-badge-bg: rgba(245, 248, 255, 0.08);
     --claim-badge-border-c: rgba(245, 248, 255, 0.1);
@@ -256,8 +261,8 @@
     --claim-now-l-h: 16px;
     --claim-now-radius: 20px;
     --claim-sheet-bg: #090C11;
-    --claim-sheet-border-c: rgba(11, 16, 32, 0.1);
-    --claim-sheet-header-border-c: rgba(102, 104, 110, 0.75);
+    --claim-sheet-border-c: rgba(102, 104, 110, 1);
+    --claim-sheet-header-border-c: rgba(102, 104, 110, 1);
     --claim-sheet-header-border-w: 1px;
     --claim-sheet-radius: 25px;
     --claim-step-number-border-w: 1px;
@@ -353,7 +358,7 @@
     --history-name-f-s: 15px;
     --history-name-f-w: 500;
     --history-sheet-bg: #090C11;
-    --history-sheet-border-c: rgba(138, 142, 148, 0.3);
+    --history-sheet-border-c: rgba(102, 104, 110, 1);
     --history-sheet-fade-from: rgba(9, 12, 17, 0);
     --history-sheet-fade-to: #090C11;
     --history-sheet-radius: 20px;
@@ -373,7 +378,7 @@
     --more-action-l-h: 16px;
     --more-action-radius: 5px;
     --retailer-modal-bg: #090C11;
-    --retailer-modal-border-c: rgba(11, 16, 32, 0.1);
+    --retailer-modal-border-c: rgba(102, 104, 110, 1);
     --retailer-modal-btn-border-w: 1px;
     --retailer-modal-btn-f-c: #F5F8FF;
     --retailer-modal-btn-f-s: 15px;
@@ -387,7 +392,7 @@
     --retailer-modal-disclaimer-f-s: 10px;
     --retailer-modal-disclaimer-hover-f-c: #B1B4BB;
     --retailer-modal-disclaimer-l-h: 12px;
-    --retailer-modal-header-border-c: rgba(102, 104, 110, 0.75);
+    --retailer-modal-header-border-c: rgba(102, 104, 110, 1);
     --retailer-modal-header-title-f-c: #F5F8FF;
     --retailer-modal-header-title-f-s: 18px;
     --retailer-modal-header-title-f-w: 700;
@@ -423,10 +428,10 @@
 
     /* ── "What's This?" sheet ── */
     --whats-this-header-title-f-s: 18px;
-    --whats-this-darken-bg: #040407;
+    --whats-this-darken-bg: #090C11;
     --whats-this-sheet-bg: #090C11;
     --whats-this-sheet-border-w: 1px;
-    --whats-this-sheet-border-c: rgba(11, 16, 32, 0.1);
+    --whats-this-sheet-border-c: rgba(102, 104, 110, 1);
     --whats-this-sheet-radius: 25px;
 
     --whats-this-intro-f-s: 14px;
