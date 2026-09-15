@@ -33,7 +33,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 43px;
     padding-bottom: 32px;
 }
 
@@ -48,6 +48,16 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+}
+
+/* Stands in for the search field while the first page loads. */
+.search_skeleton {
+    flex-shrink: 0;
+    width: 397px;
+    max-width: 100%;
+    height: 16px;
+    background: var(--search-skeleton-bg, var(--retailer-card-amount-bg));
+    border-radius: var(--search-skeleton-radius, 4px);
 }
 
 .deals_amount {

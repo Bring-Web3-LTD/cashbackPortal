@@ -5,6 +5,7 @@
 
 :root {
     --bg: #F9FAFB;
+    --skeleton-sweep: linear-gradient(90deg, rgba(243, 244, 246, 0) 0%, #F3F4F6 50%, rgba(243, 244, 246, 0) 100%);
     --title-l-h: 28px;
     --header-btn-l-h: 20px;
     --header-logo-radius: 12px;
@@ -141,10 +142,13 @@
     --retailer-card-amount-campaign-f-w: 600;
     --retailer-card-amount-campaign-bg: #FFE4D6;
 
-    --retailer-card-skeleton-card-bg: #F0F2F5;
+    --retailer-card-skeleton-card-bg: #FFFFFF;
     --retailer-card-skeleton-bg: #E5E7EB;
-    --retailer-card-skeleton-radius: 10px;
-    --retailer-card-skeleton-border-w: 0;
+    --retailer-card-skeleton-radius: 12px;
+    --retailer-card-skeleton-border-w: 1px;
+    --retailer-card-skeleton-border-c: #E5E7EB;
+    --retailer-card-skeleton-name-radius: 5px;
+    --retailer-card-skeleton-badge-radius: 8px;
 
     --deals-amount-f-s: 16px;
     --deals-amount-f-w: 500;
@@ -282,6 +286,11 @@
     --dashboard-history-f-w: 700;
     --dashboard-history-l-h: 20px;
     --dashboard-card-bg: #FFFFFF;
+    --dashboard-skeleton-card-bg: #FFFFFF;
+    --dashboard-skeleton-border-c: #E5E7EB;
+    --dashboard-skeleton-bar-bg: #E5E7EB;
+    --dashboard-skeleton-radius: 12px;
+    --dashboard-skeleton-bar-radius: 4px;
     --dashboard-card-hover-bg: #F9FAFB;
     --dashboard-card-border-c: #E5E7EB;
     --dashboard-card-label-f-c: #3D5AEB;
@@ -469,6 +478,8 @@
     --scrollbar-w: 12px;
 
     --search-bg: #FFFFFF;
+    --search-skeleton-bg: #E5E7EB;
+    --search-skeleton-radius: 4px;
     --search-menu-bg: #FFFFFF;
     --search-f-s: 14px;
     --search-f-w: 400;
