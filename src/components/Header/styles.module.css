@@ -14,7 +14,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1440px;
+    /* Same cap as the body: 1440 less the two 48px gutters the page applies. */
+    max-width: 1344px;
     background: var(--header-bg);
 }
 

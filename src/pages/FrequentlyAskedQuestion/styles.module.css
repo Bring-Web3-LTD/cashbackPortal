@@ -27,7 +27,8 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1440px;
+    /* 1440 less the two 48px gutters the container applies. */
+    max-width: 1344px;
 }
 
 /* Back on the left, title centred on the row rather than after it — so the
