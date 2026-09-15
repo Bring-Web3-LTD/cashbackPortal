@@ -160,7 +160,7 @@
     --claim-modal-panel-bg: #090C11;
     --claim-modal-panel-border-c: rgba(102, 104, 110, 1);
     --claim-modal-panel-radius: 25px;
-    --claim-modal-header-border-c: rgba(138, 142, 148, 0.3);
+    --claim-modal-header-border-c: rgba(102, 104, 110, 1);
     --claim-modal-header-title-f-s: 18px;
     --claim-modal-header-title-f-w: 700;
     --claim-modal-header-title-l-h: 22px;
@@ -392,7 +392,7 @@
     --retailer-modal-disclaimer-f-s: 10px;
     --retailer-modal-disclaimer-hover-f-c: #B1B4BB;
     --retailer-modal-disclaimer-l-h: 12px;
-    --retailer-modal-header-border-c: rgba(102, 104, 110, 0.75);
+    --retailer-modal-header-border-c: rgba(102, 104, 110, 1);
     --retailer-modal-header-title-f-c: #F5F8FF;
     --retailer-modal-header-title-f-s: 18px;
     --retailer-modal-header-title-f-w: 700;
