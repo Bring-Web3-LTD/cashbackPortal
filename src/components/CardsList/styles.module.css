@@ -10,7 +10,7 @@
     width: 100%;
     max-width: 1344px;
     column-gap: 16px;
-    row-gap: 24px;
+    row-gap: 16px;
 }
 
 @media screen and (max-width: 1209px) {
