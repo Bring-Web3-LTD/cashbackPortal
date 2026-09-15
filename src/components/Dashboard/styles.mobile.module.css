@@ -65,7 +65,11 @@
 }
 
 .tile {
-    flex: 1 0 0;
+    /* The basis must stay >= the widest tile's padding + border. With `0`, a
+       border-box item floors its base size at padding+border, so `pending`
+       (9px) and `claim` (5px) start from 20 and 12 and grow to unequal widths —
+       98.5 / 90.5 instead of the 94.5 each that Figma draws. */
+    flex: 1 0 20px;
     min-width: 0;
     display: flex;
     flex-direction: column;
