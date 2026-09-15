@@ -45,6 +45,8 @@
     bottom: 0;
     right: 28px;
     width: 24px;
+    /* Swiper root sets z-index: 1; match it so the fog paints above the pills. */
+    z-index: 1;
     pointer-events: none;
     background: linear-gradient(90deg, transparent 0%, var(--tabs-fog-color, var(--bg, #0F0F1A)) 100%);
 }
