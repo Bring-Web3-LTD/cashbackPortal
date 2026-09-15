@@ -63,7 +63,6 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         width: "100%",
         height: "46px",
         padding: "11px 14px",
-        gap: "8px",
         fontSize: "var(--search-f-s)",
         fontWeight: "var(--search-f-w)",
         lineHeight: "var(--search-l-h, 24px)",
@@ -135,6 +134,10 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     valueContainer: (base) => ({
         ...base,
         padding: 0,
+        // The 8px belongs between the glyph and the text only. A gap on the
+        // control would also land after the text, since react-select still
+        // renders an empty indicators container as the last flex child.
+        marginLeft: "8px",
     }),
     noOptionsMessage: (base) => ({
         ...base,

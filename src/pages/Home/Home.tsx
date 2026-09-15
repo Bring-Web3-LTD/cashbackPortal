@@ -2,7 +2,7 @@
 import styles from './styles.module.css'
 // Components
 import Header from '../../components/Header/Header'
-import Dashboard from '../../components/Dashboard/Dashboard'
+import Dashboard, { type PortalView } from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
@@ -11,7 +11,7 @@ import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignE
 import StatusModal from '../../components/Modals/StatusModal/StatusModal'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
+import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
@@ -37,7 +37,10 @@ const Home = () => {
     // Coupons live src comes from the wallet context, so a SESSION_UPDATE
     // verify replaces it (and clears it when the wallet disconnects).
     const { t } = useTranslation()
-    const [view, setView] = useState<'coupons' | 'cashback'>('cashback')
+    // Seeded from navigation state so the switcher still works on the pages
+    // that show the dashboard but not the browse area.
+    const routedView = (useLocation().state as { view?: PortalView } | null)?.view
+    const [view, setView] = useState<PortalView>(routedView ?? 'cashback')
     const showCoupons = Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons')
     const campaign = parseCampaignId(searchParams.get('campaignId'))
 
@@ -56,7 +59,7 @@ const Home = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
 
-    const { data: categoriesSearch } = useQuery({
+    const { data: categoriesSearch, isLoading: isLoadingCategories } = useQuery({
         queryFn: async () => {
             const options: Parameters<typeof getFilters>[0] = {
                 country,
@@ -158,9 +161,11 @@ const Home = () => {
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
     const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
-    // One flag for the whole loading page: the search row, the chips and the
-    // cards appear and resolve together rather than popping in separately.
     const retailersLoading = (isFetching && !retailersList.length) || skeletonPreview
+    // The search row waits on the filters call, not the retailers one: that call
+    // is what supplies its options, and it also feeds the chips beside it, so
+    // the two resolve together.
+    const searchLoading = isLoadingCategories || skeletonPreview
     const categories = categoriesSearch?.categories?.items ?? []
     const searchTerms =
         categoriesSearch?.searchTerms?.items?.map((term) => ({
@@ -238,7 +243,7 @@ const Home = () => {
                     />
                 ) : (<>
                 <div className={styles.filters_section}>
-                    {retailersLoading ? (
+                    {searchLoading ? (
                         <div className={styles.search_section} aria-hidden="true">
                             <span className={`${styles.search_skeleton} skeleton_shimmer`} />
                         </div>
