@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { parseCampaignId } from '../../utils/campaigns'
 import Icon from '../../components/Icon/Icon'
 import { ENV } from '../../config'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 
 const Home = () => {
     const { platform, isCountryAvailable, userId, flowId, couponsEnabled } = useRouteLoaderData('root') as LoaderData
@@ -30,6 +31,8 @@ const Home = () => {
     const [searchParams] = useSearchParams();
     const { walletAddress, isTester, couponsIframeSrc } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
+    const skeletonPreview = useSkeletonPreview()
+
 
     // Coupons live src comes from the wallet context, so a SESSION_UPDATE
     // verify replaces it (and clears it when the wallet disconnects).
@@ -155,6 +158,9 @@ const Home = () => {
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
     const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
+    // One flag for the whole loading page: the search row, the chips and the
+    // cards appear and resolve together rather than popping in separately.
+    const retailersLoading = (isFetching && !retailersList.length) || skeletonPreview
     const categories = categoriesSearch?.categories?.items ?? []
     const searchTerms =
         categoriesSearch?.searchTerms?.items?.map((term) => ({
@@ -232,6 +238,11 @@ const Home = () => {
                     />
                 ) : (<>
                 <div className={styles.filters_section}>
+                    {retailersLoading ? (
+                        <div className={styles.search_section} aria-hidden="true">
+                            <span className={`${styles.search_skeleton} skeleton_shimmer`} />
+                        </div>
+                    ) : (
                     <div className={styles.search_section}>
                         <div className={styles.search_container}>
                             <Search
@@ -261,6 +272,7 @@ const Home = () => {
                                 `Showing ${retailersMetadata?.totalItems} deals`
                         }</div>
                     </div>
+                    )}
                     <Categories
                         categories={categories}
                         category={category}
@@ -268,7 +280,7 @@ const Home = () => {
                     />
                 </div>
                 <CardsList
-                    loading={isFetching && !retailersList.length}
+                    loading={retailersLoading}
                     retailers={retailersList}
                     metadata={retailersMetadata}
                     search={search}

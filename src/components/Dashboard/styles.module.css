@@ -167,3 +167,53 @@
 .action_secondary:hover {
     background: var(--dashboard-action-secondary-hover-bg, var(--dashboard-action-secondary-bg));
 }
+
+/* The loading page sets the row 20 below the header; the loaded page sits
+   flush against it. */
+.bar_skeleton {
+    margin-top: 20px;
+}
+
+/* Loading placeholder for the summary row. Same 86 height and 14 gap as the
+   real row, so nothing shifts when the balance lands. */
+.skeleton_row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    height: 86px;
+}
+
+.skeleton_card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    /* Share the row evenly; min-width 1 lets them keep shrinking. */
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 86px;
+    padding: 16px;
+    overflow: hidden;
+    background: var(--dashboard-skeleton-card-bg, var(--dashboard-card-bg));
+    border: 1px solid var(--dashboard-skeleton-border-c, var(--dashboard-card-border-c));
+    border-radius: var(--dashboard-skeleton-radius, var(--dashboard-card-radius));
+}
+
+.skeleton_bar {
+    flex-shrink: 0;
+    height: 12px;
+    max-width: 100%;
+    background: var(--dashboard-skeleton-bar-bg, var(--retailer-card-amount-bg));
+    border-radius: var(--dashboard-skeleton-bar-radius, 4px);
+}
+
+.skeleton_bar_label {
+    width: 121px;
+}
+
+.skeleton_bar_amount {
+    width: 380px;
+}
