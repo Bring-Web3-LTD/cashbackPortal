@@ -82,7 +82,7 @@ const Dashboard = ({ mode, onModeChange, onClaim }: DashboardProps) => {
                                 <span className={styles.amount}>{claim.amount}</span>
                                 <span className={styles.symbol}>{claim.symbol}</span>
                             </span>
-                            <span className={styles.usd}>≈ {claim.usd}</span>
+                            <span className={styles.usd}>{claim.usd}</span>
                         </span>
                     </button>
                 </>
