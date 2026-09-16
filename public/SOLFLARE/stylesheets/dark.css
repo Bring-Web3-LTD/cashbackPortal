@@ -356,9 +356,9 @@
     --dashboard-card-btn-disabled-f-c: #66686E;
     --dashboard-history-f-c: #B1B4BB;
     --dashboard-switcher-radius: 12px;
-    --dashboard-tab-f-s: 13px;
+    --dashboard-tab-f-s: 12px;
     --dashboard-tab-f-w: 500;
-    --dashboard-tab-l-h: 15px;
+    --dashboard-tab-l-h: 16px;
     --dashboard-tab-active-radius: 8px;
     --dashboard-tab-idle-radius: 10px;
     --dashboard-banner-radius: 12px;
@@ -526,8 +526,8 @@
 
     --modal-status-loader-c: #FFEF46;
 
-    --scrollbar-bg: #282B30;
-    --scrollbar-w: 12px;
+    --scrollbar-track-bg: #282B30;
+    --scrollbar-bg: #66686E;
 
     --search-bg: transparent;
     --search-skeleton-bg: #1A1D22;
@@ -583,39 +583,60 @@
 
     --history-table-header-f-s: 14px;
     --history-table-header-f-w: 400;
+    --history-table-header-l-h: 22px;
     --history-table-header-f-c: #7A7D83;
 
     --history-table-row-border-w: 1px;
     --history-table-row-border-c: rgba(138, 142, 148, 0.1);
     --history-table-row-bg: #090C11;
 
-    --history-table-row-hover-bg: #14171D;
+    --history-table-row-hover-bg: #16181D;
     --history-table-row-active-bg: #090C11;
     --history-claimed-icon-bg: #282B30;
-    --history-details-btn-bg: #1B1E23;
-    --history-purchase-name-f-s: 16px;
-    --history-purchase-name-f-w: 500;
+    --history-logo-border-w: 1px;
+    --history-logo-border-c: #DCE0E9;
+    --history-logo-fallback-bg: #090C11;
+    --history-logo-fallback-border-w: 1px;
+    --history-logo-fallback-border-c: #66686E;
+    --history-logo-fallback-f-c: #B1B4BB;
+    --history-logo-fallback-f-w: 700;
+    --history-logo-fallback-f-s: 20px;
+    --history-logo-fallback-f-s-two-letters: 16px;
+    --history-logo-fallback-l-h: 16px;
+    /* The row's chevron carries no fill of its own. */
+    --history-details-btn-bg: transparent;
+    --history-purchase-name-f-s: 15px;
+    --history-purchase-name-f-w: 400;
+    --history-purchase-name-l-h: 22px;
     --history-purchase-name-f-c: #F5F8FF;
 
     --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
+    --history-amount-l-h: 22px;
     --history-amount-f-c: #F5F8FF;
 
+    --history-claim-row-f-w: 700;
+    --history-claim-row-f-c: #F5F8FF;
+
+    /* Base is the claimable green; the rest override it per status. */
     --history-status-f-s: 15px;
     --history-status-f-w: 400;
+    --history-status-l-h: 22px;
     --history-status-f-c: #71CC49;
-    --history-status-pending-f-c: #F5F8FF;
-    --history-status-canceled-f-c: #DA493F;
-    --history-status-claimed-f-c: #F5F8FF;
-    --history-status-claimed-f-w: 700;
+    --history-status-pending-f-c: #B1B4BB;
+    --history-status-canceled-f-c: #DA3F49;
+    --history-status-claimed-f-c: #FFEF46;
+    --history-status-claimed-f-w: 400;
 
     --history-description-f-s: 14px;
     --history-description-f-w: 400;
-    --history-description-f-c: #B9BBBF;
+    --history-description-l-h: 20px;
+    --history-description-f-c: #F5F8FF;
     --history-description-bold-f-w: 700;
 
     --history-empty-f-s: 15px;
     --history-empty-f-w: 400;
+    --history-empty-l-h: 24px;
     --history-empty-f-c: #7A7D83;
 
     --faq-row-hover-bg: #16181D;

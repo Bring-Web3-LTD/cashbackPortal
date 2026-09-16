@@ -31,9 +31,13 @@
     width: 343px;
 }
 
+/* The card's edge was a hardcoded black; it uses the row divider's colour, the
+   same one the desktop table draws between rows. */
 .collapsible {
-    background: var(--history-purchase-name-bg, transparent);
-    border: 1px solid black;
+    background: var(--history-table-row-bg);
+    border-width: var(--history-table-row-border-w);
+    border-style: solid;
+    border-color: var(--history-table-row-border-c);
     border-radius: 10px;
     /* border-bottom-width: var(--history-table-row-border-w); */
     /* border-bottom-style: solid; */
@@ -44,7 +48,7 @@
 }
 
 .collapsible_open {
-    background: var(--history-table-row-bg);
+    background: var(--history-table-row-active-bg);
 }
 
 .details_container {
@@ -73,12 +77,18 @@
 }
 
 .img_container {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    border-width: var(--history-logo-border-w, 0);
+    border-style: solid;
+    border-color: var(--history-logo-border-c, transparent);
+    width: 40px;
+    height: 40px;
     background: var(--history-claimed-icon-bg);
 }
 
@@ -88,9 +98,18 @@
     max-width: 100%;
 }
 
-/* No container background behind the initials - it peeks out as a ring. */
+/* Same treatment as the desktop row: the disc carries the fill and its own
+   hairline, and two initials are set smaller than one so both fit. */
 .img_container_fallback {
-    background: none;
+    background: var(--history-logo-fallback-bg, var(--retailer-logo-fallback-bg));
+    border-width: var(--history-logo-fallback-border-w, var(--retailer-logo-fallback-border-w, 0));
+    border-color: var(--history-logo-fallback-border-c, var(--retailer-logo-fallback-border-c, transparent));
+}
+
+/* The claims row shows a glyph, which is drawn without the logo's ring. */
+.img_container_claim {
+    border-width: var(--history-claimed-icon-border-w, 0);
+    border-color: var(--history-claimed-icon-border-c, transparent);
 }
 
 .fallback_logo {
@@ -102,15 +121,14 @@
     border-radius: 50%;
     text-align: center;
     text-transform: uppercase;
-    background: var(--retailer-logo-fallback-bg);
-    color: var(--retailer-logo-fallback-f-c);
-    font-weight: var(--retailer-logo-fallback-f-w);
-    font-size: 15px;
+    color: var(--history-logo-fallback-f-c, var(--retailer-logo-fallback-f-c));
+    font-weight: var(--history-logo-fallback-f-w, var(--retailer-logo-fallback-f-w));
+    font-size: var(--history-logo-fallback-f-s, 20px);
+    line-height: var(--history-logo-fallback-l-h, 16px);
 }
 
 .fallback_logo_two_letters {
-    font-size: 19px;
-    background: var(--retailer-logo-fallback-bg);
+    font-size: var(--history-logo-fallback-f-s-two-letters, 16px);
 }
 
 .details_btn {
@@ -142,7 +160,20 @@
 .purchase_name {
     font-size: var(--history-purchase-name-f-s);
     font-weight: var(--history-purchase-name-f-w);
+    line-height: var(--history-purchase-name-l-h, 22px);
     color: var(--history-purchase-name-f-c);
+}
+
+/* The claims total is a heading for the rows below it: bold throughout, and its
+   status takes the row's colour rather than the claimed accent. */
+.claim_row .purchase_name,
+.claim_row .amount,
+.claim_row .status {
+    font-weight: var(--history-claim-row-f-w, 700);
+}
+
+.claim_row .status {
+    color: var(--history-claim-row-f-c, var(--history-purchase-name-f-c));
 }
 
 .nowrap {
@@ -151,15 +182,33 @@
 
 .amount {
     display: flex;
-    gap: 20px;
+    gap: 8px;
     font-size: var(--history-amount-f-s);
     font-weight: var(--history-amount-f-w);
+    line-height: var(--history-amount-l-h, 22px);
     color: var(--history-amount-f-c);
+}
+
+.status_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+}
+
+/* Names the value beside it, so it reads like the desktop table's column
+   heading rather than like another value. */
+.status_label {
+    font-size: var(--history-table-header-f-s);
+    font-weight: var(--history-table-header-f-w);
+    line-height: var(--history-table-header-l-h, 22px);
+    color: var(--history-table-header-f-c);
 }
 
 .status {
     font-size: var(--history-status-f-s);
     font-weight: var(--history-status-f-w);
+    line-height: var(--history-status-l-h, 22px);
     color: var(--history-status-f-c);
 }
 
@@ -180,6 +229,7 @@
     font-size: var(--history-description-f-s);
     font-weight: var(--history-description-f-w);
     color: var(--history-description-f-c);
+    line-height: var(--history-description-l-h, 20px);
     margin-bottom: 8px;
 }
 
@@ -195,6 +245,7 @@
     margin-top: 16px;
     font-size: var(--history-empty-f-s);
     font-weight: var(--history-empty-f-w);
+    line-height: var(--history-empty-l-h, 24px);
     color: var(--history-empty-f-c);
 }
 
@@ -210,13 +261,12 @@ b {
     font-weight: var(--history-description-bold-f-w);
 }
 
+/* Was drawing the browser's default grey rule; it takes the same colour as the
+   divider between desktop rows. */
 .breakline {
     margin-left: 10px;
     margin-right: 10px;
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        display: flex;
-    }
+    border-width: var(--history-table-row-border-w) 0 0 0;
+    border-style: solid;
+    border-color: var(--history-table-row-border-c);
 }

@@ -37,24 +37,29 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
+    const { t } = useTranslation()
+    // The claims aggregate: the row with no retailer behind it, not every row
+    // whose status reads "Claimed".
+    const isClaim = !retailerName
+    const name = retailerName || t('historyTotalClaims')
     return (
         <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
-                className={styles.details_container}
+                className={`${styles.details_container} ${isClaim ? styles.claim_row : ''}`}
                 onClick={toggleFn}
             >
                 <div className={styles.name_container}>
                     <div
-                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''}`}
-                        style={fallbackLogo || status.toLowerCase() === 'claimed' ? {} : { background: imgBg || 'white' }}
+                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''} ${isClaim ? styles.img_container_claim : ''}`}
+                        style={fallbackLogo || isClaim ? {} : { background: imgBg || 'white' }}
                     >
                         {fallbackLogo ?
                             <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                             :
                             <img
-                                style={{ height: `${status.toLowerCase() === 'claimed' ? 'auto' : '100%'}` }}
+                                style={{ height: isClaim ? 'auto' : '100%' }}
                                 className={styles.img}
                                 src={imgSrc}
                                 alt="logo"
@@ -64,12 +69,12 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                                         img.src = imgSrcFallback
                                         return
                                     }
-                                    setFallbackLogo(getInitials(retailerName))
+                                    setFallbackLogo(getInitials(name))
                                 }}
                             />
                         }
                     </div>
-                    <span className={`${styles.purchase_name} ${retailerName.length > 20 ? '' : styles.nowrap}`}>{retailerName}</span>
+                    <span className={`${styles.purchase_name} ${name.length > 20 ? '' : styles.nowrap}`}>{name}</span>
                 </div>
                 <button
                     id="history-mobile-details-btn"
@@ -77,20 +82,22 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                 >
                     <Icon name="arrow-down.svg" alt="arrow-down" />
                 </button>
-                <span>{tokenAmount}</span>
-                {
-                    totalEstimatedUsd ?
-                        <>
-                            <span>/</span>
-                            <span>{totalEstimatedUsd}</span>
-                        </>
-                        :
-                        null
-                }
+                <div className={styles.amount}>
+                    <span>{tokenAmount}</span>
+                    {
+                        totalEstimatedUsd ?
+                            <>
+                                <span>/</span>
+                                <span>{totalEstimatedUsd}</span>
+                            </>
+                            :
+                            null
+                    }
+                </div>
             </div>
             <hr className={styles.breakline} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 20px' }}>
-                <div>Status:</div>
+            <div className={styles.status_row}>
+                <div className={styles.status_label}>{t('historyColStatus')}:</div>
                 <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
             </div>
             <AnimatePresence>
