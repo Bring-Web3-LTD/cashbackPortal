@@ -64,5 +64,11 @@
   "pairSessionInvalid": "This attempt timed out. Send a new code.",
   "signInWithGoogle": "Sign in with Google",
   "or": "or",
-  "faqTitle": "FAQ"
+  "faqTitle": "FAQ",
+  "historyColPurchase": "Purchase",
+  "historyColDate": "Date",
+  "historyColAmount": "Amount",
+  "historyColStatus": "Status",
+  "historyColDetails": "Details",
+  "historyTotalClaims": "Total claims"
 }

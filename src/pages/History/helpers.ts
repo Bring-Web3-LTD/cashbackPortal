@@ -27,6 +27,14 @@ export const formatDate = (date: string): string => {
     })
 }
 
+/** Numeric form for the table's Date column, e.g. `16.5.2026`. */
+export const formatShortDate = (date: string): string => {
+    const d = new Date(date)
+    if (Number.isNaN(d.getTime())) return ''
+
+    return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
+}
+
 export const daysLeft = (date: string): number => {
     const targetDate: Date = new Date(date)
 

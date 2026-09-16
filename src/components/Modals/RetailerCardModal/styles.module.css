@@ -299,7 +299,6 @@
 
 .markdown {
     --padding: 10px;
-    --scrollbar-gap: 5px;
     color: var(--modal-deal-markdown-f-c);
     background: var(--modal-deal-markdown-bg);
     border-radius: var(--modal-deal-markdown-radius);
@@ -320,16 +319,9 @@
     height: calc(216px - var(--padding) * 2);
 }
 
-.markdown::-webkit-scrollbar {
-    background: transparent;
-    width: calc(3px + var(--scrollbar-gap));
-}
-
+/* Shape comes from the shared bar in globals.css; only the thumb's colour is
+   the modal's own, since it sits on a lighter panel than the page. */
 .markdown::-webkit-scrollbar-thumb {
-    border-right: var(--scrollbar-gap) solid transparent;
-    border-top: 6px solid transparent;
-    background-clip: padding-box;
-    border-radius: 9999px;
     background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
     min-height: 36px;
 }

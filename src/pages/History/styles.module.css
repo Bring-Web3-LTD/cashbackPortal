@@ -1,29 +1,71 @@
 .container {
-    margin-top: 80px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    padding: 0 48px;
 }
 
+@media screen and (max-width: 1111px) {
+    .container {
+        padding: 0 32px;
+    }
+}
+
+@media screen and (max-width: 839px) {
+    .container {
+        padding: 0 20px;
+    }
+}
+
+/* 1440 less the two 48px gutters the container applies. */
+.main {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1344px;
+}
+
+/* Back on the left, title centred on the row rather than after it — so the
+   title stays centred whatever the back label translates to. */
+.toolbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%;
+    height: 48px;
+    margin-top: 32px;
+}
+
+/* Horizontally centred; vertically it sits 10px down rather than centred, which
+   is 3px above the row's middle. Both axes pinned: an absolutely positioned
+   flex child otherwise falls back to a static position. */
 .title {
-    font-size: var(--history-title-f-s);
-    font-weight: var(--history-title-f-w);
-    color: var(--history-title-f-c);
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     margin: 0;
-    margin-bottom: 65px;
+    font-size: var(--page-toolbar-title-f-s, var(--history-title-f-s));
+    font-weight: var(--page-toolbar-title-f-w, var(--history-title-f-w));
+    line-height: var(--page-toolbar-title-l-h, 22px);
+    color: var(--page-toolbar-title-f-c, var(--history-title-f-c));
+    white-space: nowrap;
 }
 
 .back_btn {
-    position: absolute;
     display: flex;
     align-items: center;
-    gap: 6px;
-    top: calc(32px + 37px);
-    left: 64px;
+    gap: 4px;
     text-decoration: none;
-    font-size: var(--history-back-f-s);
-    font-weight: var(--history-back-f-w);
-    color: var(--history-page-back-f-c, var(--history-back-f-c));
+    font-size: var(--page-toolbar-back-f-s, var(--history-back-f-s));
+    font-weight: var(--page-toolbar-back-f-w, var(--history-back-f-w));
+    line-height: var(--page-toolbar-back-l-h, 15px);
+    color: var(--page-toolbar-back-f-c, var(--history-page-back-f-c, var(--history-back-f-c)));
     transition: .2s;
 }
 
@@ -32,10 +74,22 @@
    its own arrow and setting --history-back-icon-hover-f-c. The overlay then uses
    the arrow as a mask and paints that colour over it. Set neither and the fill
    stays transparent, so the overlay is invisible and nothing changes. */
+/* Fixed 24 box with the asset filled to it: platform arrows ship at different
+   intrinsic sizes (14 and 24 among them), which otherwise moves both the glyph
+   and the 4px gap beside it. */
 .back_icon {
     position: relative;
     display: inline-flex;
     flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.back_icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .back_icon::after {
@@ -49,33 +103,86 @@
     transition: opacity .2s;
 }
 
-.table {
-    width: 1167px;
-    border-radius: var(--history-table-radius, 0);
-    overflow: hidden;
+/* The columns are fixed, so a narrow viewport scrolls the table sideways
+   rather than reflowing it or dropping a column. */
+.table_scroll {
+    width: 100%;
+    margin-top: 24px;
+    overflow-x: auto;
 }
 
+/* 879 to 1280: the columns hold their drawn widths at the top of that range and
+   give ground evenly below it. Under 879 they stop shrinking and the table
+   scrolls instead, so no column is ever dropped or reflowed. */
+.table {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 879px;
+    max-width: 1280px;
+    border-radius: var(--history-table-radius, 0);
+}
+
+/* Shared by the header and every row, so a label always lands over its column.
+   The cells are fixed and spaced apart rather than butted together: they add up
+   to 1226 and the table is 1280, and the design spreads that 54 between them.
+   Below 1280 the gaps close first, then the table scrolls. */
+.table_header,
+.details_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* The widths are a basis, not a cap: the four data columns shrink together as
+   the table narrows. The chevron's column never does — it holds one 32px
+   button between two 16px gutters. */
+.table_header_cell,
+.cell {
+    min-width: 0;
+}
+
+.table_header_cell:nth-child(1),
+.cell:nth-child(1) { flex: 0 1 284px; }
+
+.table_header_cell:nth-child(2),
+.cell:nth-child(2) { flex: 0 1 250px; }
+
+.table_header_cell:nth-child(3),
+.cell:nth-child(3) { flex: 0 1 343px; }
+
+.table_header_cell:nth-child(4),
+.cell:nth-child(4) { flex: 0 1 285px; }
+
+.table_header_cell:nth-child(5),
+.cell:nth-child(5) { flex: 0 0 64px; }
+
 .table_header {
-    display: grid;
-    grid-template-columns: 1fr 1.75fr 1fr 0.25fr;
     align-items: center;
-    /* justify-items: center; */
     background: var(--history-table-header-bg);
-    border-width: var(--history-table-header-border-w);
-    border-style: solid;
-    border-color: var(--history-table-header-border-c);
-    border-radius: var(--history-table-header-radius);
+    border-bottom-width: var(--history-table-row-border-w);
+    border-bottom-style: solid;
+    border-bottom-color: var(--history-table-row-border-c);
     height: 54px;
-    /* margin-bottom: 9px; */
-    padding-left: 46px;
     user-select: none;
 }
 
 .table_header_cell {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 16px;
     font-size: var(--history-table-header-f-s);
     font-weight: var(--history-table-header-f-w);
+    line-height: var(--history-table-header-l-h, 22px);
     color: var(--history-table-header-f-c);
-    line-height: 18px;
+    white-space: nowrap;
+}
+
+/* A label is indented like the value under it, so the two share an edge. The
+   last is pushed right instead, over the chevron. */
+.table_header_cell:nth-child(1) { padding-left: 48px; }
+
+.table_header_cell:nth-child(5) {
+    justify-content: flex-end;
 }
 
 .collapsible {
@@ -83,41 +190,65 @@
     border-bottom-style: solid;
     border-bottom-color: var(--history-table-row-border-c);
     transition: .2s;
-    min-height: 62px;
     background: var(--history-table-row-bg);
 }
 
-/* Last row keeps the border box but not the line — the table edge closes it. */
-.collapsible:last-child {
-    border-bottom-color: transparent;
-}
-
+/* 72 closed plus the detail line (20) and its 12 bottom padding, then 5 under
+   that, which is the 109 the open row measures. */
 .collapsible_open {
     background: var(--history-table-row-active-bg);
+    padding-bottom: 5px;
 }
 
 .details_container {
-    padding-left: 50px;
-    height: 62px;
-    display: grid;
-    grid-template-columns: 1fr 1.75fr 1fr 0.25fr;
-    align-items: center;
+    align-items: stretch;
+    height: 72px;
     transition: .2s;
+    cursor: pointer;
+}
+
+/* Every cell is padded 16 all round; the first opens to 48 on the left and the
+   last is shallower, since the chevron is smaller than a line of text. */
+.cell {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px;
+}
+
+.cell_first {
+    padding-left: 48px;
+}
+
+.cell_details {
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .name_container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
+    min-width: 0;
 }
 
 .img_container {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    border-width: var(--history-logo-border-w, 0);
+    border-style: solid;
+    border-color: var(--history-logo-border-c, transparent);
+    width: 40px;
+    height: 40px;
     background: var(--history-claimed-icon-bg);
 }
 
@@ -132,11 +263,23 @@
     border-radius: 0;
 }
 
-/* No container background behind the initials - it peeks out as a ring. */
+/* Initials stand in for a logo that failed to load. The disc carries the fill
+   and its own hairline, which is fainter than the ring a real logo gets.
+   Falls back to the retailer card's family, the same treatment one size up. */
 .img_container_fallback {
-    background: none;
+    background: var(--history-logo-fallback-bg, var(--retailer-logo-fallback-bg));
+    border-width: var(--history-logo-fallback-border-w, var(--retailer-logo-fallback-border-w, 0));
+    border-color: var(--history-logo-fallback-border-c, var(--retailer-logo-fallback-border-c, transparent));
 }
 
+/* The ring belongs to a retailer logo, which is a photo that needs an edge
+   against the row. The claims row shows a glyph instead, drawn without one. */
+.img_container_claim {
+    border-width: var(--history-claimed-icon-border-w, 0);
+    border-color: var(--history-claimed-icon-border-c, transparent);
+}
+
+/* Two initials are set smaller than one, so both fit the same disc. */
 .fallback_logo {
     display: flex;
     width: 100%;
@@ -146,27 +289,29 @@
     border-radius: 50%;
     text-align: center;
     text-transform: uppercase;
-    background: var(--retailer-logo-fallback-bg);
-    color: var(--retailer-logo-fallback-f-c);
-    font-weight: var(--retailer-logo-fallback-f-w);
-    font-size: 21px;
+    color: var(--history-logo-fallback-f-c, var(--retailer-logo-fallback-f-c));
+    font-weight: var(--history-logo-fallback-f-w, var(--retailer-logo-fallback-f-w));
+    font-size: var(--history-logo-fallback-f-s, 20px);
+    line-height: var(--history-logo-fallback-l-h, 16px);
 }
 
 .fallback_logo_two_letters {
-    font-size: 26px;
-    background: var(--retailer-logo-fallback-bg);
+    font-size: var(--history-logo-fallback-f-s-two-letters, 16px);
 }
 
 .details_btn {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     border-width: 0;
     border-style: solid;
     border-color: transparent;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    padding: 4px;
+    border-radius: 100px;
     background: var(--history-details-btn-bg);
     transition: .2s;
     cursor: pointer;
@@ -178,27 +323,66 @@
 
 .description_container {
     overflow: hidden;
-    /* min-height: 40px; */
-    padding-left: 105px;
+    padding-left: 100px;
 }
 
 .purchase_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: var(--history-purchase-name-f-s);
     font-weight: var(--history-purchase-name-f-w);
+    line-height: var(--history-purchase-name-l-h, 22px);
     color: var(--history-purchase-name-f-c);
+}
+
+/* The claims total is one row standing for many, so every cell in it is set
+   bold. It is the only row that is - an ordinary row is regular throughout,
+   whatever its status. */
+.claim_row .purchase_name,
+.claim_row .date,
+.claim_row .amount,
+.claim_row .status {
+    font-weight: var(--history-claim-row-f-w, 700);
+}
+
+/* The totals row reads "Claimed" too, but it is a heading for the rows below,
+   not a status: it takes the row's own colour rather than the claimed accent. */
+.claim_row .status {
+    color: var(--history-claim-row-f-c, var(--history-purchase-name-f-c));
+}
+
+/* The columns narrow before the table scrolls, so a long value trims rather
+   than wrapping a 72px row into two lines. */
+.date,
+.amount,
+.status {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.date {
+    font-size: var(--history-date-f-s, var(--history-amount-f-s));
+    font-weight: var(--history-date-f-w, var(--history-amount-f-w));
+    line-height: var(--history-date-l-h, var(--history-amount-l-h, 22px));
+    color: var(--history-date-f-c, var(--history-amount-f-c));
 }
 
 .amount {
     display: flex;
-    gap: 20px;
+    gap: 8px;
     font-size: var(--history-amount-f-s);
     font-weight: var(--history-amount-f-w);
+    line-height: var(--history-amount-l-h, 22px);
     color: var(--history-amount-f-c);
 }
 
 .status {
     font-size: var(--history-status-f-s);
     font-weight: var(--history-status-f-w);
+    line-height: var(--history-status-l-h, 22px);
     color: var(--history-status-f-c);
 }
 
@@ -207,7 +391,7 @@
 }
 
 .claimed {
-    color: var(--history-status-claimed-f-c);
+    color: var(--history-status-claimed-f-c, var(--history-status-f-c));
     font-weight: var(--history-status-claimed-f-w, var(--history-status-f-w));
 }
 
@@ -215,17 +399,12 @@
     color: var(--history-status-pending-f-c, var(--history-status-f-c));
 }
 
-/* "Total claims" also reads "Claimed" but is a heading, not a status. */
-.total_claims {
-    color: var(--history-status-total-claims-f-c);
-    font-weight: var(--history-status-total-claims-f-w);
-}
-
 .description {
+    padding-bottom: 12px;
     font-size: var(--history-description-f-s);
     font-weight: var(--history-description-f-w);
+    line-height: var(--history-description-l-h, 20px);
     color: var(--history-description-f-c);
-    margin-bottom: 8px;
 }
 
 .txid {
@@ -237,18 +416,36 @@
 }
 
 .empty_history {
-    margin-top: 16px;
     font-size: var(--history-empty-f-s);
     font-weight: var(--history-empty-f-w);
+    line-height: var(--history-empty-l-h, 24px);
     color: var(--history-empty-f-c);
+    text-align: center;
 }
 
+/* Glyph over label, centred in the space the table would have filled.
+   The 21px is the design's: its content box is drawn 1365 wide inside the 1344
+   column, so the placeholder centres 10.5px right of the column's middle.
+   Drop this line and the block centres properly. */
 .empty_container {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 282px;
+    margin-top: 24px;
+    padding-left: 21px;
+}
+
+.placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    gap: 16px;
+    width: 480px;
+    max-width: 100%;
 }
 
 b {
@@ -269,11 +466,5 @@ b {
 
     .back_btn:hover .back_icon::after {
         opacity: 1;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        display: none;
     }
 }

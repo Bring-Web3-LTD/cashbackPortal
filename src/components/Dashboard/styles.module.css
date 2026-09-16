@@ -54,8 +54,13 @@
     cursor: pointer;
 }
 
+/* Inset 1px on each side: the chip sits in a full-width track that pads itself
+   by a pixel, so the pill is 2 narrower than the idle tab above it. */
 .tab_active {
+    width: auto;
+    align-self: stretch;
     height: 30px;
+    margin: 0 1px;
     padding: 4px 8px;
     overflow: hidden;
     background: var(--dashboard-tab-active-bg);

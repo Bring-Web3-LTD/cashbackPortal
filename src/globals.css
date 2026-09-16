@@ -7,25 +7,50 @@ body {
     background: var(--bg);
 }
 
-body::-webkit-scrollbar {
-    background: var(--bg);
+/* One scroll bar everywhere something scrolls: an 8px fully-rounded track with
+   a 6px thumb inset a pixel. Elements that hide their bar instead declare their
+   own rules, which outrank these. */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-bg) var(--scrollbar-track-bg, transparent);
 }
 
-/* Hidden but still scrollable. */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg, transparent);
+    border-radius: 100px;
+}
+
+*::-webkit-scrollbar-thumb {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    border-radius: 100px;
+    background-color: var(--scrollbar-bg);
+}
+
+/* The page itself never shows a vertical bar - it still scrolls. The root is
+   named alongside the body because the rule above gives the root a bar of its
+   own, and Chrome only hands the body's styling to the viewport while the root
+   has none. Firefox cannot hide one axis on its own, so it loses the page's
+   horizontal bar too; inner scrollers keep theirs on both engines. */
+html,
+body {
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar:vertical,
 body::-webkit-scrollbar:vertical {
     width: 0;
 }
 
-/* Kept visible; only appears below the 500px floor. */
+/* Kept: only appears below the 500px floor. */
+html::-webkit-scrollbar:horizontal,
 body::-webkit-scrollbar:horizontal {
-    height: var(--scrollbar-w);
-}
-
-body::-webkit-scrollbar-thumb {
-    border: 4px solid rgba(0, 0, 0, 0);
-    background-clip: padding-box;
-    border-radius: 9999px;
-    background-color: var(--scrollbar-bg);
+    height: 8px;
 }
 
 /* No gutter to compensate for; the vertical bar is hidden. */

@@ -342,7 +342,6 @@
     --modal-status-loader-c: #00DFF3;
 
     --scrollbar-bg: #282B30;
-    --scrollbar-w: 12px;
 
     /* Search. The input has no fill and keeps the same border in every state,
        so no --search-border-focus-c: it falls back to --search-border-c. */
