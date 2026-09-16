@@ -482,7 +482,7 @@
     --modal-deal-terms-btn-f-c: rgba(245, 248, 255, 0.85);
     --modal-deal-terms-btn-hover-f-c: #F5F8FF;
 
-    --modal-status-radius: 30px;
+    --modal-status-radius: 12px;
     --modal-status-amount-f-c: #F5F8FF;
     --modal-status-amount-f-s: 38px;
     --modal-status-amount-f-w: 700;
@@ -492,6 +492,7 @@
     --modal-status-success-title-l-h: 26px;
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 700;
+    --modal-status-title-l-h: 38px;
     --modal-status-title-loading-f-c: #F5F8FF;
     --modal-status-title-success-f-c: #F5F8FF;
     --modal-status-title-failure-f-c: #DA3F49;
@@ -499,10 +500,52 @@
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
     --modal-status-msg-f-c: #F5F8FF;
+    --modal-status-msg-l-h: 24px;
 
+    --modal-status-claim-border-c: rgba(245, 248, 255, 0.10);
+    --modal-status-claim-border-w: 1px;
+    --modal-status-claim-badge-bg: rgba(245, 248, 255, 0.08);
+    --modal-status-claim-balance-bg: linear-gradient(110.07deg, #2C2F36 9.09%, #12151A 90.91%);
+    --modal-status-claim-label-f-s: 14px;
+    --modal-status-claim-label-f-w: 500;
+    --modal-status-claim-label-l-h: 20px;
+    --modal-status-claim-label-f-c: #B1B4BB;
+    --modal-status-claim-badge-chip-bg: rgba(8, 194, 157, 0.15);
+    --modal-status-claim-badge-chip-border-w: 1px;
+    --modal-status-claim-badge-chip-border-c: rgba(8, 194, 157, 0.15);
+    --modal-status-claim-badge-chip-f-s: 12px;
+    --modal-status-claim-badge-chip-f-w: 700;
+    --modal-status-claim-badge-chip-f-c: #08C29D;
+    --modal-status-claim-amount-f-s: 22px;
+    --modal-status-claim-amount-f-w: 700;
+    --modal-status-claim-amount-l-h: 28px;
+    --modal-status-claim-amount-f-c: #F5F8FF;
+    --modal-status-claim-usd-f-s: 13px;
+    --modal-status-claim-usd-f-w: 400;
+    --modal-status-claim-usd-l-h: 20px;
+    --modal-status-claim-usd-f-c: #B1B4BB;
+    --modal-status-claim-guide-f-s: 14px;
+    --modal-status-claim-guide-f-w: 500;
+    --modal-status-claim-guide-l-h: 20px;
+    --modal-status-claim-guide-f-c: #F5F8FF;
+    --modal-status-claim-step-bg: #1B1E24;
+    --modal-status-claim-step-number-bg: rgba(245, 248, 255, 0.08);
+    --modal-status-claim-step-number-f-s: 12px;
+    --modal-status-claim-step-number-f-w: 700;
+    --modal-status-claim-step-f-s: 12px;
+    --modal-status-claim-step-f-w: 400;
+    --modal-status-claim-step-f-c: #F5F8FF;
+
+    --modal-status-pair-title-f-s: 22px;
+    --modal-status-pair-title-f-w: 700;
+    --modal-status-pair-title-l-h: 28px;
+    --modal-status-pair-title-f-c: #F5F8FF;
+
+    --modal-status-btn-strong-f-w: 700;
     --modal-status-btn-bg: rgba(245, 248, 255, 0.08);
     --modal-status-btn-f-s: 16px;
     --modal-status-btn-f-w: 400;
+    --modal-status-btn-l-h: 24px;
     --modal-status-btn-f-c: #F5F8FF;
     --modal-status-btn-border-w: 0;
     --modal-status-btn-border-c: transparent;

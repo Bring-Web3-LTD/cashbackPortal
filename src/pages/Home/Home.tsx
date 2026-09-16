@@ -8,7 +8,7 @@ import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignEndModal'
 // Rendered only by the ?test=status preview below.
-import StatusModal from '../../components/Modals/StatusModal/StatusModal'
+import StatusModal, { type StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
@@ -51,7 +51,7 @@ const Home = () => {
     // Drives the ?test=status preview, which opens StatusModal in any state
     // without running a claim. Non-production only, like the other
     // tester-facing affordances.
-    const [testStatus, setTestStatus] = useState<'success' | 'failure' | 'loading' | null>(null)
+    const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
     const statusPreview = ENV !== 'prod' && searchParams.get('test') === 'status'
     const [isFirstLoadComplete, setIsFirstLoadComplete] = useState(false)
 
@@ -197,7 +197,7 @@ const Home = () => {
                         border: '1px solid rgba(255, 255, 255, 0.12)',
                         backdropFilter: 'blur(4px)',
                     }}>
-                        {(['failure', 'success', 'loading'] as const).map(s => (
+                        {(['failure', 'success', 'loading', 'paired', 'pairFailed', 'claim'] as const).map(s => (
                             <button
                                 key={s}
                                 onClick={() => setTestStatus(s)}
@@ -215,6 +215,8 @@ const Home = () => {
                     <StatusModal
                         open={testStatus !== null}
                         status={testStatus ?? 'loading'}
+                        amount="25.25 USDC"
+                        usdValue="$25.25"
                         closeFn={() => setTestStatus(null)}
                     />
                 </>

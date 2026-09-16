@@ -6,13 +6,17 @@ import { useTranslation } from 'react-i18next'
 import Icon from '../../Icon/Icon'
 import { shortenWalletAddress } from '../../../utils/claimFlow'
 
+export type StatusModalState = 'success' | 'failure' | 'loading' | 'paired' | 'pairFailed' | 'claim'
+
 interface ClaimInfo {
     amount?: string
     address?: string | null
+    /** Shown under the balance on the claim guide, already formatted. */
+    usdValue?: string
 }
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'>, ClaimInfo {
-    status: 'success' | "failure" | 'loading'
+    status: StatusModalState
 }
 
 interface StatusProps { closeFn: () => void }
@@ -91,12 +95,102 @@ const Failure = ({ closeFn }: StatusProps) => {
     )
 }
 
+/* Pairing outcomes. Same card as the claim states - icon, one line of text,
+   then the button - so only the glyph and the copy differ. */
+const Paired = ({ closeFn }: StatusProps) => {
+    const { t } = useTranslation()
+
+    return (
+        <div className={styles.card}>
+            <Icon className={styles.icon_paired} name="tick-circle.svg" alt="" />
+            <div className={`${styles.title} ${styles.pair_title}`}>
+                {t('pairSuccessTitle')}
+            </div>
+            <button
+                id="status-modal-paired-btn"
+                onClick={() => closeFn()}
+                className={styles.btn}
+            >{t('statusCloseBtn')}</button>
+        </div>
+    )
+}
+
+const PairFailed = ({ closeFn }: StatusProps) => {
+    const { t } = useTranslation()
+
+    return (
+        <div className={styles.card}>
+            <Icon className={styles.icon_pair_failed} name="error-triangle.svg" alt="" />
+            {/* No title above it, so the message sits at the icon's own gap. */}
+            <div className={`${styles.msg} ${styles.msg_pair}`}>
+                {t('pairFailedMsg')}
+            </div>
+            <button
+                id="status-modal-pair-failed-btn"
+                onClick={() => closeFn()}
+                className={`${styles.btn} ${styles.btn_strong}`}
+            >{t('pairFailedBtn')}</button>
+        </div>
+    )
+}
+
+const CLAIM_STEPS = [1, 2, 3, 4] as const
+
+/* Claim guide: balance on top, then how to get the wallet that receives it.
+   The steps read down each column, so the grid fills column-first. */
+const Claim = ({ closeFn, amount, usdValue }: StatusProps & ClaimInfo) => {
+    const { t } = useTranslation()
+
+    return (
+        <div className={styles.claim_card}>
+            <div className={styles.claim_badge}>
+                <Icon className={styles.claim_badge_icon} name="wallet-badge.svg" fallbackName="wallet.svg" alt="" />
+            </div>
+            <div className={styles.claim_body}>
+                <div className={styles.balance_card}>
+                    <div className={styles.balance_header}>
+                        <div className={styles.balance_label}>{t('claimGuideBalance')}</div>
+                        <div className={styles.balance_badge}>{t('claimGuideBadge')}</div>
+                    </div>
+                    <div className={styles.balance_row}>
+                        <div className={styles.balance_amounts}>
+                            <div className={styles.balance_amount}>{amount}</div>
+                            {usdValue ? (
+                                <div className={styles.balance_usd}>
+                                    {t('claimGuideCurrentValue', { value: usdValue })}
+                                </div>
+                            ) : null}
+                        </div>
+                        <Icon className={styles.balance_sparkle} name="sparkle.svg" alt="" />
+                    </div>
+                </div>
+                <div className={styles.guide}>
+                    <div className={styles.guide_title}>{t('claimGuideTitle')}</div>
+                    <div className={styles.steps}>
+                        {CLAIM_STEPS.map(n => (
+                            <div key={n} className={styles.step}>
+                                <div className={styles.step_number}>{n}</div>
+                                <div className={styles.step_text}>{t(`claimGuideStep${n}`)}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <button
+                id="status-modal-claim-btn"
+                onClick={() => closeFn()}
+                className={styles.claim_btn}
+            >{t('claimGuideCta')}</button>
+        </div>
+    )
+}
+
 const shellOverrides = {
     '--custom-modal-bg': 'var(--modal-status-bg, var(--modal-bg))',
     '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
 }
 
-const StatusModal = ({ open, closeFn, status, amount, address }: Props) => {
+const StatusModal = ({ open, closeFn, status, amount, address, usdValue }: Props) => {
     const close = () => {
         message({ action: 'POPUP_CLOSED' })
         closeFn()
@@ -117,7 +211,13 @@ const StatusModal = ({ open, closeFn, status, amount, address }: Props) => {
                     <Failure closeFn={close} />
                     : status === 'success' ?
                         <Success amount={amount} address={address} closeFn={close} />
-                        : null
+                        : status === 'paired' ?
+                            <Paired closeFn={close} />
+                            : status === 'pairFailed' ?
+                                <PairFailed closeFn={close} />
+                                : status === 'claim' ?
+                                    <Claim amount={amount} usdValue={usdValue} closeFn={close} />
+                                    : null
             }
         </Modal>
     )
