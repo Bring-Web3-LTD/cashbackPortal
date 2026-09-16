@@ -6,15 +6,28 @@
     display: flex;
     flex-direction: column;
     background: var(--faq-item-bg, #171C2F);
+
+    /* Inset shadow, not `border`: Figma draws the stroke inside the 40px frame,
+       so a real border makes every item 42px and the list drifts further out of
+       place with each row. Same reason as the WhatsThis sheet. */
+    box-shadow: inset 0 0 0 var(--faq-item-border-w, 0)
+        var(--faq-item-border-c, transparent);
     border-radius: var(--faq-item-radius, 6px);
     padding: 8px 8px 8px 12px;
     transition: background 0.15s ease;
     overflow: hidden;
 }
 
+/* Marker class only — must exist here so CSS modules emit it for the .tsx. */
+.itemOpen {}
+
+/* Figma only defines hover for the collapsed item (State=Hover); the open
+   answer box has no hover state. */
 @media (hover: hover) {
-    .item:hover {
+    .item:not(.itemOpen):hover {
         background: var(--faq-item-hover-bg, #2B344D);
+        box-shadow: inset 0 0 0 var(--faq-item-border-w, 0)
+            var(--faq-item-hover-border-c, var(--faq-item-border-c, transparent));
     }
 }
 
@@ -23,9 +36,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+
+    gap: 35px;
     width: 100%;
-    min-height: 24px;
+    min-height: 20px;
     margin: 0;
     padding: 0;
     border: none;
@@ -33,7 +47,6 @@
     cursor: pointer;
     text-align: left;
     color: inherit;
-    font-family: 'Prompt', system-ui, sans-serif;
 }
 
 .questionText {
@@ -41,7 +54,7 @@
     min-width: 0;
     font-size: var(--faq-question-f-s, 16px);
     font-weight: var(--faq-question-f-w, 400);
-    line-height: var(--faq-question-l-h, 22px);
+    line-height: var(--faq-question-l-h, 20px);
     color: var(--faq-question-f-c, #F7F7F7);
 }
 
@@ -52,6 +65,7 @@
     justify-content: center;
     width: 16px;
     height: 16px;
+
     /* Default: Grey/300. Turns Grey/100 on hover or when expanded. */
     color: var(--faq-chevron-f-c, #7685A0);
     transition: transform 0.2s ease, color 0.15s ease;
@@ -87,7 +101,6 @@
 
 .answerLine {
     margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--faq-answer-f-s, 12px);
     font-weight: var(--faq-answer-f-w, 400);
     line-height: var(--faq-answer-l-h, 16px);
@@ -95,10 +108,11 @@
     word-break: break-word;
 }
 
-/* Hovering anywhere in the open answer highlights the whole answer, not just
-   the line under the cursor. */
-.answer:hover .answerLine,
-.answer:hover .link {
+/* Hovering anywhere in the open answer highlights the plain text, not just
+   the line under the cursor. `.link` keeps its own color (--faq-link-f-c) —
+   it's already visually distinct and shouldn't get swallowed into the
+   grey-to-white treatment meant for body text. */
+.answer:hover .answerLine {
     color: var(--faq-answer-hover-f-c, #F7F7F7);
 }
 
@@ -113,5 +127,14 @@
 .link {
     color: var(--faq-link-f-c, inherit);
     text-decoration: underline;
+    /* Figma sets decoration-thickness/underline-position "from-font" — the
+       browser default draws a thicker, lower-set line than the font's own
+       underline metrics. */
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
+    /* Figma recolors the underline stroke itself, separate from the yellow
+       link text — falls back to the link color so platforms without an
+       override render as before. */
+    text-decoration-color: var(--faq-link-underline-c, var(--faq-link-f-c, currentColor));
     cursor: pointer;
 }

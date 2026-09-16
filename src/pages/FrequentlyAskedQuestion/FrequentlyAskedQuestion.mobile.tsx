@@ -10,7 +10,8 @@ import styles from './styles.mobile.module.css'
 const SKELETON_COUNT = 7
 
 const MobileFaq = () => {
-    const { labels, faq, indentationMark, isLoading, openOrder, close, onToggle } = useFaqPage()
+    const { labels, faq, indentationMark, isLoading, openOrder, close, onToggle, openSupport } =
+        useFaqPage()
 
     return (
         <div className={styles.root} data-testid="mobile-faq">
@@ -19,7 +20,7 @@ const MobileFaq = () => {
             </div>
             <div className={styles.darken} aria-hidden="true" onClick={close} />
             <div className={styles.sheet} role="dialog" aria-modal="true">
-                <MobileHeader title={labels.title} onBack={close} />
+                <MobileHeader title={labels.title} onClose={close} />
                 <main className={styles.content}>
                     {isLoading ? (
                         <div className={styles.list} aria-hidden="true">
@@ -34,19 +35,31 @@ const MobileFaq = () => {
                         <p className={styles.intro}>
                             {labels.intro}
                         </p>
-                        <div className={styles.list}>
-                            {faq.map((item) => (
-                                <MobileFaqItem
-                                    key={item.id}
-                                    id={item.id}
-                                    question={item.question}
-                                    answer={item.answer}
-                                    links={item.links ?? []}
-                                    indentationMark={indentationMark}
-                                    isOpen={openOrder === item.itemOrder}
-                                    onToggle={() => onToggle(item.itemOrder)}
-                                />
-                            ))}
+                        <div className={styles.body}>
+                            <div className={styles.list}>
+                                {faq.map((item) => (
+                                    <MobileFaqItem
+                                        key={item.id}
+                                        id={item.id}
+                                        question={item.question}
+                                        answer={item.answer}
+                                        links={item.links ?? []}
+                                        indentationMark={indentationMark}
+                                        isOpen={openOrder === item.itemOrder}
+                                        onToggle={() => onToggle(item.itemOrder)}
+                                    />
+                                ))}
+                            </div>
+                            <div className={styles.contact}>
+                                <p className={styles.contactText}>{labels.didntFind}</p>
+                                <button
+                                    type="button"
+                                    className={styles.contactBtn}
+                                    onClick={openSupport}
+                                >
+                                    {labels.contactUs}
+                                </button>
+                            </div>
                         </div>
                         </>
                     )}

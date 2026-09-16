@@ -50,9 +50,15 @@ interface LoaderData {
     walletEmoji?: string
     walletName?: string
     useMobilePortal?: boolean
+    // Resolved server-side from the /check/portal API key, returned by /verify.
+    couponsEnabled?: boolean
+    isHub?: boolean
     variant: string
     bringTou?: string
     privacy?: string
+    // Wallet install link (e.g. Chrome Web Store), resolved server-side and
+    // returned by /verify. Powers the "Download Wallet" CTAs.
+    chromeStoreUrl?: string
 }
 
 

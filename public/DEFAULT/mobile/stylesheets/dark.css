@@ -429,4 +429,100 @@
 
     --claim-modal-spinner-circle-bg: rgba(6, 182, 212, 0.20);
     --claim-modal-spinner-c: #F8FAFC;
+
+    --claim-modal-header-title-l-s: 0.32px;
+    --claim-modal-btn-primary-f-c: #F8FAFC;
+    --claim-modal-btn-secondary-border-w: 0;
+    --claim-modal-btn-secondary-border-c: transparent;
+
+    --tab-border-w: 0;
+    --tab-border-c: transparent;
+
+    --filter-chip-bg: #1E293B;
+    --filter-chip-border-w: 1px;
+    --filter-chip-border-c: #334155;
+    --filter-chip-radius: 6px;
+    --filter-chip-f-s: 14px;
+    --filter-chip-l-h: 20px;
+    --filter-chip-f-c: #F8FAFC;
+
+    --search-input-f-s: 14px;
+
+    --retailer-card-border-w: 0;
+    --retailer-card-border-c: transparent;
+    --retailer-sub-label-f-w: 400;
+    --retailer-sub-l-s: 0;
+    --shop-btn-border-w: 0;
+    --shop-btn-border-c: transparent;
+    --shop-btn-f-w: 400;
+
+    --faq-item-border-w: 0;
+    --faq-item-border-c: transparent;
+
+    --faq-contact-text-f-s: 14px;
+    --faq-contact-text-f-w: 400;
+    --faq-contact-text-l-h: 20px;
+    --faq-contact-text-f-c: #64748B;
+    --faq-contact-btn-bg: #1E293B;
+    --faq-contact-btn-border-w: 1px;
+    --faq-contact-btn-border-c: #334155;
+    --faq-contact-btn-radius: 8px;
+    --faq-contact-btn-f-s: 14px;
+    --faq-contact-btn-f-w: 400;
+    --faq-contact-btn-l-h: 20px;
+    --faq-contact-btn-f-c: #F8FAFC;
+
+    --header-action-close-radius: 16px;
+
+    --history-item-border-c: transparent;
+    --history-item-open-bg: #1E293B;
+    --history-sheet-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+
+    --more-action-bg: #1E293B;
+    --more-action-border-c: #334155;
+    --more-action-radius: 6px;
+    --more-action-f-s: 12px;
+    --more-action-f-w: 400;
+    --more-action-f-c: #F8FAFC;
+
+    --retailer-modal-cancel-border-c: transparent;
+    --retailer-modal-pill-f-c: #22D3EE;
+    --retailer-modal-pill-f-w: 400;
+    --retailer-modal-shop-f-c: #F8FAFC;
+    --retailer-modal-shop-disabled-bg: rgba(6, 182, 212, 0.35);
+    --retailer-modal-terms-body-f-w: 400;
+
+    --claim-sheet-bg: #0F172A;
+    --claim-sheet-border-c: #334155;
+    --claim-sheet-header-border-c: #334155;
+    --claim-sheet-radius: 16px;
+
+    --claim-card-bg:
+        linear-gradient(109.31deg, rgba(30, 41, 59, 0.4) 0%, rgba(6, 182, 212, 0.20) 100%),
+        #1E293B;
+    --claim-card-border-c: #334155;
+    --claim-card-divider-c: rgba(248, 250, 252, 0.12);
+    --claim-card-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    --claim-badge-bg: rgba(6, 182, 212, 0.18);
+    --claim-badge-border-c: rgba(6, 182, 212, 0.30);
+    --claim-hero-f-c: #F8FAFC;
+    --claim-label-f-c: #94A3B8;
+    --claim-now-bg: rgba(74, 222, 128, 0.15);
+    --claim-now-f-c: #4ADE80;
+    --claim-cta-bg: #06B6D4;
+    --claim-cta-f-c: #F8FAFC;
+
+    --dashboard-radius: 6px;
+    --dashboard-accent: #06B6D4;
+    --dashboard-accent-soft: rgba(6, 182, 212, 0.18);
+    --dashboard-amount-f-c: #F8FAFC;
+    --dashboard-label-f-c: #64748B;
+    --dashboard-pill-f-c: #94A3B8;
+    --dashboard-tabs-bg: #1E293B;
+    --dashboard-tab-f-c: #94A3B8;
+    --dashboard-tab-f-s: 12px;
+    --dashboard-tab-f-w: 400;
+    --dashboard-tab-active-f-c: #F8FAFC;
+    --dashboard-tile-bg: #1E293B;
+    --dashboard-tile-border-c: #334155;
 }

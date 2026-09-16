@@ -8,6 +8,7 @@
     height: 32px;
 }
 
+/* Skeleton pill */
 .rootLoading {
     height: var(--tabs-loading-h, 16px);
 }
@@ -44,6 +45,8 @@
     bottom: 0;
     right: 28px;
     width: 24px;
+    /* Swiper root sets z-index: 1; match it so the fog paints above the pills. */
+    z-index: 1;
     pointer-events: none;
     background: linear-gradient(90deg, transparent 0%, var(--tabs-fog-color, var(--bg, #0F0F1A)) 100%);
 }
@@ -55,12 +58,12 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 6px 10px;
-    border: none;
+    padding: 4px 8px;
+
+    border: var(--tab-border-w, 0) solid var(--tab-border-c, transparent);
     border-radius: var(--tab-radius, 6px);
     background: var(--tab-bg, transparent);
     color: var(--tab-f-c, #7685A0);
-    font-family: 'Prompt', system-ui, sans-serif;
     font-size: var(--tab-f-s, 14px);
     font-weight: var(--tab-f-w, 400);
     line-height: var(--tab-l-h, 20px);
@@ -71,13 +74,13 @@
 .tab:hover:not(.tabActive) {
     color: var(--tab-hover-f-c, var(--tab-f-c, #7685A0));
     background: var(--tab-hover-bg, transparent);
-    padding: 4px 8px;
+    border-width: var(--tab-hover-border-w, var(--tab-border-w, 0));
+    border-color: var(--tab-hover-border-c, var(--tab-border-c, transparent));
 }
 
 .tabActive {
     background: var(--tab-active-bg, rgba(96, 103, 249, 0.25));
     color: var(--tab-active-f-c, #8793FF);
-    padding: 4px 8px;
 }
 
 /* Trailing search icon — bare 16px glyph, overlaid flush right. Default and
@@ -124,4 +127,3 @@
     opacity: 1;
 }
 
-/* Skeleton pill */
