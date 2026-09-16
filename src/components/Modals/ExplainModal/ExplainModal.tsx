@@ -49,6 +49,9 @@ const ExplainModal = ({ open, closeFn, onClaim }: Props) => {
                         <p className={styles.subtitle}>{t('explainSubtitle')}</p>
                     </div>
                 </div>
+                {/* The cards and the CTA sit closer to each other than to the
+                    intro above them, so they share a block of their own. */}
+                <div className={styles.body}>
                 <div className={styles.grid}>
                     {CARDS.map(card => (
                         <div key={card} className={styles.card}>
@@ -71,6 +74,7 @@ const ExplainModal = ({ open, closeFn, onClaim }: Props) => {
                     >
                         {t('claimCashback')}
                     </button>
+                </div>
                 </div>
             </div>
         </Modal>
