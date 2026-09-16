@@ -3,8 +3,6 @@
 import { createPortal } from 'react-dom'
 import Icon from '../Icon/Icon'
 import { usePairWalletModal, PairWalletModalProps } from './usePairWalletModal'
-// TEMPORARY, dev only — delete with DevStepPicker.tsx.
-import DevStepPicker from './DevStepPicker'
 import styles from './styles.mobile.module.css'
 
 const PairWalletModal = (props: PairWalletModalProps) => {
@@ -28,7 +26,6 @@ const PairWalletModal = (props: PairWalletModalProps) => {
         resendCode,
         fatalError,
         goToEmail,
-        devJump,
     } = usePairWalletModal(props)
 
     if (!open) return null
@@ -39,7 +36,6 @@ const PairWalletModal = (props: PairWalletModalProps) => {
     const showClose = step !== 'success'
 
     return createPortal(
-        <>
         <div className={styles.backdrop} onClick={onClose}>
             <section
                 className={styles.panel}
@@ -206,11 +202,7 @@ const PairWalletModal = (props: PairWalletModalProps) => {
                     </div>
                 ) : null}
             </section>
-        </div>
-        {/* TEMPORARY, dev only — sibling of the backdrop so its clicks never
-            reach onClose. Delete with DevStepPicker.tsx. */}
-        <DevStepPicker onJump={devJump} />
-        </>,
+        </div>,
         document.body,
     )
 }

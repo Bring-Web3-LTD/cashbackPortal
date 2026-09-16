@@ -32,15 +32,6 @@ const rootLoader = async () => {
         const extensionId = res.info.extensionId || urlExtensionId || null
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
-        // Dev-only: let the URL force the Mobile Portal layout flags that
-        // /check/portal normally resolves server-side, so a design can be
-        // reviewed through the dev-wrapper (which issues a real token, and so
-        // never reaches the DEV_MODE branch below). Same gate as api/mockCache.
-        const devFlags = ENV === 'prod' ? {} : {
-            couponsEnabled: params.get('couponsEnabled') === 'true' || res.info.couponsEnabled,
-            couponsIframeSrc: params.get('couponsIframeSrc') || res.info.couponsIframeSrc,
-            isHub: params.get('isHub') === 'true' || res.info.isHub,
-        }
         const maxWidth = mobilePortalMaxWidth(platform)
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= maxWidth
         // Same number drives the CSS width caps, including the body-portaled modals.
@@ -73,7 +64,6 @@ const rootLoader = async () => {
 
         return {
             ...res.info,
-            ...devFlags,
             iconsPath: `${iconsBase}/${theme}`,
             defaultIconsPath: `${defaultIconsBase}/${theme}`,
             userId,

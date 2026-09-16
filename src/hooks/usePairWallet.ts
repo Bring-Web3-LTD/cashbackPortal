@@ -61,34 +61,6 @@ const FATAL_ERROR_KEYS: Partial<Record<PairReason, string>> = {
 
 const emptyCode = (length: number) => Array<string>(length).fill('')
 
-// ── TEMPORARY, dev only ──────────────────────────────────────────────────
-// Every screen of the flow, with the Figma node it mirrors, for the dev
-// picker. Delete with DevStepPicker.tsx and `devJump` below.
-export const DEV_SCREENS = [
-    ['email', 'Email', '278-5033'],
-    ['emailFilled', 'Email·typed', '278-5002'],
-    ['emailInvalid', 'Email·error', '278-4995'],
-    ['code', 'Code', '278-5009'],
-    ['codeFilled', 'Code·typed', '278-5025'],
-    ['codeInvalid', 'Code·error', '278-5017'],
-    ['error', 'Not found', '278-5473'],
-    ['success', 'Paired', '278-5040'],
-] as const
-
-export type DevScreen = (typeof DEV_SCREENS)[number][0]
-
-const DEV_SCREEN_STEP: Record<DevScreen, PairStep> = {
-    email: 'email',
-    emailFilled: 'email',
-    emailInvalid: 'email',
-    code: 'code',
-    codeFilled: 'code',
-    codeInvalid: 'code',
-    error: 'error',
-    success: 'success',
-}
-// ─────────────────────────────────────────────────────────────────────────
-
 /** `open` drives the reset: closing the sheet abandons the attempt. */
 export const usePairWallet = ({ open }: { open: boolean }) => {
     const queryClient = useQueryClient()
@@ -292,30 +264,6 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
 
     const clearCodeError = () => setCodeErrorKey(null)
 
-    // ── TEMPORARY, dev only ──────────────────────────────────────────────
-    // Jumps straight to any screen so each one can be held against Figma
-    // without walking the real flow. Delete this block together with
-    // DevStepPicker.tsx once the pairing designs are signed off.
-    const devJump = (name: DevScreen) => {
-        setEmailErrorKey(null)
-        setCodeErrorKey(null)
-        setBusy(false)
-        if (name === 'email') setEmailValue('')
-        if (name === 'emailFilled') setEmailValue('priya@gmail.com')
-        if (name === 'emailInvalid') {
-            setEmailValue('priya@gmail.cofgn')
-            setEmailErrorKey('pairEmailInvalid')
-        }
-        if (name === 'code') setCode(emptyCode(codeLength))
-        if (name === 'codeFilled' || name === 'codeInvalid') {
-            setCode(Array<string>(codeLength).fill('8'))
-        }
-        if (name === 'codeInvalid') setCodeErrorKey('pairCodeInvalid')
-        if (name === 'error') setFatalErrorKey('pairNotFound')
-        setStep(DEV_SCREEN_STEP[name])
-    }
-    // ─────────────────────────────────────────────────────────────────────
-
     return {
         step,
         busy,
@@ -336,7 +284,5 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         resendCode,
         fatalErrorKey,
         goToEmail,
-        // TEMPORARY, dev only — see DevStepPicker.tsx.
-        devJump,
     }
 }
