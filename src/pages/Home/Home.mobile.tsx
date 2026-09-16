@@ -98,9 +98,9 @@ const MobileHome = () => {
                     mode={mode}
                     onModeChange={setMode}
                     onClaim={handleOpenClaim}
+                    onPairWallet={handleOpenPair}
                 />
                 {renderFilterRow()}
-                    onPairWallet={handleOpenPair}
                 <MobileCardsList
                     retailers={retailers}
                     metadata={metadata}
@@ -126,9 +126,9 @@ const MobileHome = () => {
                 onConfirm={handleConfirmClaim}
                 onTryAgain={handleConfirmClaim}
             />
+            <MobilePairWalletModal open={pairOpen} onClose={handleClosePair} />
         </div>
     )
 }
 
 export default MobileHome
-            <MobilePairWalletModal open={pairOpen} onClose={handleClosePair} />
