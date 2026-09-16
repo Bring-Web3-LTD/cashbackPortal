@@ -15,9 +15,6 @@ import { usePairWallet } from '../../hooks/usePairWallet'
 import { useOtpInputs } from './useOtpInputs'
 
 export type { PairStep } from '../../hooks/usePairWallet'
-// TEMPORARY, dev only — re-exported for DevStepPicker.tsx, delete with it.
-export { DEV_SCREENS } from '../../hooks/usePairWallet'
-export type { DevScreen } from '../../hooks/usePairWallet'
 
 export interface PairWalletModalProps {
     open: boolean
@@ -69,7 +66,5 @@ export const usePairWalletModal = ({ open }: PairWalletModalProps) => {
         },
         fatalError: t(pair.fatalErrorKey),
         goToEmail: pair.goToEmail,
-        // TEMPORARY, dev only — see DevStepPicker.tsx.
-        devJump: pair.devJump,
     }
 }
