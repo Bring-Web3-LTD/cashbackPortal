@@ -4,18 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
-import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
+import { createDescription, formatCurrency, formatDate, formatShortDate, formatStatus } from './helpers'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import Icon from '../../components/Icon/Icon'
+import Header from '../../components/Header/Header'
+import Dashboard from '../../components/Dashboard/Dashboard'
 import { getInitials } from '../../utils/getInitials'
 
 interface HistoryDesktop {
     status: string
-    /** Aggregated "Total claims" row, not a purchase. Both render the status "Claimed". */
-    isClaim?: boolean
     tokenAmount: string;
+    date: string
     imgSrc: string
     imgSrcFallback?: string
     description: string[][];
@@ -33,30 +34,39 @@ interface ClaimToken {
     tokenAmount: number
     description: string[][]
     tokenSymbol: string
+    /** Most recent claim in the group — the row stands for all of them. */
+    date: string
 }
 
 interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, isClaim = false, tokenAmount, totalEstimatedUsd, imgBg, retailerName = 'Total claims', description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
+    const { t } = useTranslation()
+    // The claims aggregate: one row standing for every claim of a token. It is
+    // the row with no retailer behind it — not every row whose status reads
+    // "Claimed", which is an ordinary purchase that has been paid out.
+    const isClaim = !retailerName
+    const name = retailerName || t('historyTotalClaims')
     return (
         <div id="history-desktop-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
-                className={styles.details_container}
+                className={`${styles.details_container} ${isClaim ? styles.claim_row : ''}`}
                 onClick={toggleFn}
             >
+                <div className={`${styles.cell} ${styles.cell_first}`}>
                 <div className={styles.name_container}>
                     <div
-                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''}`}
+                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''} ${isClaim ? styles.img_container_claim : ''}`}
                         style={fallbackLogo || isClaim ? {} : { background: imgBg || 'white' }}
                     >
                         {fallbackLogo ?
                             <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                             :
                             <img
-                                style={{ height: `${isClaim ? 'auto' : '100%'}` }}
+                                style={{ height: isClaim ? 'auto' : '100%' }}
                                 className={`${styles.img} ${isClaim ? styles.img_claim : ''}`}
                                 src={imgSrc}
                                 alt="logo"
@@ -66,38 +76,48 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, isClaim = fal
                                         img.src = imgSrcFallback
                                         return
                                     }
-                                    setFallbackLogo(getInitials(retailerName))
+                                    setFallbackLogo(getInitials(name))
                                 }}
                             />
                         }
                     </div>
-                    <span className={styles.purchase_name}>{retailerName}</span>
+                    <span className={styles.purchase_name}>{name}</span>
                 </div>
-                <div className={styles.amount}>
-                    {totalEstimatedUsd ?
-                        <>
+                </div>
+                <div className={styles.cell}>
+                    <span className={styles.date}>{date}</span>
+                </div>
+                <div className={styles.cell}>
+                    <div className={styles.amount}>
+                        {totalEstimatedUsd ?
+                            <>
+                                <span>{tokenAmount}</span>
+                                {
+                                    totalEstimatedUsd !== 0 ?
+                                        <>
+                                            <span>/</span>
+                                            <span>{totalEstimatedUsd}</span>
+                                        </>
+                                        :
+                                        null
+                                }
+                            </>
+                            :
                             <span>{tokenAmount}</span>
-                            {
-                                totalEstimatedUsd !== 0 ?
-                                    <>
-                                        <span>/</span>
-                                        <span>{totalEstimatedUsd}</span>
-                                    </>
-                                    :
-                                    null
-                            }
-                        </>
-                        :
-                        <span>{tokenAmount}</span>
-                    }
+                        }
+                    </div>
                 </div>
-                <div className={`${styles.status} ${isClaim ? styles.total_claims : status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
-                <button
-                    id="history-desktop-details-btn"
-                    className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
-                >
-                    <Icon name="arrow-down.svg" alt="arrow-down" />
-                </button>
+                <div className={styles.cell}>
+                    <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
+                </div>
+                <div className={`${styles.cell} ${styles.cell_details}`}>
+                    <button
+                        id="history-desktop-details-btn"
+                        className={`${styles.details_btn} ${isActive ? styles.rotate : ''}`}
+                    >
+                        <Icon name="arrow-down.svg" alt="arrow-down" />
+                    </button>
+                </div>
             </div>
             <AnimatePresence>
                 {isActive && <motion.div
@@ -170,8 +190,9 @@ const HistoryDesktop = () => {
 
         claims.map(claim => {
             const { tokenSymbol, tokenAmount, date, txid } = claim
-            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
-            
+            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [], date }
+            if (new Date(date) > new Date(res[tokenSymbol].date)) res[tokenSymbol].date = date
+
             const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
             if (txid) {
                 descriptionItem.push(txid)
@@ -184,11 +205,11 @@ const HistoryDesktop = () => {
         const arr = Object.keys(res).map(key => ({
             ...res[key]
             , tokenAmount: `${res[key].tokenAmount} ${key}`,
+            date: formatShortDate(res[key].date),
             imgSrc: `${iconsPath}/gift.svg`,
             imgSrcFallback: `${defaultIconsPath}/gift.svg`,
             tokenSymbol: key,
             status: formatStatus('claimed'),
-            isClaim: true,
         }))
 
         return arr
@@ -198,6 +219,8 @@ const HistoryDesktop = () => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
             tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
+            // The purchase date, which is what the row is about.
+            date: formatShortDate(deal.date ?? deal.startDate),
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
             status: formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerDisplayName,
@@ -211,6 +234,14 @@ const HistoryDesktop = () => {
 
     return (
         <div className={styles.container}>
+            <Header />
+            <main className={styles.main}>
+            {/* Same row as the home page; switching view leaves for it. */}
+            <Dashboard
+                view="cashback"
+                onViewChange={view => navigate('/', { state: { view } })}
+            />
+            <div className={styles.toolbar}>
             <Link
                 id="history-desktop-back-btn"
                 className={styles.back_btn}
@@ -232,18 +263,20 @@ const HistoryDesktop = () => {
                     {t('back')}
                 </span>
             </Link>
+                <h1 className={styles.title}>{t('historyTitle')}</h1>
+            </div>
             {balance?.movements.claims.length || balance?.movements.deals.length ? (
-                <>
-                    <h1 className={styles.title}>{t('historyTitle')}</h1>
+                    <div className={styles.table_scroll}>
                     <div className={styles.table}>
                         <div className={styles.table_header}>
-                            {/* Translatable so a platform can rename a column
-                                (e.g. GERO's "Reward" / "Amount in Token");
-                                the default keeps the existing wording. */}
-                            <span className={styles.table_header_cell}>{t('historyColPurchase', 'Purchase')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColAmount', 'Amount')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColStatus', 'Status')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColDetails', 'Details')}</span>
+                            {/* Every label is a platform's to rename (SOLFLARE
+                                and GERO both do); DEFAULT holds the wording the
+                                rest fall back to. */}
+                            <span className={styles.table_header_cell}>{t('historyColPurchase')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColDate')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColAmount')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColStatus')}</span>
+                            <span className={styles.table_header_cell}>{t('historyColDetails')}</span>
                         </div>
                         {
                             history.map((item, i) =>
@@ -267,19 +300,22 @@ const HistoryDesktop = () => {
                             )
                         }
                     </div>
-                </>
+                    </div>
             ) : (
                 <div className={styles.empty_container}>
-                    {imgExists ? (
-                        <Icon
-                            name="no-history.svg"
-                            alt="history"
-                            onError={() => setImgExists(false)}
-                        />
-                    ) : null}
-                    <div className={styles.empty_history}>{t('emptyHistory')}</div>
+                    <div className={styles.placeholder}>
+                        {imgExists ? (
+                            <Icon
+                                name="no-history.svg"
+                                alt="history"
+                                onError={() => setImgExists(false)}
+                            />
+                        ) : null}
+                        <div className={styles.empty_history}>{t('emptyHistory')}</div>
+                    </div>
                 </div>
             )}
+            </main>
         </div>
     )
 }

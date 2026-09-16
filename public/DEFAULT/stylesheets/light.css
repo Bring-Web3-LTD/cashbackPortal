@@ -474,8 +474,8 @@
     --back-to-top-border-c: #E5E7EB;
     --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
-    --scrollbar-bg: #D1D5DB;
-    --scrollbar-w: 12px;
+    --scrollbar-track-bg: #E5E7EB;
+    --scrollbar-bg: #9CA3AF;
 
     --search-bg: #FFFFFF;
     --search-skeleton-bg: #E5E7EB;
@@ -533,6 +533,9 @@
 
     --history-table-row-hover-bg: #F0F2F5;
     --history-table-row-active-bg: #FFFFFF;
+    --history-logo-fallback-f-s: 20px;
+    --history-logo-fallback-f-s-two-letters: 16px;
+    --history-logo-fallback-l-h: 16px;
     --history-claimed-icon-bg: #3D5AEB;
     --history-details-btn-bg: #E5E7EB;
     --history-purchase-name-f-s: 16px;
