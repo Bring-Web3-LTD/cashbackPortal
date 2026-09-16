@@ -1,16 +1,37 @@
+/* The dialog can outgrow the window - a short viewport, or one narrower than
+   the dialog's own min-width. The overlay scrolls so none of it is stranded;
+   the body is locked while it is open, so the scroll stops here rather than
+   chaining to the page behind. */
 .overlay {
     position: fixed;
     inset: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    overflow: auto;
+    overscroll-behavior: contain;
     z-index: 10;
     background: var(--modal-overlay-bg);
 }
 
+/* Same as the page: no bar down the right, only along the bottom. It still
+   scrolls both ways. Setting scrollbar-width here instead would cost Chrome
+   these rules altogether, and with them the bottom bar. */
+.overlay::-webkit-scrollbar:vertical {
+    width: 0;
+}
+
+.overlay::-webkit-scrollbar:horizontal {
+    height: 8px;
+}
+
+/* Centres while there is room, and gives way instead of clipping when there is
+   not - which `align-items: center` cannot do, since it overflows both ends of
+   the scrollport and the top becomes unreachable. */
 .modal {
     box-sizing: border-box;
     position: relative;
+    margin: auto;
     width: 100%;
     min-width: 420px;
     max-width: 512px;

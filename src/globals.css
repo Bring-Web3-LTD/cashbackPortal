@@ -9,12 +9,12 @@ body {
 
 /* One scroll bar everywhere something scrolls: an 8px fully-rounded track with
    a 6px thumb inset a pixel. Elements that hide their bar instead declare their
-   own rules, which outrank these. */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-bg) var(--scrollbar-track-bg, transparent);
-}
+   own rules, which outrank these.
 
+   Shape comes from the webkit pseudo-elements, the only way to size a bar
+   exactly or hide a single axis. Chrome drops them the moment scrollbar-width
+   or scrollbar-color is set on the same element, so the standard properties
+   are confined to engines that have no pseudo-elements to drop. */
 *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -35,13 +35,7 @@ body {
 /* The page itself never shows a vertical bar - it still scrolls. The root is
    named alongside the body because the rule above gives the root a bar of its
    own, and Chrome only hands the body's styling to the viewport while the root
-   has none. Firefox cannot hide one axis on its own, so it loses the page's
-   horizontal bar too; inner scrollers keep theirs on both engines. */
-html,
-body {
-    scrollbar-width: none;
-}
-
+   has none. */
 html::-webkit-scrollbar:vertical,
 body::-webkit-scrollbar:vertical {
     width: 0;
@@ -51,6 +45,16 @@ body::-webkit-scrollbar:vertical {
 html::-webkit-scrollbar:horizontal,
 body::-webkit-scrollbar:horizontal {
     height: 8px;
+}
+
+/* Firefox has no ::-webkit-scrollbar to style, so it takes the colours through
+   the standard properties instead. It cannot hide one axis on its own, so the
+   page keeps both bars there rather than losing the horizontal one. */
+@supports not selector(::-webkit-scrollbar) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-bg) var(--scrollbar-track-bg, transparent);
+    }
 }
 
 /* No gutter to compensate for; the vertical bar is hidden. */
