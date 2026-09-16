@@ -2,9 +2,18 @@
     height: 455px;
 }
 
+/* A 40 box inset 16 from both edges, so the 24 glyph centres at 36. */
 .overlay .close {
-    top: 23px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 16px;
     right: 16px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 8px;
 }
 
 .overlay .close img {
@@ -53,7 +62,7 @@
     white-space: nowrap;
     font-size: var(--modal-status-amount-f-s);
     font-weight: var(--modal-status-amount-f-w);
-    line-height: var(--modal-status-amount-l-h);
+    line-height: var(--modal-status-amount-l-h, 48px);
     color: var(--modal-status-amount-f-c);
 }
 
@@ -85,7 +94,7 @@
     text-align: center;
     font-size: var(--modal-status-success-title-f-s);
     font-weight: var(--modal-status-success-title-f-w);
-    line-height: var(--modal-status-success-title-l-h);
+    line-height: var(--modal-status-success-title-l-h, 26px);
     color: var(--modal-status-title-success-f-c);
 }
 
@@ -98,7 +107,7 @@
     text-align: center;
     font-size: var(--modal-status-msg-f-s);
     font-weight: var(--modal-status-msg-f-w);
-    line-height: var(--modal-status-msg-l-h);
+    line-height: var(--modal-status-msg-l-h, 24px);
     color: var(--modal-status-msg-f-c);
 }
 
@@ -114,6 +123,18 @@
     width: 40px;
     height: 40px;
 }
+
+/* The pairing outcomes are drawn larger than the claim ones. */
+.icon_paired {
+    width: 80px;
+    height: 80px;
+}
+
+.icon_pair_failed {
+    width: 60px;
+    height: 60px;
+}
+
 
 .loader {
     width: 34px;
@@ -140,7 +161,7 @@
     text-align: center;
     font-size: var(--modal-status-title-f-s);
     font-weight: var(--modal-status-title-f-w);
-    line-height: var(--modal-status-title-l-h);
+    line-height: var(--modal-status-title-l-h, 38px);
 }
 
 .title_loading {
@@ -161,7 +182,7 @@
     width: 100%;
     max-width: 328px;
     min-height: 100px;
-    line-height: var(--modal-status-msg-l-h);
+    line-height: var(--modal-status-msg-l-h, 24px);
     font-size: var(--modal-status-msg-f-s);
     font-weight: var(--modal-status-msg-f-w);
     color: var(--modal-status-msg-f-c);
@@ -183,6 +204,7 @@
     border-color: var(--modal-status-btn-border-c);
     font-size: var(--modal-status-btn-f-s);
     font-weight: var(--modal-status-btn-f-w);
+    line-height: var(--modal-status-btn-l-h, 24px);
     background: var(--modal-status-btn-bg);
     cursor: pointer;
     transition: .2s;
@@ -206,4 +228,250 @@
     border-width: var(--modal-status-btn-disabled-border-w);
     border-color: var(--modal-status-btn-disabled-border-c);
     border-radius: var(--modal-status-btn-disabled-radius);
+}
+
+/* Overrides below their base classes, not above: same specificity, so the
+   later rule wins.
+
+   One line in a 60 block, so the gap below matches the drawn card. */
+.pair_title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    width: 328px;
+    font-size: var(--modal-status-pair-title-f-s, 22px);
+    font-weight: var(--modal-status-pair-title-f-w, 700);
+    line-height: var(--modal-status-pair-title-l-h, 28px);
+    color: var(--modal-status-pair-title-f-c, var(--modal-status-msg-f-c));
+}
+
+/* No title above this one, so it sits at the icon's own 8 rather than the 12
+   that follows a title. */
+.msg_pair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 328px;
+    max-width: 328px;
+    height: 100px;
+    margin-top: 8px;
+    /* pre-wrap, not pre-line: the copy breaks its own first line, and the
+       design keeps the space that ends it, which centring counts. */
+    white-space: pre-wrap;
+}
+
+.btn_strong {
+    font-weight: var(--modal-status-btn-strong-f-w, 700);
+}
+
+/* Claim guide. Unlike the other states this fills the shell top to bottom, so
+   it lays itself out rather than sitting centred in the card. */
+.claim_card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+}
+
+.claim_badge {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background: var(--modal-status-claim-badge-bg, var(--modal-status-btn-bg));
+    box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
+}
+
+.claim_badge_icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.claim_body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.balance_card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: var(--modal-status-claim-balance-bg, var(--modal-status-btn-bg));
+    box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
+}
+
+.balance_header,
+.balance_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.balance_label {
+    font-size: var(--modal-status-claim-label-f-s, 14px);
+    font-weight: var(--modal-status-claim-label-f-w, 500);
+    line-height: var(--modal-status-claim-label-l-h, 20px);
+    color: var(--modal-status-claim-label-f-c, var(--modal-status-msg-f-c));
+}
+
+.balance_badge {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 33px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--modal-status-claim-badge-chip-bg, transparent);
+    box-shadow: inset 0 0 0 var(--modal-status-claim-badge-chip-border-w, 1px) var(--modal-status-claim-badge-chip-border-c, transparent);
+    font-size: var(--modal-status-claim-badge-chip-f-s, 12px);
+    font-weight: var(--modal-status-claim-badge-chip-f-w, 700);
+    color: var(--modal-status-claim-badge-chip-f-c, inherit);
+    white-space: nowrap;
+}
+
+.balance_amounts {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.balance_amount {
+    white-space: nowrap;
+    font-size: var(--modal-status-claim-amount-f-s, 22px);
+    font-weight: var(--modal-status-claim-amount-f-w, 700);
+    line-height: var(--modal-status-claim-amount-l-h, 28px);
+    color: var(--modal-status-claim-amount-f-c, var(--modal-status-title-loading-f-c));
+}
+
+.balance_usd {
+    white-space: nowrap;
+    font-size: var(--modal-status-claim-usd-f-s, 13px);
+    font-weight: var(--modal-status-claim-usd-f-w, 400);
+    line-height: var(--modal-status-claim-usd-l-h, 20px);
+    color: var(--modal-status-claim-usd-f-c, var(--modal-status-msg-f-c));
+}
+
+/* Sits beside the amount rather than at the row's end, which is where the
+   design puts it - the row's free space is to its right. The 14 is the 6 to its
+   container plus that container's own 8 of padding. */
+.balance_sparkle {
+    display: block;
+    flex-shrink: 0;
+    align-self: flex-start;
+    width: 24px;
+    height: 24px;
+    margin-right: auto;
+    margin-left: 14px;
+}
+
+.guide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding-bottom: 4px;
+}
+
+.guide_title {
+    text-align: center;
+    font-size: var(--modal-status-claim-guide-f-s, 14px);
+    font-weight: var(--modal-status-claim-guide-f-w, 500);
+    line-height: var(--modal-status-claim-guide-l-h, 20px);
+    color: var(--modal-status-claim-guide-f-c, var(--modal-status-title-loading-f-c));
+}
+
+/* Two columns read downwards: 1 and 2 on the left, 3 and 4 on the right. */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.step {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    height: 48px;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--modal-status-claim-step-bg, transparent);
+    box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
+}
+
+.step_number {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background: var(--modal-status-claim-step-number-bg, var(--modal-status-btn-bg));
+    box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
+    font-size: var(--modal-status-claim-step-number-f-s, 12px);
+    font-weight: var(--modal-status-claim-step-number-f-w, 700);
+    color: var(--modal-status-claim-step-f-c, var(--modal-status-title-loading-f-c));
+}
+
+.step_text {
+    min-width: 0;
+    font-size: var(--modal-status-claim-step-f-s, 12px);
+    font-weight: var(--modal-status-claim-step-f-w, 400);
+    line-height: 1.4;
+    color: var(--modal-status-claim-step-f-c, var(--modal-status-title-loading-f-c));
+}
+
+/* Full width and primary, unlike the 160px Close the other states use. It is
+   not pushed to the bottom: the shell is 6 taller than its content, and the
+   design leaves that slack below the button. */
+.claim_btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 464px;
+    min-width: 100px;
+    height: 46px;
+    padding: 0 24px;
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-style: solid;
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.claim_btn:hover {
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
 }
