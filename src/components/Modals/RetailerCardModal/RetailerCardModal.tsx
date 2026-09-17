@@ -151,8 +151,6 @@ const RetailerCardModal = ({
                                 className={styles.go_shop}
                             >
                                 <div className={styles.content}>
-                                    {/* Empty slot in the design; absorbs the slack above the body. */}
-                                    <div className={styles.spacer} />
                                     <div className={styles.body}>
                                         <div className={styles.text_section}>
                                             <div className={styles.provider}>

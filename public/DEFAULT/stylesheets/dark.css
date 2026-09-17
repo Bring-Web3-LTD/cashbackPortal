@@ -247,13 +247,17 @@
     --modal-pair-error-l-h: 16px;
     --modal-pair-error-f-c: #FF1351;
     --modal-pair-resend-f-s: 13px;
-    --modal-pair-resend-f-w: 600;
+    --modal-pair-resend-f-w: 700;
     --modal-pair-resend-l-h: 18px;
     --modal-pair-resend-f-c: #9CA3AF;
     --modal-pair-resend-hover-f-c: #F3F4F6;
     --modal-pair-resend-disabled-f-c: #6B7280;
     --modal-pair-resend-radius: 6px;
 
+    --modal-close-radius: 8px;
+    --modal-close-hover-bg: #2A3038;
+    --modal-close-hover-f-c: #F3F4F6;
+    --modal-close-icon-src: url('/DEFAULT/icons/dark/x-mark.svg');
     --modal-bg: #252B33;
     --tooltip-radius: 8px;
     --tooltip-border-w: 1px;
