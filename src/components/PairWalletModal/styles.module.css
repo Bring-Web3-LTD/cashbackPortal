@@ -1,65 +1,47 @@
-/* Type A shell. Only the 10px sides show the frame colour; the header, content
-   and footer paint the rest. */
+/* Type A shell: the header, content and footer paint it edge to edge, and the
+   24 below the footer is the only frame colour that shows. */
 .overlay .shell {
     flex-direction: column;
     justify-content: flex-start;
-    min-height: 280px;
-    padding: 0 10px;
+    padding: 0 0 24px;
     overflow: hidden;
 }
 
-/* Hugs its content: header 40 + content 209 + footer 81. */
+/* header 56 + content 228 + footer 60, then the 24. */
 .overlay .shell_email {
-    height: auto;
+    height: 368px;
 }
 
-/* Fixed 280: header 40 + content 140 + footer 76, then 24 of frame below. The
-   sections span the full 512 here, so the 10px inset moves onto the content. */
+/* header 56 + content 132 + footer 76, then the 24. */
 .overlay .shell_code {
-    height: 280px;
-    padding: 0 0 24px;
+    height: 288px;
 }
 
-/* In flow, inside the shell's 10px sides — so the frame colour shows in the
-   top corners. Only the close button sits on it. */
+/* Only the close button sits on it. */
 .header {
     flex-shrink: 0;
-    height: 40px;
+    height: 56px;
     width: 100%;
     background: var(--modal-bg);
 }
 
-/* 24 from the header's own edge. The email frame insets its header by the
-   shell's 10px padding and the code frame does not, so the two land 10 apart. */
+/* 16 in from the shell's top-right corner; the 40 target and the 24 glyph come
+   from the shared close button. */
 .overlay .close {
     top: 16px;
-    right: 34px;
-    padding: 0;
+    right: 16px;
 }
 
-.overlay .shell_code .close {
-    right: 24px;
-}
-
-.overlay .close img {
-    display: block;
-    width: 24px;
-    height: 24px;
-}
-
-/* Carries both sections so Enter in the field submits. */
+/* Carries both sections so Enter in the field submits, and takes what the
+   fixed-height shell leaves below the header so the footer sits on the skirt. */
 .form {
     position: relative;
     z-index: 1;
     display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-/* Fills what the fixed-height shell leaves below the header. */
-.form_code {
     flex: 1;
+    flex-direction: column;
     min-height: 0;
+    width: 100%;
 }
 
 .content_code {
@@ -205,15 +187,17 @@
     cursor: default;
 }
 
-/* Sized by its rows, not fixed: 8 + 26 + 20 + 40 + 20 + 15 + 20 + 52 + 8. */
+/* Fills the shell below the header. Its rows come to 8 + 26 + 20 + 40 + 20 + 15
+   + 20 + 52 + 8 = 209 in a 228 box, so the slack sits under the field. */
 .content {
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    flex-shrink: 0;
+    min-height: 0;
     width: 100%;
-    padding: 8px 24px;
+    padding: 8px 34px;
     box-sizing: border-box;
     background: var(--modal-bg);
 }
@@ -238,7 +222,7 @@
     width: 100%;
     min-width: 180px;
     max-width: 400px;
-    padding: 0 12px;
+    padding: 0 24px;
     box-sizing: border-box;
     background: #FFFFFF;
     border: 1px solid #747775;
@@ -287,9 +271,11 @@
     white-space: nowrap;
 }
 
+/* 48, not the 52 the component reserves: the field is drawn at the top of that
+   slot and the 4 below it is empty. 14 + 20 + 14 is the box. */
 .input {
     flex-shrink: 0;
-    height: 52px;
+    height: 48px;
     width: 100%;
     min-width: 180px;
     max-width: 400px;
@@ -341,25 +327,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 16px;
     flex-shrink: 0;
-    height: 81px;
+    height: 60px;
     width: 100%;
-    padding: 0 24px;
+    padding: 2px 24px 0;
     box-sizing: border-box;
     background: var(--modal-bg);
 }
 
-/* Shorter, and the button sits at the top so the resend link below it can
-   overhang into the frame's 24px skirt — which is where the design puts it.
-   The gap takes back the 6 the resend button gained above its label, so the
-   label itself stays where it is drawn. */
+/* 16 taller, so the resend link below the button overhangs into the frame's
+   24px skirt — which is where the design puts it. The gap takes back the 6 the
+   resend button gained above its label, so the label stays where it is drawn. */
 .footer_code {
-    justify-content: flex-start;
     gap: 10px;
     height: 76px;
-    padding-top: 2px;
 }
 
 /* flex-shrink: 0 or the code step's footer, which is deliberately shorter than
