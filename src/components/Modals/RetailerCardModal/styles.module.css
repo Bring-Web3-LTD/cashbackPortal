@@ -21,9 +21,31 @@
     overflow: hidden;
 }
 
+/* 50 above the box (a 40 header band plus 10), 34 at the sides (10 nested
+   inside 24) and 24 below it. The surface stops short of the bottom edge, so
+   the shell's own colour shows as a band under it. */
 .retailer_overlay_desktop .shell_terms {
+    display: flex;
+    flex-direction: column;
     height: 288px;
-    padding: 40px 24px 6px;
+    padding: 50px 34px 24px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            var(--modal-terms-surface-bg, var(--modal-bg)),
+            var(--modal-terms-surface-bg, var(--modal-bg))
+        ) top / 100% calc(100% - 24px) no-repeat,
+        var(--modal-terms-bg, var(--modal-bg));
+}
+
+.retailer_overlay_desktop .shell_terms .modal_container {
+    flex: 1;
+    min-height: 0;
+}
+
+.retailer_overlay_desktop .shell_terms .modal {
+    height: 100%;
+    gap: 0;
 }
 
 .retailer_overlay_desktop .close {
@@ -257,7 +279,7 @@
     padding: 0;
     gap: 4px;
     top: 16px;
-    left: 20px;
+    left: 24px;
     background: none;
     border: none;
     cursor: pointer;
@@ -312,22 +334,18 @@
     font-size: var(--modal-deal-markdown-f-s);
 }
 
+/* Fills what the shell's padding leaves, rather than carrying its own height:
+   the box is the only thing in the terms view. */
 .markdown_short {
     --padding: 10px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    height: calc(216px - var(--padding) * 2);
-}
-
-/* Shape comes from the shared bar in globals.css; only the thumb's colour is
-   the modal's own, since it sits on a lighter panel than the page. */
-.markdown::-webkit-scrollbar-thumb {
-    background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
-    min-height: 36px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .markdown p {
-    line-height: 18px;
+    line-height: var(--modal-deal-markdown-l-h, 18px);
     margin: 0px;
 }
 
@@ -350,8 +368,10 @@
     color: var(--modal-deal-markdown-h3-f-c, var(--modal-deal-markdown-bold-f-c));
 }
 
+/* The heading sits its own 6 above the body. */
 .markdown h3 {
-    margin-top: 2px;
+    margin: 0 0 6px;
+    line-height: var(--modal-deal-markdown-h3-l-h, 18px);
 }
 
 .center {
