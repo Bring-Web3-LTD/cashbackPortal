@@ -140,9 +140,15 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         setBusy(false)
 
         if (!res.ok) {
-            // A bad email shape is the one failure the email screen shows inline.
+            // A bad email shape, or too many attempts, are shown inline on
+            // whichever screen triggered the call — not the full-sheet error.
             if (res.reason === 'invalid_email') {
                 setEmailErrorKey('pairEmailInvalid')
+                return
+            }
+            if (res.reason === 'too_many_attempts') {
+                if (step === 'code') setCodeErrorKey('pairErrorTooMany')
+                else setEmailErrorKey('pairErrorTooMany')
                 return
             }
             failWith(res.reason)
