@@ -56,7 +56,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
             style={shellOverrides}
         >
             <div className={styles.header} />
-            <form className={`${styles.form} ${isCode ? styles.form_code : ''}`} onSubmit={submit}>
+            <form className={styles.form} onSubmit={submit}>
                 {isCode ? (
                     <div className={styles.content_code}>
                         <div className={styles.code_title}>{t('enterCode')}</div>
