@@ -37,10 +37,14 @@ export const useHomePage = () => {
     // Committed search value — drives the API filter and the chip display.
     const [searchChip, setSearchChip] = useState<string | null>(null)
     const [claimState, setClaimState] = useState<ClaimModalState | null>(null)
+    const [pairOpen, setPairOpen] = useState(false)
     // Amount snapshotted when the claim goes in-flight so the success overlay
     // keeps showing it after the balance query refetches to 0.
     const [claimedDisplay, setClaimedDisplay] = useState('0.00')
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
+    // The pairing flow signs through the same SIGN_MESSAGE channel, so this
+    // listener must answer only the signatures it asked for.
+    const awaitingClaimSignatureRef = useRef(false)
     const claimExplorerLinkRef = useRef(claimExplorerLink)
     useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
 
@@ -123,6 +127,7 @@ export const useHomePage = () => {
     }
 
     const handleCloseClaim = () => {
+        awaitingClaimSignatureRef.current = false
         setClaimState(null)
         setClaimExplorerLink(null)
     }
@@ -150,6 +155,7 @@ export const useHomePage = () => {
             return
         }
 
+        awaitingClaimSignatureRef.current = true
         message({
             messageToSign: initiated.messageToSign,
             amount: claimAmount,
@@ -161,13 +167,17 @@ export const useHomePage = () => {
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) return
+            // Ignore the pairing flow's signature round-trip.
+            if (!awaitingClaimSignatureRef.current) return
 
             if (event.data.action === 'ABORT_SIGN_MESSAGE') {
+                awaitingClaimSignatureRef.current = false
                 setClaimState('confirm')
                 return
             }
 
             if (event.data.action !== 'SIGNATURE') return
+            awaitingClaimSignatureRef.current = false
             if (!walletAddress || !eligible) {
                 setClaimState('failure')
                 return
@@ -255,5 +265,9 @@ export const useHomePage = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
+        // pair wallet
+        pairOpen,
+        handleOpenPair: () => setPairOpen(true),
+        handleClosePair: () => setPairOpen(false),
     }
 }
