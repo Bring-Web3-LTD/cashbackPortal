@@ -50,15 +50,17 @@
     --rewards-btn-f-w: 600;
     --rewards-btn-radius: 32px;
 
+    /* READY Button_d: height 46, radius 80, min-width 120, max-width 464. */
     --primary-btn-f-s: 18px;
     --primary-btn-f-w: 600;
+    --primary-btn-l-h: 18px;
     --primary-btn-f-c: #FFFFFF;
-    --primary-btn-radius: 32px;
+    --primary-btn-radius: 80px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #F36A3D;
-    --primary-btn-hover-bg: #FF875B;
-    --primary-btn-pressed-bg: #F36A3D;
+    --primary-btn-hover-bg: #D95A30;
+    --primary-btn-pressed-bg: #BF4D28;
     --primary-btn-disabled-bg: #F36B3D80;
     --primary-btn-disabled-f-c: #FFFFFF80;
 
@@ -188,6 +190,118 @@
     --modal-claim-countdown-f-s: 16px;
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #7892E8;
+
+    /* Status modal — "Modal/popup type B READY". Six states share one 512px
+       shell: Error, Processing, Claim, Success, Email Not Found, Wallet Paired. */
+    --modal-status-bg: #15171F;
+    --modal-status-radius: 8px;
+    /* READY close button: 40 target, transparent idle with an #8C8C8C glyph;
+       hover fills Surface/Elevated and repaints the glyph Text/Primary. */
+    --modal-close-radius: 8px;
+    --modal-close-hover-bg: #3F3F3F;
+    --modal-close-hover-f-c: #FBFBFB;
+    --modal-close-icon-src: url('/ARGENT/icons/dark/x-mark.svg');
+
+    /* READY/Display */
+    --modal-status-title-f-s: 28px;
+    --modal-status-title-f-w: 700;
+    --modal-status-title-l-h: 28px;
+    --modal-status-title-loading-f-c: #FBFBFB;
+    --modal-status-title-success-f-c: #FBFBFB;
+    --modal-status-title-failure-f-c: #FF5C71;
+
+    /* READY/Heading/20 — the Success and Wallet Paired headings. */
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 24px;
+    --modal-status-pair-title-f-s: 20px;
+    --modal-status-pair-title-f-w: 700;
+    --modal-status-pair-title-l-h: 24px;
+    --modal-status-pair-title-f-c: #FBFBFB;
+
+    /* READY/Body/16-M */
+    --modal-status-msg-f-s: 16px;
+    --modal-status-msg-f-w: 500;
+    --modal-status-msg-l-h: 22px;
+    --modal-status-msg-f-c: #FBFBFB;
+
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+    --modal-status-amount-f-c: #FBFBFB;
+
+    /* Claim guide. Balance card is a 111.3deg ramp from Surface/Elevated to
+       Surface/Card; the step cards sit on the shell colour with the same border. */
+    --modal-status-claim-balance-bg: linear-gradient(111.3deg, #2C2F36 9.09%, #12151A 90.91%);
+    --modal-status-claim-border-c: #3F3F3F;
+    --modal-status-claim-border-w: 1px;
+    --modal-status-claim-badge-bg: #3F3F3F;
+    --modal-status-claim-label-f-s: 14px;
+    --modal-status-claim-label-f-w: 500;
+    --modal-status-claim-label-l-h: 22px;
+    --modal-status-claim-label-f-c: #8C8C8C;
+    --modal-status-claim-badge-chip-bg: rgba(8, 194, 157, 0.25);
+    --modal-status-claim-badge-chip-border-w: 1px;
+    --modal-status-claim-badge-chip-border-c: #08C29D;
+    --modal-status-claim-badge-chip-f-s: 13px;
+    --modal-status-claim-badge-chip-f-w: 700;
+    --modal-status-claim-badge-chip-f-c: #00BBAA;
+    --modal-status-claim-amount-f-s: 20px;
+    --modal-status-claim-amount-f-w: 700;
+    --modal-status-claim-amount-l-h: 24px;
+    --modal-status-claim-amount-f-c: #FBFBFB;
+    --modal-status-claim-usd-f-s: 13px;
+    --modal-status-claim-usd-f-w: 500;
+    --modal-status-claim-usd-l-h: 16px;
+    --modal-status-claim-usd-f-c: #8C8C8C;
+    --modal-status-claim-guide-f-s: 14px;
+    --modal-status-claim-guide-f-w: 500;
+    --modal-status-claim-guide-l-h: 22px;
+    --modal-status-claim-guide-f-c: #FBFBFB;
+    --modal-status-claim-step-bg: #15171F;
+    --modal-status-claim-step-number-bg: #3F3F3F;
+    --modal-status-claim-step-number-f-s: 13px;
+    --modal-status-claim-step-number-f-w: 700;
+    --modal-status-claim-step-f-s: 13px;
+    --modal-status-claim-step-f-w: 500;
+    --modal-status-claim-step-f-c: #FBFBFB;
+
+    /* Secondary "Close" button: Button/Header-bg on the shell, no border. */
+    --modal-status-btn-bg: #3F3F3F;
+    --modal-status-btn-f-s: 16px;
+    --modal-status-btn-f-w: 500;
+    --modal-status-btn-l-h: 22px;
+    --modal-status-btn-f-c: #FBFBFB;
+    --modal-status-btn-border-w: 0;
+    --modal-status-btn-border-c: transparent;
+    --modal-status-btn-radius: 80px;
+    --modal-status-btn-strong-f-w: 700;
+
+    --modal-status-btn-hover-bg: #505050;
+    --modal-status-btn-hover-f-s: 16px;
+    --modal-status-btn-hover-f-w: 500;
+    --modal-status-btn-hover-f-c: #FBFBFB;
+    --modal-status-btn-hover-border-w: 0;
+    --modal-status-btn-hover-border-c: transparent;
+    --modal-status-btn-hover-radius: 80px;
+
+    --modal-status-btn-disabled-bg: rgba(63, 63, 63, 0.5);
+    --modal-status-btn-disabled-f-s: 16px;
+    --modal-status-btn-disabled-f-w: 500;
+    --modal-status-btn-disabled-f-c: rgba(251, 251, 251, 0.5);
+    --modal-status-btn-disabled-border-w: 0;
+    --modal-status-btn-disabled-border-c: transparent;
+    --modal-status-btn-disabled-radius: 80px;
+
+    --modal-status-loader-c: #F36A3D;
+    --modal-status-loader-track-c: rgba(251, 251, 251, 0.12);
+
+    /* Claim CTA reuses READY Button_d in its accent variant. */
+    --modal-popup-btn-f-s: 18px;
+    --modal-popup-btn-f-w: 600;
+    --modal-popup-btn-l-h: 18px;
+    --modal-primary-btn-bg: #F36A3D;
+    --modal-primary-btn-hover-bg: #D95A30;
 
     --modal-deal-name-f-s: 19px;
     --modal-deal-name-f-w: 700;
