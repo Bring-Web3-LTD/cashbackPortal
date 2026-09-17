@@ -21,7 +21,7 @@
     flex-direction: column;
     padding-bottom: 30px;
     background: var(--pair-sheet-bg, #090C11);
-    box-shadow: inset 0 0 0 1px var(--pair-sheet-border-c, rgba(11, 16, 32, 0.1));
+    box-shadow: inset 0 0 0 1px var(--pair-sheet-border-c, rgba(138, 142, 148, 0.3));
     border-top-left-radius: var(--pair-sheet-radius, 25px);
     border-top-right-radius: var(--pair-sheet-radius, 25px);
     overflow: hidden;
@@ -119,9 +119,9 @@
     margin: 0;
     width: 100%;
     text-align: center;
-    font-size: var(--pair-title-f-s, 22px);
-    font-weight: var(--pair-title-f-w, 700);
-    line-height: var(--pair-title-l-h, 28px);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 28px;
     color: var(--pair-title-f-c, #F5F8FF);
 }
 
@@ -136,13 +136,13 @@
     gap: 4px;
 }
 
-/* Figma's stroke overlays the padding instead of displacing it (frame 335×50 =
-   14 + 22 + 14, with no room for a border), so the outline is an inset shadow —
+/* Figma's stroke overlays the padding instead of displacing it (frame 335×52 =
+   14 + 24 + 14, with no room for a border), so the outline is an inset shadow —
    a real `border` would push the text 1px right and down. */
 .input {
     box-sizing: border-box;
     width: 100%;
-    min-height: 50px;
+    min-height: 52px;
     padding: 14px 16px;
     border: none;
     box-shadow: inset 0 0 0 var(--pair-input-border-w, 1px) var(--pair-input-border-c, rgba(138, 142, 148, 0.3));
@@ -150,14 +150,28 @@
     background: var(--pair-input-bg, #12151A);
     color: var(--pair-input-f-c, #F5F8FF);
     font-family: inherit;
-    font-size: var(--pair-input-f-s, 16px);
-    font-weight: var(--pair-input-f-w, 400);
-    line-height: var(--pair-input-l-h, 20px);
+    font-size: 16px;
+    font-weight: 400;
+    /* Figma "Body/16-Reg": 24px, not the 20px a shared input style would use
+       — the 335x50 frame relies on it to land at 52px. */
+    line-height: 24px;
     outline: none;
 }
 
 .input::placeholder {
     color: var(--pair-input-placeholder-f-c, #7A7D83);
+}
+
+/* Chrome/Safari force a white autofill background otherwise, ignoring
+   `background` entirely — the inset shadow is the only way to override it. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--pair-input-f-c, #F5F8FF);
+    box-shadow:
+        inset 0 0 0 var(--pair-input-border-w, 1px) var(--pair-input-border-c, rgba(138, 142, 148, 0.3)),
+        inset 0 0 0 1000px var(--pair-input-bg, #12151A);
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .inputError {
@@ -167,9 +181,9 @@
 .errorText {
     margin: 0;
     color: var(--pair-error-f-c, #DA493F);
-    font-size: var(--pair-error-f-s, 12px);
-    font-weight: var(--pair-error-f-w, 500);
-    line-height: var(--pair-error-l-h, 16px);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
 }
 
 /* ── One-time code boxes ── */
@@ -192,9 +206,9 @@
     background: var(--pair-otp-bg, #12151A);
     color: var(--pair-otp-f-c, #F5F8FF);
     font-family: inherit;
-    font-size: var(--pair-otp-f-s, 22px);
-    font-weight: var(--pair-otp-f-w, 700);
-    line-height: var(--pair-otp-l-h, 28px);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 28px;
     outline: none;
 }
 
@@ -211,9 +225,9 @@
     cursor: pointer;
     color: var(--pair-resend-f-c, #B1B4BB);
     font-family: inherit;
-    font-size: var(--pair-resend-f-s, 14px);
-    font-weight: var(--pair-resend-f-w, 500);
-    line-height: var(--pair-resend-l-h, 22px);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
 }
 
 .resend:hover:not(:disabled) {
@@ -287,9 +301,9 @@
     margin: 0;
     width: 100%;
     text-align: center;
-    font-size: var(--pair-status-title-f-s, 20px);
-    font-weight: var(--pair-status-title-f-w, 700);
-    line-height: var(--pair-status-title-l-h, 26px);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 26px;
     color: var(--pair-status-title-f-c, #F5F8FF);
 }
 
@@ -308,9 +322,9 @@
     border-radius: var(--pair-note-radius, 12px);
     background: var(--pair-note-bg, #12151A);
     color: var(--pair-note-f-c, #F5F8FF);
-    font-size: var(--pair-note-f-s, 14px);
-    font-weight: var(--pair-note-f-w, 500);
-    line-height: var(--pair-note-l-h, 22px);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
 }
 
 /* ── Footer buttons ── */
@@ -328,13 +342,15 @@
     border: none;
     border-radius: var(--pair-btn-radius, 100px);
     font-family: inherit;
-    font-size: var(--pair-btn-f-s, 15px);
-    font-weight: var(--pair-btn-f-w, 500);
-    line-height: var(--pair-btn-l-h, 20px);
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
 }
 
+/* Different text styles per Figma: primary uses Body/15-Med (22),
+   secondary uses Button/Small (20) — not one shared button line-height. */
 .btnPrimary {
+    line-height: 22px;
     background: var(--pair-btn-primary-bg, #FFEF46);
     color: var(--pair-btn-primary-f-c, #1F2018);
 }
@@ -349,6 +365,7 @@
 }
 
 .btnSecondary {
+    line-height: 20px;
     border: var(--pair-btn-secondary-border-w, 1px) solid var(--pair-btn-secondary-border-c, rgba(138, 142, 148, 0.3));
     background: var(--pair-btn-secondary-bg, rgba(245, 248, 255, 0.08));
     color: var(--pair-btn-secondary-f-c, #F5F8FF);
