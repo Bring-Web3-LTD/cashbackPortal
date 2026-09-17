@@ -288,7 +288,6 @@
     --modal-deal-markdown-h3-f-s: 13px;
     --modal-deal-markdown-h3-f-w: 600;
     --modal-deal-markdown-h3-f-c: #FFFFFF;
-    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.10);
     /* "By clicking Go Shopping you accept the Terms" — the sentence is muted,
        the Terms link is white and underlined. */
     --modal-deal-consent-f-s: 13px;
