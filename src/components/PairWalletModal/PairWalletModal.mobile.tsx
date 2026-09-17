@@ -26,6 +26,7 @@ const PairWalletModal = (props: PairWalletModalProps) => {
         resendCode,
         fatalError,
         goToEmail,
+        debugSetStep,
     } = usePairWalletModal(props)
 
     if (!open) return null
@@ -202,6 +203,39 @@ const PairWalletModal = (props: PairWalletModalProps) => {
                     </div>
                 ) : null}
             </section>
+
+            {/* TEMP QA nav — remove before merge. Fixed outside the card so it
+                doesn't add to the sheet's height. */}
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 8,
+                    left: 8,
+                    zIndex: 9999,
+                    display: 'flex',
+                    gap: 4,
+                    flexWrap: 'wrap',
+                }}
+                onClick={e => e.stopPropagation()}
+            >
+                {(['email', 'code', 'error', 'success'] as const).map(s => (
+                    <button
+                        key={s}
+                        type="button"
+                        onClick={() => debugSetStep(s)}
+                        style={{
+                            fontSize: 10,
+                            padding: '2px 6px',
+                            background: step === s ? '#08C29D' : '#333',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 4,
+                        }}
+                    >
+                        {s}
+                    </button>
+                ))}
+            </div>
         </div>,
         document.body,
     )

@@ -284,5 +284,7 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         resendCode,
         fatalErrorKey,
         goToEmail,
+        // TEMP QA nav — remove before merge.
+        debugSetStep: setStep,
     }
 }
