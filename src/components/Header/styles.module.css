@@ -182,8 +182,14 @@
     cursor: pointer;
 }
 
-.menu_row:hover {
-    background: var(--header-menu-item-hover-bg);
+@media (hover: hover) {
+    .menu_row:hover {
+        background: var(--header-menu-item-hover-bg);
+    }
+}
+
+.menu_row:active {
+    background: var(--header-menu-item-pressed-bg, var(--header-menu-item-hover-bg));
 }
 
 /* Below this the three actions no longer fit beside the title. */

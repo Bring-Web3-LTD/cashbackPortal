@@ -172,9 +172,15 @@
     text-align: left;
 }
 
+/* 99 x 30: an 18px label in 6/8 of padding, which is the drawn button. */
 .resend {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    padding: 0 8px;
+    padding: 6px 8px;
+    overflow: hidden;
     background: none;
     border: 0;
     border-radius: var(--modal-pair-resend-radius);
@@ -346,9 +352,12 @@
 }
 
 /* Shorter, and the button sits at the top so the resend link below it can
-   overhang into the frame's 24px skirt — which is where the design puts it. */
+   overhang into the frame's 24px skirt — which is where the design puts it.
+   The gap takes back the 6 the resend button gained above its label, so the
+   label itself stays where it is drawn. */
 .footer_code {
     justify-content: flex-start;
+    gap: 10px;
     height: 76px;
     padding-top: 2px;
 }

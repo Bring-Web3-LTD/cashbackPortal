@@ -47,19 +47,54 @@
     -webkit-user-select: none;
 }
 
+/* A 40 target holding a 24 glyph, which is how every modal draws it. */
 .close_btn {
     position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 32px;
     right: 32px;
-    padding: 1px 6px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: var(--modal-close-radius, 8px);
     z-index: 11;
     cursor: pointer;
     background: transparent;
     border: none;
     outline: none;
+    transition: background-color .2s;
 }
 
 .close_btn img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
+}
+
+/* The glyph's colour is baked into its SVG, so CSS cannot repaint the <img>.
+   The hover tint is painted through a mask of the same icon instead. A platform
+   that points --modal-close-icon-src nowhere leaves the overlay transparent, so
+   nothing changes for it. */
+.close_btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--modal-close-hover-f-c, transparent);
+    -webkit-mask: var(--modal-close-icon-src) center / 24px 24px no-repeat;
+    mask: var(--modal-close-icon-src) center / 24px 24px no-repeat;
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .close_btn:hover {
+        background: var(--modal-close-hover-bg, transparent);
+    }
+
+    .close_btn:hover::after {
+        opacity: 1;
+    }
 }
