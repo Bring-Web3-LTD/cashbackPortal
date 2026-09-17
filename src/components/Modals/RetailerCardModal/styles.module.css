@@ -9,15 +9,15 @@
     --custom-modal-radius: var(--modal-popup-radius, var(--modal-radius));
 }
 
-/* Type A shell: fixed 280 tall, content fills, 81px footer pinned below.
-   The 10px sides and 24px bottom expose the frame colour behind the sections. */
+/* Type A shell: the sections span its full width and only the 24px bottom
+   exposes the frame colour behind them. The 10px inset belongs to the content,
+   not here - the footer runs edge to edge. */
 .retailer_overlay_desktop .shell {
     flex-direction: column;
     justify-content: flex-start;
-    height: 280px;
-    min-height: 280px;
-    max-height: 348px;
-    padding: 0 10px 24px;
+    height: 288px;
+    min-height: 288px;
+    padding: 0 0 24px;
     overflow: hidden;
 }
 
@@ -50,8 +50,7 @@
 
 .retailer_overlay_desktop .close {
     top: 16px;
-    right: 24px;
-    padding: 0;
+    right: 16px;
 }
 
 .retailer_overlay_desktop .close img {
@@ -60,16 +59,15 @@
     height: 24px;
 }
 
-/* Header spans the full 512 and so paints the shell's 10px sides for its
-   own height. Sits under the content, which covers the middle 492. */
+/* Paints the band the close button sits in. Sits under the content, which
+   covers the same width. */
 .header {
     position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     z-index: 0;
-    width: 512px;
-    height: 40px;
+    width: 100%;
+    height: 56px;
     background: var(--modal-bg);
 }
 
@@ -104,23 +102,20 @@
     min-height: 0;
 }
 
-/* Sections paint the modal surface; the frame colour shows through the
-   shell's 10px sides and 24px bottom. */
+/* Sections paint the modal surface; the frame colour shows through the shell's
+   24px bottom. The body is centred in what the footer leaves, which puts 22
+   above and below it. */
 .content {
+    box-sizing: border-box;
     display: flex;
     flex: 1;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
     width: 100%;
     min-height: 0;
+    padding: 0 10px;
     background: var(--modal-bg);
-}
-
-/* Empty in the design; absorbs the slack above the body. */
-.spacer {
-    flex: 1;
-    min-height: 0;
 }
 
 .body {
@@ -129,7 +124,7 @@
     align-items: center;
     flex-shrink: 0;
     gap: 24px;
-    height: 137px;
+    height: 144px;
     width: 100%;
     background: var(--modal-bg);
 }
@@ -144,12 +139,16 @@
     padding: 0 24px;
 }
 
+/* Bottom-aligned: the avatar's distance from the title is fixed, and the slack
+   collects above it. */
 .provider {
     display: flex;
     flex: 1;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
     gap: 16px;
+    height: 144px;
     min-width: 0;
 }
 
@@ -240,14 +239,16 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    gap: 16px;
-    height: 81px;
+    gap: 12px;
+    height: 76px;
     width: 100%;
-    padding: 0 24px;
+    padding: 2px 24px 0;
     background: var(--modal-bg);
+    /* Sits above the shell's skirt, so its own bottom corners are on show. */
+    border-radius: 0 0 var(--modal-popup-radius, var(--modal-radius)) var(--modal-popup-radius, var(--modal-radius));
 }
 
-/* 46 + 16 + 20 overflows the 81px footer by 1px; centring splits it. */
+/* 2 + 46 + 12 + 16 is the 76 exactly, so nothing has to give. */
 .footer .start_btn {
     flex-shrink: 0;
     height: 46px;
@@ -261,7 +262,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    height: 20px;
+    height: 16px;
     width: 100%;
 }
 
@@ -417,12 +418,17 @@
     cursor: default;
 }
 
+/* A solid three-quarter arc over a full track ring, not a fading sweep: the
+   design draws the gap as a hard edge. 20 across with a 2.5 stroke is the ring
+   the 24 box holds. */
 .loader {
     width: 20px;
     height: 20px;
     --stroke: 2.5px;
     border-radius: 50%;
-    background: conic-gradient(from 0deg, var(--modal-popup-loader-track-c, transparent) 0%, currentColor 100%);
+    background:
+        conic-gradient(from 0deg, currentColor 270deg, transparent 270deg),
+        var(--modal-popup-loader-track-c, transparent);
     -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
     mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
     animation: go-shop-spin 0.7s linear infinite;
