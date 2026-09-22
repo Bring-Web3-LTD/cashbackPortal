@@ -1,6 +1,5 @@
-<!-- Artwork points UP: collapsed rows show a chevron-up, and the portal rotates it 180deg when a row opens. -->
 <svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="icon">
-<path id="shape" fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 8.29289C11.6834 7.90237 12.3166 7.90237 12.7071 8.29289L18.7071 14.2929C19.0976 14.6834 19.0976 15.3166 18.7071 15.7071C18.3166 16.0976 17.6834 16.0976 17.2929 15.7071L12 10.4142L6.70711 15.7071C6.31658 16.0976 5.68342 16.0976 5.29289 15.7071C4.90237 15.3166 4.90237 14.6834 5.29289 14.2929L11.2929 8.29289Z" fill="#797A7D"/>
+<path id="shape" fill-rule="evenodd" clip-rule="evenodd" d="M11.3939 14.7437C11.7286 15.0854 12.2714 15.0854 12.6061 14.7437L17.7489 9.49372C18.0837 9.15201 18.0837 8.59799 17.7489 8.25628C17.4142 7.91457 16.8715 7.91457 16.5368 8.25628L12 12.8876L7.46323 8.25628C7.1285 7.91457 6.58579 7.91457 6.25105 8.25628C5.91632 8.59799 5.91632 9.15201 6.25105 9.49372L11.3939 14.7437Z" fill="#A8ADBF"/>
 </g>
 </svg>
