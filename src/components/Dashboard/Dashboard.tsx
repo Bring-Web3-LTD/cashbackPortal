@@ -74,7 +74,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
 
     return (
         <div className={`${styles.bar} ${showSkeleton ? styles.bar_skeleton : ''}`}>
-            {couponsEnabled && (
+            {couponsEnabled && !showSkeleton && (
                 <div className={styles.switcher}>
                     <div className={styles.tabs}>
                         {renderTab('coupons', t('couponsTab'))}
