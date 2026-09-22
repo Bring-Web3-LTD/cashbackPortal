@@ -13,7 +13,7 @@
     width: 40px;
     height: 40px;
     padding: 8px;
-    border-radius: 8px;
+    border-radius: var(--modal-close-radius, 8px);
 }
 
 .overlay .close img {
@@ -141,7 +141,7 @@
     height: 34px;
     margin: 2px 0 4px;
     --stroke: var(--modal-status-loader-stroke, 3px);
-    border-radius: 50%;
+    border-radius: var(--modal-status-loader-radius, 50%);
     color: var(--modal-status-loader-c, #4B6DDE);
     background: conic-gradient(from 0deg, var(--modal-status-loader-track-c, transparent) 0%, currentColor 100%);
     -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
@@ -284,7 +284,7 @@
     align-self: flex-start;
     width: 40px;
     height: 40px;
-    border-radius: 100px;
+    border-radius: var(--modal-status-claim-badge-radius, 100px);
     background: var(--modal-status-claim-badge-bg, var(--modal-status-btn-bg));
     box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
 }
@@ -309,7 +309,7 @@
     gap: 10px;
     width: 100%;
     padding: 16px 20px;
-    border-radius: 12px;
+    border-radius: var(--modal-status-claim-balance-radius, 12px);
     background: var(--modal-status-claim-balance-bg, var(--modal-status-btn-bg));
     box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
 }
@@ -337,7 +337,7 @@
     flex-shrink: 0;
     height: 33px;
     padding: 4px 10px;
-    border-radius: 8px;
+    border-radius: var(--modal-status-claim-badge-chip-radius, 8px);
     background: var(--modal-status-claim-badge-chip-bg, transparent);
     box-shadow: inset 0 0 0 var(--modal-status-claim-badge-chip-border-w, 1px) var(--modal-status-claim-badge-chip-border-c, transparent);
     font-size: var(--modal-status-claim-badge-chip-f-s, 12px);
@@ -417,7 +417,7 @@
     min-width: 0;
     height: 48px;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: var(--modal-status-claim-step-radius, 8px);
     background: var(--modal-status-claim-step-bg, transparent);
     box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
 }
@@ -430,7 +430,7 @@
     flex-shrink: 0;
     width: 24px;
     height: 24px;
-    border-radius: 12px;
+    border-radius: var(--modal-status-claim-step-number-radius, 12px);
     background: var(--modal-status-claim-step-number-bg, var(--modal-status-btn-bg));
     box-shadow: inset 0 0 0 var(--modal-status-claim-border-w, 1px) var(--modal-status-claim-border-c, transparent);
     font-size: var(--modal-status-claim-step-number-f-s, 12px);
@@ -442,7 +442,7 @@
     min-width: 0;
     font-size: var(--modal-status-claim-step-f-s, 12px);
     font-weight: var(--modal-status-claim-step-f-w, 400);
-    line-height: 1.4;
+    line-height: var(--modal-status-claim-step-l-h, 1.4);
     color: var(--modal-status-claim-step-f-c, var(--modal-status-title-loading-f-c));
 }
 

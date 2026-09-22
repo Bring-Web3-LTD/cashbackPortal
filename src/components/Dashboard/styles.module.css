@@ -139,7 +139,7 @@
     max-width: 160px;
     height: 46px;
     padding: 0 12px;
-    border-radius: 100px;
+    border-radius: var(--dashboard-action-radius, 100px);
     white-space: nowrap;
     cursor: pointer;
     transition: .2s;

@@ -84,7 +84,6 @@
     outline: none;
     color: var(--category-btn-f-c);
     cursor: pointer;
-    line-height: 20px;
     z-index: 2;
 }
 
