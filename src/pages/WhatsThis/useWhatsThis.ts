@@ -8,15 +8,17 @@ import { useTranslation } from 'react-i18next'
 export const useWhatsThis = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { chromeStoreUrl } = useRouteLoaderData('root') as LoaderData
+    const { chromeStoreUrl, isHub } = useRouteLoaderData('root') as LoaderData
 
     const close = () => navigate(-1)
+    const goHome = () => navigate('/')
 
     return {
         labels: {
             title: t('whatsThisTitle'),
             intro: t('whatsThisIntro'),
             downloadWallet: t('downloadWallet'),
+            gotIt: t('gotIt'),
         },
         cards: [
             { icon: 'scissors.svg', title: t('coupons'), text: t('whatsThisCoupons') },
@@ -24,6 +26,8 @@ export const useWhatsThis = () => {
             { icon: 'wallet.svg', title: t('claim'), text: t('whatsThisClaim') },
         ],
         close,
+        goHome,
+        isHub: !!isHub,
         downloadUrl: chromeStoreUrl,
     }
 }
