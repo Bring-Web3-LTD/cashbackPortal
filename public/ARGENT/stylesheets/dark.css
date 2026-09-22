@@ -48,6 +48,7 @@
     --header-more-border-w: 1px;
     --header-more-border-c: #3F3F3F;
     --header-more-dot-c: #FBFBFB;
+    --header-more-radius: 100px;
     --header-more-hover-bg: #242424;
     --header-more-pressed-bg: #8C8C8C;
     --header-more-pressed-border-w: 0;
@@ -179,6 +180,7 @@
     --dashboard-badge-l-h: 22px;
     --dashboard-badge-f-c: #8C8C8C;
 
+    --rewards-card-btn-radius: 80px;
     --dashboard-card-btn-bg: #3F3F3F;
     --dashboard-card-btn-border-w: 0;
     --dashboard-card-btn-border-c: transparent;
@@ -225,6 +227,7 @@
     --dashboard-action-f-s: 18px;
     --dashboard-action-f-w: 600;
     --dashboard-action-l-h: 18px;
+    --dashboard-action-radius: 80px;
     --dashboard-action-secondary-bg: #3F3F3F;
     --dashboard-action-secondary-hover-bg: #505050;
     --dashboard-action-secondary-border-w: 1px;
@@ -252,6 +255,7 @@
 
     /* Logos sit on white whatever the theme, so partner marks stay legible. */
     --retailer-card-img-bg: #FFFFFF;
+    --retailer-card-logo-radius: 100px;
     --retailer-card-img-border-c: #DCE0E9;
     --retailer-card-img-border-w: 1px;
     --retailer-card-img-border-campaign-c: #F36A3D;
@@ -285,6 +289,7 @@
     --retailer-card-amount-f-w: 500;
     --retailer-card-amount-l-h: 16px;
     --retailer-card-amount-bg: #3F3F3F;
+    --retailer-card-amount-radius: 80px;
     --retailer-card-amount-campaign-f-w: 700;
     --retailer-card-amount-campaign-bg: #F36A3D;
 
@@ -348,7 +353,7 @@
     --modal-radius: 16px;
     --modal-title-f-s: 22px;
     --modal-title-f-w: 700;
-    --modal-title-f-c: #FFF;
+    --modal-title-f-c: #FBFBFB;
     --modal-paragraph-f-s: 17px;
     --modal-paragraph-f-w: 500;
     --modal-paragraph-f-c: #8C8C8C;
@@ -420,6 +425,8 @@
     --modal-popup-radius: 8px;
     --modal-popup-avatar-border-w: 1px;
     --modal-popup-avatar-border-c: #3F3F3F;
+    --modal-popup-avatar-radius: 80px;
+    --modal-popup-avatar-inner-radius: 100px;
     --modal-popup-loader-track-c: rgba(251, 251, 251, 0.12);
     --modal-popup-title-f-s: 18px;
     --modal-popup-title-f-w: 600;
@@ -525,14 +532,17 @@
     /* Claim guide. Balance card is a 111.3deg ramp from Surface/Elevated to
        Surface/Card; the step cards sit on the shell colour with the same border. */
     --modal-status-claim-balance-bg: linear-gradient(111.3deg, #2C2F36 9.09%, #12151A 90.91%);
+    --modal-status-claim-balance-radius: 20px;
     --modal-status-claim-border-c: #3F3F3F;
     --modal-status-claim-border-w: 1px;
     --modal-status-claim-badge-bg: #3F3F3F;
+    --modal-status-claim-badge-radius: 12px;
     --modal-status-claim-label-f-s: 14px;
     --modal-status-claim-label-f-w: 500;
     --modal-status-claim-label-l-h: 22px;
     --modal-status-claim-label-f-c: #8C8C8C;
     --modal-status-claim-badge-chip-bg: rgba(8, 194, 157, 0.25);
+    --modal-status-claim-badge-chip-radius: 999px;
     --modal-status-claim-badge-chip-border-w: 1px;
     --modal-status-claim-badge-chip-border-c: #08C29D;
     --modal-status-claim-badge-chip-f-s: 13px;
@@ -551,11 +561,14 @@
     --modal-status-claim-guide-l-h: 22px;
     --modal-status-claim-guide-f-c: #FBFBFB;
     --modal-status-claim-step-bg: #15171F;
+    --modal-status-claim-step-radius: 8px;
     --modal-status-claim-step-number-bg: #3F3F3F;
+    --modal-status-claim-step-number-radius: 12px;
     --modal-status-claim-step-number-f-s: 13px;
     --modal-status-claim-step-number-f-w: 700;
     --modal-status-claim-step-f-s: 13px;
     --modal-status-claim-step-f-w: 500;
+    --modal-status-claim-step-l-h: 16px;
     --modal-status-claim-step-f-c: #FBFBFB;
 
     /* Secondary "Close" button: Button/Header-bg on the shell, no border. */
@@ -588,6 +601,7 @@
     --modal-status-btn-disabled-radius: 80px;
 
     --modal-status-loader-c: #F36A3D;
+    --modal-status-loader-radius: 50%;
     --modal-status-loader-track-c: rgba(251, 251, 251, 0.12);
 
     /* Claim CTA reuses READY Button_d in its accent variant. */
@@ -602,6 +616,7 @@
     --modal-deal-name-f-c: #FBFBFB;
     --modal-deal-btn-f-s: 18px;
     --modal-deal-back-f-s: 13px;
+    --modal-deal-back-l-h: 16px;
     --modal-deal-back-f-c: #8C8C8C;
     --modal-deal-markdown-bg: #171717;
     --modal-deal-markdown-border-w: 1px;
@@ -650,7 +665,7 @@
 
     --history-title-f-s: 28px;
     --history-title-f-w: 700;
-    --history-title-f-c: #FFFFFF;
+    --history-title-f-c: #FBFBFB;
 
     --history-back-f-s: 13px;
     --history-back-f-w: 500;
@@ -658,6 +673,7 @@
 
     /* Hover lifts the whole control to Text/Primary. The arrow's colour is
        baked into its SVG, so the icon is repainted through a mask of itself. */
+    --history-back-l-h: 16px;
     --history-back-hover-f-s: 13px;
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #FBFBFB;
@@ -666,13 +682,15 @@
 
 
     --history-table-radius: 12px;
+    /* Column strip sits on the page, separated from the rows by the same
+       hairline they use between themselves. */
     --history-table-header-bg: #171717;
-    --history-table-header-border-c: transparent;
-    --history-table-header-border-w: 0;
+    --history-table-header-border-c: #3F3F3F;
+    --history-table-header-border-w: 1px;
     --history-table-header-radius: 0;
 
-    --history-table-header-f-s: 15px;
-    --history-table-header-f-w: 400;
+    --history-table-header-f-s: 14px;
+    --history-table-header-f-w: 500;
     --history-table-header-f-c: #8C8C8C;
 
     --history-table-row-border-w: 1px;
@@ -684,8 +702,10 @@
     --history-claimed-icon-bg: #3F3F3F;
     /* The row's chevron carries no fill of its own. */
     --history-details-btn-bg: transparent;
+    --history-details-btn-radius: 40px;
 
     /* Retailer marks keep the light ring they carry on the cards. */
+    --history-logo-radius: 100px;
     --history-logo-border-w: 1px;
     --history-logo-border-c: #DCE0E9;
     --history-logo-fallback-bg: #242424;
@@ -770,6 +790,7 @@
 
     /* Chevron rides a 32px pill on Surface/Elevated. */
     --faq-details-btn-bg: #3F3F3F;
+    --faq-details-btn-radius: 40px;
     --faq-chevron-f-c: #8C8C8C;
     --faq-chevron-active-f-c: #8C8C8C;
 
@@ -788,6 +809,7 @@
     /* Scroll affordances. The track is the card surface, the thumb the one
        above it, so the bar reads on both the page and inside modals. */
     --scrollbar-track-bg: #242424;
+    --scrollbar-radius: 100px;
     --search-menu-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
 
     /* Back-to-top: 44px circle, Button/Filter-bg lifting to Surface/Elevated. */
@@ -795,6 +817,7 @@
     --back-to-top-hover-bg: #3F3F3F;
     --back-to-top-border-w: 1px;
     --back-to-top-border-c: #3F3F3F;
+    --back-to-top-radius: 80px;
     --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
     /* Shimmer that sweeps every skeleton; peaks at the skeleton's own fill. */
