@@ -9,7 +9,7 @@ import { useWhatsThis } from './useWhatsThis'
 import styles from './styles.mobile.module.css'
 
 const MobileWhatsThis = () => {
-    const { labels, cards, close, downloadUrl } = useWhatsThis()
+    const { labels, cards, close, goHome, isHub, downloadUrl } = useWhatsThis()
 
     return (
         <div className={styles.root} data-testid="mobile-whats-this">
@@ -36,11 +36,15 @@ const MobileWhatsThis = () => {
                             ))}
                         </div>
                     </div>
-                    {downloadUrl && (
+                    {isHub ? (
+                        <button type="button" className={styles.cta} onClick={goHome}>
+                            {labels.gotIt}
+                        </button>
+                    ) : downloadUrl ? (
                         <a href={downloadUrl} target="_blank" rel="noreferrer" className={styles.cta}>
                             {labels.downloadWallet}
                         </a>
-                    )}
+                    ) : null}
                 </main>
             </div>
         </div>
