@@ -45,7 +45,7 @@
     border-width: var(--retailer-card-img-border-w);
     border-style: solid;
     border-color: var(--retailer-card-img-border-c);
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 /* One box, not two: the 58 disc carries the fill and the ring, and the initials
    sit straight in it. A nested inner disc left a halo of the outer fill. */
@@ -61,7 +61,7 @@
     overflow: hidden;
     background: var(--retailer-logo-fallback-bg);
     border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .logo_container_campaign {
@@ -72,7 +72,7 @@
     object-fit: contain;
     width: 58px;
     height: 58px;
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .fallback_logo {
@@ -113,7 +113,7 @@
     max-width: 175px;
     height: 26px;
     padding: 5px 8px;
-    border-radius: 100px;
+    border-radius: var(--retailer-card-amount-radius, 100px);
     line-height: var(--retailer-card-amount-l-h, 16px);
     text-align: center;
     white-space: nowrap;
@@ -183,7 +183,7 @@
 .skeleton_logo {
     width: 58px;
     height: 58px;
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .skeleton_text {

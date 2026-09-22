@@ -164,7 +164,7 @@
     border-width: var(--modal-popup-avatar-border-w);
     border-style: solid;
     border-color: var(--modal-popup-avatar-border-c);
-    border-radius: 80px;
+    border-radius: var(--modal-popup-avatar-radius, 80px);
 }
 
 /* Only the inner disc is filled; the 70px frame is a ring over the modal bg. */
@@ -177,14 +177,14 @@
     width: 56px;
     height: 56px;
     overflow: hidden;
-    border-radius: 100px;
+    border-radius: var(--modal-popup-avatar-inner-radius, 100px);
 }
 
 .avatar_logo,
 .avatar_fallback {
     width: 56px;
     height: 56px;
-    border-radius: 100px;
+    border-radius: var(--modal-popup-avatar-inner-radius, 100px);
 }
 
 .avatar_logo {
@@ -284,7 +284,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    line-height: 22px;
+    line-height: var(--modal-deal-back-l-h, var(--history-back-l-h, 22px));
     height: fit-content;
     font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
     font-weight: var(--history-back-f-w);
@@ -425,7 +425,7 @@
     width: 20px;
     height: 20px;
     --stroke: 2.5px;
-    border-radius: 50%;
+    border-radius: var(--modal-popup-loader-radius, 50%);
     background:
         conic-gradient(from 0deg, currentColor 270deg, transparent 270deg),
         var(--modal-popup-loader-track-c, transparent);
@@ -453,11 +453,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background-color: var(--modal-deal-logo-bg, var(--retailer-card-img-bg, #FFFFFF));
     border-width: var(--modal-deal-logo-border-w, var(--retailer-card-img-border-w));
     border-style: solid;
     border-color: var(--modal-deal-logo-border-c, var(--retailer-card-img-border-c));
-    border-radius: 50%;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
     margin-bottom: 6px;
 }
 
@@ -475,7 +475,7 @@
     background: var(--retailer-card-amount-bg);
     padding: 6px;
     width: 140px;
-    border-radius: 50px;
+    border-radius: var(--modal-deal-rate-radius, 50px);
     text-align: center;
     white-space: nowrap;
 }
@@ -484,7 +484,7 @@
     object-fit: contain;
     width: 58px;
     height: 58px;
-    border-radius: 50%;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
 }
 
 .fallback_logo {
@@ -495,7 +495,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border-radius: 50%;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
     text-align: center;
     font-style: normal;
     border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);

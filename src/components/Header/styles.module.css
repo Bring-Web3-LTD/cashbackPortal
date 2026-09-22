@@ -132,7 +132,7 @@
     border-width: var(--header-more-border-w);
     border-style: solid;
     border-color: var(--header-more-border-c);
-    border-radius: 100px;
+    border-radius: var(--header-more-radius, 100px);
     cursor: pointer;
     transition: .2s;
 }

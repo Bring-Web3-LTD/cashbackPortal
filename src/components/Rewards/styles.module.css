@@ -106,7 +106,7 @@
     padding: 0;
     /* Secondary carries a Text/Muted outline, unlike the solid primary. */
     border: var(--dashboard-card-btn-border-w) solid var(--dashboard-card-btn-border-c);
-    border-radius: 100px;
+    border-radius: var(--rewards-card-btn-radius, 100px);
     background: var(--dashboard-card-btn-bg);
     font-size: var(--dashboard-card-btn-f-s);
     font-weight: var(--dashboard-card-btn-f-w);
