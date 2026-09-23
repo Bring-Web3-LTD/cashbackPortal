@@ -1,193 +1,670 @@
-/* Light mode */
+/* CSPR (Casper Wallet) — the platform's only theme. dark.css re-imports this
+   file, so these values also load over DEFAULT/stylesheets/dark.css. That is
+   why every colour the portal reads is overridden here, including ones a
+   light-only theme would otherwise be happy to inherit: without the override
+   the DEFAULT dark value shows through.
+
+   Palette (Figma variables, Casper-Wallet file):
+     Background/Page          #F5F6F7
+     Surface/Card, Modal      #FFFFFF
+     Surface/Raised, Badge    #EDEEF0
+     Surface/card-hover       #ECECED
+     Surface/Tertiary         #B9BBBF
+     Border/Default, Image    #EDEEF0
+     Border/Input             #E1E1E1
+     Border/search-menu       #D2D4D9
+     Text/Primary             #1A1919
+     Text/Secondary           #72737A
+     Text/Muted               #84868C
+     Text/Disabled            #BCBDC1
+     Text/Link                #0A2EBF
+     Accent/Primary           #CC000F
+     Accent/Secondary         #0A2EBF
+     Accent/success           #2DDC88
+     Status/claimed           #F1BF0B
+     Fill/fillSecondary       linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%)
+     Fill/fillSecondaryHover  linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%)
+     Fill/fillSecondaryActive #E8E9EC
+*/
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --bg: rgba(245, 246, 247, 1);
-    --header-bg: rgba(245, 246, 247, 1);
+    --bg: #F5F6F7;
+    --header-bg: #F5F6F7;
 
-    --title-f-c:#1A1919;
-    --title-f-s: 25px;
+    --title-f-c: #1A1919;
+    --title-f-s: 22px;
     --title-f-w: 700;
+    --title-l-h: 28px;
 
+    /* Legal bar fades the page colour up over the last rows. Both links are
+       underlined, with the underline sitting from-font. */
+    --legal-bar-bg: linear-gradient(180deg, rgba(245, 246, 247, 0) 0%, #F5F6F7 70%);
+    --legal-link-f-c: #72737A;
+    --legal-link-f-s: 12px;
+    --legal-link-f-w: 400;
+    --legal-link-l-h: 16px;
+    --legal-link-decoration: underline;
 
-    --legal-link-f-c: #1A1919;
+    /* The hub's wallet mark sits in a 48px circle. */
+    --header-logo-radius: 100px;
 
-    --header-btn-bg: #EDEEF0;
-    --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
-    --header-btn-f-s: 15px;
-    --header-btn-f-w: 600;
+    /* Header buttons are Button_d type Tertiary: card surface, muted outline,
+       accent-blue label. Hover swaps the fill for the hover surface and holds
+       everything else. Figma has no pressed state on this type, so pressed
+       repeats hover. */
+    --header-btn-bg: #FFFFFF;
+    --header-btn-f-s: 16px;
+    --header-btn-f-w: 500;
     --header-btn-f-c: #0A2EBF;
-    --header-btn-border-w: 0;
-    --header-btn-border-c: transparent;
+    --header-btn-l-h: 24px;
+    --header-btn-border-w: 1px;
+    --header-btn-border-c: #84868C;
     --header-btn-radius: 6px;
 
-    --rewards-bg: var(--Background-Light-backgroundPrimary, #FFF);
+    --header-btn-hover-bg: #ECECED;
+    --header-btn-hover-f-c: #0A2EBF;
+    --header-btn-hover-border-w: 1px;
+    --header-btn-hover-border-c: #84868C;
+
+    --header-btn-pressed-bg: #ECECED;
+    --header-btn-pressed-f-c: #0A2EBF;
+    --header-btn-pressed-border-w: 1px;
+    --header-btn-pressed-border-c: #84868C;
+
+    /* Overflow ("...") button: outlined and unfilled at rest, the badge surface
+       on hover, and the tertiary surface with no outline when pressed. */
+    --header-more-bg: transparent;
+    --header-more-border-w: 1px;
+    --header-more-border-c: #EDEEF0;
+    --header-more-radius: 100px;
+    --header-more-dot-c: #1A1919;
+    --header-more-hover-bg: #EDEEF0;
+    --header-more-pressed-bg: #B9BBBF;
+    --header-more-pressed-border-w: 0;
+    --header-more-pressed-border-c: transparent;
+
+    --header-menu-bg: #FFFFFF;
+    --header-menu-border-w: 1px;
+    --header-menu-border-c: #EDEEF0;
+    --header-menu-radius: 12px;
+    --header-menu-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.4);
+    --header-menu-item-f-s: 15px;
+    --header-menu-item-f-w: 500;
+    --header-menu-item-f-c: #0A2EBF;
+    --header-menu-item-l-h: 22px;
+    --header-menu-item-radius: 6px;
+    --header-menu-item-hover-bg: #EDEEF0;
+    --header-menu-item-pressed-bg: #D2D3D9;
+
+    /* Header fades the page colour down behind the pinned bar. */
+    --header-scroll-fade: linear-gradient(180deg, #F5F6F7 30.9%, rgba(245, 246, 247, 0) 68.75%);
+
+    --rewards-bg: #FFFFFF;
 
     --rewards-img-size: 24px;
     --rewards-icon-container-width: 48px;
     --rewards-icon-container-height: 48px;
 
-    --claim-img-bg:  #0A2EBF;;
+    --claim-img-bg: #0A2EBF;
     --claim-img-border-w: 0;
     --claim-img-border-c: transparent;
     --claim-img-radius: 40px;
 
-    --pending-img-bg:var(--Content-Light-contentAction, #0A2EBF);
+    --pending-img-bg: #0A2EBF;
     --pending-img-border-w: 0;
     --pending-img-border-c: transparent;
     --pending-img-radius: 40px;
 
-    --rewards-text-f-s: 24px;/*?*/
-    --rewards-text-f-w: 700;/*?*/
-    --claim-text-f-c:  #1A1919;/**/
-    --pending-text-f-c:  #1A1919;/*?*/
+    --rewards-text-f-s: 24px;
+    --rewards-text-f-w: 700;
+    --claim-text-f-c: #1A1919;
+    --pending-text-f-c: #1A1919;
 
     --rewards-usd-f-s: 15px;
     --rewards-usd-f-w: 400;
-    --claim-usd-f-c:  #1A1919;
-    --pending-usd-f-c:  #1A1919;
+    --claim-usd-f-c: #1A1919;
+    --pending-usd-f-c: #1A1919;
 
     --rewards-amount-f-s: 22px;
     --rewards-amount-f-w: 700;
+    --rewards-amount-l-h: 28px;
 
-    --claim-amount-f-c: #1A1919;;
-
-    --pending-amount-f-c: #1A1919;;
+    --claim-amount-f-c: #1A1919;
+    --pending-amount-f-c: #1A1919;
 
     --rewards-btn-width: 205px;
     --rewards-btn-f-s: 18px;
     --rewards-btn-f-w: 700;
+    --rewards-btn-l-h: 22px;
     --rewards-btn-radius: 6px;
+    --rewards-card-btn-radius: 6px;
+    /* Spinner on the red CTA takes the label colour. */
+    --rewards-loader-c: #FFFFFF;
 
     --primary-btn-f-s: 18px;
     --primary-btn-f-w: 700;
-    --primary-btn-f-c:  #FFF;
+    --primary-btn-f-c: #FFFFFF;
     --primary-btn-radius: 6px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg:  #CC000F;
-    --primary-btn-hover-bg:   #B2000D;
-    --primary-btn-pressed-bg:  #99000B;
-    --primary-btn-disabled-bg:  linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --primary-btn-disabled-f-c:  #BCBDC1;
+    /* Button_d type Primary Solid. Its Hover variant is identical to rest, so
+       the fill does not move; pressed has no variant either and repeats it.
+       Disabled is the same fill at 50%, baked per channel because the button
+       has no opacity variable, with the disabled label colour. */
+    --primary-btn-bg: #CC000F;
+    --primary-btn-hover-bg: #CC000F;
+    --primary-btn-pressed-bg: #CC000F;
+    --primary-btn-disabled-bg: rgba(204, 0, 15, 0.5);
+    --primary-btn-disabled-f-c: #D2D3D9;
 
+    /* Popup CTAs share the primary red. */
+    --modal-primary-btn-bg: #CC000F;
+    --modal-primary-btn-hover-bg: #CC000F;
+    --modal-primary-btn-disabled-bg: rgba(204, 0, 15, 0.5);
+
+    /* Button_d type Secondary: the secondary gradient with a bold blue label.
+       Hover carries no fill change in Figma either. */
     --pending-btn-f-c: #0A2EBF;
     --pending-btn-border-c: transparent;
     --pending-btn-border-w: 0;
     --pending-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
 
-    --pending-btn-hover-f-c: #0A2EBF;;
+    --pending-btn-hover-f-c: #0A2EBF;
     --pending-btn-hover-border-c: transparent;
     --pending-btn-hover-border-w: 0;
-    --pending-btn-hover-bg:  var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
+    --pending-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
 
     --pending-btn-pressed-f-c: #0A2EBF;
     --pending-btn-pressed-border-c: transparent;
     --pending-btn-pressed-border-w: 0;
-    --pending-btn-pressed-bg:   #E8E9EC;
+    --pending-btn-pressed-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
 
-    --retailer-card-bg: #FFF;
+    /* Dashboard bar: switcher, onboarding banner, reward cards. */
+    /* The switcher is a card in its own right, same white and radius as the
+       pending / claimable cards beside it. */
+    --dashboard-switcher-bg: #FFFFFF;
+    --dashboard-switcher-radius: 12px;
+    --dashboard-tab-f-s: 12px;
+    --dashboard-tab-f-w: 500;
+    --dashboard-tab-l-h: 16px;
+    --dashboard-tab-active-bg: #0A2EBF;
+    --dashboard-tab-active-f-c: #FFFFFF;
+    --dashboard-tab-active-radius: 8px;
+    --dashboard-tab-idle-f-c: #84868C;
+    --dashboard-tab-idle-radius: 10px;
+
+    --dashboard-banner-bg: #FFFFFF;
+    --dashboard-banner-border-w: 1px;
+    --dashboard-banner-border-c: #EDEEF0;
+    --dashboard-banner-radius: 12px;
+    --dashboard-banner-title-f-c: #1A1919;
+    --dashboard-banner-title-f-s: 20px;
+    --dashboard-banner-title-f-w: 700;
+    --dashboard-banner-title-l-h: 26px;
+    --dashboard-banner-text-f-c: #72737A;
+    --dashboard-banner-text-f-s: 15px;
+    --dashboard-banner-text-f-w: 500;
+    --dashboard-banner-text-l-h: 22px;
+
+    --dashboard-action-f-s: 18px;
+    --dashboard-action-f-w: 700;
+    --dashboard-action-l-h: 22px;
+    --dashboard-action-radius: 6px;
+    --dashboard-action-secondary-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-action-secondary-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-action-secondary-border-w: 0;
+    --dashboard-action-secondary-border-c: transparent;
+    --dashboard-action-secondary-f-c: #0A2EBF;
+    --dashboard-action-secondary-f-s: 18px;
+    --dashboard-action-secondary-f-w: 700;
+    --dashboard-action-secondary-l-h: 22px;
+
+    /* Hover moves this card's outline, not its fill. */
+    --dashboard-card-bg: #FFFFFF;
+    --dashboard-card-hover-bg: #FFFFFF;
+    --dashboard-card-border-w: 1px;
+    --dashboard-card-border-c: #EDEEF0;
+    --dashboard-card-hover-border-c: #B9BBBF;
+    --dashboard-card-radius: 12px;
+    --dashboard-card-label-f-c: #1A1919;
+    --dashboard-card-label-f-s: 15px;
+    --dashboard-card-label-f-w: 400;
+    --dashboard-card-label-l-h: 22px;
+    --dashboard-card-label-disabled-f-c: #D2D3D9;
+    --dashboard-card-label-disabled-f-w: 400;
+    --dashboard-card-label-disabled-l-h: 22px;
+    --dashboard-card-amount-f-c: #1A1919;
+    --dashboard-card-amount-f-s: 20px;
+    --dashboard-card-amount-f-w: 700;
+    --dashboard-card-amount-l-h: 26px;
+    /* Shared base for both card actions — Button_d Secondary, which is what
+       Claim keeps. Type is shared; only the colours split below. */
+    --dashboard-card-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-card-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-card-btn-border-w: 0;
+    --dashboard-card-btn-border-c: transparent;
+    --dashboard-card-btn-f-c: #0A2EBF;
+    --dashboard-card-btn-f-s: 18px;
+    --dashboard-card-btn-f-w: 700;
+    --dashboard-card-btn-l-h: 24px;
+    /* The card's own disabled state keeps the fill and only greys the label. */
+    --dashboard-card-btn-disabled-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-card-btn-disabled-f-c: #D2D3D9;
+    --dashboard-card-btn-disabled-l-h: 24px;
+
+    /* Claim (claimable card) — the primary button's colouring: solid accent
+       fill, white label, and the same fill at 50% when disabled. */
+    --dashboard-claim-btn-bg: #CC000F;
+    --dashboard-claim-btn-hover-bg: #CC000F;
+    --dashboard-claim-btn-border-w: 0;
+    --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-c: #FFFFFF;
+    --dashboard-claim-btn-disabled-bg: rgba(204, 0, 15, 0.5);
+    --dashboard-claim-btn-disabled-f-c: #D2D3D9;
+
+    /* Details (pending card) — the secondary colouring, which is also what
+       Figma draws. */
+    --dashboard-details-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-details-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-details-btn-border-w: 0;
+    --dashboard-details-btn-border-c: transparent;
+    --dashboard-details-btn-f-c: #0A2EBF;
+    --dashboard-details-btn-disabled-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-details-btn-disabled-f-c: #D2D3D9;
+
+    --dashboard-badge-bg: #EDEEF0;
+    --dashboard-badge-f-c: #72737A;
+    --dashboard-badge-f-s: 15px;
+    --dashboard-badge-f-w: 500;
+    --dashboard-badge-l-h: 20px;
+    --dashboard-badge-radius: 6px;
+
+    /* History entry point. Its label is secondary text, not the accent, and it
+       drops to muted when disabled. */
+    --dashboard-history-f-c: #72737A;
+    --dashboard-history-f-s: 16px;
+    --dashboard-history-f-w: 700;
+    --dashboard-history-l-h: 24px;
+    --dashboard-history-radius: 12px;
+    --dashboard-history-hover-bg: #ECECED;
+    --dashboard-history-disabled-f-c: #84868C;
+
+    /* Loading placeholders: raised bars on the card surface, and a white sweep
+       instead of the dark theme's grey one. */
+    --dashboard-skeleton-card-bg: #FFFFFF;
+    /* Figma 24:1552 types this hex in directly rather than binding a variable,
+       and it is a dark-theme value. Matched as drawn. */
+    --dashboard-skeleton-border-c: #1E2128;
+    --dashboard-skeleton-radius: 12px;
+    --dashboard-skeleton-bar-bg: #EDEEF0;
+    --dashboard-skeleton-bar-radius: 4px;
+    --skeleton-sweep: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 100%);
+
+    /* Hover moves the outline only — the card fill does not change. */
+    --retailer-card-bg: #FFFFFF;
+    --retailer-card-hover-bg: #FFFFFF;
+    --retailer-card-radius: 12px;
     --retailer-card-border-w: 1px;
-    --retailer-card-border-color: transparent;
-    --retailer-card--hover-border-color: #1A1919;
+    --retailer-card-border-color: #EDEEF0;
+    --retailer-card--hover-border-color: #B9BBBF;
 
-    --retailer-card-img-border-c: #EEF0F4;
+    --retailer-card-img-bg: #FFFFFF;
+    --retailer-card-img-border-c: #EDEEF0;
     --retailer-card-img-border-w: 1px;
-    --retailer-card-img-border-campaign-c:  #FFF;
+    --retailer-card-img-border-campaign-c: #FFFFFF;
+    --retailer-card-logo-radius: 100px;
 
     --retailer-card-flag-f-s: 14px;
     --retailer-card-flag-f-w: 700;
-    --retailer-card-flag-f-c: #FFF;
+    --retailer-card-flag-f-c: #FFFFFF;
     --retailer-card-flag-bg: #2DDC88;
-    --retailer-card-flag-campaign-f-c: #2DDC88;/*?*/
-    --retailer-card-flag-campaign-bg: #FFF;/*?*/
-    --retailer-card-flag-radius:  4px;
+    --retailer-card-flag-l-h: 24px;
+    --retailer-card-flag-campaign-f-c: #2DDC88;
+    --retailer-card-flag-campaign-bg: #FFFFFF;
+    --retailer-card-flag-campaign-f-w: 700;
+    --retailer-card-flag-radius: 5px;
 
     --retailer-card-name-f-s: 18px;
     --retailer-card-name-f-w: 700;
-    --retailer-card-name-f-c:  #1A1919;
+    --retailer-card-name-f-c: #1A1919;
+    --retailer-card-name-l-h: 24px;
 
     --retailer-card-amount-f-s: 12px;
     --retailer-card-amount-f-c: #CC000F;
     --retailer-card-amount-f-w: 500;
+    --retailer-card-amount-l-h: 16px;
+    --retailer-card-amount-radius: 80px;
     --retailer-card-amount-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --retailer-card-amount-campaign-f-w: 600;/*?*/
-    --retailer-card-amount-campaign-bg: #F36A3D;/*?*/
+    --retailer-card-amount-campaign-f-w: 600;
+    --retailer-card-amount-campaign-f-c: #FFFFFF;
+    --retailer-card-amount-campaign-bg: #CC000F;
+
+    --retailer-card-skeleton-card-bg: #FFFFFF;
+    --retailer-card-skeleton-bg: #EDEEF0;
+    --retailer-card-skeleton-border-w: 1px;
+    --retailer-card-skeleton-border-c: #EDEEF0;
+    --retailer-card-skeleton-radius: 12px;
+    --retailer-card-skeleton-badge-radius: 8px;
+    --retailer-card-skeleton-name-radius: 5px;
 
     --deals-amount-f-s: 15px;
     --deals-amount-f-w: 400;
-    --deals-amount-f-c: rgba(114, 115, 122, 1);
+    --deals-amount-f-c: #72737A;
 
-    --loading-msg-f-s: 13px;
+    --loading-msg-f-s: 15px;
     --loading-msg-f-w: 500;
     --loading-msg-f-c: #1A1919;
-    /* need to configure */
-    --filter-btn-f-s: 15px;
+    --loading-msg-l-h: 16px;
+
+    --maintenance-icon-c: #CC000F;
+
+    /* Active search term pill. No distinct hover in Figma, so hover matches rest. */
+    --filter-btn-f-s: 14px;
     --filter-btn-f-w: 700;
-    --filter-btn-f-c: #0A2EBF;;
+    --filter-btn-f-c: #1A1919;
     --filter-btn-bg: #EDEEF0;
     --filter-btn-hover-bg: #EDEEF0;
-    --filter-btn-hover-f-c: #0A2EBF;
-    --filter-btn-border-w: 0px;
+    --filter-btn-hover-f-c: #1A1919;
+    --filter-btn-border-w: 0;
     --filter-btn-border-c: transparent;
-    --filter-btn-radius: 6px;
-    /* until here */
-    --category-btn-bg: #EDEEF0;
+    /* The tag matches the search field's radius, not the button radius. */
+    --filter-btn-radius: 10px;
+
+    /* Category chip. The label is the accent blue in every state and never
+       changes weight; only the surface moves. Selected keeps the card fill and
+       marks itself with an accent ring instead. */
+    --category-btn-bg: #FFFFFF;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
     --category-btn-f-c: #0A2EBF;
-    --category-btn-border-w: 0px;
+    --category-btn-l-h: 20px;
+    --category-btn-border-w: 0;
     --category-btn-border-c: transparent;
     --category-btn-radius: 6px;
-    --category-btn-hover-bg:#0A2EBF;
-    --category-btn-hover-f-c: #FFF;
-    --category-btn-hover-f-w: 700;
-    --category-btn-hover-border-w: 0px;
-    --category-btn-hover-border-c:transparent;
+    --category-btn-hover-bg: #EDEEF0;
+    --category-btn-hover-f-c: #0A2EBF;
+    --category-btn-hover-f-w: 400;
+    --category-btn-hover-border-w: 0;
+    --category-btn-hover-border-c: transparent;
     --category-btn-hover-radius: 6px;
+    --category-btn-selected-bg: #FFFFFF;
+    --category-btn-selected-f-c: #0A2EBF;
+    --category-btn-selected-border-w: 1px;
+    --category-btn-selected-border-c: #0A2EBF;
+    --category-skeleton-bg: #EDEEF0;
+    --category-skeleton-radius: 5px;
 
+    /* The row scrolls under a straight two-stop fade to the page colour; the
+       arrow sits on top of it, unfilled and fully rounded. */
+    --category-veil: linear-gradient(90deg, rgba(245, 246, 247, 0) 0%, #F5F6F7 100%);
+    --category-arrow-bg: transparent;
+    --category-arrow-radius: 100px;
+
+    /* Default and Hover resolve to the same #EDEEF0 through two different
+       palette variables, so the button does not move on hover. */
+    --back-to-top-bg: #EDEEF0;
+    --back-to-top-border-w: 1px;
+    --back-to-top-border-c: #EDEEF0;
+    --back-to-top-hover-bg: #EDEEF0;
+    --back-to-top-radius: 80px;
+    --back-to-top-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.4);
+
+    /* Modal shell + copy, shared by every modal. */
     --modal-bg: #F5F6F7;
-    --modal-overlay-bg: rgba(43, 43, 43, 0.6);
+    /* Not a dim — the scrim is the page colour at full opacity, so the
+       dashboard is covered rather than shaded (Figma 24:1543). */
+    --modal-overlay-bg: #F5F6F7;
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 5px;
     --modal-title-f-s: 20px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #1A1919;
+    --modal-title-l-h: 26px;
     --modal-paragraph-f-s: 13px;
     --modal-paragraph-f-w: 400;
     --modal-paragraph-f-c: #1A1919;
+    --modal-paragraph-l-h: 18px;
 
+    --modal-close-radius: 6px;
+    --modal-close-hover-bg: #EDEEF0;
+    --modal-close-hover-f-c: #1A1919;
+    /* Pinned to the platform's own glyph: DEFAULT's dark-theme x-mark is white,
+       and this modal is white. */
+    --modal-close-icon-src: url('/CSPR/icons/light/x-mark.svg');
+
+    --custom-modal-bg: #FFFFFF;
+    --custom-modal-radius: 12px;
+
+    /* Popup type A shell (Install / Go Shopping / Verify / Pair / Terms). */
+    --modal-popup-frame-bg: #FFFFFF;
+    --modal-popup-radius: 12px;
+    --modal-popup-title-f-c: #1A1919;
+    --modal-popup-title-f-s: 18px;
+    --modal-popup-title-f-w: 700;
+    --modal-popup-title-l-h: 22px;
+    /* Body copy in these popups is primary text, not the muted secondary. */
+    --modal-popup-text-f-c: #1A1919;
+    --modal-popup-text-f-s: 16px;
+    --modal-popup-text-f-w: 500;
+    --modal-popup-text-l-h: 20px;
+    --modal-popup-btn-f-s: 18px;
+    --modal-popup-btn-f-w: 700;
+    --modal-popup-btn-l-h: 22px;
+    --modal-popup-terms-f-c: #84868C;
+    --modal-popup-terms-f-s: 12px;
+    --modal-popup-terms-f-w: 400;
+    --modal-popup-terms-l-h: 16px;
+    --modal-popup-terms-link-f-c: #0A2EBF;
+    --modal-popup-avatar-radius: 80px;
+    --modal-popup-avatar-inner-radius: 100px;
+    --modal-popup-avatar-border-w: 1px;
+    --modal-popup-avatar-border-c: #EDEEF0;
+    --modal-popup-loader-radius: 100px;
+    --modal-popup-loader-track-c: #EDEEF0;
+
+    /* "What's this?" explainer. */
+    --modal-explain-bg: #FFFFFF;
+    --modal-explain-radius: 30px;
+    --modal-explain-close-radius: 6px;
+    --modal-explain-title-f-c: #1A1919;
+    --modal-explain-title-f-s: 18px;
+    --modal-explain-title-f-w: 700;
+    --modal-explain-title-l-h: 22px;
+    --modal-explain-text-f-c: #72737A;
+    --modal-explain-text-f-s: 15px;
+    --modal-explain-text-f-w: 500;
+    --modal-explain-text-l-h: 22px;
+    /* The icon tile is the elevated surface; the card behind it is the modal's
+       own white. */
+    --modal-explain-icon-bg: #EDEEF0;
+    --modal-explain-icon-border-w: 1px;
+    --modal-explain-icon-border-c: #EDEEF0;
+    --modal-explain-icon-radius: 10px;
+    --modal-explain-card-bg: #FFFFFF;
+    --modal-explain-card-border-w: 1px;
+    --modal-explain-card-border-c: #EDEEF0;
+    --modal-explain-card-radius: 16px;
+    --modal-explain-card-title-f-c: #1A1919;
+    --modal-explain-card-title-f-s: 14px;
+    --modal-explain-card-title-f-w: 700;
+    --modal-explain-card-title-l-h: 20px;
+    --modal-explain-card-text-f-c: #72737A;
+    --modal-explain-card-text-f-s: 13px;
+    --modal-explain-card-text-f-w: 400;
+    --modal-explain-card-text-l-h: 20px;
+
+    /* Pair wallet: email step, then the OTP step. Boxes are white on the input
+       border; only the radius changes once a digit lands. */
+    --modal-pair-title-f-c: #1A1919;
+    --modal-pair-title-f-s: 20px;
+    --modal-pair-title-f-w: 700;
+    --modal-pair-title-l-h: 26px;
+    /* The "or" rules either side of the divider are secondary-text hairlines. */
+    --modal-pair-divider-c: #72737A;
+    --modal-pair-divider-f-c: #72737A;
+    --modal-pair-divider-f-s: 13px;
+    --modal-pair-divider-f-w: 500;
+    --modal-pair-divider-l-h: 15px;
+    /* The email field keeps the same border in all three states — Figma's Error
+       variant carries no red outline, only the message underneath. */
+    --modal-pair-input-bg: #FFFFFF;
+    --modal-pair-input-border-w: 1px;
+    --modal-pair-input-border-c: #E1E1E1;
+    --modal-pair-input-empty-border-c: #E1E1E1;
+    --modal-pair-input-error-border-c: #E1E1E1;
+    --modal-pair-input-f-c: #1A1919;
+    --modal-pair-input-f-s: 15px;
+    --modal-pair-input-f-w: 500;
+    --modal-pair-input-l-h: 20px;
+    --modal-pair-input-placeholder-f-c: #72737A;
+    --modal-pair-input-radius: 8px;
+    --modal-pair-otp-bg: #FFFFFF;
+    --modal-pair-otp-border-w: 1px;
+    --modal-pair-otp-border-c: #E1E1E1;
+    --modal-pair-otp-radius: 5px;
+    --modal-pair-otp-filled-border-c: #E1E1E1;
+    --modal-pair-otp-filled-radius: 8px;
+    /* Error only thickens the box; the colour holds. The red is carried by the
+       message underneath. */
+    --modal-pair-otp-error-border-w: 1.5px;
+    --modal-pair-otp-error-border-c: #E1E1E1;
+    --modal-pair-otp-f-c: #1A1919;
+    --modal-pair-otp-f-s: 22px;
+    --modal-pair-otp-f-w: 700;
+    --modal-pair-otp-l-h: 28px;
+    --modal-pair-error-f-c: #CC000F;
+    --modal-pair-error-f-s: 12px;
+    --modal-pair-error-f-w: 500;
+    --modal-pair-error-l-h: 16px;
+    --modal-pair-resend-f-c: #72737A;
+    --modal-pair-resend-hover-f-c: #1A1919;
+    --modal-pair-resend-disabled-f-c: #84868C;
+    --modal-pair-resend-f-s: 13px;
+    --modal-pair-resend-f-w: 700;
+    --modal-pair-resend-l-h: 18px;
+    --modal-pair-resend-radius: 6px;
+
+    /* Claim modal. */
+    --modal-claim-amount-f-s: 40px;
+    --modal-claim-amount-f-w: 700;
+    --modal-claim-amount-f-c: #1A1919;
+    --modal-claim-details-bg: #F5F6F7;
+    --modal-claim-details-border-w: 1px;
+    --modal-claim-details-border-c: #EDEEF0;
+    --modal-claim-details-radius: 12px;
+    --modal-claim-disclaimer-f-s: 14px;
+    --modal-claim-disclaimer-f-w: 400;
+    --modal-claim-disclaimer-f-c: #84868C;
+    --modal-claim-address-bg: #F5F6F7;
+    --modal-claim-address-title-f-s: 14px;
+    --modal-claim-address-title-f-w: 500;
+    --modal-claim-address-title-f-c: #1A1919;
+    --modal-claim-address-border-w: 1px;
+    --modal-claim-address-border-c: #EDEEF0;
+    --modal-claim-address-radius: 12px;
+    --modal-claim-address-f-s: 14px;
+    --modal-claim-address-f-w: 400;
+    --modal-claim-address-f-c: #1A1919;
+    --modal-claim-tooltip-f-s: 14px;
+    --modal-claim-tooltip-f-w: 400;
+    --modal-claim-tooltip-f-c: #1A1919;
+
+    --modal-claim-countdown-radius: 100px;
+    --modal-claim-countdown-border-w: 2px;
+    --modal-claim-countdown-border-c: #0A2EBF;
+    --modal-claim-countdown-progress-c: #EDEEF0;
+    --modal-claim-countdown-f-s: 16px;
+    --modal-claim-countdown-f-w: 500;
+    --modal-claim-countdown-f-c: #0A2EBF;
+
+    /* Go Shopping modal + its terms view. */
+    --retailer-custom-modal-bg: #FFFFFF;
+    --retailer-custom-modal-radius: 12px;
+    --modal-terms-bg: #FFFFFF;
+    --modal-terms-surface-bg: #F5F6F7;
+    --modal-terms-radius: 12px;
+    --modal-deal-logo-bg: #FFFFFF;
+    --modal-deal-logo-border-w: 1px;
+    --modal-deal-logo-border-c: #EDEEF0;
+    --modal-deal-logo-radius: 100px;
+    --modal-deal-name-f-s: 22px;
+    --modal-deal-name-f-w: 700;
+    --modal-deal-name-f-c: #1A1919;
+    --modal-deal-btn-f-s: 18px;
+    --modal-deal-rate-radius: 6px;
+    --modal-deal-back-f-c: #0A2EBF;
+    --modal-deal-back-f-s: 13px;
+    --modal-deal-back-l-h: 20px;
+    --modal-deal-markdown-bg: #FFFFFF;
+    --modal-deal-markdown-border-w: 1px;
+    --modal-deal-markdown-border-c: #EDEEF0;
+    --modal-deal-markdown-radius: 8px;
+    --modal-deal-markdown-f-s: 12px;
+    --modal-deal-markdown-f-w: 400;
+    --modal-deal-markdown-f-c: #1A1919;
+    --modal-deal-markdown-l-h: 18px;
+    --modal-deal-markdown-list-f-s: 12px;
+    --modal-deal-markdown-h3-f-s: 13px;
+    --modal-deal-markdown-h3-f-w: 700;
+    --modal-deal-markdown-h3-f-c: #1A1919;
+    --modal-deal-markdown-h3-l-h: 18px;
+    --modal-deal-markdown-bold-f-w: 600;
+    --modal-deal-markdown-bold-f-c: #1A1919;
+    --modal-deal-consent-f-s: 13px;
+    --modal-deal-consent-f-w: 400;
+    --modal-deal-consent-f-c: #84868C;
+    --modal-deal-terms-btn-f-c: #0A2EBF;
+    --modal-deal-terms-btn-hover-f-c: #CC000F;
+
+    /* Claim status modal (processing / success / failure). */
     --modal-status-bg: #FFFFFF;
-    --modal-status-radius: 12px;
+    --modal-status-radius: 6px;
 
-    /* Sampled off the Figma loader asset: solid ring sweeping #F0F1F4 -> #0A2EBF,
-       with a 3.5px stroke. */
+    /* Sampled off the Figma Processing asset: the arc ramps to #092DBF, i.e.
+       Accent/Secondary, over a faint track. */
     --modal-status-loader-c: #0A2EBF;
     --modal-status-loader-track-c: #F0F1F4;
     --modal-status-loader-stroke: 3.5px;
+    --modal-status-loader-radius: 100px;
 
     --modal-status-title-f-s: 30px;
-    --modal-status-title-f-w: 600;
+    --modal-status-title-f-w: 700;
     --modal-status-title-l-h: 38px;
     --modal-status-title-loading-f-c: #1A1919;
-    --modal-status-title-success-f-c: #2DDC88;
+    /* "Reward claimed!" is primary text — only the failure title is coloured. */
+    --modal-status-title-success-f-c: #1A1919;
     --modal-status-title-failure-f-c: #CC000F;
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 26px;
+    --modal-status-pair-title-f-c: #1A1919;
+    --modal-status-pair-title-f-s: 22px;
+    --modal-status-pair-title-f-w: 700;
+    --modal-status-pair-title-l-h: 28px;
 
     --modal-status-msg-l-h: 24px;
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
     --modal-status-msg-f-c: #1A1919;
 
-    --modal-status-btn-bg: var(--pending-btn-bg);
+    --modal-status-amount-f-c: #1A1919;
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+
+    --modal-status-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
     --modal-status-btn-f-s: 18px;
     --modal-status-btn-f-w: 700;
     --modal-status-btn-f-c: #0A2EBF;
+    --modal-status-btn-l-h: 24px;
+    --modal-status-btn-strong-f-w: 700;
     --modal-status-btn-border-w: 0;
     --modal-status-btn-border-c: transparent;
     --modal-status-btn-radius: 6px;
 
-    --modal-status-btn-hover-bg: var(--pending-btn-hover-bg);
+    --modal-status-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
     --modal-status-btn-hover-f-s: 18px;
     --modal-status-btn-hover-f-w: 700;
     --modal-status-btn-hover-f-c: #0A2EBF;
@@ -195,163 +672,260 @@
     --modal-status-btn-hover-border-c: transparent;
     --modal-status-btn-hover-radius: 6px;
 
-    --modal-status-btn-disabled-bg: var(--pending-btn-bg);
+    /* Secondary disabled is the resting look at 50%, baked per channel. */
+    --modal-status-btn-disabled-bg: linear-gradient(180deg, rgba(245, 245, 247, 0.5) 0%, rgba(240, 240, 242, 0.5) 100%);
     --modal-status-btn-disabled-f-s: 18px;
     --modal-status-btn-disabled-f-w: 700;
-    --modal-status-btn-disabled-f-c: #0A2EBF;
+    --modal-status-btn-disabled-f-c: rgba(10, 46, 191, 0.5);
     --modal-status-btn-disabled-border-w: 0;
     --modal-status-btn-disabled-border-c: transparent;
     --modal-status-btn-disabled-radius: 6px;
-/****/
-    --modal-claim-amount-f-s: 40px;
-    --modal-claim-amount-f-w: 500;
-    --modal-claim-amount-f-c: #e1f5e8;
-    --modal-claim-details-bg: #15171F;
-    --modal-claim-details-border-w: 1px;
-    --modal-claim-details-border-c: #262A38;
-    --modal-claim-details-radius: 8px;
-    --modal-claim-disclaimer-f-s: 16px;
-    --modal-claim-disclaimer-f-w: 400;
-    --modal-claim-disclaimer-f-c: #7C85A3;
-    --modal-claim-address-bg: linear-gradient(195deg, rgba(26, 227, 187, 0.26) 0.57%, rgba(75, 109, 222, 0.10) 41.65%, rgba(75, 109, 222, 0.16) 100%);
-    --modal-claim-address-title-f-s: 16px;
-    --modal-claim-address-title-f-w: 400;
-    --modal-claim-address-title-f-c: #E1E6F5;
-    --modal-claim-address-border-w: 0;
-    --modal-claim-address-border-c: transparent;
-    --modal-claim-address-radius: 12px;
-    --modal-claim-address-f-s: 16px;
-    --modal-claim-address-f-w: 400;
-    --modal-claim-address-f-c: #fff;
-    --modal-claim-tooltip-f-s: 14px;
-    --modal-claim-tooltip-f-w: 400;
-    --modal-claim-tooltip-f-c: #E1E6F5;
 
-    --modal-claim-countdown-radius: 8px;
-    --modal-claim-countdown-border-w: 2px;
-    --modal-claim-countdown-border-c: #7892E8;
-    --modal-claim-countdown-progress-c: #1F253B;
-    --modal-claim-countdown-f-s: 16px;
-    --modal-claim-countdown-f-w: 500;
-    --modal-claim-countdown-f-c: #7892E8;
-/***/
-    --modal-deal-name-f-s: 22px;
-    --modal-deal-name-f-w: 700;
-    --modal-deal-name-f-c: #1A1919;
-    --modal-deal-back-f-c: #0A2EBF;
-    --modal-deal-markdown-bg: transparent;
-    --modal-deal-markdown-border-w: 1px;
-    --modal-deal-markdown-border-c: var(--Content-Light-contentDisabled, #BCBDC1);
-    --modal-deal-markdown-radius: 12px;
-    --modal-deal-markdown-f-s: 12px;
-    --modal-deal-markdown-f-w: 400;
-    --modal-deal-markdown-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --modal-deal-markdown-h3-f-s: 13px;
-    --modal-deal-markdown-h3-f-w: 700;
-    --modal-deal-markdown-h3-f-c: var(--Content-Light-contentPrimary, #1A1919);    --modal-deal-markdown-bold-f-w: 600;
-    --modal-deal-markdown-bold-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --modal-deal-consent-f-s: 13px;
-    --modal-deal-consent-f-w: 400;
-    --modal-deal-consent-f-c: #84868C;
-    --modal-deal-terms-btn-hover-f-c: #CC000F;
+    /* Claim guide inside the success state: balance block, then numbered steps. */
+    /* One 1px search-menu stroke is shared by the wallet badge, the balance
+       card, each step and each step number. */
+    --modal-status-claim-border-w: 1px;
+    --modal-status-claim-border-c: #D2D4D9;
+    /* The balance card is a diagonal wash from the hover surface to the modal. */
+    --modal-status-claim-balance-bg: linear-gradient(110.07deg, #ECECED 9.09%, #FFFFFF 90.91%);
+    --modal-status-claim-balance-radius: 12px;
+    --modal-status-claim-label-f-c: #72737A;
+    --modal-status-claim-label-f-s: 14px;
+    --modal-status-claim-label-f-w: 500;
+    --modal-status-claim-label-l-h: 20px;
+    --modal-status-claim-amount-f-c: #1A1919;
+    --modal-status-claim-amount-f-s: 22px;
+    --modal-status-claim-amount-f-w: 700;
+    --modal-status-claim-amount-l-h: 28px;
+    --modal-status-claim-usd-f-c: #72737A;
+    --modal-status-claim-usd-f-s: 13px;
+    --modal-status-claim-usd-f-w: 400;
+    --modal-status-claim-usd-l-h: 20px;
+    /* The round wallet mark beside the balance. */
+    --modal-status-claim-badge-bg: #EDEEF0;
+    --modal-status-claim-badge-radius: 100px;
+    /* "Claim Now": a tinted success chip whose outline is the same tint. */
+    --modal-status-claim-badge-chip-bg: rgba(45, 220, 136, 0.15);
+    --modal-status-claim-badge-chip-border-w: 1px;
+    --modal-status-claim-badge-chip-border-c: rgba(45, 220, 136, 0.15);
+    --modal-status-claim-badge-chip-f-c: #2DDC88;
+    --modal-status-claim-badge-chip-f-s: 12px;
+    --modal-status-claim-badge-chip-f-w: 700;
+    --modal-status-claim-badge-chip-radius: 8px;
+    --modal-status-claim-guide-f-c: #1A1919;
+    --modal-status-claim-guide-f-s: 14px;
+    --modal-status-claim-guide-f-w: 500;
+    --modal-status-claim-guide-l-h: 20px;
+    --modal-status-claim-step-bg: #FFFFFF;
+    --modal-status-claim-step-radius: 8px;
+    --modal-status-claim-step-f-c: #1A1919;
+    --modal-status-claim-step-f-s: 12px;
+    --modal-status-claim-step-f-w: 400;
+    --modal-status-claim-step-l-h: 17px;
+    --modal-status-claim-step-number-bg: #EDEEF0;
+    --modal-status-claim-step-number-f-s: 12px;
+    --modal-status-claim-step-number-f-w: 700;
+    --modal-status-claim-step-number-radius: 12px;
 
-    --retailer-logo-fallback-bg: #FFF;
-    --retailer-logo-fallback-f-c: #000;
-    --retailer-logo-fallback-f-s: 37px;
-    --retailer-logo-fallback-f-s-two-letters: 23px;
+    --tooltip-bg: #EDEEF0;
+    --tooltip-border-w: 1px;
+    --tooltip-border-c: #EDEEF0;
+    --tooltip-f-c: #1A1919;
+    --tooltip-f-s: 14px;
+    --tooltip-f-w: 400;
+    --tooltip-l-h: 20px;
+    --tooltip-radius: 12px;
+
+    --retailer-logo-fallback-bg: #FFFFFF;
+    --retailer-logo-fallback-f-c: #1A1919;
+    --retailer-logo-fallback-f-s: 28px;
+    --retailer-logo-fallback-f-s-two-letters: 22px;
     --retailer-logo-fallback-f-w: 700;
+    --retailer-logo-fallback-l-h: 22px;
     --retailer-logo-fallback-border-w: 1px;
-    --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
+    --retailer-logo-fallback-border-c: #EDEEF0;
 
-    --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
+    /* Tertiary thumb on the raised track, both fully rounded. */
+    --scrollbar-bg: #B9BBBF;
+    --scrollbar-track-bg: #EDEEF0;
+    --scrollbar-radius: 100px;
 
-    --search-bg: #FFFFFF;
-    --search-menu-bg: #FFFFFF;
-    --search-f-s: 15px;
+    /* The field carries no fill of its own — the page shows through — and its
+       outline is 2px, twice the dropdown's. */
+    --search-bg: transparent;
+    --search-f-s: 16px;
     --search-f-w: 400;
-    /* Here */
-    --search-f-c: var(--Content-Light-contentSecondary, #84868C);
-    --search-option-f-c: #1A1919;
-    --search-option-f-s: 16px;
-    --search-option-f-w: 400;
-    --search-option-hover-bg: #F5F6F7;
-    --search-radius: 6px;
-    --search-menu-radius: 6px;
-    --search-menu-border-w: 0;
-    --search-menu-border-c: transparent;
-    --search-border-w: 1px;
+    --search-l-h: 24px;
+    --search-f-c: #1A1919;
+    --search-placeholder-f-c: #84868C;
+    --search-radius: 10px;
+    --search-border-w: 2px;
     --search-border-c: #E1E1E1;
-    --search-placeholder-f-c: #8C8C8C;
-    --search-scrollbar-bg:#84868C;
+
+    /* The dropdown sits on the page colour, not the card white, and carries no
+       shadow. */
+    --search-menu-bg: #F5F6F7;
+    --search-menu-radius: 10px;
+    --search-menu-border-w: 1px;
+    --search-menu-border-c: #E1E1E1;
+    --search-menu-shadow: none;
+    --search-option-f-c: #1A1919;
+    --search-option-f-s: 14px;
+    --search-option-f-w: 400;
+    --search-option-l-h: 20px;
+    --search-option-hover-bg: #EDEEF0;
+    /* A lone result is set larger than a list of them. */
+    --search-single-option-f-s: 15px;
+    --search-single-option-f-w: 500;
+    --search-single-option-l-h: 22px;
+    --search-no-results-f-s: 15px;
+    --search-no-results-f-w: 500;
+    --search-no-results-l-h: 22px;
+    --search-no-results-hint-f-c: #72737A;
+    --search-no-results-hint-f-s: 14px;
+    --search-no-results-hint-f-w: 400;
+    --search-no-results-hint-l-h: 20px;
+    --search-skeleton-bg: #EDEEF0;
+    --search-skeleton-radius: 4px;
+
+    /* Page toolbar (history / FAQ headers). */
+    --page-toolbar-title-f-c: #1A1919;
+    --page-toolbar-title-f-s: 18px;
+    --page-toolbar-title-f-w: 700;
+    --page-toolbar-title-l-h: 22px;
+    --page-toolbar-back-f-c: #72737A;
+    --page-toolbar-back-f-s: 13px;
+    --page-toolbar-back-f-w: 500;
+    --page-toolbar-back-l-h: 15px;
 
     --history-title-f-s: 28px;
     --history-title-f-w: 700;
-    --history-title-f-c:  var(--Content-Light-contentPrimary, #1A1919);
+    --history-title-f-c: #1A1919;
 
-    --history-back-f-s: 15px;
-    --history-back-f-w: 600;
-    --history-back-f-c: #0A2EBF;
+    /* "Back" is a muted 13/500 label beside a 24px arrow; hover lifts both to
+       primary text. */
+    --history-back-f-s: 13px;
+    --history-back-f-w: 500;
+    --history-back-f-c: #72737A;
+    --history-back-l-h: 15px;
+    --history-page-back-f-c: #72737A;
 
-    --history-back-hover-f-s: 16px;
+    --history-back-hover-f-s: 13px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #0A2EBF;
+    --history-back-hover-f-c: #1A1919;
+    /* Opt in to tinting the back arrow: the icon doubles as its own mask. */
+    --history-back-icon-src: url('/CSPR/icons/light/arrow-left.svg');
+    --history-back-icon-hover-f-c: #1A1919;
 
-
+    /* Header and rows both sit on the page colour; only hover tints. */
     --history-table-radius: 12px;
-    --history-table-header-bg: #FFF;
-    --history-table-header-border-c: rgba(239, 239, 239, 0.50);;
-    --history-table-header-border-w: 1px;
+    --history-table-header-bg: #F5F6F7;
+    /* Shorthand: the header is divided on its bottom edge only. */
+    --history-table-header-border-c: #EDEEF0;
+    --history-table-header-border-w: 0 0 1px;
     --history-table-header-radius: 0;
 
     --history-table-header-f-s: 14px;
-    --history-table-header-f-w: 500;
-    --history-table-header-f-c:#84868C;
+    --history-table-header-f-w: 400;
+    /* Typed in directly in Figma rather than bound to a palette variable. */
+    --history-table-header-f-c: #7A7D83;
+    --history-table-header-l-h: 22px;
 
     --history-table-row-border-w: 1px;
-    --history-table-row-border-c: rgba(239, 239, 239, 0.50);
-    --history-table-row-bg: var(--Background-Light-backgroundPrimary, #FFF);
+    --history-table-row-border-c: #EDEEF0;
+    --history-table-row-bg: #F5F6F7;
+    --history-table-row-hover-bg: #EDEEF0;
+    --history-table-row-active-bg: #F5F6F7;
 
-    --history-table-row-hover-bg: var(--Background-Light-backgroundPrimary, #FFF);
-    --history-table-row-active-bg: var(--Background-Light-backgroundPrimary, #FFF);
-    --history-claimed-icon-bg: #0A2EBF;/*?*/
-    --history-details-btn-bg: var(--Fill-Light-fillSecondary, linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%));/*?*/
+    --history-logo-radius: 100px;
+    --history-logo-border-w: 1px;
+    --history-logo-border-c: #EDEEF0;
+    --history-logo-fallback-bg: #EDEEF0;
+    --history-logo-fallback-f-c: #1A1919;
+    --history-logo-fallback-f-s: 20px;
+    --history-logo-fallback-f-s-two-letters: 16px;
+    --history-logo-fallback-f-w: 700;
+    --history-logo-fallback-l-h: 16px;
+    --history-logo-fallback-border-w: 1px;
+    --history-logo-fallback-border-c: #EDEEF0;
+    --history-claim-logo-radius: 100px;
+
+    /* The total-claims glyph ships its own disc, so its container carries no
+       fill and no ring of its own. */
+    --history-claimed-icon-bg: transparent;
+    --history-claimed-icon-border-w: 0;
+    --history-claimed-icon-border-c: transparent;
+    /* The row's expand chevron sits on the row itself, with no fill of its own. */
+    --history-details-btn-bg: transparent;
+    --history-details-btn-radius: 100px;
+
+    /* Every cell in the row is the same 15/400/22 in primary text. */
     --history-purchase-name-f-s: 15px;
-    --history-purchase-name-f-w: 600;
-    --history-purchase-name-f-c: var(--Content-Light-contentPrimary, #1A1919);
-    --history-purchase-name-bg: #FFF;
+    --history-purchase-name-f-w: 400;
+    --history-purchase-name-f-c: #1A1919;
+    --history-purchase-name-l-h: 22px;
+    --history-purchase-name-bg: transparent;
+
+    --history-date-f-c: #1A1919;
+    --history-date-f-s: 15px;
+    --history-date-f-w: 400;
+    --history-date-l-h: 22px;
 
     --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
-    --history-amount-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --history-amount-f-c: #1A1919;
+    --history-amount-l-h: 22px;
 
+    /* Claimable is the success green; pending reads as primary text, claimed
+       takes the amber Status/claimed, cancelled the error red. */
     --history-status-f-s: 15px;
     --history-status-f-w: 400;
-    --history-status-f-c:  #2DDC88;
+    --history-status-f-c: #2DDC88;
+    --history-status-l-h: 22px;
+    --history-status-pending-f-c: #1A1919;
     --history-status-canceled-f-c: #CC000F;
     --history-status-claimed-f-c: #F1BF0B;
-    --history-status-pending-f-c: #1A1919;
-    --history-status-total-claims-f-c: #1A1919;
-    --history-status-total-claims-f-w: 600;
+    --history-status-claimed-f-w: 400;
 
-    --history-description-f-s: 15px;
+    /* The aggregate "Total claims" row. */
+    --history-claim-row-f-c: #1A1919;
+    --history-claim-row-f-w: 700;
+
+    --history-description-f-s: 14px;
     --history-description-f-w: 400;
-    --history-description-f-c:  var(--Content-Light-contentPrimary, #1A1919);
-    --history-description-bold-f-w: 400;
+    --history-description-f-c: #1A1919;
+    --history-description-l-h: 20px;
+    --history-description-bold-f-w: 600;
 
-    --history-empty-f-s: 28px;
-    --history-empty-f-w: 700;
-    --history-empty-f-c:  var(--Content-Light-contentPrimary, #1A1919);
+    --history-empty-f-s: 15px;
+    --history-empty-f-w: 400;
+    --history-empty-f-c: #7A7D83;
+    --history-empty-l-h: 24px;
 
-    --faq-question-f-s: 15px;
-    --faq-question-f-w: 600;
-    --faq-question-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --faq-row-border-c: #EDEEF0;
+    --faq-row-hover-bg: #EDEEF0;
+    --faq-details-btn-bg: #EDEEF0;
+    --faq-details-btn-radius: 100px;
+    --faq-skeleton-bg: #EDEEF0;
+    --faq-skeleton-radius: 4px;
 
-    --faq-answer-f-s: 15px;
+    --faq-question-f-s: 16px;
+    --faq-question-f-w: 700;
+    --faq-question-f-c: #1A1919;
+    --faq-question-l-h: 24px;
+
+    /* The answer is secondary text at the question's size and leading. */
+    --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
-    --faq-answer-f-c: var(--Content-Light-contentPrimary, #1A1919);
+    --faq-answer-f-c: #72737A;
+    --faq-answer-l-h: 24px;
 
-    --faq-link-f-s: 15px;
-    --faq-link-f-w: 600;
+    /* Figma has no link run in the FAQ, so the support link sits in the answer's
+       own type and takes the link colour. */
+    --faq-link-f-s: 16px;
+    --faq-link-f-w: 400;
+    --faq-link-f-c: #0A2EBF;
+    --faq-link-l-h: 24px;
 }
 
 * {
