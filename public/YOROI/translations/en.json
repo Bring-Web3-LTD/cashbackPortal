@@ -13,7 +13,8 @@
   "doneBtn": "DONE",
   "statusCloseBtn": "DONE",
   "back": "BACK",
-  "historyTitle": "Cashback history",
+  "historyTitle": "Rewards History",
   "emptyHistory": "No cashback history",
-  "needHelp": "Need help?"
+  "needHelp": "Need help?",
+  "detailsTitle": "Rewards Details"
 }

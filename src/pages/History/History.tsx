@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
+import { Link, useRouteLoaderData, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -157,6 +157,11 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
     )
 }
 
+/* A deal that has been paid out or written off is no longer a reward the two
+   dashboard cards count, so the details view leaves it out. Anything else -
+   including a status the backend adds later, which renders as pending - stays. */
+const SETTLED_STATUSES = ['claimed', 'cancelled']
+
 const HistoryDesktop = () => {
     const [activeRow, setActiveRow] = useState(-1)
     const { sendAnalyticsEvent } = useAnalytics()
@@ -165,6 +170,7 @@ const HistoryDesktop = () => {
     const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const navigate = useNavigate()
+    const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
 
     const { data } = useQuery({
         queryFn: async () => {
@@ -230,7 +236,17 @@ const HistoryDesktop = () => {
         }))
     }
     const [imgExists, setImgExists] = useState(true)
-    const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
+    // Arrived from the dashboard's details button, which stands for the two
+    // reward cards rather than for the ledger: it shows what is still in its
+    // return window and what is ready to claim, and nothing that has already
+    // settled. Filtering on the raw status, not the rendered one - formatStatus
+    // turns "pending" into "In 5 days".
+    const deals = rewardsOnly
+        ? balance?.movements.deals?.filter(deal => !SETTLED_STATUSES.includes(deal.status))
+        : balance?.movements.deals
+    // The claims aggregate is a settled row by definition, so it goes too.
+    const history = (rewardsOnly ? [] : createClaims(balance?.movements.claims))
+        .concat(createDeals(deals, data?.retailerIconBasePath))
 
     return (
         <div className={styles.container}>
@@ -263,9 +279,9 @@ const HistoryDesktop = () => {
                     {t('back')}
                 </span>
             </Link>
-                <h1 className={styles.title}>{t('historyTitle')}</h1>
+                <h1 className={styles.title}>{t(rewardsOnly ? 'detailsTitle' : 'historyTitle')}</h1>
             </div>
-            {balance?.movements.claims.length || balance?.movements.deals.length ? (
+            {history.length ? (
                     <div className={styles.table_scroll}>
                     <div className={styles.table}>
                         <div className={styles.table_header}>

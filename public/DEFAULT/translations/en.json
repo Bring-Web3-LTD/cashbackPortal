@@ -20,7 +20,7 @@
   "statusErrorTitle": "Error",
   "statusErrorMsg": "Something went wrong. Please try again later.",
   "statusCloseBtn": "Done",
-  "historyTitle": "Transaction history",
+  "historyTitle": "Rewards History",
   "emptyHistory": "No transaction history yet",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
@@ -71,7 +71,7 @@
   "claimGuideStep4": "Claim directly to your wallet",
   "claimGuideCta": "Download Wallet",
   "pairSuccessTitle": "Wallet Paired",
-  "pairFailedMsg": "Email not found. \nMake sure it\u2019s entered correctly, or skip pairing to start earning.",
+  "pairFailedMsg": "Email not found. \nMake sure it’s entered correctly, or skip pairing to start earning.",
   "pairFailedBtn": "Try Again",
   "pairSessionInvalid": "This attempt timed out. Send a new code.",
   "signInWithGoogle": "Sign in with Google",
@@ -82,5 +82,6 @@
   "historyColAmount": "Amount",
   "historyColStatus": "Status",
   "historyColDetails": "Details",
-  "historyTotalClaims": "Total claims"
+  "historyTotalClaims": "Total claims",
+  "detailsTitle": "Rewards Details"
 }
