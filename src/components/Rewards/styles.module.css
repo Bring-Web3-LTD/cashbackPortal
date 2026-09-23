@@ -127,6 +127,41 @@
     cursor: default;
 }
 
+/* The two cards' actions are the same button until a platform wants them to
+   differ. Each reads its own family first and falls back to the shared one, so
+   a platform that sets neither keeps both looking identical. */
+.card_btn_details {
+    border-width: var(--dashboard-details-btn-border-w, var(--dashboard-card-btn-border-w));
+    border-color: var(--dashboard-details-btn-border-c, var(--dashboard-card-btn-border-c));
+    background: var(--dashboard-details-btn-bg, var(--dashboard-card-btn-bg));
+    color: var(--dashboard-details-btn-f-c, var(--dashboard-card-btn-f-c));
+}
+
+.card_btn_details:hover:not(:disabled) {
+    background: var(--dashboard-details-btn-hover-bg, var(--dashboard-details-btn-bg, var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg))));
+}
+
+.card_btn_details:disabled {
+    background: var(--dashboard-details-btn-disabled-bg, var(--dashboard-card-btn-disabled-bg, var(--dashboard-card-btn-bg)));
+    color: var(--dashboard-details-btn-disabled-f-c, var(--dashboard-card-btn-disabled-f-c, var(--dashboard-card-btn-f-c)));
+}
+
+.card_btn_claim {
+    border-width: var(--dashboard-claim-btn-border-w, var(--dashboard-card-btn-border-w));
+    border-color: var(--dashboard-claim-btn-border-c, var(--dashboard-card-btn-border-c));
+    background: var(--dashboard-claim-btn-bg, var(--dashboard-card-btn-bg));
+    color: var(--dashboard-claim-btn-f-c, var(--dashboard-card-btn-f-c));
+}
+
+.card_btn_claim:hover:not(:disabled) {
+    background: var(--dashboard-claim-btn-hover-bg, var(--dashboard-claim-btn-bg, var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg))));
+}
+
+.card_btn_claim:disabled {
+    background: var(--dashboard-claim-btn-disabled-bg, var(--dashboard-card-btn-disabled-bg, var(--dashboard-card-btn-bg)));
+    color: var(--dashboard-claim-btn-disabled-f-c, var(--dashboard-card-btn-disabled-f-c, var(--dashboard-card-btn-f-c)));
+}
+
 /* Whole card is the tap target; width hugs the label. */
 .history_card {
     box-sizing: border-box;
@@ -151,19 +186,33 @@
     transition: .2s;
 }
 
-/* Hover drops the stroke as well as tinting, the same way disabled does. */
+/* Hover drops the stroke as well as tinting, the same way disabled does.
+   This card tints where the summary cards beside it hold their fill, so it
+   takes its own hover colour; unset it falls back to the shared one. */
 .history_card:hover {
     box-shadow: none;
-    background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
+    background: var(--dashboard-history-hover-bg, var(--dashboard-card-hover-bg, var(--dashboard-card-bg)));
 }
 
-/* Hover tints the card and lifts the action fill. */
+/* Hover tints the card and lifts the action fill. Platforms whose hover moves
+   the stroke instead of the fill set --dashboard-card-hover-border-c; left
+   unset it repeats the resting stroke, so nothing moves. */
 .card:hover:not(.card_disabled) {
     background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
+    box-shadow: inset 0 0 0 var(--dashboard-card-border-w) var(--dashboard-card-hover-border-c, var(--dashboard-card-border-c));
 }
 
 .card:hover:not(.card_disabled) .card_btn:not(:disabled) {
     background: var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg));
+}
+
+/* Hovering anywhere on the card lifts its action, so these repeat the split. */
+.card:hover:not(.card_disabled) .card_btn_details:not(:disabled) {
+    background: var(--dashboard-details-btn-hover-bg, var(--dashboard-details-btn-bg, var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg))));
+}
+
+.card:hover:not(.card_disabled) .card_btn_claim:not(:disabled) {
+    background: var(--dashboard-claim-btn-hover-bg, var(--dashboard-claim-btn-bg, var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg))));
 }
 
 /* Disabled mutes the label and the action; the fill and stroke stay. */
