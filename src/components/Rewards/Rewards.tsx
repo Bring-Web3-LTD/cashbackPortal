@@ -206,7 +206,10 @@ const Rewards = () => {
     const claimableCard = useCardFit()
 
     // Only take over the click while the pill is hidden; otherwise the pill
-    // stays the control and the card must not double-handle it.
+    // stays the control and the card must not double-handle it. Standing in
+    // for the pill means standing in for all of it - a card that replaces a
+    // disabled button is inert too, and one that replaces a live button is
+    // reachable by keyboard the same way.
     const cardAction = (compact: boolean, onClick: () => void, disabled = false) => {
         if (!compact || disabled) return {}
         return {
@@ -222,7 +225,10 @@ const Rewards = () => {
         }
     }
 
-    const openHistory = () => walletAddress ? navigate('/history') : setLoginModalState('open')
+    // The bottom card opens the ledger; the details button opens the same page
+    // showing only what the two reward cards above it count.
+    const openHistory = (rewardsOnly = false) =>
+        walletAddress ? navigate('/history', { state: { rewardsOnly } }) : setLoginModalState('open')
 
     useEffect(() => {
         if (!tooltipAt) return
@@ -245,7 +251,7 @@ const Rewards = () => {
             <div
                 ref={pendingCard.ref}
                 className={styles.card}
-                {...cardAction(!pendingCard.fit.action, openHistory)}
+                {...cardAction(!pendingCard.fit.action, () => openHistory(true))}
             >
                 <div className={styles.left_cluster}>
                     <div className={styles.values}>
@@ -263,7 +269,7 @@ const Rewards = () => {
                     <button
                         id="rewards-view-btn"
                         className={styles.card_btn}
-                        onClick={openHistory}
+                        onClick={() => openHistory(true)}
                     >
                         {t('details')}
                     </button>
@@ -273,13 +279,15 @@ const Rewards = () => {
                 <div
                     ref={claimableCard.ref}
                     className={`${styles.card} ${claimDisabled ? styles.card_disabled : ''}`}
-                    onClick={(e) => {
-                        if (!claimDisabled) return claimableCard.fit.action ? undefined : signMessage()
-                        e.stopPropagation()
+                    {...cardAction(!claimableCard.fit.action, signMessage, claimDisabled)}
+                    // Nothing to press while the claim is under the minimum, so
+                    // the reason surfaces on hover instead of on a click the
+                    // disabled control should not be inviting.
+                    onMouseEnter={claimDisabled ? (e) => {
                         const r = e.currentTarget.getBoundingClientRect()
                         setTooltipAt({ left: r.left + r.width / 2, top: r.top })
-                    }}
-                    style={claimDisabled || !claimableCard.fit.action ? { cursor: 'pointer' } : undefined}
+                    } : undefined}
+                    onMouseLeave={claimDisabled ? () => setTooltipAt(null) : undefined}
                 >
                     <div className={styles.left_cluster}>
                         <div className={styles.values}>
@@ -323,7 +331,7 @@ const Rewards = () => {
             <button
                 id="rewards-history-btn"
                 className={styles.history_card}
-                onClick={() => walletAddress ? navigate('/history') : setLoginModalState('open')}
+                onClick={() => openHistory()}
             >
                 {t('historyCard')}
             </button>

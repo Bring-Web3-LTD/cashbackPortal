@@ -13,10 +13,11 @@
   "doneBtn": "DONE",
   "statusCloseBtn": "DONE",
   "back": "BACK",
-  "historyTitle": "Cashback history",
+  "historyTitle": "Rewards History",
   "emptyHistory": "No cashback history",
   "needHelp": "NEED HELP?",
   "connectYourWallet": "Connect your wallet",
   "pendingRewards": "pending rewards",
-  "chromeStoreLink": "https://chromewebstore.google.com/detail/eckowallet/bofddndhbegljegmpmnlbhcejofmjgbn"
+  "chromeStoreLink": "https://chromewebstore.google.com/detail/eckowallet/bofddndhbegljegmpmnlbhcejofmjgbn",
+  "detailsTitle": "Rewards Details"
 }

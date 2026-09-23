@@ -12,10 +12,11 @@
   "loadingBtn": "LOADING...",
   "doneBtn": "Done",
   "back": "BACK",
-  "historyTitle": "Cashback history",
+  "historyTitle": "Rewards History",
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
   "pendingRewards": "",
-  "chromeStoreLink": "https://chromewebstore.google.com/detail/casper-wallet/abkahkcbhngaebpcgfmhkoioedceoigp"
+  "chromeStoreLink": "https://chromewebstore.google.com/detail/casper-wallet/abkahkcbhngaebpcgfmhkoioedceoigp",
+  "detailsTitle": "Rewards Details"
 }
