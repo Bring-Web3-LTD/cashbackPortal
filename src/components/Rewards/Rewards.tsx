@@ -54,7 +54,7 @@ const Rewards = () => {
                 {pendingCard.fit.action ? (
                     <button
                         id="rewards-view-btn"
-                        className={styles.card_btn}
+                        className={`${styles.card_btn} ${styles.card_btn_details}`}
                         onClick={() => openHistory(true)}
                     >
                         {labels.details}
@@ -84,7 +84,7 @@ const Rewards = () => {
                     <button
                         id="rewards-claim-btn"
                         ref={claimBtnRef}
-                        className={styles.card_btn}
+                        className={`${styles.card_btn} ${styles.card_btn_claim}`}
                         onClick={claim}
                         disabled={claimDisabled}
                     >
