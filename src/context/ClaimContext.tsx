@@ -7,7 +7,7 @@
  * card and the What's This modal - and two copies of the listener would each
  * answer that message and submit the same claim twice.
  */
-import { createContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useEffect, useRef, useState, ReactNode } from 'react'
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import StatusModal, { type StatusModalState } from '../components/Modals/StatusModal/StatusModal'
@@ -41,6 +41,12 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const [modalState, setModalState] = useState('close')
     const [claimStatus, setClaimStatus] = useState<StatusModalState>('loading')
     const [loading, setLoading] = useState(false)
+    // SIGNATURE is a broadcast: the wallet answers the page, and the reply
+    // carries nothing tying it to the request that asked for it. This provider
+    // wraps the whole desktop tree, so without this gate it also answers the
+    // signature the pairing flow asked for and submits a claim with it.
+    // A ref, not `loading`: the listener's closure would hold a stale copy.
+    const awaitingSignatureRef = useRef(false)
 
     const { data: balance, isLoading } = useBalance()
     const eligible = selectEligible(balance)
@@ -67,7 +73,10 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
             if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
+            // Not ours: the pairing flow (or any other surface) asked for it.
+            if (!awaitingSignatureRef.current) return
             if (event.data.action === 'SIGNATURE') {
+                awaitingSignatureRef.current = false
                 sendAnalyticsEvent('claim_submit', {
                     category: 'user_action',
                     details: claimAmount,
@@ -106,6 +115,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                 }
                 setLoading(false)
             } else if (event.data.action === 'ABORT_SIGN_MESSAGE') {
+                awaitingSignatureRef.current = false
                 setLoading(false)
             }
         };
@@ -143,6 +153,8 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
             return
         }
 
+        // Armed only here, so the listener answers this request and no other.
+        awaitingSignatureRef.current = true
         message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
     }
 
