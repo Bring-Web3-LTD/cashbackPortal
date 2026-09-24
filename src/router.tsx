@@ -115,6 +115,7 @@ const rootLoader = async () => {
             bringTou: params.get('bringTou') || undefined,
             privacy: params.get('privacy') || undefined,
             couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
+            chromeStoreUrl: params.get('chromeStoreUrl') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()

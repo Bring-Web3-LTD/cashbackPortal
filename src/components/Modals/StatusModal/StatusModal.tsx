@@ -12,7 +12,9 @@ interface ClaimInfo {
     amount?: string
     address?: string | null
     /** Shown under the balance on the claim guide, already formatted. */
-    usdValue?: string
+    usdValue?: string | number
+    /** Store listing the guide's CTA opens. Without it the CTA only closes. */
+    claimUrl?: string
 }
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'>, ClaimInfo {
@@ -138,8 +140,9 @@ const CLAIM_STEPS = [1, 2, 3, 4] as const
 
 /* Claim guide: balance on top, then how to get the wallet that receives it.
    The steps read down each column, so the grid fills column-first. */
-const Claim = ({ closeFn, amount, usdValue }: StatusProps & ClaimInfo) => {
+const Claim = ({ closeFn, amount, usdValue, claimUrl }: StatusProps & ClaimInfo) => {
     const { t } = useTranslation()
+    const cta = t('claimGuideCta')
 
     return (
         <div className={styles.claim_card}>
@@ -176,11 +179,24 @@ const Claim = ({ closeFn, amount, usdValue }: StatusProps & ClaimInfo) => {
                     </div>
                 </div>
             </div>
-            <button
-                id="status-modal-claim-btn"
-                onClick={() => closeFn()}
-                className={styles.claim_btn}
-            >{t('claimGuideCta')}</button>
+            {/* A top-level tab: the portal runs in the partner's iframe, so a
+                same-tab navigation would replace the portal, not the page. */}
+            {claimUrl ? (
+                <a
+                    id="status-modal-claim-btn"
+                    className={styles.claim_btn}
+                    href={claimUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => closeFn()}
+                >{cta}</a>
+            ) : (
+                <button
+                    id="status-modal-claim-btn"
+                    onClick={() => closeFn()}
+                    className={styles.claim_btn}
+                >{cta}</button>
+            )}
         </div>
     )
 }
@@ -190,7 +206,7 @@ const shellOverrides = {
     '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
 }
 
-const StatusModal = ({ open, closeFn, status, amount, address, usdValue }: Props) => {
+const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUrl }: Props) => {
     const close = () => {
         message({ action: 'POPUP_CLOSED' })
         closeFn()
@@ -216,7 +232,7 @@ const StatusModal = ({ open, closeFn, status, amount, address, usdValue }: Props
                             : status === 'pairFailed' ?
                                 <PairFailed closeFn={close} />
                                 : status === 'claim' ?
-                                    <Claim amount={amount} usdValue={usdValue} closeFn={close} />
+                                    <Claim amount={amount} usdValue={usdValue} claimUrl={claimUrl} closeFn={close} />
                                     : null
             }
         </Modal>

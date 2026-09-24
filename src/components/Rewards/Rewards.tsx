@@ -1,19 +1,12 @@
 import styles from './styles.module.css'
-import fetchCache from '../../api/fetchCache'
-import StatusModal from '../Modals/StatusModal/StatusModal'
-import { useRouteLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState, KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import claimSubmit from '../../api/claim/submit'
-import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
-import message from '../../utils/message'
-import { useQueryClient } from '@tanstack/react-query'
-import { useAnalytics } from '../../hooks/useAnalytics'
 import { formatCurrency } from '../../pages/History/helpers'
-import { ENV } from '../../config'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
+import { useClaim } from '../../hooks/useClaim'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 
 
@@ -64,138 +57,27 @@ const useCardFit = () => {
 const Rewards = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { sendAnalyticsEvent } = useAnalytics()
-    const queryClient = useQueryClient()
-    const [searchParams] = useSearchParams()
-    const { platform, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, autoclaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
-    const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
-    const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
-    const [loading, setLoading] = useState(false)
     const isAutoClaim = autoclaim
-    const limit = searchParams.get('limit') || Infinity
+    // The signature round-trip and the status modal it drives live in one
+    // place, because the What's This modal offers the same action.
+    const { claim, claimDisabled, loading } = useClaim()
 
-    const { data: balance } = useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = {
-                platform,
-                userId,
-                flowId
-            }
+    const { data: balance } = useBalance()
+    const eligible = selectEligible(balance)
+    const pending = selectPending(balance)
 
-            if (walletAddress) body.walletAddress = walletAddress
-
-            return await fetchCache(body)
-        },
-        queryKey: ["balance", walletAddress],
-        enabled: !!walletAddress,
-    })
-    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || cryptoSymbols[0]
-    const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
-    const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
-    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : Math.min(eligibleTokenNumber, +limit)
-
-    useEffect(() => {
-        // Define the message handler
-        const handleMessage = async (event: MessageEvent) => {
-            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
-                return; // Ignore messages from untrusted origins
-            }
-            // Handle the message data here
-            if (event.data.action === 'SIGNATURE') {
-                sendAnalyticsEvent('claim_submit', {
-                    category: 'user_action',
-                    details: claimAmount,
-                    process: 'submit'
-                })
-                setModalState('open')
-                const body: Parameters<typeof claimSubmit>[0] = {
-                    walletAddress,
-                    targetWalletAddress: walletAddress,
-                    tokenSymbol: currentCryptoSymbol,
-                    tokenAmount: claimAmount,
-                    signature: event.data.signature,
-                    message: event.data.message,
-                    platform,
-                    userId,
-                    flowId
-                }
-                if (event.data.key) body.key = event.data.key
-                const res = await claimSubmit(body)
-
-                if (res?.ok) {
-                    setClaimStatus('success')
-                    sendAnalyticsEvent('claim_accepted', {
-                        category: 'system',
-                        action: 'request',
-                        details: claimAmount,
-                    })
-                    queryClient.invalidateQueries({ queryKey: ["balance", walletAddress] })
-                } else {
-                    setClaimStatus('failure')
-                    sendAnalyticsEvent('claim_failed', {
-                        category: 'system',
-                        action: 'request',
-                        details: `${claimAmount}, ${res}`,
-                    })
-                }
-                setLoading(false)
-            } else if (event.data.action === 'ABORT_SIGN_MESSAGE') {
-                setLoading(false)
-            }
-        };
-
-        // Set up the event listener
-        window.addEventListener('message', handleMessage);
-
-        // Clean up the event listener on component unmount
-        return () => {
-            window.removeEventListener('message', handleMessage);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendAnalyticsEvent, walletAddress]);
-
-    // Get the message to sign from the API and post a message to parent page a request to sign the message
-    const signMessage = async () => {
-        setLoading(true)
-
-        const res = await claimInitiate({
-            platform,
-            walletAddress,
-            targetWalletAddress: walletAddress,
-            tokenSymbol: currentCryptoSymbol,
-            tokenAmount: claimAmount,
-            userId,
-            flowId
-        })
-
-        sendAnalyticsEvent('claim_open', {
-            category: 'user_action',
-            action: 'click',
-            details: claimAmount,
-            process: 'initiate'
-        })
-
-        const messageToSign = res?.messageToSign
-
-        if (!messageToSign) {
-            setLoading(false)
-            return
-        }
-
-        message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
-    }
+    const currentCryptoSymbol = eligible?.tokenSymbol || cryptoSymbols[0]
+    const minimumClaimThreshold = eligible?.minimumClaimThreshold ?? -1
 
     // Rounding the raw number renders 0.006 as "0.01", which reads as
     // claimable when it is under the minimum.
-    const eligibleTokenAmount = balance?.data?.eligible[0]?.tokenAmountDisplay ?? '0.00'
-
-    const eligibleTotalEstimatedUsd = formatCurrency(balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0)
-
-    const pendingTokenAmount = balance?.data?.totalPendings[0]?.tokenAmountDisplay ?? '0.00'
-
-    const pendingTotalEstimatedUsd = formatCurrency(balance?.data?.totalPendings[0]?.totalEstimatedUsd ?? 0)
+    const eligibleTokenAmount = eligible?.tokenAmountDisplay ?? '0.00'
+    const eligibleTotalEstimatedUsd = formatCurrency(eligible?.totalEstimatedUsd ?? 0)
+    const pendingTokenAmount = pending?.tokenAmountDisplay ?? '0.00'
+    const pendingTotalEstimatedUsd = formatCurrency(pending?.totalEstimatedUsd ?? 0)
 
     // Anchored to the claim trigger's rect: the card clips its overflow and
     // its container-type makes it a containing block, so the tooltip cannot
@@ -244,8 +126,6 @@ const Rewards = () => {
         }
     }, [tooltipAt])
 
-    const claimDisabled = eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading
-
     return (
         <>
             <div
@@ -279,7 +159,7 @@ const Rewards = () => {
                 <div
                     ref={claimableCard.ref}
                     className={`${styles.card} ${claimDisabled ? styles.card_disabled : ''}`}
-                    {...cardAction(!claimableCard.fit.action, signMessage, claimDisabled)}
+                    {...cardAction(!claimableCard.fit.action, claim, claimDisabled)}
                     // Nothing to press while the claim is under the minimum, so
                     // the reason surfaces on hover instead of on a click the
                     // disabled control should not be inviting.
@@ -305,7 +185,7 @@ const Rewards = () => {
                     <button
                         id="rewards-claim-btn"
                         className={styles.card_btn}
-                        onClick={() => signMessage()}
+                        onClick={claim}
                         disabled={claimDisabled}
                     >
                         {loading ?
@@ -344,16 +224,6 @@ const Rewards = () => {
                     {t('minimumClaimTooltip', { amount: minimumClaimThreshold, symbol: currentCryptoSymbol })}
                 </div>
             )}
-            <StatusModal
-                status={claimStatus}
-                amount={`${claimAmount} ${currentCryptoSymbol}`}
-                address={walletAddress}
-                open={modalState !== 'close'}
-                closeFn={() => {
-                    setModalState('close')
-                    setClaimStatus('loading')
-                }}
-            />
             <LoginModal
                 closeFn={() => setLoginModalState('close')}
                 open={loginModalState !== 'close'}

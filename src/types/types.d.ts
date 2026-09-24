@@ -53,6 +53,8 @@ interface LoaderData {
     firstTimeUser?: boolean
     /** Coupon partner iframe. Null when coupons are off or outside the US. */
     couponsIframeSrc?: string | null
+    /** Where the claim guide sends a hub user to install the wallet. */
+    chromeStoreUrl?: string
     // Mobile Portal — optional wallet identity surfaced from the JWT, plus the
     // computed flag that drives whether the mobile UI is rendered for this load.
     walletEmoji?: string

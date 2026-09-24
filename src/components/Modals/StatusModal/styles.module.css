@@ -468,6 +468,8 @@
     font-size: var(--modal-popup-btn-f-s);
     font-weight: var(--modal-popup-btn-f-w);
     line-height: var(--modal-popup-btn-l-h);
+    /* Renders as an anchor when it has a store to open. */
+    text-decoration: none;
     cursor: pointer;
     transition: .2s;
 }
