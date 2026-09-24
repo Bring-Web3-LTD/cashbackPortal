@@ -1,5 +1,7 @@
 import styles from './styles.module.css'
 import Modal from '../Modal/Modal'
+import StatusModal from '../Modals/StatusModal/StatusModal'
+import LoginModal from '../Modals/LoginModal/LoginModal'
 import { ComponentProps, FormEvent, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
@@ -21,7 +23,8 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
         step, busy,
         email, setEmail, emailErrorKey, submitEmail, canSubmitEmail, continueWithGoogle,
         code, setCode, codeLength, codeErrorKey, clearCodeError, canSubmitCode,
-        submitCode, resendCode,
+        submitCode, resendCode, fatalErrorKey, goToEmail,
+        loginOpen, connectWallet, closeLogin,
     } = usePairWallet({ open })
 
     const { digitRefs, handleDigitChange, handleDigitKeyDown, focusFirst } = useOtpInputs({
@@ -45,6 +48,32 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
     }
 
     const isCode = step === 'code'
+
+    // Swapped in, not stacked: two Modals would double-dim and each emit its
+    // own POPUP_OPENED. The hook's state survives, so connecting resumes.
+    if (loginOpen) {
+        return (
+            <LoginModal
+                open={open}
+                onConnect={connectWallet}
+                closeFn={closeLogin}
+            />
+        )
+    }
+
+    // Both outcomes are already drawn as StatusModal cards; the 'paired' one
+    // ignores messageKey/onRetry, so neither needs guarding by step.
+    if (step === 'success' || step === 'error') {
+        return (
+            <StatusModal
+                open={open}
+                closeFn={closeFn}
+                status={step === 'success' ? 'paired' : 'pairFailed'}
+                messageKey={fatalErrorKey}
+                onRetry={goToEmail}
+            />
+        )
+    }
 
     return (
         <Modal

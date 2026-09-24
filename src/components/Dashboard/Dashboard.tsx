@@ -88,7 +88,7 @@ const Dashboard = ({ view, onViewChange }: Props) => {
                     <div className={styles.banner_text}>{t('welcomeText')}</div>
                 </div>
                 <div className={styles.actions}>
-                    {/* Wallet apps already hold an address; only the hub pairs one. */}
+                    {/* Pairing ends in a signature; the hub has no wallet to sign with. */}
                     {!isHub && (
                         <button
                             id="dashboard-pair-wallet-btn"
