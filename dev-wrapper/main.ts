@@ -1188,10 +1188,6 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         // Platform of the emulated device, so the backend can pass it through
         // to platform-sensitive iframe URLs (e.g. AppCard coupons).
         devicePlatform: getDevicePlatform(),
-        // TEMP: coupons are US-only, so a non-US dev machine gets a null
-        // couponsIframeSrc. Pinned to US until the flag is drivable from the
-        // Dashboard flags panel. Ignored if the backend resolves country by IP.
-        country: 'US',
     }
 
     const requestId = ++pendingId
