@@ -3,6 +3,7 @@ import { AnalyticsProvider } from '../context/AnalyticsContext';
 import { MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
+import { ClaimProvider } from '../context/ClaimContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
 import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
@@ -44,11 +45,14 @@ const Layout = () => {
             >
                 {data.useMobilePortal
                     ? <MobileOutlet pathname={location.pathname} />
-                    : <div className={styles.screen}>
-                        <DesktopOutlet pathname={location.pathname} />
-                        <LegalBar />
-                        <BackToTop />
-                    </div>}
+                    /* Desktop only: the mobile tree runs its own claim flow. */
+                    : <ClaimProvider>
+                        <div className={styles.screen}>
+                            <DesktopOutlet pathname={location.pathname} />
+                            <LegalBar />
+                            <BackToTop />
+                        </div>
+                    </ClaimProvider>}
             </AnalyticsProvider>
         </WalletProvider>
     );

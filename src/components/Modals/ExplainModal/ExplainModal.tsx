@@ -3,7 +3,7 @@ import Modal from '../../Modal/Modal'
 import { ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../Icon/Icon'
-import { useBalance, selectEligible } from '../../../hooks/useBalance'
+import { useClaim } from '../../../hooks/useClaim'
 
 const shellOverrides = {
     '--custom-modal-bg': 'var(--modal-explain-bg, var(--modal-bg))',
@@ -12,24 +12,13 @@ const shellOverrides = {
 
 const CARDS = ['coupons', 'cashback', 'claim'] as const
 
-interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
-    /** Fired when the CTA is pressed. The modal closes either way. */
-    onClaim?: () => void
-}
+type Props = Omit<ComponentProps<typeof Modal>, 'children'>
 
-const ExplainModal = ({ open, closeFn, onClaim }: Props) => {
+const ExplainModal = ({ open, closeFn }: Props) => {
     const { t } = useTranslation()
-    // Shares the Rewards balance query (same key), so this costs no extra fetch.
-    const { data, isLoading } = useBalance()
-    const eligible = selectEligible(data)
-
-    // Mirrors the Rewards claim button: no balance row, no threshold, or a
-    // balance under the threshold all disable the claim.
-    const claimDisabled =
-        isLoading ||
-        !eligible ||
-        typeof eligible.minimumClaimThreshold !== 'number' ||
-        eligible.tokenAmount < eligible.minimumClaimThreshold
+    // The same action the claimable card's button runs, off the same rule for
+    // when it is available - so the two cannot disagree.
+    const { claim, claimDisabled } = useClaim()
 
     return (
         <Modal
@@ -70,7 +59,7 @@ const ExplainModal = ({ open, closeFn, onClaim }: Props) => {
                         id="explain-modal-btn"
                         className={styles.btn}
                         disabled={claimDisabled}
-                        onClick={() => { onClaim?.(); closeFn() }}
+                        onClick={() => { claim(); closeFn() }}
                     >
                         {t('claimCashback')}
                     </button>
