@@ -19,6 +19,11 @@ interface ClaimInfo {
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'>, ClaimInfo {
     status: StatusModalState
+    /** `pairFailed` only: i18n key for the reason the attempt failed. Defaults
+     *  to `pairFailedMsg`, which reads as the email-not-found case. */
+    messageKey?: string
+    /** `pairFailed` only: makes "Try Again" restart the flow rather than close. */
+    onRetry?: () => void
 }
 
 interface StatusProps { closeFn: () => void }
@@ -117,7 +122,7 @@ const Paired = ({ closeFn }: StatusProps) => {
     )
 }
 
-const PairFailed = ({ closeFn }: StatusProps) => {
+const PairFailed = ({ closeFn, messageKey, onRetry }: StatusProps & Pick<Props, 'messageKey' | 'onRetry'>) => {
     const { t } = useTranslation()
 
     return (
@@ -125,11 +130,13 @@ const PairFailed = ({ closeFn }: StatusProps) => {
             <Icon className={styles.icon_pair_failed} name="error-triangle.svg" alt="" />
             {/* No title above it, so the message sits at the icon's own gap. */}
             <div className={`${styles.msg} ${styles.msg_pair}`}>
-                {t('pairFailedMsg')}
+                {t(messageKey ?? 'pairFailedMsg')}
             </div>
+            {/* Retrying is not a close: it stays in the modal and goes back to
+                the email screen, so it must not emit POPUP_CLOSED. */}
             <button
                 id="status-modal-pair-failed-btn"
-                onClick={() => closeFn()}
+                onClick={onRetry ?? closeFn}
                 className={`${styles.btn} ${styles.btn_strong}`}
             >{t('pairFailedBtn')}</button>
         </div>
@@ -206,7 +213,7 @@ const shellOverrides = {
     '--custom-modal-radius': 'var(--modal-status-radius, var(--modal-radius))',
 }
 
-const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUrl }: Props) => {
+const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUrl, messageKey, onRetry }: Props) => {
     const close = () => {
         message({ action: 'POPUP_CLOSED' })
         closeFn()
@@ -230,7 +237,7 @@ const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUr
                         : status === 'paired' ?
                             <Paired closeFn={close} />
                             : status === 'pairFailed' ?
-                                <PairFailed closeFn={close} />
+                                <PairFailed closeFn={close} messageKey={messageKey} onRetry={onRetry} />
                                 : status === 'claim' ?
                                     <Claim amount={amount} usdValue={usdValue} claimUrl={claimUrl} closeFn={close} />
                                     : null

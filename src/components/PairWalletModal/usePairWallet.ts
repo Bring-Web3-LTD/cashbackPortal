@@ -57,6 +57,7 @@ const FATAL_ERROR_KEYS: Partial<Record<PairReason, string>> = {
     signature_mismatch: 'pairErrorSignature',
     nonce_invalid: 'pairErrorExpiredSession',
     network_error: 'pairErrorNetwork',
+    google_invalid: 'pairErrorGoogle',
 }
 
 const emptyCode = (length: number) => Array<string>(length).fill('')
@@ -99,9 +100,12 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
     const [codeErrorKey, setCodeErrorKey] = useState<string | null>(null)
     const [fatalErrorKey, setFatalErrorKey] = useState<string>('pairErrorGeneric')
     const [busy, setBusy] = useState(false)
-    // Set when the attempt was blocked on a missing address and a LOGIN was
-    // sent; the address arriving resumes it (same as the desktop portal's
-    // `reopenAfterConnect` in RetailerCard).
+    // The address is mandatory (the backend rejects `invalid_address`), so a
+    // missing one detours through the connect modal, which owns the LOGIN.
+    const [loginOpen, setLoginOpen] = useState(false)
+    // Set when the user hit "connect" from that modal; the address arriving
+    // resumes the attempt (same as RetailerCard's `reopenAfterConnect`).
+    // Dismissing it instead leaves this false and nothing resumes.
     const [awaitingWallet, setAwaitingWallet] = useState(false)
     // Which path to resume once that address lands. Google's popup has already
     // been through, so its code is held rather than asking the user again.
@@ -138,12 +142,20 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         setEmailValue('')
         setEmailErrorKey(null)
         setBusy(false)
+        setLoginOpen(false)
         setAwaitingWallet(false)
         resetFlow()
     }, [open])
 
-    const failWith = (reason: PairReason) => {
-        setFatalErrorKey(FATAL_ERROR_KEYS[reason] ?? 'pairErrorGeneric')
+    /** `viaGoogle` swaps the one message that reads wrong on that path: the
+     *  address came from Google's account picker, never a field, so telling the
+     *  user to check they typed it correctly is nonsense. */
+    const failWith = (reason: PairReason, viaGoogle = false) => {
+        setFatalErrorKey(
+            viaGoogle && reason === 'email_not_registered'
+                ? 'pairNotFoundGoogle'
+                : FATAL_ERROR_KEYS[reason] ?? 'pairErrorGeneric',
+        )
         setStep('error')
     }
 
@@ -196,13 +208,15 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
             setEmailErrorKey('pairEmailInvalid')
             return
         }
-        // No address yet: ask the wallet to connect rather than dead-ending.
-        // The typed email is kept, and the effect below resumes once the
-        // address lands via SESSION_UPDATE. A dismissed prompt just leaves the
-        // button tappable again — the wallet sends nothing on cancel.
+        // Chose the email path, so a code held from an earlier Google click is
+        // stale: left set, it would hijack the resume below.
+        googleCodeRef.current = null
+        // No address yet: send them to connect rather than dead-ending. The
+        // typed email is kept, and the effect below resumes once the address
+        // lands via SESSION_UPDATE. Dismissing the prompt just leaves the
+        // button tappable again.
         if (!walletAddress) {
-            setAwaitingWallet(true)
-            message({ action: 'LOGIN' })
+            setLoginOpen(true)
             return
         }
         startChallenge('code')
@@ -215,7 +229,7 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         const res = await pairGoogle({ platform, flowId, code, address })
         if (!res.ok) {
             setBusy(false)
-            failWith(res.reason)
+            failWith(res.reason, true)
             return
         }
         nonceRef.current = res.nonce
@@ -232,8 +246,7 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
         if (!code) return
         if (!walletAddress) {
             googleCodeRef.current = code
-            setAwaitingWallet(true)
-            message({ action: 'LOGIN' })
+            setLoginOpen(true)
             return
         }
         startGoogle(code, walletAddress)
@@ -372,6 +385,11 @@ export const usePairWallet = ({ open }: { open: boolean }) => {
     return {
         step,
         busy,
+        /** Blocked on a wallet: show the connect-wallet modal over the flow. */
+        loginOpen,
+        /** LoginModal's own button sends LOGIN; this only arms the resume. */
+        connectWallet: () => setAwaitingWallet(true),
+        closeLogin: () => setLoginOpen(false),
         email,
         setEmail,
         /** i18n key, not a rendered string — the view translates. */

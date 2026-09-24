@@ -37,6 +37,9 @@ export type PairReason =
     | 'address_already_paired'
     | 'email_already_paired'
     | 'address_has_rewards'
+    // google — the code was spent, expired or forged, or the token it bought
+    // failed a check. Never a config fault: those answer 500/internal_error.
+    | 'google_invalid'
     // verify-otp — Cognito verification outcomes, distinguishable on purpose
     | 'missing_fields'
     | 'wrong_code'
