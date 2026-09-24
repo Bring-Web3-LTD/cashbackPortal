@@ -2,45 +2,86 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
+    /* Side padding sits here, not on .main, so the header aligns with the body. */
+    padding: 0 48px;
 }
 
+@media screen and (max-width: 1111px) {
+    .container {
+        padding: 0 32px;
+    }
+}
+
+@media screen and (max-width: 839px) {
+    .container {
+        padding: 0 20px;
+    }
+}
+
+/* 1344 is the 1440 design width less its two 48px gutters, which the container
+   applies. Capping at 1440 here would have stacked the gutters on top of it. */
 .main {
     display: flex;
     align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1344px;
 }
 
+/* Scrolls away with the cards — the header is the only thing that pins. */
 .filters_section {
-    /* sticky needs opaque --bg behind it; transparent-bg themes opt out */
-    position: var(--filters-position, sticky);
-    z-index: 1;
-    top: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 35px;
-    background: var(--bg);
-    padding-bottom: 11px;
+    gap: 43px;
+    padding-bottom: 32px;
 }
 
+/* No overflow here: it would make the row a scroll container on both axes, and
+   a scroll container clips absolutely-positioned descendants — which is exactly
+   what the search dropdown is. It also clipped the field's own border, which the
+   old 2px scrollport padding was compensating for. */
 .search_section {
-    margin-top: 16px;
+    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+}
+
+/* Stands in for the search field while the first page loads. */
+.search_skeleton {
+    flex-shrink: 0;
+    width: 397px;
+    max-width: 100%;
+    height: 16px;
+    background: var(--search-skeleton-bg, var(--retailer-card-amount-bg));
+    border-radius: var(--search-skeleton-radius, 4px);
 }
 
 .deals_amount {
+    flex-shrink: 0;
+    white-space: nowrap;
     font-size: var(--deals-amount-f-s);
     font-weight: var(--deals-amount-f-w);
     color: var(--deals-amount-f-c);
 }
 
+/* Centred under the last row while the next page arrives. Keeps its height
+   when idle: this is also the sentinel the pagination observer watches. */
 .load {
-    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 20px;
+    margin-top: 24px;
     font-size: var(--loading-msg-f-s);
     font-weight: var(--loading-msg-f-w);
+    line-height: var(--loading-msg-l-h, 16px);
     color: var(--loading-msg-f-c);
 }
 
@@ -48,6 +89,8 @@
     display: flex;
     align-items: flex-end;
     gap: 16px;
+    /* Clears the min-content floor so the field can shrink to its own minimum. */
+    min-width: 0;
 }
 
 .filter {
@@ -110,18 +153,14 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-    .search_section {
-        flex-direction: column-reverse;
-        gap: 22px;
-    }
 
-    .search_container {
-        flex-direction: column;
-    }
-
-    .filter {
-        width: 100%;
-        justify-content: space-between;
-    }
+/* Coupons partner frame replaces the whole browse area below the dashboard. */
+.coupons_frame {
+    display: block;
+    flex: 1;
+    width: 100%;
+    min-height: 640px;
+    margin-top: 32px;
+    border: 0;
+    background: var(--bg);
 }

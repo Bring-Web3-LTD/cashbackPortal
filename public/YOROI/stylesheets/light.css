@@ -9,9 +9,6 @@
     --title-f-w: 500;
     --title-f-c: black;
 
-    --subtitle-f-s: 14px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #242838;
 
     --header-btn-bg: transparent;
     --header-btn-f-s: 14px;
@@ -146,7 +143,6 @@
     --category-btn-hover-border-c: #A0B3F2;
     --category-btn-hover-radius: 8px;
 
-    --modal-offset-top: -112px;
     --modal-bg: #fff;
     --modal-overlay-bg: #0000007a;
     --modal-border-w: 0;
@@ -206,7 +202,7 @@
     --modal-deal-markdown-h3-f-s: 13px;
     --modal-deal-markdown-h3-f-w: 600;
     --modal-deal-markdown-h3-f-c: #E1E6F5;
-    --modal-deal-markdown-scrollbar-bg: #7C85A3;    --modal-deal-consent-f-s: 12px;
+    --modal-deal-consent-f-s: 12px;
     --modal-deal-consent-f-w: 400;
     --modal-deal-consent-f-c: #E1E6F5;
     --modal-deal-terms-btn-hover-f-c: #4B6DDE;
@@ -245,7 +241,6 @@
     --modal-status-btn-disabled-radius: 8px;
 
     --scrollbar-bg: #c8ccce;
-    --scrollbar-w: 14px;
 
     --search-bg: #fff;
     --search-menu-bg: #FFFFFF;
@@ -277,7 +272,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #00000;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #fff;
     --history-table-header-border-c: transparent;

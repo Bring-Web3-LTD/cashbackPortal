@@ -11,11 +11,13 @@
   "loading": "Loading...",
   "loadingBtn": "LOADING...",
   "doneBtn": "DONE",
+  "statusCloseBtn": "DONE",
   "back": "Back",
-  "historyTitle": "Cashback history",
+  "historyTitle": "Rewards History",
   "emptyHistory": "No cashback history",
   "needHelp": "Need help?",
   "connectYourWallet": "Connect your wallet",
   "pendingRewards": "PENDING REWARDS",
-  "chromeStoreLink": "https://chromewebstore.google.com/detail/ready-wallet-formerly-arg/dlcobpjiigpikoobohmabehhmhfoodbb"
+  "chromeStoreLink": "https://chromewebstore.google.com/detail/ready-wallet-formerly-arg/dlcobpjiigpikoobohmabehhmhfoodbb",
+  "detailsTitle": "Rewards Details"
 }

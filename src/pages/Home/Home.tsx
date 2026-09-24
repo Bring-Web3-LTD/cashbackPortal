@@ -2,16 +2,16 @@
 import styles from './styles.module.css'
 // Components
 import Header from '../../components/Header/Header'
-import Rewards from '../../components/Rewards/Rewards'
+import Dashboard, { type PortalView } from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignEndModal'
 // Rendered only by the ?test=status preview below.
-import StatusModal from '../../components/Modals/StatusModal/StatusModal'
+import StatusModal, { type StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
+import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 // Requests
@@ -19,16 +19,29 @@ import fetchRetailers from '../../api/fetchRetailers'
 import getFilters from '../../api/getFilters'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useTranslation } from 'react-i18next'
 import { parseCampaignId } from '../../utils/campaigns'
 import Icon from '../../components/Icon/Icon'
 import { ENV } from '../../config'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 
 const Home = () => {
-    const { platform, isCountryAvailable, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, isCountryAvailable, userId, flowId, couponsEnabled } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams();
-    const { walletAddress, isTester } = useWalletAddress()
+    const { walletAddress, isTester, couponsIframeSrc } = useWalletAddress()
     const country = searchParams.get('country')?.toUpperCase()
+    const skeletonPreview = useSkeletonPreview()
+
+
+    // Coupons live src comes from the wallet context, so a SESSION_UPDATE
+    // verify replaces it (and clears it when the wallet disconnects).
+    const { t } = useTranslation()
+    // Seeded from navigation state so the switcher still works on the pages
+    // that show the dashboard but not the browse area.
+    const routedView = (useLocation().state as { view?: PortalView } | null)?.view
+    const [view, setView] = useState<PortalView>(routedView ?? 'cashback')
+    const showCoupons = Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons')
     const campaign = parseCampaignId(searchParams.get('campaignId'))
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
@@ -38,7 +51,7 @@ const Home = () => {
     // Drives the ?test=status preview, which opens StatusModal in any state
     // without running a claim. Non-production only, like the other
     // tester-facing affordances.
-    const [testStatus, setTestStatus] = useState<'success' | 'failure' | 'loading' | null>(null)
+    const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
     const statusPreview = ENV !== 'prod' && searchParams.get('test') === 'status'
     const [isFirstLoadComplete, setIsFirstLoadComplete] = useState(false)
 
@@ -46,7 +59,7 @@ const Home = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
 
-    const { data: categoriesSearch } = useQuery({
+    const { data: categoriesSearch, isLoading: isLoadingCategories } = useQuery({
         queryFn: async () => {
             const options: Parameters<typeof getFilters>[0] = {
                 country,
@@ -148,6 +161,11 @@ const Home = () => {
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
     const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
+    const retailersLoading = (isFetching && !retailersList.length) || skeletonPreview
+    // The search row waits on the filters call, not the retailers one: that call
+    // is what supplies its options, and it also feeds the chips beside it, so
+    // the two resolve together.
+    const searchLoading = isLoadingCategories || skeletonPreview
     const categories = categoriesSearch?.categories?.items ?? []
     const searchTerms =
         categoriesSearch?.searchTerms?.items?.map((term) => ({
@@ -179,7 +197,7 @@ const Home = () => {
                         border: '1px solid rgba(255, 255, 255, 0.12)',
                         backdropFilter: 'blur(4px)',
                     }}>
-                        {(['failure', 'success', 'loading'] as const).map(s => (
+                        {(['failure', 'success', 'loading', 'paired', 'pairFailed', 'claim'] as const).map(s => (
                             <button
                                 key={s}
                                 onClick={() => setTestStatus(s)}
@@ -197,6 +215,8 @@ const Home = () => {
                     <StatusModal
                         open={testStatus !== null}
                         status={testStatus ?? 'loading'}
+                        amount="25.25 USDC"
+                        usdValue="$25.25"
                         closeFn={() => setTestStatus(null)}
                     />
                 </>
@@ -215,8 +235,21 @@ const Home = () => {
                 : null}
             <Header />
             <main ref={scrollRef} className={styles.main}>
-                <Rewards />
+                <Dashboard view={view} onViewChange={setView} />
+                {showCoupons ? (
+                    <iframe
+                        id="coupons-frame"
+                        className={styles.coupons_frame}
+                        src={couponsIframeSrc}
+                        title={t('couponsTab')}
+                    />
+                ) : (<>
                 <div className={styles.filters_section}>
+                    {searchLoading ? (
+                        <div className={styles.search_section} aria-hidden="true">
+                            <span className={`${styles.search_skeleton} skeleton_shimmer`} />
+                        </div>
+                    ) : (
                     <div className={styles.search_section}>
                         <div className={styles.search_container}>
                             <Search
@@ -246,6 +279,7 @@ const Home = () => {
                                 `Showing ${retailersMetadata?.totalItems} deals`
                         }</div>
                     </div>
+                    )}
                     <Categories
                         categories={categories}
                         category={category}
@@ -253,7 +287,7 @@ const Home = () => {
                     />
                 </div>
                 <CardsList
-                    loading={isFetching && !retailersList.length}
+                    loading={retailersLoading}
                     retailers={retailersList}
                     metadata={retailersMetadata}
                     search={search}
@@ -262,7 +296,8 @@ const Home = () => {
                 <div
                     className={styles.load}
                     ref={paginationRef}
-                >{isFetchingNextPage ? "Loading..." : ''}</div>
+                >{isFetchingNextPage ? t('loading') : ''}</div>
+                </>)}
             </main>
             <CampaignEndModal
                 open={Boolean(campaign) && campaignEndModalStatus === 'show'}

@@ -9,9 +9,6 @@
     --title-f-w: 700;
     --title-f-c: #FFF;
 
-    --subtitle-f-s: 20px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #FFF;
 
     --header-btn-bg: #242424;
     --header-btn-bg-hover: #505050;
@@ -210,7 +207,6 @@
     --modal-deal-terms-btn-hover-f-c: #F36A3D;
 
     --scrollbar-bg: #BFBFBF66;
-    --scrollbar-w: 10px;
 
     --search-bg: #000000;
     --search-f-s: 17px;
@@ -237,7 +233,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #8C8C8C;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #242424;
     --history-table-header-border-c: transparent;

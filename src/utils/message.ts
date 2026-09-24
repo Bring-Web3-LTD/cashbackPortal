@@ -1,5 +1,5 @@
 interface Message {
-    [key: string]: string | number
+    [key: string]: string | number | boolean
 }
 
 const message = (message: Message) => {

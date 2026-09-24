@@ -5,13 +5,7 @@
     --bg: #000;
     --header-bg: #000;
 
-    --subtitle-f-s: 27px;
-    --subtitle-f-w: 700;
-    --subtitle-f-c: #FBFBFB;
 
-    --subtitle-f-s: 20px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #FFF;
 
     --header-btn-bg: #222;
     --header-btn-bg-hover: #222;
@@ -160,7 +154,6 @@
     --category-btn-hover-border-c: #292929;
     --category-btn-hover-radius: 5px;
 
-    --modal-offset-top: -120px;
     --modal-bg: #000;
     --modal-overlay-bg:#2B2B2B80;
     --modal-border-w: 0;
@@ -228,7 +221,6 @@
     --modal-deal-terms-btn-hover-f-c: #00DB7D;
 
     --scrollbar-bg: #7F7F7F;
-    --scrollbar-w: 10px;
 
     --search-bg: #000000;
     --search-f-s: 17px;
@@ -255,7 +247,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #FFF;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #000;
     ;

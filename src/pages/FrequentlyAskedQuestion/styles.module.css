@@ -1,34 +1,80 @@
 .container {
-    margin-top: 80px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    padding: 0 48px;
 }
 
+@media screen and (max-width: 1111px) {
+    .container {
+        padding: 0 32px;
+    }
+}
+
+/* Floor is 24 here, not the 20 the browse page uses: the FAQ's dev note gives
+   the gutter as max 48, min 24. */
+@media screen and (max-width: 839px) {
+    .container {
+        padding: 0 24px;
+    }
+}
+
+.main {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* 1440 less the two 48px gutters the container applies. */
+    max-width: 1344px;
+}
+
+/* Back on the left, title centred on the row rather than after it — so the
+   title stays centred whatever the back label translates to. */
+.toolbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%;
+    height: 48px;
+    margin-top: 32px;
+}
+
+/* Centred on the row itself, not laid out after the back control, so the title
+   stays put whatever the back label translates to. Both axes pinned: an
+   absolutely positioned flex child otherwise falls back to a static position.
+   Horizontally centred; vertically it sits 10px down rather than centred, which
+   is 3px above the row's middle. */
 .title {
-    font-size: var(--history-title-f-s);
-    font-weight: var(--history-title-f-w);
-    color: var(--history-title-f-c);
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     margin: 0;
-    margin-bottom: 65px;
+    font-size: var(--page-toolbar-title-f-s, 18px);
+    font-weight: var(--page-toolbar-title-f-w, 700);
+    line-height: var(--page-toolbar-title-l-h, 22px);
+    color: var(--page-toolbar-title-f-c, var(--history-title-f-c));
+    white-space: nowrap;
 }
 
 .faq_container {
-    width: 60%;
-    max-width: 1167px;
+    width: 100%;
+    margin-top: 24px;
 }
 
 .back_btn {
-    position: fixed;
     display: flex;
     align-items: center;
-    gap: 6px;
-    top: 32px;
-    left: var(--history-back-x-location);
+    gap: 4px;
     text-decoration: none;
-    font-size: var(--history-back-f-s);
-    font-weight: var(--history-back-f-w);
-    color: var(--history-page-back-f-c, var(--history-back-f-c));
+    font-size: var(--page-toolbar-back-f-s, var(--history-back-f-s));
+    font-weight: var(--page-toolbar-back-f-w, var(--history-back-f-w));
+    line-height: var(--page-toolbar-back-l-h, 15px);
+    color: var(--page-toolbar-back-f-c, var(--history-page-back-f-c, var(--history-back-f-c)));
     transition: .2s;
 }
 
@@ -37,10 +83,22 @@
    its own arrow and setting --history-back-icon-hover-f-c. The overlay then uses
    the arrow as a mask and paints that colour over it. Set neither and the fill
    stays transparent, so the overlay is invisible and nothing changes. */
+/* Fixed 24 box with the asset filled to it: platform arrows ship at different
+   intrinsic sizes (14 and 24 among them), which otherwise moves both the glyph
+   and the 4px gap beside it. */
 .back_icon {
     position: relative;
     display: inline-flex;
     flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.back_icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .back_icon::after {
@@ -54,7 +112,14 @@
     transition: opacity .2s;
 }
 
+/* The row is the flex container itself. Its own padding is zero: the two cells
+   carry it, which is what puts 32px between the text and the chevron. */
 .collapsible {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    min-width: 500px;
+    max-width: 1344px;
     color: var(--history-purchase-name-f-c);
     background: var(--history-purchase-name-bg, transparent);
     border-bottom-width: var(--history-table-row-border-w);
@@ -62,34 +127,32 @@
     /* FAQ rows are divided more faintly than the history table's; falls back
        to it so platforms that set only that one are unchanged. */
     border-bottom-color: var(--faq-row-border-c, var(--history-table-row-border-c));
-    padding: 24px 16px;
     transition: .2s;
     word-wrap: break-word;
 }
 
-.collapsible_open {
-    background: var(--history-table-row-active-bg);
-}
-
-.row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-}
-
 .text_col {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 1 0 0;
     min-width: 0;
+    overflow: hidden;
+    padding: 24px 16px;
+}
+
+.content_cell {
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    padding: 8px 16px;
 }
 
 .question {
     font-size: var(--faq-question-f-s);
     font-weight: var(--faq-question-f-w);
     color: var(--faq-question-f-c);
-    line-height: 24px;
+    line-height: var(--faq-question-l-h, 24px);
     cursor: pointer;
 }
 
@@ -107,10 +170,27 @@
     border-color: transparent;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
-    background: var(--history-details-btn-bg);
+    padding: 4px;
+    border-radius: var(--faq-details-btn-radius, 100px);
+    background: var(--faq-details-btn-bg, var(--history-details-btn-bg));
     transition: .2s;
     cursor: pointer;
+}
+
+/* Stands in for a question while the FAQ loads: same row, same padding, a bar
+   where the text goes and no chevron — the row can't be expanded yet. The 12px
+   bar is shorter than the line it replaces, so the row height is held. */
+.skeleton_row {
+    height: 72px;
+    pointer-events: none;
+}
+
+.skeleton_bar {
+    width: 350px;
+    max-width: 100%;
+    height: 12px;
+    border-radius: var(--faq-skeleton-radius, 4px);
+    background: var(--faq-skeleton-bg, var(--retailer-card-skeleton-bg, #2C2F36));
 }
 
 .rotate {
@@ -122,16 +202,22 @@
     font-size: var(--faq-answer-f-s);
     font-weight: var(--faq-answer-f-w);
     color: var(--faq-answer-f-c);
-    line-height: 24px;
+    line-height: var(--faq-answer-l-h, 24px);
 }
 
 .link_btn {
     background: transparent;
     border: none;
-    text-decoration: underline;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
     padding: 0;
     font-size: var(--faq-link-f-s);
     font-weight: var(--faq-link-f-w);
+    line-height: var(--faq-link-l-h, inherit);
     cursor: pointer;
     /* Falls back to the history row's name colour, which is what this used
        before the FAQ got a link colour of its own. */
@@ -139,52 +225,19 @@
 }
 
 @media (hover: hover) {
-    /* Only the fill changes on hover — the row divider stays put. */
+    /* Only the fill changes on hover — the row divider stays put. Expanded rows
+       share it: the design gives them the page fill, same as a closed one. */
     .collapsible:hover {
-        background: var(--history-table-row-hover-bg);
+        background: var(--faq-row-hover-bg, var(--history-table-row-hover-bg));
     }
 
     .back_btn:hover {
         font-size: var(--history-back-hover-f-s);
         font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c, var(--history-page-back-f-c));
+        color: var(--history-back-hover-f-c);
     }
 
     .back_btn:hover .back_icon::after {
         opacity: 1;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        margin-top: 40px;
-    }
-
-    .faq_container {
-        width: 343px;
-    }
-
-    .collapsible_open {
-        background: var(--history-table-row-hover-bg);
-    }
-
-    .collapsible {
-        background: var(--history-table-row-hover-bg);
-        margin-bottom: 18px;
-        border-bottom: none;
-    }
-
-    .title {
-        margin-bottom: 31px;
-    }
-
-    .back_btn {
-        position: absolute;
-        top: 40px;
-        left: calc(50vw - 171px);
-    }
-
-    .back_btn_text {
-        display: none;
     }
 }

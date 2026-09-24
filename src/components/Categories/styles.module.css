@@ -1,13 +1,17 @@
 .container {
-    width: 1176px;
+    position: relative;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 16px;
 }
 
 .categories {
     display: flex;
-    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    gap: 16px;
     overflow-x: scroll;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
@@ -22,9 +26,17 @@
     font-size: var(--category-btn-f-s);
     font-weight: var(--category-btn-f-w);
     color: var(--category-btn-f-c);
-    width: 108px;
-    height: 38px;
+    box-sizing: border-box;
+    /* Grows to share the row; never shrinks past its 80px label plus padding,
+       so a row that cannot be spaced sensibly overflows and scrolls instead. */
+    flex: 1 0 auto;
+    min-width: 112px;
+    height: 36px;
+    padding: 8px 16px;
+    line-height: var(--category-btn-l-h, normal);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
     border-width: var(--category-btn-border-w);
     border-style: solid;
@@ -43,58 +55,87 @@
     border-radius: var(--category-btn-hover-radius);
 }
 
-/* Selected falls back to the hover look, so platforms that never defined a
-   selected state keep rendering exactly as before. */
-.selected {
+/* Its own state, not the hover one: the default surface with an accent outline.
+   Each token still falls back to the hover value, so platforms that never
+   defined a selected look keep rendering exactly as before. */
+/* .category.selected, not .selected: .category:hover outranks a lone class and
+   would drop the outline the moment the pointer crossed the selected chip. */
+.category.selected {
     color: var(--category-btn-selected-f-c, var(--category-btn-hover-f-c));
     font-weight: var(--category-btn-hover-f-w);
-    border-width: var(--category-btn-hover-border-w);
+    border-width: var(--category-btn-selected-border-w, var(--category-btn-hover-border-w));
     border-color: var(--category-btn-selected-border-c, var(--category-btn-border-c));
     background: var(--category-btn-selected-bg, var(--category-btn-hover-bg));
 }
 
 .arrow {
-    background: none;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: var(--category-arrow-bg);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--category-arrow-radius);
     outline: none;
-    color: #fff;
+    color: var(--category-btn-f-c);
     cursor: pointer;
-    font-size: 30px;
-    z-index: 1;
+    z-index: 2;
 }
 
-/* .arrow_right {
-    box-shadow: -8px 0px 20px 20px var(--bg);
+.arrow_icon {
+    display: block;
+    width: 20px;
+    height: 20px;
 }
 
 .arrow_left {
-    box-shadow: 8px 0px 20px 20px var(--bg);
-} */
+    left: 0;
+}
+
+.arrow_right {
+    right: 0;
+}
+
+/* Chips dissolve behind this rather than clipping, and the chevron sits on top
+   of it and stays readable. */
+.veil {
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 36px;
+    pointer-events: none;
+    z-index: 1;
+    background: var(--category-veil);
+}
+
+/* Same gradient mirrored, so it goes solid at the edge it hides. */
+.veil_left {
+    left: 0;
+    transform: scaleX(-1);
+}
+
+.veil_right {
+    right: 0;
+}
+
+/* Placeholder chips: shorter and tighter than the real row, and they share the
+   width evenly rather than hugging a label that is not there yet. */
+.skeleton_row {
+    gap: 8px;
+}
 
 .skeleton {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 30px;
+    padding: 0;
     background: var(--category-skeleton-bg, var(--retailer-card-amount-bg));
     border: none;
+    border-radius: var(--category-skeleton-radius, 5px);
 }
 
-@media screen and (max-width: 1190px) {
-    .container {
-        width: 931px;
-    }
-}
-
-@media screen and (max-width: 990px) {
-    .container {
-        width: 695px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        width: 352px;
-    }
-
-    .arrow {
-        display: none;
-    }
-}

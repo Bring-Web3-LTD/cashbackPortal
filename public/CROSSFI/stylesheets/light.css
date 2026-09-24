@@ -8,9 +8,6 @@
     --title-f-w: 500;
     --title-f-c: black;
 
-    --subtitle-f-s: 14px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #242838;
 
     --header-btn-bg: transparent;
     --header-btn-f-s: 14px;
@@ -144,7 +141,6 @@
     --category-btn-hover-border-c: #A0B3F2;
     --category-btn-hover-radius: 8px;
 
-    --modal-offset-top: -112px;
     --modal-bg: #fff;
     --modal-overlay-bg: #0000007a;
     --modal-border-w: 0;
@@ -240,7 +236,6 @@
     --modal-status-btn-disabled-radius: 8px;
 
     --scrollbar-bg: #c8ccce;
-    --scrollbar-w: 14px;
 
     --search-bg: #fff;
     --search-f-s: 14px;
@@ -261,7 +256,6 @@
     --history-back-f-s: 14px;
     --history-back-f-w: 500;
     --history-back-f-c: #242838;
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #fff;
     --history-table-header-border-c: transparent;

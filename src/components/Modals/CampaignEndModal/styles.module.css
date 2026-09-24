@@ -14,7 +14,7 @@
     font-weight: var(--modal-title-f-w);
     color: var(--modal-title-f-c);
     width: 100%;
-    line-height: 24px;
+    line-height: var(--modal-title-l-h, 24px);
     text-align: center;
 }
 
@@ -23,7 +23,7 @@
     font-weight: var(--modal-paragraph-f-w);
     color: var(--modal-paragraph-f-c);
     margin-bottom: 17px;
-    line-height: 22px;
+    line-height: var(--modal-paragraph-l-h, 22px);
     text-align: center;
 }
 

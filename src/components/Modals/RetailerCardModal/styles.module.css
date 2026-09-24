@@ -3,13 +3,72 @@
     --custom-modal-radius: var(--retailer-custom-modal-radius, var(--modal-radius));
 }
 
+/* Popup frame sits behind the sections; the terms view overrides both inline. */
 .retailer_overlay_desktop {
-    --modal-pt: 40px;
-    --modal-px: 24px;
-    --modal-close-top: 16px;
-    --modal-close-right: 24px;
-    --modal-close-size: 24px;
-    --modal-close-pad: 0px;
+    --custom-modal-bg: var(--modal-popup-frame-bg, var(--modal-bg));
+    --custom-modal-radius: var(--modal-popup-radius, var(--modal-radius));
+}
+
+/* Type A shell: the sections span its full width and only the 24px bottom
+   exposes the frame colour behind them. The 10px inset belongs to the content,
+   not here - the footer runs edge to edge. */
+.retailer_overlay_desktop .shell {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 288px;
+    min-height: 288px;
+    padding: 0 0 24px;
+    overflow: hidden;
+}
+
+/* 50 above the box (a 40 header band plus 10), 34 at the sides (10 nested
+   inside 24) and 24 below it. The surface stops short of the bottom edge, so
+   the shell's own colour shows as a band under it. */
+.retailer_overlay_desktop .shell_terms {
+    display: flex;
+    flex-direction: column;
+    height: 288px;
+    padding: 50px 34px 24px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            var(--modal-terms-surface-bg, var(--modal-bg)),
+            var(--modal-terms-surface-bg, var(--modal-bg))
+        ) top / 100% calc(100% - 24px) no-repeat,
+        var(--modal-terms-bg, var(--modal-bg));
+}
+
+.retailer_overlay_desktop .shell_terms .modal_container {
+    flex: 1;
+    min-height: 0;
+}
+
+.retailer_overlay_desktop .shell_terms .modal {
+    height: 100%;
+    gap: 0;
+}
+
+.retailer_overlay_desktop .close {
+    top: 16px;
+    right: 16px;
+}
+
+.retailer_overlay_desktop .close img {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+/* Paints the band the close button sits in. Sits under the content, which
+   covers the same width. */
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 56px;
+    background: var(--modal-bg);
 }
 
 .modal_container {
@@ -26,40 +85,192 @@
     width: 100%;
 }
 
+/* Go Shopping fills the shell so the footer can pin to the bottom edge. */
+.shell .modal_container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
 .go_shop {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: center;
-    gap: 24px;
     width: 100%;
+    min-height: 0;
 }
 
-.go_shop_top {
+/* Sections paint the modal surface; the frame colour shows through the shell's
+   24px bottom. The body is centred in what the footer leaves, which puts 22
+   above and below it. */
+.content {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 0;
+    padding: 0 10px;
+    background: var(--modal-bg);
+}
+
+.body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
+    gap: 24px;
+    height: 144px;
+    width: 100%;
+    background: var(--modal-bg);
+}
+
+.text_section {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
     gap: 16px;
     width: 100%;
+    padding: 0 24px;
 }
 
-.go_shop_top .logo_container {
-    margin-bottom: 0;
+/* Bottom-aligned: the avatar's distance from the title is fixed, and the slack
+   collects above it. */
+.provider {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    height: 144px;
+    min-width: 0;
 }
 
-.go_shop_top .retailer_name {
+.avatar {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    line-height: 1.2;
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-width: var(--modal-popup-avatar-border-w);
+    border-style: solid;
+    border-color: var(--modal-popup-avatar-border-c);
+    border-radius: var(--modal-popup-avatar-radius, 80px);
 }
 
-.go_shop_bottom {
+/* Only the inner disc is filled; the 70px frame is a ring over the modal bg. */
+.avatar_image {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: var(--modal-popup-avatar-inner-radius, 100px);
+}
+
+.avatar_logo,
+.avatar_fallback {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--modal-popup-avatar-inner-radius, 100px);
+}
+
+.avatar_logo {
+    object-fit: contain;
+}
+
+.avatar_fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-size: var(--retailer-logo-fallback-f-s);
+    font-weight: var(--retailer-logo-fallback-f-w);
+    text-transform: uppercase;
+}
+
+.wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 4px;
     width: 100%;
+}
+
+.title_row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 8px;
+    height: 30px;
+    width: 100%;
+}
+
+.title {
+    font-size: var(--modal-popup-title-f-s);
+    font-weight: var(--modal-popup-title-f-w);
+    line-height: var(--modal-popup-title-l-h);
+    color: var(--modal-popup-title-f-c);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.footer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 12px;
+    height: 76px;
+    width: 100%;
+    padding: 2px 24px 0;
+    background: var(--modal-bg);
+    /* Sits above the shell's skirt, so its own bottom corners are on show. */
+    border-radius: 0 0 var(--modal-popup-radius, var(--modal-radius)) var(--modal-popup-radius, var(--modal-radius));
+}
+
+/* 2 + 46 + 12 + 16 is the 76 exactly, so nothing has to give. */
+.footer .start_btn {
+    flex-shrink: 0;
+    height: 46px;
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 16px;
+    width: 100%;
+}
+
+.terms_text {
+    font-size: var(--modal-popup-terms-f-s);
+    font-weight: var(--modal-popup-terms-f-w);
+    line-height: var(--modal-popup-terms-l-h);
+    color: var(--modal-popup-terms-f-c);
 }
 
 .back_btn {
@@ -69,11 +280,11 @@
     padding: 0;
     gap: 4px;
     top: 16px;
-    left: 20px;
+    left: 24px;
     background: none;
     border: none;
     cursor: pointer;
-    line-height: 22px;
+    line-height: var(--modal-deal-back-l-h, var(--history-back-l-h, 22px));
     height: fit-content;
     font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
     font-weight: var(--history-back-f-w);
@@ -111,7 +322,6 @@
 
 .markdown {
     --padding: 10px;
-    --scrollbar-gap: 5px;
     color: var(--modal-deal-markdown-f-c);
     background: var(--modal-deal-markdown-bg);
     border-radius: var(--modal-deal-markdown-radius);
@@ -119,35 +329,24 @@
     border-style: solid;
     border-color: var(--modal-deal-markdown-border-c);
     height: calc(300px - var(--padding) * 2);
-    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w, 0px) * 2);
+    width: calc(100% - var(--padding) * 2 - var(--modal-deal-markdown-border-w) * 2);
     padding: var(--padding);
     overflow-y: auto;
     font-size: var(--modal-deal-markdown-f-s);
 }
 
+/* Fills what the shell's padding leaves, rather than carrying its own height:
+   the box is the only thing in the terms view. */
 .markdown_short {
     --padding: 10px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    height: calc(216px - var(--padding) * 2);
-}
-
-.markdown::-webkit-scrollbar {
-    background: transparent;
-    width: calc(3px + var(--scrollbar-gap));
-}
-
-.markdown::-webkit-scrollbar-thumb {
-    border-right: var(--scrollbar-gap) solid transparent;
-    border-top: 6px solid transparent;
-    background-clip: padding-box;
-    border-radius: 9999px;
-    background-color: var(--modal-deal-markdown-scrollbar-bg, var(--scrollbar-bg));
-    min-height: 36px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .markdown p {
-    line-height: 18px;
+    line-height: var(--modal-deal-markdown-l-h, 18px);
     margin: 0px;
 }
 
@@ -170,8 +369,10 @@
     color: var(--modal-deal-markdown-h3-f-c, var(--modal-deal-markdown-bold-f-c));
 }
 
+/* The heading sits its own 6 above the body. */
 .markdown h3 {
-    margin-top: 2px;
+    margin: 0 0 6px;
+    line-height: var(--modal-deal-markdown-h3-l-h, 18px);
 }
 
 .center {
@@ -217,13 +418,19 @@
     cursor: default;
 }
 
+/* A solid three-quarter arc over a full track ring, not a fading sweep: the
+   design draws the gap as a hard edge. 20 across with a 2.5 stroke is the ring
+   the 24 box holds. */
 .loader {
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, transparent 0%, currentColor 100%);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    --stroke: 2.5px;
+    border-radius: var(--modal-popup-loader-radius, 50%);
+    background:
+        conic-gradient(from 0deg, currentColor 270deg, transparent 270deg),
+        var(--modal-popup-loader-track-c, transparent);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
     animation: go-shop-spin 0.7s linear infinite;
 }
 
@@ -246,11 +453,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background-color: var(--modal-deal-logo-bg, var(--retailer-card-img-bg, #FFFFFF));
     border-width: var(--modal-deal-logo-border-w, var(--retailer-card-img-border-w));
     border-style: solid;
     border-color: var(--modal-deal-logo-border-c, var(--retailer-card-img-border-c));
-    border-radius: 50%;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
     margin-bottom: 6px;
 }
 
@@ -268,7 +475,7 @@
     background: var(--retailer-card-amount-bg);
     padding: 6px;
     width: 140px;
-    border-radius: 50px;
+    border-radius: var(--modal-deal-rate-radius, 50px);
     text-align: center;
     white-space: nowrap;
 }
@@ -277,12 +484,7 @@
     object-fit: contain;
     width: 58px;
     height: 58px;
-    border-radius: 50%;
-}
-
-.logo_big {
-    width: 68px;
-    height: 68px;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
 }
 
 .fallback_logo {
@@ -293,14 +495,14 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border-radius: 50%;
+    border-radius: var(--modal-deal-logo-radius, var(--retailer-card-logo-radius, 50%));
     text-align: center;
     font-style: normal;
-    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, rgba(64, 74, 141, 0.50));
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-    color: var(--retailer-logo-fallback-f-c, white);
-    font-size: var(--retailer-logo-fallback-f-s, 24px);
-    font-weight: var(--retailer-logo-fallback-f-w, 700);
+    border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);
+    background: var(--retailer-logo-fallback-bg);
+    color: var(--retailer-logo-fallback-f-c);
+    font-size: var(--retailer-logo-fallback-f-s);
+    font-weight: var(--retailer-logo-fallback-f-w);
     text-transform: uppercase;
 }
 
@@ -317,5 +519,17 @@
 }
 
 .terms_btn:hover {
-    color: var(--modal-deal-terms-btn-hover-f-c, var(--primary-btn-bg));
+    color: var(--modal-deal-terms-btn-hover-f-c);
+}
+
+/* Link inherits the consent line's type; only the colour differs. The
+   underline follows the font's own metrics instead of the browser default,
+   which sits tighter to the baseline and renders thinner. */
+.terms_text .terms_btn {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: var(--modal-popup-terms-link-f-c);
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
 }
