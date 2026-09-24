@@ -226,6 +226,9 @@ const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUr
             className={styles.overlay}
             contentClassName={styles.shell}
             closeBtnClassName={styles.close}
+            // Success is the one state whose close mark is tinted; platforms
+            // that ship no variant fall back to their own x-mark.
+            xMarkPath={status === 'success' ? 'x-mark-success.svg' : 'x-mark.svg'}
             style={shellOverrides}
         >
             {status === 'loading' ?
