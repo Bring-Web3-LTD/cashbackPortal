@@ -36,7 +36,9 @@ const MobileWhatsThis = () => {
                             ))}
                         </div>
                     </div>
-                    {isHub ? (
+                    {/* Hub users have no wallet yet → install CTA; wallet users
+                        already have one → just dismiss. */}
+                    {!isHub ? (
                         <button type="button" className={styles.cta} onClick={goHome}>
                             {labels.gotIt}
                         </button>
