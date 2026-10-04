@@ -40,9 +40,12 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
         })
     }, [])
 
+    // skeletonPreview is a dependency because the skeleton branch renders no
+    // scrollRef: leaving it out means the row that replaces the placeholders is
+    // never measured, so the arrows stay hidden until the first manual scroll.
     useEffect(() => {
         measure()
-    }, [measure, categories, view.width])
+    }, [measure, categories, view.width, skeletonPreview])
 
     const scrollLeft = (): void => {
         if (scrollRef.current) {

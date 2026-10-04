@@ -36,7 +36,7 @@ const Modal = ({ children, style, className, contentClassName, closeBtnClassName
         };
 
         const handleMessage = (event: MessageEvent) => {
-            if (event.data.action === 'CLOSE_POPUP') {
+            if (event.data?.action === 'CLOSE_POPUP') {
                 closePopup();
                 message({ action: 'POPUP_CLOSED' })
             }

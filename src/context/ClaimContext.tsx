@@ -70,7 +70,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
+            if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
             // Not ours: the pairing flow (or any other surface) asked for it.
