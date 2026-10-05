@@ -13,6 +13,8 @@
     --subtitle-f-w: 400;
     --subtitle-f-c: #1A1919;
 
+    --legal-link-f-c: #1A1919;
+
     --header-btn-bg: #EDEEF0;
     --header-btn-bg-hover: var(--Fill-Light-fillSecondaryHover, linear-gradient(180deg, #EFF0F2 0%, #F5F6F7 100%));
     --header-btn-f-s: 15px;

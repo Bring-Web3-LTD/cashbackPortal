@@ -3,7 +3,7 @@
  * shop (a target="_blank" anchor to the pre-fetched redirect URL so it opens a
  * top-level tab). Pure UI — logic in useRetailerCardModal. */
 import { createPortal } from 'react-dom'
-import Markdown from 'react-markdown'
+import TermsMarkdown from '../TermsMarkdown/TermsMarkdown'
 import { useRetailerCardModal, RetailerCardModalProps } from './useRetailerCardModal'
 import styles from './styles.mobile.module.css'
 
@@ -84,7 +84,7 @@ const RetailerCardModal = (props: RetailerCardModalProps) => {
                                     <h3 className={styles.terms_title}>{labels.termsTitle}</h3>
                                     <div className={styles.terms_body}>
                                         {terms ? (
-                                            <Markdown>{terms}</Markdown>
+                                            <TermsMarkdown terms={terms} />
                                         ) : (
                                             <span className={styles.terms_loading}>{labels.loading}</span>
                                         )}
