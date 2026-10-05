@@ -27,8 +27,17 @@ export const formatDate = (date: string): string => {
     })
 }
 
-/** Numeric form for the table's Date column, e.g. `16.5.2026`. */
-export const formatShortDate = (date: string): string => {
+/**
+ * Numeric form for the table's Date column, e.g. `16.5.2026`.
+ *
+ * The falsy guard is the one that matters: a deal carries `date` and
+ * `startDate` as optional, so a row with neither reaches this as null or
+ * undefined. `new Date(null)` is the epoch, not an invalid date, and would
+ * render 1.1.1970 rather than an empty cell.
+ */
+export const formatShortDate = (date: string | null | undefined): string => {
+    if (!date) return ''
+
     const d = new Date(date)
     if (Number.isNaN(d.getTime())) return ''
 

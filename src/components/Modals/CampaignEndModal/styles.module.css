@@ -25,6 +25,8 @@
     margin-bottom: 17px;
     line-height: var(--modal-paragraph-l-h, 22px);
     text-align: center;
+    /* The copy carries its own line break, the way pairFailedMsg does. */
+    white-space: pre-wrap;
 }
 
 .btn {

@@ -1,13 +1,14 @@
+/**
+ * Persistent legal bar; the feed is endless so a flow footer is unreachable.
+ * Pure UI — logic in useLegalBar.
+ */
 import styles from './styles.module.css'
-import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
+import { useLegalBar } from './useLegalBar'
 
-/** Persistent legal bar; the feed is endless so a flow footer is unreachable. */
 const LegalBar = () => {
-    const { t } = useTranslation()
-    const { bringTou, privacy } = useRouteLoaderData('root') as LoaderData
+    const { privacy, bringTou, visible, labels } = useLegalBar()
 
-    if (!privacy && !bringTou) return null
+    if (!visible) return null
 
     return (
         <div className={styles.dock}>
@@ -20,7 +21,7 @@ const LegalBar = () => {
                     rel='noreferrer'
                     className={styles.link}
                 >
-                    {t('privacy', 'Privacy')}
+                    {labels.privacy}
                 </a>
                 : null}
             {bringTou ?
@@ -31,7 +32,7 @@ const LegalBar = () => {
                     rel='noreferrer'
                     className={styles.link}
                 >
-                    {t('termsOfUse', 'Terms of Use')}
+                    {labels.termsOfUse}
                 </a>
                 : null}
             </footer>

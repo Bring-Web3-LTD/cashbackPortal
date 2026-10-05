@@ -1,9 +1,11 @@
+/**
+ * Desktop categories row: a horizontally scrolling pill list with fade veils
+ * and arrows at whichever end still has content.
+ * Pure UI — logic in useCategoriesDesktop.
+ */
 import styles from './styles.module.css'
 import Icon from '../Icon/Icon'
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSkeletonPreview } from '../../hooks/useSkeletonPreview';
-import { useSwipeable } from 'react-swipeable';
-import useWindowSize from '../../hooks/useWindowSize';
+import { useCategoriesDesktop } from './useCategoriesDesktop'
 
 interface Props {
     categories: Category[];
@@ -11,63 +13,23 @@ interface Props {
     onClickFn: (category: Category) => void;
 }
 
-/* Placeholder chips are evenly sized, so their count has to come from the
-   width or they stretch: the design draws them ~127 wide at every size. The
-   page gutter is 48 / 32 / 20 and the body caps at 1344. */
-const SKELETON_CHIP = 127
-const SKELETON_GAP = 8
-
-const skeletonChipCount = (viewWidth: number) => {
-    const gutter = viewWidth >= 1112 ? 48 : viewWidth >= 840 ? 32 : 20
-    const available = Math.min(viewWidth, 1440) - gutter * 2
-    const fits = Math.floor((available + SKELETON_GAP) / (SKELETON_CHIP + SKELETON_GAP))
-    return Math.max(3, Math.min(10, fits))
-}
-
 const Categories = ({ categories, category, onClickFn }: Props) => {
-    const skeletonPreview = useSkeletonPreview()
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [overflow, setOverflow] = useState({ left: false, right: false })
-    const view = useWindowSize()
+    const {
+        showSkeleton,
+        skeletonCount,
+        scrollRef,
+        overflow,
+        measure,
+        scrollLeft,
+        scrollRight,
+        swipeHandlers,
+        labels,
+    } = useCategoriesDesktop(categories)
 
-    // Affordances follow measured overflow, not a category count.
-    const measure = useCallback(() => {
-        const el = scrollRef.current
-        if (!el) return
-        setOverflow({
-            left: el.scrollLeft > 1,
-            right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
-        })
-    }, [])
-
-    // skeletonPreview is a dependency because the skeleton branch renders no
-    // scrollRef: leaving it out means the row that replaces the placeholders is
-    // never measured, so the arrows stay hidden until the first manual scroll.
-    useEffect(() => {
-        measure()
-    }, [measure, categories, view.width, skeletonPreview])
-
-    const scrollLeft = (): void => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: -500, behavior: 'smooth' });
-        }
-    };
-
-    const scrollRight = (): void => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: 500, behavior: 'smooth' });
-        }
-    };
-
-    const handlers = useSwipeable({
-        onSwipedLeft: () => scrollRight(),
-        onSwipedRight: () => scrollLeft(),
-    });
-
-    if (!categories.length || skeletonPreview) {
+    if (showSkeleton) {
         return (
             <div className={`${styles.container} ${styles.skeleton_row}`}>
-                {Array(skeletonChipCount(view.width)).fill(0).map((_, index) => (
+                {Array(skeletonCount).fill(0).map((_, index) => (
                     <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton} skeleton_shimmer`} key={index}></button>
                 ))}
             </div>
@@ -79,7 +41,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
             <div
                 id="categories-scrollable"
                 className={styles.categories}
-                {...handlers}
+                {...swipeHandlers}
                 ref={scrollRef}
                 onScroll={measure}
             >
@@ -100,6 +62,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                     <button
                         id="categories-arrow-left"
                         className={`${styles.arrow} ${styles.arrow_left}`}
+                        aria-label={labels.scrollLeft}
                         onClick={scrollLeft}
                     >
                         <Icon className={styles.arrow_icon} name="chevron-left.svg" alt="" />
@@ -112,6 +75,7 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                     <button
                         id="categories-arrow-right"
                         className={`${styles.arrow} ${styles.arrow_right}`}
+                        aria-label={labels.scrollRight}
                         onClick={scrollRight}
                     >
                         <Icon className={styles.arrow_icon} name="chevron-right.svg" alt="" />

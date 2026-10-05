@@ -1,15 +1,11 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import TermsMarkdown from '../../TermsMarkdown/TermsMarkdown'
-import { ComponentProps, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import message from '../../../utils/message'
-import { useAnalytics } from '../../../hooks/useAnalytics'
-import { useRouteLoaderData } from 'react-router-dom'
+import { ComponentProps } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
 import Icon from '../../Icon/Icon'
-import { getInitials } from '../../../utils/getInitials'
+import { useRetailerCardModalDesktop } from './useRetailerCardModalDesktop'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
@@ -47,35 +43,19 @@ const RetailerCardModal = ({
     fallbackLogo: fallbackLogoProp
 }: Props) => {
 
-    const { sendAnalyticsEvent } = useAnalytics()
-    const { extensionId, cryptoSymbols, showTerms } = useRouteLoaderData('root') as LoaderData
-    const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
-    const [showingTerms, setShowingTerms] = useState(false)
-    const { t } = useTranslation()
-
-    const onClose = () => {
-        setShowingTerms(false)
-        message({ action: 'POPUP_CLOSED' })
-        closeFn()
-    }
-
-    const activate = () => {
-        window.postMessage({
-            from: 'bringweb3',
-            action: 'PORTAL_ACTIVATE',
-            extensionId,
-            time: 30 * 60 * 1000, // 30 minutes
-            domain,
-            iframeUrl,
-            token
-        })
-        onClose()
-        sendAnalyticsEvent('retailer_shop', {
-            category: 'user_action',
-            action: 'click',
-            details: name,
-        })
-    }
+    const {
+        showTerms,
+        showingTerms,
+        openTerms,
+        closeTerms,
+        fallbackLogo,
+        useFallbackLogo,
+        onClose,
+        activate,
+        labels,
+    } = useRetailerCardModalDesktop({
+        closeFn, name, cashback, iframeUrl, token, domain, fallbackLogo: fallbackLogoProp,
+    })
 
     if (isDesktop && !showTerms) {
         return (
@@ -92,7 +72,7 @@ const RetailerCardModal = ({
                     <button
                         id="retailer-modal-back-btn"
                         className={styles.back_btn}
-                        onClick={() => setShowingTerms(false)}
+                        onClick={closeTerms}
                     >
                     <div 
                         id="back_icon_container"
@@ -107,7 +87,7 @@ const RetailerCardModal = ({
                         id="back_txt_container"
                         className={styles.back_txt_container}
                     >
-                        <span>{t('back')}</span>
+                        <span>{labels.back}</span>
                     </div>
                     </button>
                 )}
@@ -168,7 +148,7 @@ const RetailerCardModal = ({
                                                                 loading='eager'
                                                                 src={iconPath}
                                                                 alt={`${name} logo`}
-                                                                onError={() => setFallbackLogo(getInitials(name))}
+                                                                onError={useFallbackLogo}
                                                             />
                                                         }
                                                     </div>
@@ -176,7 +156,7 @@ const RetailerCardModal = ({
                                                 <div className={styles.wrapper}>
                                                     <div className={styles.title_row}>
                                                         <div className={styles.title}>
-                                                            {t('shopAndEarn', { cashback, symbol: cryptoSymbols[0] })}
+                                                            {labels.shopAndEarn}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -194,26 +174,26 @@ const RetailerCardModal = ({
                                             target='_blank'
                                             rel="noopener noreferrer"
                                         >
-                                            {t('startShopping')}
+                                            {labels.startShopping}
                                         </a>
                                         :
                                         <button
                                             id="retailer-modal-loading-btn"
                                             className={`${styles.start_btn} ${styles.loading_btn}`}
                                             disabled={true}
-                                            aria-label={t('loadingBtn')}
+                                            aria-label={labels.loadingBtn}
                                         >
                                             <span className={styles.loader} />
                                         </button>
                                     }
                                     <div className={styles.terms}>
                                         <span className={styles.terms_text}>
-                                            {t('termsConsent')}{' '}
+                                            {labels.termsConsent}{' '}
                                             <button
                                                 id="retailer-modal-terms-btn"
                                                 className={styles.terms_btn}
-                                                onClick={() => setShowingTerms(true)}
-                                            >{t('termsAndExclusions')}</button>
+                                                onClick={openTerms}
+                                            >{labels.termsAndExclusions}</button>
                                         </span>
                                     </div>
                                 </div>
@@ -245,7 +225,7 @@ const RetailerCardModal = ({
                                 loading='eager'
                                 src={iconPath}
                                 alt={`${name} logo`}
-                                onError={() => setFallbackLogo(getInitials(name))}
+                                onError={useFallbackLogo}
                             />
                         }
                     </div>
@@ -274,7 +254,7 @@ const RetailerCardModal = ({
                         href={redirectLink}
                         target='_blank'
                     >
-                        {t('startShopping')}
+                        {labels.startShopping}
                     </a>
                     :
                     <button
@@ -282,11 +262,11 @@ const RetailerCardModal = ({
                         className={styles.start_btn}
                         disabled={true}
                     >
-                        {t('loadingBtn')}
+                        {labels.loadingBtn}
                     </button>
                 }
                 <div className={styles.consent_txt}>
-                    By clicking Go Shopping, you accept the {t('termsAndExclusions')} above.
+                    By clicking Go Shopping, you accept the {labels.termsAndExclusions} above.
                 </div>
             </div>
         </Modal>

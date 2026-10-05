@@ -1,9 +1,8 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import { ComponentProps } from 'react'
-import message from '../../../utils/message'
-import { useTranslation } from 'react-i18next'
 import Icon from '../../Icon/Icon'
+import { useLoginModal } from './useLoginModal'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
@@ -22,18 +21,7 @@ const LoginModal = ({
     onConnect
 }: Props) => {
 
-    const { t } = useTranslation()
-
-    const onClose = () => {
-        message({ action: 'POPUP_CLOSED' })
-        closeFn()
-    }
-
-    const promptLogin = () => {
-        message({ action: 'LOGIN' })
-        onConnect?.()
-        closeFn()
-    }
+    const { onClose, promptLogin, labels } = useLoginModal({ closeFn, onConnect })
 
     return (
         <Modal
@@ -52,12 +40,12 @@ const LoginModal = ({
                     </div>
                 </div>
                 <div className={styles.paragraph}>
-                    <div className={styles.title}>{t('connectYourWallet')}</div>
-                    <div className={styles.subtitle}>{t('connectWalletHint')}</div>
+                    <div className={styles.title}>{labels.title}</div>
+                    <div className={styles.subtitle}>{labels.subtitle}</div>
                 </div>
             </div>
             <div className={styles.footer}>
-                <button id="login-modal-btn" className={styles.btn} onClick={promptLogin}>{t('connect')}</button>
+                <button id="login-modal-btn" className={styles.btn} onClick={promptLogin}>{labels.connect}</button>
             </div>
         </Modal>
     )

@@ -2,11 +2,9 @@ import styles from './styles.module.css'
 import Modal from '../Modal/Modal'
 import StatusModal from '../Modals/StatusModal/StatusModal'
 import LoginModal from '../Modals/LoginModal/LoginModal'
-import { ComponentProps, FormEvent, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { ComponentProps } from 'react'
 import Icon from '../Icon/Icon'
-import { usePairWallet } from './usePairWallet'
-import { useOtpInputs } from './useOtpInputs'
+import { usePairWalletModal } from './usePairWalletModal'
 
 const shellOverrides = {
     '--custom-modal-bg': 'var(--modal-popup-frame-bg, var(--modal-bg))',
@@ -16,38 +14,17 @@ const shellOverrides = {
 type Props = Omit<ComponentProps<typeof Modal>, 'children'>
 
 const PairWalletModal = ({ open, closeFn }: Props) => {
-    const { t } = useTranslation()
     // Flow, validation and the API round-trips are shared with the mobile
     // sheet; only this view is desktop-specific.
     const {
         step, busy,
-        email, setEmail, emailErrorKey, submitEmail, canSubmitEmail, continueWithGoogle,
-        code, setCode, codeLength, codeErrorKey, clearCodeError, canSubmitCode,
-        submitCode, resendCode, fatalErrorKey, goToEmail,
+        email, setEmail, emailErrorKey, canSubmitEmail, continueWithGoogle,
+        code, codeLength, codeErrorKey, codeError, canSubmitCode,
+        resendCode, fatalErrorKey, goToEmail,
         loginOpen, connectWallet, closeLogin,
-    } = usePairWallet({ open })
-
-    const { digitRefs, handleDigitChange, handleDigitKeyDown, focusFirst } = useOtpInputs({
-        code,
-        setCode,
-        length: codeLength,
-        onEdit: clearCodeError,
-    })
-
-    // The code arrives by mail, so the user comes back to this screen from
-    // another window — put the caret where they need it.
-    useEffect(() => {
-        if (step === 'code') focusFirst()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [step])
-
-    const submit = (e: FormEvent) => {
-        e.preventDefault()
-        if (step === 'code') submitCode()
-        else submitEmail()
-    }
-
-    const isCode = step === 'code'
+        digitRefs, handleDigitChange, handleDigitKeyDown,
+        isCode, submit, labels,
+    } = usePairWalletModal(open)
 
     // Swapped in, not stacked: two Modals would double-dim and each emit its
     // own POPUP_OPENED. The hook's state survives, so connecting resumes.
@@ -88,7 +65,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
             <form className={styles.form} onSubmit={submit}>
                 {isCode ? (
                     <div className={styles.content_code}>
-                        <div className={styles.code_title}>{t('enterCode')}</div>
+                        <div className={styles.code_title}>{labels.enterCode}</div>
                         <div className={styles.code_group}>
                             <div className={styles.otp_wrap}>
                             <div className={styles.otp}>
@@ -120,13 +97,13 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                                     />
                                 ))}
                             </div>
-                                {codeErrorKey && <div className={styles.error}>{t(codeErrorKey)}</div>}
+                                {codeErrorKey && <div className={styles.error}>{codeError}</div>}
                             </div>
                         </div>
                     </div>
                 ) : (
                     <div className={styles.content}>
-                        <div className={styles.title}>{t('pairWallet')}</div>
+                        <div className={styles.title}>{labels.pairWallet}</div>
                         {/* Google's branding guidelines fix the fill, border,
                             radius and type, so this button is not themed. */}
                         <button
@@ -137,11 +114,11 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                             onClick={continueWithGoogle}
                         >
                             <Icon className={styles.google_logo} name="google.svg" alt="" />
-                            <span className={styles.google_label}>{t('signInWithGoogle')}</span>
+                            <span className={styles.google_label}>{labels.signInWithGoogle}</span>
                         </button>
                         <div className={styles.divider}>
                             <span className={styles.divider_line} />
-                            <span className={styles.divider_label}>{t('or')}</span>
+                            <span className={styles.divider_label}>{labels.or}</span>
                             <span className={styles.divider_line} />
                         </div>
                         <input
@@ -150,7 +127,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                             type="email"
                             inputMode="email"
                             autoComplete="email"
-                            placeholder={t('emailPlaceholder')}
+                            placeholder={labels.emailPlaceholder}
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                         />
@@ -163,7 +140,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                         className={styles.btn}
                         disabled={busy || (isCode ? !canSubmitCode : !canSubmitEmail)}
                     >
-                        {t(isCode ? 'confirm' : 'pair')}
+                        {labels.submit}
                     </button>
                     {isCode && (
                         <button
@@ -173,7 +150,7 @@ const PairWalletModal = ({ open, closeFn }: Props) => {
                             disabled={busy}
                             onClick={resendCode}
                         >
-                            {t('resendCode')}
+                            {labels.resendCode}
                         </button>
                     )}
                 </div>

@@ -1,55 +1,26 @@
 import styles from './styles.module.css'
-import { Link, useRouteLoaderData, useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import fetchCache from '../../api/fetchCache'
-import { createDescription, formatCurrency, formatDate, formatShortDate, formatStatus } from './helpers'
-import { useAnalytics } from '../../hooks/useAnalytics'
-import { useTranslation } from 'react-i18next'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
 import Icon from '../../components/Icon/Icon'
 import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { getInitials } from '../../utils/getInitials'
+import { useHistoryDesktop, type HistoryRow } from './useHistoryDesktop'
 
-interface HistoryDesktop {
-    status: string
-    tokenAmount: string;
-    date: string
-    imgSrc: string
-    imgSrcFallback?: string
-    description: string[][];
-    totalEstimatedUsd?: string | number
-    imgBg?: string
-    retailerName?: string
-}
-
-interface RowProps extends HistoryDesktop {
+interface RowProps extends HistoryRow {
     isActive: boolean
     toggleFn: () => void
+    claimsLabel: string
 }
 
-interface ClaimToken {
-    tokenAmount: number
-    description: string[][]
-    tokenSymbol: string
-    /** Most recent claim in the group — the row stands for all of them. */
-    date: string
-}
-
-interface ClaimsRes {
-    [key: string]: ClaimToken
-}
-
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
-    const { t } = useTranslation()
     // The claims aggregate: one row standing for every claim of a token. It is
     // the row with no retailer behind it — not every row whose status reads
     // "Claimed", which is an ordinary purchase that has been paid out.
     const isClaim = !retailerName
-    const name = retailerName || t('historyTotalClaims')
+    const name = retailerName || claimsLabel
     return (
         <div id="history-desktop-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
@@ -157,96 +128,9 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
     )
 }
 
-/* A deal that has been paid out or written off is no longer a reward the two
-   dashboard cards count, so the details view leaves it out. Anything else -
-   including a status the backend adds later, which renders as pending - stays. */
-const SETTLED_STATUSES = ['claimed', 'cancelled']
-
 const HistoryDesktop = () => {
-    const [activeRow, setActiveRow] = useState(-1)
-    const { sendAnalyticsEvent } = useAnalytics()
-    const { t } = useTranslation()
-
-    const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
-    const navigate = useNavigate()
-    const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
-
-    const { data } = useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = {
-                platform,
-                userId,
-                flowId
-            }
-
-            if (walletAddress) body.walletAddress = walletAddress
-
-            return await fetchCache(body)
-        },
-        queryKey: ["balance", walletAddress],
-        enabled: !!walletAddress,
-    })
-
-    const balance = data?.data
-
-    const createClaims = (claims: Claim[] | undefined): HistoryDesktop[] => {
-        if (!claims) return []
-        const res: ClaimsRes = {}
-
-        claims.map(claim => {
-            const { tokenSymbol, tokenAmount, date, txid } = claim
-            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [], date }
-            if (new Date(date) > new Date(res[tokenSymbol].date)) res[tokenSymbol].date = date
-
-            const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
-            if (txid) {
-                descriptionItem.push(txid)
-            }
-            
-            res[tokenSymbol].description.push(descriptionItem)
-            res[tokenSymbol].tokenAmount += tokenAmount
-        })
-
-        const arr = Object.keys(res).map(key => ({
-            ...res[key]
-            , tokenAmount: `${res[key].tokenAmount} ${key}`,
-            date: formatShortDate(res[key].date),
-            imgSrc: `${iconsPath}/gift.svg`,
-            imgSrcFallback: `${defaultIconsPath}/gift.svg`,
-            tokenSymbol: key,
-            status: formatStatus('claimed'),
-        }))
-
-        return arr
-    }
-
-    const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryDesktop[] => {
-        if (!deals || !retailerIconBasePath) return []
-        return deals.map(deal => ({
-            tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
-            // The purchase date, which is what the row is about.
-            date: formatShortDate(deal.date ?? deal.startDate),
-            totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
-            status: formatStatus(deal.status, deal.eligibleDate),
-            retailerName: deal.retailerDisplayName,
-            imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
-            imgBg: deal.retailerBackgroundColor,
-            description: deal.history?.map(history => createDescription(history)) || [['']]
-        }))
-    }
+    const { rows, isOpen, toggleRow, goToView, goBack, labels } = useHistoryDesktop()
     const [imgExists, setImgExists] = useState(true)
-    // Arrived from the dashboard's details button, which stands for the two
-    // reward cards rather than for the ledger: it shows what is still in its
-    // return window and what is ready to claim, and nothing that has already
-    // settled. Filtering on the raw status, not the rendered one - formatStatus
-    // turns "pending" into "In 5 days".
-    const deals = rewardsOnly
-        ? balance?.movements.deals?.filter(deal => !SETTLED_STATUSES.includes(deal.status))
-        : balance?.movements.deals
-    // The claims aggregate is a settled row by definition, so it goes too.
-    const history = (rewardsOnly ? [] : createClaims(balance?.movements.claims))
-        .concat(createDeals(deals, data?.retailerIconBasePath))
 
     return (
         <div className={styles.container}>
@@ -255,62 +139,44 @@ const HistoryDesktop = () => {
             {/* Same row as the home page; switching view leaves for it. */}
             <Dashboard
                 view="cashback"
-                onViewChange={view => navigate('/', { state: { view } })}
+                onViewChange={goToView}
             />
             <div className={styles.toolbar}>
             <Link
                 id="history-desktop-back-btn"
                 className={styles.back_btn}
                 to='..'
-                onClick={e => {
-                    e.preventDefault()
-                    sendAnalyticsEvent('topbar_back', {
-                        category: 'user_action',
-                        action: 'click',
-                        details: 'to: /'
-                    })
-                    navigate(-1)
-                }}
+                onClick={e => { e.preventDefault(); goBack() }}
             >
                 <span className={styles.back_icon}>
                     <Icon name="arrow-left.svg" alt="" />
                 </span>
                 <span className={styles.back_btn_text}>
-                    {t('back')}
+                    {labels.back}
                 </span>
             </Link>
-                <h1 className={styles.title}>{t(rewardsOnly ? 'detailsTitle' : 'historyTitle')}</h1>
+                <h1 className={styles.title}>{labels.title}</h1>
             </div>
-            {history.length ? (
+            {rows.length ? (
                     <div className={styles.table_scroll}>
                     <div className={styles.table}>
                         <div className={styles.table_header}>
                             {/* Every label is a platform's to rename (SOLFLARE
                                 and GERO both do); DEFAULT holds the wording the
                                 rest fall back to. */}
-                            <span className={styles.table_header_cell}>{t('historyColPurchase')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColDate')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColAmount')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColStatus')}</span>
-                            <span className={styles.table_header_cell}>{t('historyColDetails')}</span>
+                            <span className={styles.table_header_cell}>{labels.colPurchase}</span>
+                            <span className={styles.table_header_cell}>{labels.colDate}</span>
+                            <span className={styles.table_header_cell}>{labels.colAmount}</span>
+                            <span className={styles.table_header_cell}>{labels.colStatus}</span>
+                            <span className={styles.table_header_cell}>{labels.colDetails}</span>
                         </div>
                         {
-                            history.map((item, i) =>
+                            rows.map((item, i) =>
                                 <Row
                                     key={`history-${i}`}
-                                    isActive={activeRow === i}
-                                    toggleFn={() => {
-                                        if (activeRow !== i) {
-                                            setActiveRow(i)
-                                            sendAnalyticsEvent('history_expand', {
-                                                category: 'user_action',
-                                                action: 'click',
-                                                details: item.retailerName || 'Total claims',
-                                            })
-                                        } else {
-                                            setActiveRow(-1)
-                                        }
-                                    }}
+                                    isActive={isOpen(i)}
+                                    toggleFn={() => toggleRow(i, item)}
+                                    claimsLabel={labels.totalClaims}
                                     {...item}
                                 />
                             )
@@ -327,7 +193,7 @@ const HistoryDesktop = () => {
                                 onError={() => setImgExists(false)}
                             />
                         ) : null}
-                        <div className={styles.empty_history}>{t('emptyHistory')}</div>
+                        <div className={styles.empty_history}>{labels.emptyHistory}</div>
                     </div>
                 </div>
             )}

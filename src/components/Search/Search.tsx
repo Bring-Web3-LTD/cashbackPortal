@@ -1,22 +1,18 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, MouseEvent, useEffect, useId, useRef, useState } from "react"
+import { Fragment } from "react"
 
 // components
 import Select, {
     components,
     StylesConfig,
-    SingleValue,
-    MultiValue,
     ControlProps,
     NoticeProps,
     SingleValueProps,
-    SelectInstance,
 } from "react-select"
-import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
-import { useDebounce } from 'use-debounce'
 import Icon from '../Icon/Icon'
+import { useSearchDesktop } from './useSearchDesktop'
 
 interface Props {
     options: ReactSelectOptionType[]
@@ -197,108 +193,29 @@ const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
 }
 
 const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
-    const id = useId()
-    const [input, setInput] = useState('')
-    const [debouncedInput] = useDebounce(input, 500)
-    const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [isFocused, setIsFocused] = useState(false)
-    const selectRef = useRef<SelectInstance<ReactSelectOptionType> | null>(null)
-    const { sendAnalyticsEvent } = useAnalytics()
-    const { t } = useTranslation()
-
-    useEffect(() => {
-        if (!debouncedInput.length) return
-        sendAnalyticsEvent("search_input", {
-            category: "user_action",
-            action: "input",
-            details: debouncedInput,
-            hasResults: !!filteredOptions.length,
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedInput])
-
-    const handleChange = (
-        item:
-            | SingleValue<ReactSelectOptionType>
-            | MultiValue<ReactSelectOptionType>
-            | null,
-    ) => {
-        if (!item || Array.isArray(item)) return
-        const { value } = item as ReactSelectOptionType
-
-        sendAnalyticsEvent("search_select", {
-            category: "user_action",
-            action: "select",
-            details: value,
-        })
-
-        onChangeFn({ value, label: value })
-        // Blurring fires the Select's onBlur, which sets isFocused(false) –
-        // keep focus state driven by a single source (the blur event).
-        selectRef.current?.blur()
-    }
-
-    const handleInputChange = (inputValue: string) => {
-        setInput(inputValue)
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        if (!inputValue || (inputValue?.trim()).length < 2) {
-            if (isMenuOpen) setIsMenuOpen(false)
-            if (filteredOptions.length) {
-                setFilteredOptions([])
-            }
-        } else {
-            const input = inputValue.trimStart().toLowerCase()
-            if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
-
-            // if (input.length === 3) {
-            //     sendAnalyticsEvent("search_input", {
-            //         category: "user_action",
-            //         action: "input",
-            //         details: input,
-            //     })
-            // }
-            let filtered: ReactSelectOptionType[] = []
-            const notFirstWordMatches: ReactSelectOptionType[] = []
-            if (options?.length) {
-                options.forEach((e) => {
-                    if (e.label.toLowerCase().startsWith(input)) {
-                        filtered.push(e)
-                    } else if (
-                        e.label.includes(" ") &&
-                        !e.label.toLowerCase().startsWith(input)
-                    ) {
-                        const words = e.label.toLowerCase().split(/\s+/)
-                        if (words.some((word: string) => word.startsWith(input))) {
-                            notFirstWordMatches.push(e)
-                        }
-                    }
-                })
-                if (notFirstWordMatches.length) {
-                    filtered = filtered.concat(notFirstWordMatches)
-                }
-            }
-            setFilteredOptions(filtered)
-        }
-    }
-
-    const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-        const target = e.target as HTMLElement
-
-        if (target.id.includes("option")) return;
-        setIsFocused(true)
-    }
+    const {
+        id,
+        selectRef,
+        filteredOptions,
+        isMenuOpen,
+        isFocused,
+        handleChange,
+        handleInputChange,
+        handleClick,
+        blur,
+        labels,
+    } = useSearchDesktop({ options, onChangeFn })
 
     return (
         <div
             id="search-container"
-            onClick={e => handleClick(e)}
+            onClick={handleClick}
             className={styles.search}>
             <Select
                 id="search-select"
                 ref={selectRef}
                 instanceId={id}
-                placeholder={t('searchPlaceholder')}
+                placeholder={labels.placeholder}
                 styles={customStyles}
                 components={{
                     DropdownIndicator: () => null,
@@ -313,7 +230,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 onChange={handleChange}
                 onInputChange={handleInputChange}
                 value={value}
-                onBlur={() => setIsFocused(false)}
+                onBlur={blur}
             />
         </div>
     )

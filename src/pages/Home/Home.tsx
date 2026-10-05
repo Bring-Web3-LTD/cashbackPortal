@@ -1,177 +1,55 @@
+/**
+ * Desktop home page: the dashboard, the search and category filters, then the
+ * retailer grid with its infinite scroll.
+ * Pure UI — logic in useHomeDesktop.
+ */
 // Styles
 import styles from './styles.module.css'
 // Components
 import Header from '../../components/Header/Header'
-import Dashboard, { type PortalView } from '../../components/Dashboard/Dashboard'
+import Dashboard from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
 import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignEndModal'
 // Rendered only by the ?test=status preview below.
-import StatusModal, { type StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
-// Hooks
-import { useEffect, useRef, useState } from 'react'
-import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-// Requests
-import fetchRetailers from '../../api/fetchRetailers'
-import getFilters from '../../api/getFilters'
-import { useAnalytics } from '../../hooks/useAnalytics'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { useTranslation } from 'react-i18next'
-import { parseCampaignId } from '../../utils/campaigns'
+import StatusModal from '../../components/Modals/StatusModal/StatusModal'
 import Icon from '../../components/Icon/Icon'
-import { ENV } from '../../config'
-import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useHomeDesktop } from './useHomeDesktop'
 
 const Home = () => {
-    const { platform, isCountryAvailable, userId, flowId, couponsEnabled } = useRouteLoaderData('root') as LoaderData
-    const { sendAnalyticsEvent } = useAnalytics()
-    const [searchParams] = useSearchParams();
-    const { walletAddress, isTester, couponsIframeSrc } = useWalletAddress()
-    const country = searchParams.get('country')?.toUpperCase()
-    const skeletonPreview = useSkeletonPreview()
-
-
-    // Coupons live src comes from the wallet context, so a SESSION_UPDATE
-    // verify replaces it (and clears it when the wallet disconnects).
-    const { t } = useTranslation()
-    // Seeded from navigation state so the switcher still works on the pages
-    // that show the dashboard but not the browse area.
-    const routedView = (useLocation().state as { view?: PortalView } | null)?.view
-    const [view, setView] = useState<PortalView>(routedView ?? 'cashback')
-    const showCoupons = Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons')
-    const campaign = parseCampaignId(searchParams.get('campaignId'))
-
-    const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
-    const [category, setCategory] = useState<Category | null>(null)
-    const [isDemo, setIsDemo] = useState(false)
-    const [campaignEndModalStatus, setCampaignEndModalStatus] = useState<'idle' | 'show' | 'shown'>('idle')
-    // Drives the ?test=status preview, which opens StatusModal in any state
-    // without running a claim. Non-production only, like the other
-    // tester-facing affordances.
-    const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
-    const statusPreview = ENV !== 'prod' && searchParams.get('test') === 'status'
-    const [isFirstLoadComplete, setIsFirstLoadComplete] = useState(false)
-
-    const paginationRef = useRef<HTMLDivElement>(null)
-    const scrollRef = useRef<HTMLDivElement>(null)
-    const isVisible = useInView(paginationRef)
-
-    const { data: categoriesSearch, isLoading: isLoadingCategories } = useQuery({
-        queryFn: async () => {
-            const options: Parameters<typeof getFilters>[0] = {
-                country,
-                platform,
-                user_id: userId,
-                flow_id: flowId
-            }
-            if (walletAddress) options.wallet_address = walletAddress
-            return await getFilters(options)
-        },
-        queryKey: ["categories-search"],
-    })
-
     const {
-        data: retailers,
-        fetchNextPage,
-        isFetching,
+        isCountryAvailable,
+        isTester,
+        isDemo,
+        setIsDemo,
+        view,
+        setView,
+        showCoupons,
+        couponsIframeSrc,
+        scrollRef,
+        paginationRef,
+        search,
+        category,
+        changeSearch,
+        changeCategory,
+        resetFilters,
+        retailersList,
+        retailersMetadata,
+        retailersLoading,
         isFetchingNextPage,
-        isLoading: isLoadingRetailers,
-        isSuccess: isRetailersSuccess,
-    } = useInfiniteQuery({
-        // walletAddress is part of the key because the backend orders the list by the caller's
-        // engagement history — connecting a wallet must refetch rather than reuse the anonymous list.
-        // Must stay identical to the key in hooks/useRetailers.ts so both surfaces share one cache.
-        queryKey: ["retailers", category, search, walletAddress],
-        queryFn: async ({ pageParam }) => {
-            const options: Parameters<typeof fetchRetailers>[0] = {
-                type: "all",
-                pageSize: 40,
-                page: typeof pageParam === "number" ? pageParam : undefined,
-                platform,
-                flowId,
-                userId,
-            }
-
-            if (walletAddress) options.walletAddress = walletAddress
-            if (country) options.country = country
-            if (category?.id) options.category = category.id
-            if (search?.value) options.search = search.value
-
-            return await fetchRetailers(options)
-        },
-        getNextPageParam: (lastPage) => {
-            return lastPage.nextPageNumber
-        },
-        initialPageParam: 0,
-    })
-
-    useEffect(() => {
-        if (!isFetchingNextPage && isVisible) {
-            fetchNextPage()
-        }
-    }, [isVisible, fetchNextPage, isFetchingNextPage])
-
-    useEffect(() => {
-        if (isRetailersSuccess && !isFirstLoadComplete && campaignEndModalStatus === 'idle') {
-            setIsFirstLoadComplete(true)
-
-            if (campaign && !retailers.pages[0].campaigns?.includes(campaign.id)) {
-                setCampaignEndModalStatus('show')
-            } else {
-                setCampaignEndModalStatus('shown')
-            }
-        }
-    }, [isRetailersSuccess, isFirstLoadComplete, campaignEndModalStatus, campaign, retailers?.pages])
-
-    const scrollToTop = () => {
-        if (!scrollRef?.current) return
-        scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    const changeSearch = (searchTerm: ReactSelectOptionType) => {
-        setSearch(searchTerm)
-        setCategory(null)
-        scrollToTop()
-    }
-
-    const changeCategory = (cat: Category) => {
-        setCategory(cat)
-        setSearch(null)
-        scrollToTop()
-        sendAnalyticsEvent('category_select', {
-            category: 'user_action',
-            action: 'click',
-            details: cat.name
-        })
-    }
-
-    const resetFilters = () => {
-        setCategory(null)
-        setSearch(null)
-        scrollToTop()
-        sendAnalyticsEvent("clear_selection", {
-            category: "user_action",
-            action: "click",
-            details: search?.value ?? category?.name,
-        })
-    }
-
-    const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
-    const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
-    const retailersLoading = (isFetching && !retailersList.length) || skeletonPreview
-    // The search row waits on the filters call, not the retailers one: that call
-    // is what supplies its options, and it also feeds the chips beside it, so
-    // the two resolve together.
-    const searchLoading = isLoadingCategories || skeletonPreview
-    const categories = categoriesSearch?.categories?.items ?? []
-    const searchTerms =
-        categoriesSearch?.searchTerms?.items?.map((term) => ({
-            value: term,
-            label: term,
-        })) ?? []
+        searchLoading,
+        categories,
+        searchTerms,
+        dealsCount,
+        campaignEndOpen,
+        dismissCampaignEnd,
+        statusPreview,
+        testStatus,
+        setTestStatus,
+        labels,
+    } = useHomeDesktop()
 
     if (isCountryAvailable === false) {
         return (
@@ -241,7 +119,7 @@ const Home = () => {
                         id="coupons-frame"
                         className={styles.coupons_frame}
                         src={couponsIframeSrc}
-                        title={t('couponsTab')}
+                        title={labels.couponsTab}
                     />
                 ) : (<>
                 <div className={styles.filters_section}>
@@ -255,7 +133,7 @@ const Home = () => {
                             <Search
                                 options={searchTerms}
                                 value={search}
-                                onChangeFn={(item) => changeSearch(item)}
+                                onChangeFn={changeSearch}
                             />
                             <AnimatePresence>
                                 {search?.value || category?.name ?
@@ -274,16 +152,13 @@ const Home = () => {
                                     : null}
                             </AnimatePresence>
                         </div>
-                        <div id="deals-amount" className={styles.deals_amount}>{
-                            isLoadingRetailers ? "Searching for deals..." :
-                                `Showing ${retailersMetadata?.totalItems} deals`
-                        }</div>
+                        <div id="deals-amount" className={styles.deals_amount}>{dealsCount}</div>
                     </div>
                     )}
                     <Categories
                         categories={categories}
                         category={category}
-                        onClickFn={(cat) => changeCategory(cat)}
+                        onClickFn={changeCategory}
                     />
                 </div>
                 <CardsList
@@ -296,12 +171,12 @@ const Home = () => {
                 <div
                     className={styles.load}
                     ref={paginationRef}
-                >{isFetchingNextPage ? t('loading') : ''}</div>
+                >{isFetchingNextPage ? labels.loading : ''}</div>
                 </>)}
             </main>
             <CampaignEndModal
-                open={Boolean(campaign) && campaignEndModalStatus === 'show'}
-                closeFn={() => setCampaignEndModalStatus('shown')}
+                open={campaignEndOpen}
+                closeFn={dismissCampaignEnd}
             />
         </div>
     )

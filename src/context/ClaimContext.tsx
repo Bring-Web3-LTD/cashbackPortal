@@ -38,7 +38,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const [searchParams] = useSearchParams()
     const limit = searchParams.get('limit') || Infinity
 
-    const [modalState, setModalState] = useState('close')
+    const [statusOpen, setStatusOpen] = useState(false)
     const [claimStatus, setClaimStatus] = useState<StatusModalState>('loading')
     const [loading, setLoading] = useState(false)
     // SIGNATURE is a broadcast: the wallet answers the page, and the reply
@@ -52,9 +52,9 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const eligible = selectEligible(balance)
 
     const currentCryptoSymbol = eligible?.tokenSymbol || cryptoSymbols[0]
-    const minimumClaimThreshold = eligible?.minimumClaimThreshold ?? -1
-    const eligibleTokenNumber = eligible?.tokenAmount ?? -1
-    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : Math.min(eligibleTokenNumber, +limit)
+    // Only read once claiming is allowed, which means there is a balance row.
+    const tokenAmount = eligible?.tokenAmount ?? 0
+    const claimAmount = ENV === 'prod' ? tokenAmount : Math.min(tokenAmount, +limit)
 
     // Rounding the raw number renders 0.006 as "0.01", which reads as claimable
     // when it is under the minimum - so the guide shows the backend's string.
@@ -63,9 +63,9 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
 
     const claimDisabled =
         isLoading ||
-        eligibleTokenNumber === -1 ||
-        minimumClaimThreshold === -1 ||
-        eligibleTokenNumber < minimumClaimThreshold ||
+        !eligible ||
+        typeof eligible.minimumClaimThreshold !== 'number' ||
+        eligible.tokenAmount < eligible.minimumClaimThreshold ||
         loading
 
     useEffect(() => {
@@ -82,7 +82,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                     details: claimAmount,
                     process: 'submit'
                 })
-                setModalState('open')
+                setStatusOpen(true)
                 const body: Parameters<typeof claimSubmit>[0] = {
                     walletAddress,
                     targetWalletAddress: walletAddress,
@@ -163,7 +163,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const claim = () => {
         if (!isHub) return signMessage()
         setClaimStatus('claim')
-        setModalState('open')
+        setStatusOpen(true)
     }
 
     return (
@@ -177,9 +177,9 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                 usdValue={eligibleTotalEstimatedUsd || undefined}
                 claimUrl={chromeStoreUrl}
                 address={walletAddress}
-                open={modalState !== 'close'}
+                open={statusOpen}
                 closeFn={() => {
-                    setModalState('close')
+                    setStatusOpen(false)
                     setClaimStatus('loading')
                 }}
             />

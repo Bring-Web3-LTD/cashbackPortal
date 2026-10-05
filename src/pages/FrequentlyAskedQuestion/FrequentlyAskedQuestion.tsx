@@ -1,15 +1,11 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import styles from './styles.module.css'
-import { Link, useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import fetchFaq from '../../api/fetchFaq'
-import { useQuery } from '@tanstack/react-query'
-import { useAnalytics } from '../../hooks/useAnalytics'
-import { useTranslation } from 'react-i18next'
 import Icon from '../../components/Icon/Icon'
 import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
-import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
+import { useFaqDesktop, SKELETON_ROWS } from './useFaqDesktop'
 
 interface AnswerParserProps {
   answer: string[];
@@ -62,23 +58,17 @@ const AnswerParser: FC<AnswerParserProps> = ({ answer, links, indentationMark })
   );
 };
 
-// The design draws five placeholder rows; the real count is unknown until the
-// FAQ answers.
-const SKELETON_ROWS = [0, 1, 2, 3, 4]
-
 const FrequentlyAskedQuestion = () => {
-  const navigate = useNavigate()
-  const { walletAddress, platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
-  const { sendAnalyticsEvent } = useAnalytics()
-  const { t } = useTranslation()
-  const [currentIndex, setCurrentIndex] = useState(-1)
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['faq', walletAddress, platform],
-    queryFn: () => fetchFaq({ walletAddress, platform, userId, flowId }),
-  })
-  const skeletonPreview = useSkeletonPreview()
-  const showSkeleton = isLoading || skeletonPreview
+  const {
+    faq,
+    indentationMark,
+    showSkeleton,
+    isOpen,
+    toggle,
+    goToView,
+    goBack,
+    labels,
+  } = useFaqDesktop()
 
   return (
     <div className={styles.container}>
@@ -87,31 +77,23 @@ const FrequentlyAskedQuestion = () => {
       {/* Same row as the home page; switching view leaves for it. */}
       <Dashboard
         view="cashback"
-        onViewChange={view => navigate('/', { state: { view } })}
+        onViewChange={goToView}
       />
       <div className={styles.toolbar}>
       <Link
         id="faq-back-btn"
         className={styles.back_btn}
         to={'..'}
-        onClick={e => {
-          e.preventDefault()
-          sendAnalyticsEvent('topbar_back', {
-            category: 'user_action',
-            action: 'click',
-            details: 'to: /'
-          })
-          navigate(-1)
-        }}
+        onClick={e => { e.preventDefault(); goBack() }}
       >
         <span className={styles.back_icon}>
           <Icon name="arrow-left.svg" alt="arrow" />
         </span>
         <span className={styles.back_btn_text}>
-          {t('back')}
+          {labels.back}
         </span>
       </Link>
-        <h1 className={styles.title}>{t('faqTitle')}</h1>
+        <h1 className={styles.title}>{labels.title}</h1>
       </div>
       <div className={styles.faq_container}>
         {
@@ -121,7 +103,7 @@ const FrequentlyAskedQuestion = () => {
                 <span className={`${styles.skeleton_bar} skeleton_shimmer`} />
               </div>
             </div>
-          )) : data?.faq?.map(item => (
+          )) : faq?.map(item => (
             <div
               id={`faq-item-${item.id}`}
               key={item.question + item.id}
@@ -130,12 +112,12 @@ const FrequentlyAskedQuestion = () => {
               <div className={styles.text_col}>
                 <div
                   className={styles.question}
-                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
+                  onClick={() => toggle(item.itemOrder)}
                 >
                   {item.question}
                 </div>
                 <AnimatePresence>
-                  {currentIndex === item.itemOrder && <motion.div
+                  {isOpen(item.itemOrder) && <motion.div
                     className={styles.answer_container}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
@@ -145,7 +127,7 @@ const FrequentlyAskedQuestion = () => {
                     <AnswerParser
                       answer={item.answer}
                       links={item.links || []}
-                      indentationMark={data.indentationMark}
+                      indentationMark={indentationMark ?? ''}
                     />
                   </motion.div>}
                 </AnimatePresence>
@@ -153,8 +135,8 @@ const FrequentlyAskedQuestion = () => {
               <div className={styles.content_cell}>
                 <button
                   id={`faq-details-btn-${item.id}`}
-                  className={`${styles.details_btn} ${currentIndex === item.itemOrder ? styles.rotate : ''}`}
-                  onClick={() => setCurrentIndex(currentIndex === item.itemOrder ? -1 : item.itemOrder)}
+                  className={`${styles.details_btn} ${isOpen(item.itemOrder) ? styles.rotate : ''}`}
+                  onClick={() => toggle(item.itemOrder)}
                 >
                   <Icon name="arrow-down.svg" alt="arrow-down" />
                 </button>

@@ -1,72 +1,37 @@
+/**
+ * Desktop header: title (with the wallet mark in the hub) and the help
+ * actions, which collapse into an overflow menu when the bar narrows.
+ * Pure UI — logic in useHeaderDesktop.
+ */
 import styles from './styles.module.css'
-import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link, useRouteLoaderData } from 'react-router-dom'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { ENV } from '../../config'
+import { Link } from 'react-router-dom'
 import Icon from '../Icon/Icon'
 import ExplainModal from '../Modals/ExplainModal/ExplainModal'
-
-interface Action {
-    key: string
-    label: string
-    to?: string
-    external?: boolean
-    onClick?: () => void
-}
+import { useHeaderDesktop, type Action } from './useHeaderDesktop'
 
 const Header = () => {
-    const { t } = useTranslation()
-    const { platform, isHub } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
-    const [menuOpen, setMenuOpen] = useState(false)
-    const [explainOpen, setExplainOpen] = useState(false)
-    const [scrolled, setScrolled] = useState(false)
-    const helpRef = useRef<HTMLDivElement>(null)
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+    const {
+        isHub,
+        scrolled,
+        helpRef,
+        menuOpen,
+        toggleMenu,
+        closeMenu,
+        explainOpen,
+        closeExplain,
+        barActions,
+        menuActions,
+        labels,
+    } = useHeaderDesktop()
 
-    // The fade only belongs there once rows are actually passing underneath.
-    useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 0)
-        onScroll()
-        window.addEventListener('scroll', onScroll, { passive: true })
-        return () => window.removeEventListener('scroll', onScroll)
-    }, [])
-
-    useEffect(() => {
-        if (!menuOpen) return
-        const onPointerDown = (e: PointerEvent) => {
-            if (!helpRef.current?.contains(e.target as Node)) setMenuOpen(false)
-        }
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') setMenuOpen(false)
-        }
-        document.addEventListener('pointerdown', onPointerDown)
-        document.addEventListener('keydown', onKeyDown)
-        return () => {
-            document.removeEventListener('pointerdown', onPointerDown)
-            document.removeEventListener('keydown', onKeyDown)
-        }
-    }, [menuOpen])
-
-    const whatsThis: Action = { key: 'whats-this', label: t('whatsThis'), onClick: () => setExplainOpen(true) }
-    const needHelp: Action = { key: 'need-help', label: t('needHelp'), to: '/faq' }
-    const missingReward: Action = { key: 'missing-reward', label: t('frequentlyAskedQuestion'), to: supportUrl, external: true }
-
-    // The bar and the overflow menu carry the same actions in different orders.
-    const barActions = [needHelp, missingReward, whatsThis]
-    const menuActions = [whatsThis, needHelp, missingReward]
-
-    const renderAction = (action: Action, className: string, suffix: string) => {
-        const close = () => setMenuOpen(false)
-
-        return action.to ? (
+    const renderAction = (action: Action, className: string, suffix: string) => (
+        action.to ? (
             <Link
                 key={action.key}
                 id={`header-${action.key}-${suffix}`}
                 to={action.to}
                 className={className}
-                onClick={close}
+                onClick={closeMenu}
                 {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
                 {action.label}
@@ -76,14 +41,14 @@ const Header = () => {
                 key={action.key}
                 id={`header-${action.key}-${suffix}`}
                 className={className}
-                onClick={() => { action.onClick?.(); close() }}
+                onClick={() => { action.onClick?.(); closeMenu() }}
             >
                 {action.label}
             </button>
         )
-    }
+    )
 
-    const title = <h1 className={styles.title}>{t('title')}</h1>
+    const title = <h1 className={styles.title}>{labels.title}</h1>
 
     return (
         <header className={[
@@ -110,10 +75,10 @@ const Header = () => {
                 <button
                     id="header-more-btn"
                     className={styles.more}
-                    aria-label={t('moreActions')}
+                    aria-label={labels.moreActions}
                     aria-haspopup="menu"
                     aria-expanded={menuOpen}
-                    onClick={() => setMenuOpen(open => !open)}
+                    onClick={toggleMenu}
                 >
                     <span className={styles.dots} />
                 </button>
@@ -123,7 +88,7 @@ const Header = () => {
                     </div>
                 )}
             </div>
-            <ExplainModal open={explainOpen} closeFn={() => setExplainOpen(false)} />
+            <ExplainModal open={explainOpen} closeFn={closeExplain} />
         </header>
     )
 }
