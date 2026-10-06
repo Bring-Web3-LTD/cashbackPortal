@@ -1,0 +1,8 @@
+{
+    "claimStep1": "Set up the Solflare wallet",
+
+    "minimumOnWayTitle": "Not Enough to Claim",
+    "minimumOnWayMsg1": "Keep shopping until you exceed {{amount}} {{symbol}} in rewards",
+    "minimumOnWayMsg2": "",
+    "minimumKeepShopping": ""
+}

@@ -1,6 +1,8 @@
 export const API_KEY = import.meta.env.VITE_API_KEY || ''
 export const API_URL_PLATFORMS = `${import.meta.env.VITE_API_URL}platforms/`
 export const API_URL_PORTAL = `${import.meta.env.VITE_API_URL}portal/`
+// bringAuth lambda — /v1/auth/* (email OTP + wallet↔email pairing).
+export const API_URL_AUTH = `${import.meta.env.VITE_API_URL}auth/`
 export const DEV_MODE = import.meta.env.VITE_ENV === 'development'
 export const TEST_ID = import.meta.env.VITE_TEST_ID || ''
 export const ENV = import.meta.env.VITE_ENV || 'development'
@@ -22,3 +24,11 @@ export const MOBILE_PORTAL_PLATFORMS: string[] = import.meta.env.VITE_MOBILE_POR
 export const MOBILE_PORTAL_MAX_WIDTH: number = import.meta.env.VITE_MOBILE_PORTAL_MAX_WIDTH
     ? Number(import.meta.env.VITE_MOBILE_PORTAL_MAX_WIDTH)
     : 360
+
+// Per-platform overrides of the shared threshold — Solflare's mobile design is
+// drawn at 375. Platforms not listed use MOBILE_PORTAL_MAX_WIDTH.
+const MOBILE_PORTAL_MAX_WIDTHS: Record<string, number> = { SOLFLARE: 375 }
+
+/** Viewport cap (and layout width) of the mobile portal for `platform`. */
+export const mobilePortalMaxWidth = (platform: string | null | undefined): number =>
+    MOBILE_PORTAL_MAX_WIDTHS[(platform || '').toUpperCase()] ?? MOBILE_PORTAL_MAX_WIDTH

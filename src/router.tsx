@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from './layout/Layout';
-import { HomeDispatcher, HistoryDispatcher, FaqDispatcher } from './dispatchers';
+import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher, WhatsThisDispatcher } from './dispatchers';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV, MOBILE_PORTAL_MAX_WIDTH, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, setCurrencyFormat } from './config';
+import { DEV_MODE, ENV, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
@@ -32,7 +32,10 @@ const rootLoader = async () => {
         const extensionId = res.info.extensionId || urlExtensionId || null
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
-        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
+        const maxWidth = mobilePortalMaxWidth(platform)
+        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= maxWidth
+        // Same number drives the CSS width caps, including the body-portaled modals.
+        if (useMobilePortal) document.documentElement.style.setProperty('--mobile-portal-max-w', `${maxWidth}px`)
         // styleAs overrides CSS/icons only — data still comes from real platform.
         // Sanitize: it's interpolated into stylesheet + icon URLs, so restrict
         // to a safe charset (falls back to DEFAULT) to prevent path traversal.
@@ -89,6 +92,10 @@ const rootLoader = async () => {
             walletEmoji: params.get('walletEmoji') || undefined,
             bringTou: params.get('bringTou') || undefined,
             privacy: params.get('privacy') || undefined,
+            chromeStoreUrl: params.get('chromeStoreUrl') || undefined,
+            couponsEnabled: params.get('couponsEnabled') === 'true',
+            couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
+            isHub: params.get('isHub') === 'true',
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()
@@ -96,7 +103,9 @@ const rootLoader = async () => {
         // while still loading data via devPlatform (dev-only, never sent to API).
         // Sanitize before it's interpolated into stylesheet + icon URLs.
         const stylePlatform = normalizePlatform(params.get('styleAs') || devPlatform)
-        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= MOBILE_PORTAL_MAX_WIDTH
+        const maxWidth = mobilePortalMaxWidth(devPlatform)
+        const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(devPlatform) && window.innerWidth <= maxWidth
+        if (useMobilePortal) document.documentElement.style.setProperty('--mobile-portal-max-w', `${maxWidth}px`)
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         setCurrencyFormat(devPlatform)
         const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform
@@ -147,8 +156,16 @@ const router = createBrowserRouter([
                 element: <HistoryDispatcher />,
             },
             {
+                path: 'pending',
+                element: <PendingDispatcher />,
+            },
+            {
                 path: 'faq',
                 element: <FaqDispatcher />,
+            },
+            {
+                path: 'whats-this',
+                element: <WhatsThisDispatcher />,
             },
         ],
     },

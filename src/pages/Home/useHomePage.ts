@@ -7,6 +7,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { DashboardMode } from '../../components/Dashboard/useDashboard'
 import { CategoriesItem } from '../../components/Categories/useCategories'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
@@ -21,11 +23,25 @@ import { ClaimModalState } from '../../utils/claimFlow'
 // too much to be useful.
 const SEARCH_MIN_CHARS = 2
 
+// Only https may reach the coupons <iframe src> — an iframe src is an
+// injection sink (a javascript: URL would run in the portal's origin), so
+// allowlist the scheme even though the value arrives via the verified JWT.
+const safeIframeSrc = (src?: string): string | undefined => {
+    if (!src) return undefined
+    try {
+        return new URL(src).protocol === 'https:' ? src : undefined
+    } catch {
+        return undefined
+    }
+}
+
 export const useHomePage = () => {
-    const { platform, userId, flowId, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { t } = useTranslation()
+    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
+    const [mode, setMode] = useState<DashboardMode>('cashback')
     const [category, setCategory] = useState<CategoriesItem | null>(null)
     const [searchOpen, setSearchOpen] = useState(false)
     // Text currently typed in the input — drives the autocomplete dropdown only.
@@ -33,10 +49,14 @@ export const useHomePage = () => {
     // Committed search value — drives the API filter and the chip display.
     const [searchChip, setSearchChip] = useState<string | null>(null)
     const [claimState, setClaimState] = useState<ClaimModalState | null>(null)
+    const [pairOpen, setPairOpen] = useState(false)
     // Amount snapshotted when the claim goes in-flight so the success overlay
     // keeps showing it after the balance query refetches to 0.
     const [claimedDisplay, setClaimedDisplay] = useState('0.00')
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
+    // The pairing flow signs through the same SIGN_MESSAGE channel, so this
+    // listener must answer only the signatures it asked for.
+    const awaitingClaimSignatureRef = useRef(false)
     const claimExplorerLinkRef = useRef(claimExplorerLink)
     useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
 
@@ -105,6 +125,11 @@ export const useHomePage = () => {
     }
 
     const handleOpenClaim = () => {
+        // No wallet paired yet — show the pairing steps instead of the flow.
+        if (!walletAddress) {
+            setClaimState('instructions')
+            return
+        }
         if (!eligible || claimAmount <= 0) return
         if (claimAmount < minimumClaimThreshold) {
             setClaimState('minimum')
@@ -114,6 +139,7 @@ export const useHomePage = () => {
     }
 
     const handleCloseClaim = () => {
+        awaitingClaimSignatureRef.current = false
         setClaimState(null)
         setClaimExplorerLink(null)
     }
@@ -141,6 +167,7 @@ export const useHomePage = () => {
             return
         }
 
+        awaitingClaimSignatureRef.current = true
         message({
             messageToSign: initiated.messageToSign,
             amount: claimAmount,
@@ -152,13 +179,17 @@ export const useHomePage = () => {
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) return
+            // Ignore the pairing flow's signature round-trip.
+            if (!awaitingClaimSignatureRef.current) return
 
             if (event.data.action === 'ABORT_SIGN_MESSAGE') {
+                awaitingClaimSignatureRef.current = false
                 setClaimState('confirm')
                 return
             }
 
             if (event.data.action !== 'SIGNATURE') return
+            awaitingClaimSignatureRef.current = false
             if (!walletAddress || !eligible) {
                 setClaimState('failure')
                 return
@@ -204,6 +235,12 @@ export const useHomePage = () => {
     ])
 
     return {
+        // dashboard
+        labels: { title: t('rewardsHub'), coupons: t('coupons') },
+        mode,
+        setMode,
+        // coupons — the partner iframe replaces the offers list in this mode
+        couponsIframeSrc: safeIframeSrc(couponsIframeSrc),
         // filter row
         category,
         setCategory,
@@ -234,6 +271,7 @@ export const useHomePage = () => {
         claimDisplay,
         claimAmount,
         minimumClaimThreshold,
+        totalEstimatedUsd: eligible?.totalEstimatedUsd ?? 0,
         walletAddress,
         walletName,
         walletEmoji,
@@ -241,5 +279,9 @@ export const useHomePage = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
+        // pair wallet
+        pairOpen,
+        handleOpenPair: () => setPairOpen(true),
+        handleClosePair: () => setPairOpen(false),
     }
 }
