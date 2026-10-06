@@ -56,10 +56,12 @@ export const selectTotalEarned = (data: BalanceResponse | undefined) =>
  * that already carries a reward, which would strand the dashboard in the
  * first-time state. So the flag only holds while the rest of the response
  * agrees — the first reward drops it without waiting for the flag to catch up.
+ *
+ * No data (no wallet paired yet, or still loading) defaults to first-time.
  */
 export const selectFirstTimeUser = (data: BalanceResponse | undefined) => {
     const d = data?.data
-    if (!d) return false
+    if (!d) return true
     const earned = (tokens: Token[] | undefined) => (tokens?.[0]?.tokenAmount ?? 0) > 0
 
     return d.firstTimeUser === true
