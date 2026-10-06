@@ -52,6 +52,8 @@ interface LoaderData {
     useMobilePortal?: boolean
     // Resolved server-side from the /check/portal API key, returned by /verify.
     couponsEnabled?: boolean
+    // Partner coupon storefront shown in the Coupons tab, returned by /verify.
+    couponsIframeSrc?: string
     isHub?: boolean
     variant: string
     bringTou?: string

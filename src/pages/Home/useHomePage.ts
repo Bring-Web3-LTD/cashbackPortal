@@ -23,9 +23,21 @@ import { ClaimModalState } from '../../utils/claimFlow'
 // too much to be useful.
 const SEARCH_MIN_CHARS = 2
 
+// Only https may reach the coupons <iframe src> — an iframe src is an
+// injection sink (a javascript: URL would run in the portal's origin), so
+// allowlist the scheme even though the value arrives via the verified JWT.
+const safeIframeSrc = (src?: string): string | undefined => {
+    if (!src) return undefined
+    try {
+        return new URL(src).protocol === 'https:' ? src : undefined
+    } catch {
+        return undefined
+    }
+}
+
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
@@ -224,9 +236,11 @@ export const useHomePage = () => {
 
     return {
         // dashboard
-        labels: { title: t('rewardsHub') },
+        labels: { title: t('rewardsHub'), coupons: t('coupons') },
         mode,
         setMode,
+        // coupons — the partner iframe replaces the offers list in this mode
+        couponsIframeSrc: safeIframeSrc(couponsIframeSrc),
         // filter row
         category,
         setCategory,

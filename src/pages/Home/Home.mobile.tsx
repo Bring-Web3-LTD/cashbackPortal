@@ -15,6 +15,7 @@ const MobileHome = () => {
         labels,
         mode,
         setMode,
+        couponsIframeSrc,
         category,
         setCategory,
         searchOpen,
@@ -100,16 +101,26 @@ const MobileHome = () => {
                     onClaim={handleOpenClaim}
                     onPairWallet={handleOpenPair}
                 />
-                {renderFilterRow()}
-                <MobileCardsList
-                    retailers={retailers}
-                    metadata={metadata}
-                    isLoading={isLoadingRetailers}
-                    isFetchingNextPage={isFetchingNextPage}
-                    hasNextPage={Boolean(hasNextPage)}
-                    onFetchNextPage={fetchNextPage}
-                    isSearching={isSearching}
-                />
+                {mode === 'coupons' ? (
+                    <iframe
+                        className={styles.couponsFrame}
+                        src={couponsIframeSrc}
+                        title={labels.coupons}
+                    />
+                ) : (
+                    <>
+                        {renderFilterRow()}
+                        <MobileCardsList
+                            retailers={retailers}
+                            metadata={metadata}
+                            isLoading={isLoadingRetailers}
+                            isFetchingNextPage={isFetchingNextPage}
+                            hasNextPage={Boolean(hasNextPage)}
+                            onFetchNextPage={fetchNextPage}
+                            isSearching={isSearching}
+                        />
+                    </>
+                )}
             </main>
             <MobileClaimModal
                 state={claimState}

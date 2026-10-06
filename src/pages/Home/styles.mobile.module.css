@@ -58,3 +58,11 @@
 .content > *:nth-child(2) {
     margin-top: 8px;
 }
+
+/* Coupons mode — the partner iframe fills the space below the dashboard. */
+.couponsFrame {
+    flex: 1 1 auto;
+    min-height: 0;
+    border: 0;
+    display: block;
+}
