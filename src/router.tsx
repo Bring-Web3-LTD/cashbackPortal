@@ -35,7 +35,7 @@ const rootLoader = async () => {
         // Dev-only: let the URL force the Mobile Portal layout flags that
         // /check/portal normally resolves server-side, so a design can be
         // reviewed through the dev-wrapper (which issues a real token, and so
-        // never reaches the DEV_MODE branch below). Same gate as api/mockCache.
+        // never reaches the DEV_MODE branch below).
         const devFlags = ENV === 'prod' ? {} : {
             couponsEnabled: params.get('couponsEnabled') === 'true' || res.info.couponsEnabled,
             couponsIframeSrc: params.get('couponsIframeSrc') || res.info.couponsIframeSrc,
