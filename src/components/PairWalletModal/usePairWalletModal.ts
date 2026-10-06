@@ -66,7 +66,5 @@ export const usePairWalletModal = ({ open }: PairWalletModalProps) => {
         },
         fatalError: t(pair.fatalErrorKey),
         goToEmail: pair.goToEmail,
-        // TEMP QA nav — remove before merge.
-        debugSetStep: pair.debugSetStep,
     }
 }
