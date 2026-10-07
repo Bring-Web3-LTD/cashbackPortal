@@ -93,7 +93,11 @@ const RetailerCardModal = ({
                 )}
                 {!showingTerms && <div className={styles.header} />}
                 <div className={styles.modal_container}>
-                    <AnimatePresence mode="wait">
+                    {/* initial={false} so the panel is painted outright when the
+                        modal opens. Its variants start at opacity 0 for the
+                        terms slide; without this they also run on first mount
+                        and the whole panel, logo included, fades up at it. */}
+                    <AnimatePresence mode="wait" initial={false}>
                         {showingTerms ? (
                             <motion.div
                                 key="terms"
