@@ -5,14 +5,78 @@
     --bg: #171717;
     --header-bg: #171717;
 
-    --header-btn-bg: #242424;
-    --header-btn-bg-hover: #505050;
-    --header-btn-f-s: 18px;
-    --header-btn-f-w: 600;
-    --header-btn-f-c: #FFFFFF;
-    --header-btn-border-w: 0;
-    --header-btn-border-c: transparent;
-    --header-btn-radius: 32px;
+    --header-border-w: 0;
+    --header-border-c: transparent;
+    --header-scroll-fade: linear-gradient(180deg, #171717 30.9%, rgba(23, 23, 23, 0) 68.75%);
+    --header-logo-radius: 12px;
+
+    /* Portal title. The desktop header reads --title-*, the mobile one
+       --header-title-*, so both carry READY/Heading/20. */
+    --title-f-s: 20px;
+    --title-f-w: 700;
+    --title-l-h: 24px;
+    --title-f-c: #FBFBFB;
+    --header-title-f-s: 20px;
+    --header-title-f-w: 700;
+    --header-title-l-h: 24px;
+    --header-title-f-c: #FBFBFB;
+
+    /* The three help actions. Secondary Button as the header draws it: the page
+       colour inside a Border/Default hairline, pill radius, muted label. */
+    --header-btn-bg: #171717;
+    --header-btn-f-s: 14px;
+    --header-btn-f-w: 500;
+    --header-btn-l-h: 22px;
+    --header-btn-f-c: #8C8C8C;
+    --header-btn-border-w: 1px;
+    --header-btn-border-c: #3F3F3F;
+    --header-btn-radius: 100px;
+    /* Figma ships no state for these, so they follow the dots button, which is
+       the same surface one size up. */
+    --header-btn-hover-bg: #242424;
+    --header-btn-hover-border-w: 1px;
+    --header-btn-hover-border-c: #3F3F3F;
+    --header-btn-hover-f-c: #FBFBFB;
+    --header-btn-pressed-bg: #8C8C8C;
+    --header-btn-pressed-border-w: 0;
+    --header-btn-pressed-border-c: transparent;
+    --header-btn-pressed-f-c: #FBFBFB;
+
+    /* Overflow dots, 46x38. Hover lifts to Surface/Raised; pressed drops the
+       hairline for a flat Surface/Tertiary fill. */
+    --header-more-bg: #171717;
+    --header-more-border-w: 1px;
+    --header-more-border-c: #3F3F3F;
+    --header-more-dot-c: #FBFBFB;
+    --header-more-radius: 100px;
+    --header-more-hover-bg: #242424;
+    --header-more-pressed-bg: #8C8C8C;
+    --header-more-pressed-border-w: 0;
+    --header-more-pressed-border-c: transparent;
+
+    /* Overflow menu the dots open: 240 wide, plain text rows 44 tall, the
+       hovered row tinted rather than filled. */
+    --header-menu-bg: #242424;
+    --header-menu-border-w: 1px;
+    --header-menu-border-c: #3F3F3F;
+    --header-menu-radius: 12px;
+    --header-menu-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+    --header-menu-item-f-s: 15px;
+    --header-menu-item-f-w: 500;
+    --header-menu-item-l-h: 22px;
+    --header-menu-item-f-c: #FBFBFB;
+    --header-menu-item-hover-bg: rgba(255, 255, 255, 0.08);
+    --header-menu-item-pressed-bg: rgba(255, 255, 255, 0.14);
+    --header-menu-item-radius: 8px;
+
+    /* Legal bar: the gradient is what separates it from the rows scrolling
+       underneath, so it fades from a transparent --bg to a solid one. */
+    --legal-bar-bg: linear-gradient(180deg, rgba(23, 23, 23, 0) 0%, #171717 69.7%);
+    --legal-link-f-s: 13px;
+    --legal-link-f-w: 500;
+    --legal-link-l-h: 16px;
+    --legal-link-f-c: #8C8C8C;
+    --legal-link-decoration: underline;
 
     --rewards-bg: #242424;
 
@@ -50,17 +114,19 @@
     --rewards-btn-f-w: 600;
     --rewards-btn-radius: 32px;
 
+    /* READY Button_d: height 46, radius 80, min-width 120, max-width 464. */
     --primary-btn-f-s: 18px;
     --primary-btn-f-w: 600;
     --primary-btn-f-c: #FFFFFF;
-    --primary-btn-radius: 32px;
+    --primary-btn-radius: 80px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
     --primary-btn-bg: #F36A3D;
-    --primary-btn-hover-bg: #FF875B;
-    --primary-btn-pressed-bg: #F36A3D;
-    --primary-btn-disabled-bg: #F36B3D80;
-    --primary-btn-disabled-f-c: #FFFFFF80;
+    --primary-btn-hover-bg: #D95A30;
+    --primary-btn-pressed-bg: #BF4D28;
+    /* Disabled drops the accent entirely rather than fading it. */
+    --primary-btn-disabled-bg: #3F3F3F;
+    --primary-btn-disabled-f-c: #8C8C8C;
 
     --pending-btn-f-c: #FFFFFF;
     --pending-btn-border-c: transparent;
@@ -77,73 +143,208 @@
     --pending-btn-pressed-border-w: 0;
     --pending-btn-pressed-bg: #FFFFFF1F;
 
+    /* Hover hint above a disabled Claim, explaining the minimum balance. */
+    --tooltip-bg: #3F3F3F;
+    --tooltip-border-w: 1px;
+    --tooltip-border-c: #3F3F3F;
+    --tooltip-radius: 8px;
+    --tooltip-f-s: 14px;
+    --tooltip-f-w: 500;
+    --tooltip-l-h: 22px;
+    --tooltip-f-c: #FBFBFB;
+
+    /* Dashboard bar: tab switcher, the two summary cards, History, and the
+       onboarding banner that replaces the cards before there's any reward. */
+    --dashboard-card-bg: #242424;
+    --dashboard-card-border-w: 1px;
+    --dashboard-card-border-c: #3F3F3F;
+    --dashboard-card-radius: 12px;
+    --dashboard-card-hover-bg: #3F3F3F;
+    --dashboard-card-label-f-s: 15px;
+    --dashboard-card-label-f-w: 400;
+    --dashboard-card-label-l-h: 22px;
+    --dashboard-card-label-f-c: #8C8C8C;
+    --dashboard-card-amount-f-s: 20px;
+    --dashboard-card-amount-f-w: 700;
+    --dashboard-card-amount-l-h: 24px;
+    --dashboard-card-amount-f-c: #FBFBFB;
+    --dashboard-card-label-disabled-f-w: 400;
+    --dashboard-card-label-disabled-l-h: 22px;
+    --dashboard-card-label-disabled-f-c: #3F3F3F;
+
+    /* The $ conversion badge sits on the card without a lift of its own. */
+    --dashboard-badge-bg: #242424;
+    --dashboard-badge-radius: 20px;
+    --dashboard-badge-f-s: 15px;
+    --dashboard-badge-f-w: 500;
+    --dashboard-badge-l-h: 22px;
+    --dashboard-badge-f-c: #8C8C8C;
+
+    --rewards-card-btn-radius: 80px;
+    --dashboard-card-btn-bg: #3F3F3F;
+    --dashboard-card-btn-border-w: 0;
+    --dashboard-card-btn-border-c: transparent;
+    --dashboard-card-btn-f-s: 16px;
+    --dashboard-card-btn-f-w: 500;
+    --dashboard-card-btn-l-h: 22px;
+    --dashboard-card-btn-f-c: #FBFBFB;
+    --dashboard-card-btn-hover-bg: #505050;
+    --dashboard-card-btn-disabled-bg: #3F3F3F;
+    --dashboard-card-btn-disabled-f-c: #8C8C8C;
+    --dashboard-card-btn-disabled-l-h: 22px;
+
+    --dashboard-history-radius: 12px;
+    --dashboard-history-f-s: 16px;
+    --dashboard-history-f-w: 700;
+    --dashboard-history-l-h: 22px;
+    --dashboard-history-f-c: #8C8C8C;
+    --dashboard-history-disabled-f-c: #3F3F3F;
+
+    --dashboard-switcher-bg: #1B1E24;
+    --dashboard-switcher-radius: 12px;
+    --dashboard-tab-f-s: 13px;
+    --dashboard-tab-f-w: 500;
+    --dashboard-tab-l-h: 16px;
+    --dashboard-tab-active-bg: #F36A3D;
+    --dashboard-tab-active-f-c: #FFFFFF;
+    --dashboard-tab-active-radius: 8px;
+    --dashboard-tab-idle-f-c: #3F3F3F;
+    --dashboard-tab-idle-radius: 10px;
+
+    --dashboard-banner-bg: #242424;
+    --dashboard-banner-border-w: 1px;
+    --dashboard-banner-border-c: #3F3F3F;
+    --dashboard-banner-radius: 8px;
+    --dashboard-banner-title-f-s: 20px;
+    --dashboard-banner-title-f-w: 700;
+    --dashboard-banner-title-l-h: 24px;
+    --dashboard-banner-title-f-c: #FBFBFB;
+    --dashboard-banner-text-f-s: 15px;
+    --dashboard-banner-text-f-w: 500;
+    --dashboard-banner-text-l-h: 22px;
+    --dashboard-banner-text-f-c: #8C8C8C;
+
+    --dashboard-action-f-s: 18px;
+    --dashboard-action-f-w: 600;
+    --dashboard-action-l-h: 18px;
+    --dashboard-action-radius: 80px;
+    --dashboard-action-secondary-bg: #3F3F3F;
+    --dashboard-action-secondary-hover-bg: #505050;
+    --dashboard-action-secondary-border-w: 1px;
+    --dashboard-action-secondary-border-c: #3F3F3F;
+    --dashboard-action-secondary-f-s: 16px;
+    --dashboard-action-secondary-f-w: 700;
+    --dashboard-action-secondary-l-h: 22px;
+    --dashboard-action-secondary-f-c: #FBFBFB;
+
+    --dashboard-skeleton-card-bg: #242424;
+    --dashboard-skeleton-border-c: #3F3F3F;
+    --dashboard-skeleton-bar-bg: #3F3F3F;
+    --dashboard-skeleton-radius: 12px;
+    --dashboard-skeleton-bar-radius: 4px;
+
+    /* Retailer card. Hover swaps the whole card to Surface/Hover, which is the
+       same colour as its resting stroke, so the outline disappears into it. */
     --retailer-card-bg: #242424;
+    --retailer-card-hover-bg: #3F3F3F;
+    --retailer-card-radius: 12px;
     --retailer-card-border-w: 1px;
     --retailer-card-border-color: #3F3F3F;
     --retailer-card--hover-border-color: #3F3F3F;
+    --retailer-card-focus-ring: #FBFBFB;
 
-    --retailer-card-img-border-c: #DCE0E980;
+    /* Logos sit on white whatever the theme, so partner marks stay legible. */
+    --retailer-card-img-bg: #FFFFFF;
+    --retailer-card-logo-radius: 100px;
+    --retailer-card-img-border-c: #DCE0E9;
     --retailer-card-img-border-w: 1px;
     --retailer-card-img-border-campaign-c: #F36A3D;
 
-    --retailer-logo-fallback-bg: #FFF;
+    --retailer-logo-fallback-bg: #FFFFFF;
     --retailer-logo-fallback-f-c: #242424;
     --retailer-logo-fallback-f-s: 37px;
     --retailer-logo-fallback-f-s-two-letters: 28px;
+    --retailer-logo-fallback-l-h: 37px;
     --retailer-logo-fallback-f-w: 700;
     --retailer-logo-fallback-border-w: 1px;
-    --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
+    --retailer-logo-fallback-border-c: #DCE0E9;
 
+    /* Flag is pinned flush right, so only its left corners are rounded. */
     --retailer-card-flag-f-s: 13px;
     --retailer-card-flag-f-w: 700;
-    --retailer-card-flag-f-c: #171717;
+    --retailer-card-flag-l-h: 16px;
+    --retailer-card-flag-f-c: #242424;
     --retailer-card-flag-bg: #F36A3D;
     --retailer-card-flag-campaign-f-c: #F36A3D;
     --retailer-card-flag-campaign-bg: #3F3F3F;
-    --retailer-card-flag-radius: 4px;
+    --retailer-card-flag-radius: 5px;
 
     --retailer-card-name-f-s: 17px;
-    --retailer-card-name-f-w: 600;
-    --retailer-card-name-f-c: #FFFFFF;
+    --retailer-card-name-f-w: 700;
+    --retailer-card-name-l-h: 24px;
+    --retailer-card-name-f-c: #FBFBFB;
 
     --retailer-card-amount-f-s: 13px;
-    --retailer-card-amount-f-c: #FFFFFF;
+    --retailer-card-amount-f-c: #FBFBFB;
     --retailer-card-amount-f-w: 500;
-    --retailer-card-amount-bg: #FFFFFF1F;
-    --retailer-card-amount-campaign-f-w: 600;
+    --retailer-card-amount-l-h: 16px;
+    --retailer-card-amount-bg: #3F3F3F;
+    --retailer-card-amount-radius: 80px;
+    --retailer-card-amount-campaign-f-w: 700;
     --retailer-card-amount-campaign-bg: #F36A3D;
+
+    --retailer-card-skeleton-card-bg: #242424;
+    --retailer-card-skeleton-bg: #3F3F3F;
+    --retailer-card-skeleton-border-w: 1px;
+    --retailer-card-skeleton-border-c: #3F3F3F;
+    --retailer-card-skeleton-radius: 12px;
+    --retailer-card-skeleton-name-radius: 5px;
+    --retailer-card-skeleton-badge-radius: 80px;
 
     --deals-amount-f-s: 17px;
     --deals-amount-f-w: 600;
     --deals-amount-f-c: #FBFBFB;
 
-    --loading-msg-f-s: 13px;
+    --loading-msg-f-s: 15px;
     --loading-msg-f-w: 500;
     --loading-msg-f-c: #FBFBFB;
-    /* need to configure */
-    --filter-btn-f-s: 15px;
-    --filter-btn-f-w: 500;
+    /* The chip that sits beside the field once a brand or category is picked. */
+    --filter-btn-f-s: 14px;
+    --filter-btn-f-w: 700;
     --filter-btn-f-c: #FBFBFB;
-    --filter-btn-bg: transparent;
-    --filter-btn-hover-bg: #242424;
+    --filter-btn-bg: #3F3F3F;
+    --filter-btn-hover-bg: #505050;
     --filter-btn-hover-f-c: #FBFBFB;
-    --filter-btn-border-w: 1px;
-    --filter-btn-border-c: #FFFFFF1F;
-    --filter-btn-radius: 8px;
-    /* until here */
-    --category-btn-bg: transparent;
+    --filter-btn-border-w: 0;
+    --filter-btn-border-c: transparent;
+    --filter-btn-radius: 10px;
+    /* Category chips: page colour inside a Border/Chip hairline. The row
+       dissolves behind a veil at the right edge, with the chevron on top. */
+    --category-btn-bg: #171717;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 500;
+    --category-btn-l-h: 22px;
     --category-btn-f-c: #FBFBFB;
     --category-btn-border-w: 1px;
-    --category-btn-border-c: #FFFFFF1F;
+    --category-btn-border-c: #3F3F3F;
     --category-btn-radius: 20px;
-    --category-btn-hover-bg: #242424;
+    --category-btn-hover-bg: #3F3F3F;
     --category-btn-hover-f-c: #FBFBFB;
     --category-btn-hover-f-w: 500;
     --category-btn-hover-border-w: 1px;
-    --category-btn-hover-border-c: #FFFFFF4D;
+    --category-btn-hover-border-c: #3F3F3F;
     --category-btn-hover-radius: 20px;
+    --category-btn-selected-bg: #171717;
+    --category-btn-selected-border-w: 1px;
+    --category-btn-selected-border-c: #F36A3D;
+    /* Selected keeps the page fill and takes an accent outline, so the label
+       goes to the on-accent colour rather than Text/Primary. */
+    --category-btn-selected-f-c: #FFFFFF;
+    --category-veil: linear-gradient(90deg, rgba(23, 23, 23, 0) 0%, #171717 100%);
+    --category-arrow-bg: transparent;
+    --category-arrow-radius: 100px;
+    --category-skeleton-bg: #3F3F3F;
+    --category-skeleton-radius: 20px;
 
     --modal-bg: #242424;
     --modal-overlay-bg: #000000A6;
@@ -152,7 +353,7 @@
     --modal-radius: 16px;
     --modal-title-f-s: 22px;
     --modal-title-f-w: 700;
-    --modal-title-f-c: #FFF;
+    --modal-title-f-c: #FBFBFB;
     --modal-paragraph-f-s: 17px;
     --modal-paragraph-f-w: 500;
     --modal-paragraph-f-c: #8C8C8C;
@@ -189,9 +390,234 @@
     --modal-claim-countdown-f-w: 500;
     --modal-claim-countdown-f-c: #7892E8;
 
-    --modal-deal-name-f-s: 19px;
-    --modal-deal-name-f-w: 700;
-    --modal-deal-name-f-c: #FFF;
+    /* Explain popup: three feature cards on the modal surface itself, so only
+       their stroke separates them from it. */
+    --modal-explain-bg: #15171F;
+    --modal-explain-radius: 8px;
+    --modal-explain-title-f-s: 18px;
+    --modal-explain-title-f-w: 600;
+    --modal-explain-title-l-h: 18px;
+    --modal-explain-title-f-c: #FBFBFB;
+    --modal-explain-text-f-s: 15px;
+    --modal-explain-text-f-w: 500;
+    --modal-explain-text-l-h: 22px;
+    --modal-explain-text-f-c: #8C8C8C;
+    --modal-explain-card-bg: #15171F;
+    --modal-explain-card-border-w: 1px;
+    --modal-explain-card-border-c: #3F3F3F;
+    --modal-explain-card-radius: 16px;
+    --modal-explain-card-title-f-s: 14px;
+    --modal-explain-card-title-f-w: 700;
+    --modal-explain-card-title-l-h: 20px;
+    --modal-explain-card-title-f-c: #FBFBFB;
+    --modal-explain-card-text-f-s: 13px;
+    --modal-explain-card-text-f-w: 500;
+    --modal-explain-card-text-l-h: 16px;
+    --modal-explain-card-text-f-c: #8C8C8C;
+    --modal-explain-icon-bg: #3F3F3F;
+    --modal-explain-icon-border-w: 1px;
+    --modal-explain-icon-border-c: #3F3F3F;
+    --modal-explain-icon-radius: 10px;
+
+    /* Popup type A — Connect, Install, Go Shopping, Verify, Pair and Terms
+       share one 512px shell with a header, a body and a footer button. */
+    --modal-popup-frame-bg: #242424;
+    --modal-popup-radius: 8px;
+    --modal-popup-avatar-border-w: 1px;
+    --modal-popup-avatar-border-c: #3F3F3F;
+    --modal-popup-avatar-radius: 80px;
+    --modal-popup-avatar-inner-radius: 100px;
+    --modal-popup-loader-track-c: rgba(251, 251, 251, 0.12);
+    --modal-popup-title-f-s: 18px;
+    --modal-popup-title-f-w: 600;
+    --modal-popup-title-l-h: 18px;
+    --modal-popup-title-f-c: #FBFBFB;
+    --modal-popup-text-f-s: 16px;
+    --modal-popup-text-f-w: 500;
+    --modal-popup-text-l-h: 22px;
+    --modal-popup-text-f-c: #FBFBFB;
+    --modal-popup-terms-f-s: 13px;
+    --modal-popup-terms-f-w: 500;
+    --modal-popup-terms-l-h: 16px;
+    --modal-popup-terms-f-c: #66686E;
+    --modal-popup-terms-link-f-c: #FFFFFF;
+
+    /* Pairing: email field, then the 8-box code. Both sit on Surface/Card and
+       take Border/Focus while they hold focus. */
+    --modal-pair-title-f-s: 20px;
+    --modal-pair-title-f-w: 700;
+    --modal-pair-title-l-h: 24px;
+    --modal-pair-title-f-c: #FBFBFB;
+    --modal-pair-divider-c: #8C8C8C;
+    --modal-pair-divider-f-s: 13px;
+    --modal-pair-divider-f-w: 500;
+    --modal-pair-divider-l-h: 16px;
+    --modal-pair-divider-f-c: #8C8C8C;
+    --modal-pair-input-bg: #242424;
+    --modal-pair-input-border-w: 1px;
+    --modal-pair-input-border-c: #3F3F3F;
+    --modal-pair-input-empty-border-c: #FBFBFB;
+    --modal-pair-input-error-border-c: #FF5C71;
+    --modal-pair-input-radius: 8px;
+    --modal-pair-input-f-s: 15px;
+    --modal-pair-input-f-w: 500;
+    --modal-pair-input-l-h: 22px;
+    --modal-pair-input-f-c: #FBFBFB;
+    --modal-pair-input-placeholder-f-c: #8C8C8C;
+    --modal-pair-otp-bg: #242424;
+    --modal-pair-otp-border-w: 1px;
+    --modal-pair-otp-border-c: #3F3F3F;
+    --modal-pair-otp-filled-border-c: #FBFBFB;
+    --modal-pair-otp-error-border-c: #FF5C71;
+    --modal-pair-otp-error-border-w: 1.5px;
+    /* An empty box is a 5px slot; once it holds a digit it takes the focus
+       stroke and squares up to 8. */
+    --modal-pair-otp-radius: 5px;
+    --modal-pair-otp-filled-radius: 8px;
+    --modal-pair-otp-f-s: 20px;
+    --modal-pair-otp-f-w: 700;
+    --modal-pair-otp-l-h: 24px;
+    --modal-pair-otp-f-c: #FBFBFB;
+    --modal-pair-error-f-s: 13px;
+    --modal-pair-error-f-w: 500;
+    --modal-pair-error-l-h: 16px;
+    --modal-pair-error-f-c: #FF5C71;
+    --modal-pair-resend-f-s: 13px;
+    --modal-pair-resend-f-w: 700;
+    --modal-pair-resend-l-h: 16px;
+    --modal-pair-resend-f-c: #8C8C8C;
+    --modal-pair-resend-hover-f-c: #FBFBFB;
+    --modal-pair-resend-disabled-f-c: #3F3F3F;
+    --modal-pair-resend-radius: 6px;
+
+    /* Status modal — "Modal/popup type B READY". Six states share one 512px
+       shell: Error, Processing, Claim, Success, Email Not Found, Wallet Paired. */
+    --modal-status-bg: #15171F;
+    --modal-status-radius: 8px;
+    /* READY close button: 40 target, transparent idle with an #8C8C8C glyph;
+       hover fills Surface/Elevated and repaints the glyph Text/Primary. */
+    --modal-close-radius: 8px;
+    --modal-close-hover-bg: #3F3F3F;
+    --modal-close-hover-f-c: #FBFBFB;
+    --modal-close-icon-src: url('/ARGENT/icons/dark/x-mark.svg');
+
+    /* READY/Display */
+    --modal-status-title-f-s: 28px;
+    --modal-status-title-f-w: 700;
+    --modal-status-title-l-h: 28px;
+    --modal-status-title-loading-f-c: #FBFBFB;
+    --modal-status-title-success-f-c: #FBFBFB;
+    --modal-status-title-failure-f-c: #FF5C71;
+
+    /* READY/Heading/20 — the Success and Wallet Paired headings. */
+    --modal-status-success-title-f-s: 20px;
+    --modal-status-success-title-f-w: 700;
+    --modal-status-success-title-l-h: 24px;
+    --modal-status-pair-title-f-s: 20px;
+    --modal-status-pair-title-f-w: 700;
+    --modal-status-pair-title-l-h: 24px;
+    --modal-status-pair-title-f-c: #FBFBFB;
+
+    /* READY/Body/16-M */
+    --modal-status-msg-f-s: 16px;
+    --modal-status-msg-f-w: 500;
+    --modal-status-msg-l-h: 22px;
+    --modal-status-msg-f-c: #FBFBFB;
+
+    --modal-status-amount-f-s: 38px;
+    --modal-status-amount-f-w: 700;
+    --modal-status-amount-l-h: 48px;
+    --modal-status-amount-f-c: #FBFBFB;
+
+    /* Claim guide. Balance card is a 111.3deg ramp from Surface/Elevated to
+       Surface/Card; the step cards sit on the shell colour with the same border. */
+    --modal-status-claim-balance-bg: linear-gradient(111.3deg, #2C2F36 9.09%, #12151A 90.91%);
+    --modal-status-claim-balance-radius: 20px;
+    --modal-status-claim-border-c: #3F3F3F;
+    --modal-status-claim-border-w: 1px;
+    --modal-status-claim-badge-bg: #3F3F3F;
+    --modal-status-claim-badge-radius: 12px;
+    --modal-status-claim-label-f-s: 14px;
+    --modal-status-claim-label-f-w: 500;
+    --modal-status-claim-label-l-h: 22px;
+    --modal-status-claim-label-f-c: #8C8C8C;
+    --modal-status-claim-badge-chip-bg: rgba(8, 194, 157, 0.25);
+    --modal-status-claim-badge-chip-radius: 999px;
+    --modal-status-claim-badge-chip-border-w: 1px;
+    --modal-status-claim-badge-chip-border-c: #08C29D;
+    --modal-status-claim-badge-chip-f-s: 13px;
+    --modal-status-claim-badge-chip-f-w: 700;
+    --modal-status-claim-badge-chip-f-c: #00BBAA;
+    --modal-status-claim-amount-f-s: 20px;
+    --modal-status-claim-amount-f-w: 700;
+    --modal-status-claim-amount-l-h: 24px;
+    --modal-status-claim-amount-f-c: #FBFBFB;
+    --modal-status-claim-usd-f-s: 13px;
+    --modal-status-claim-usd-f-w: 500;
+    --modal-status-claim-usd-l-h: 16px;
+    --modal-status-claim-usd-f-c: #8C8C8C;
+    --modal-status-claim-guide-f-s: 14px;
+    --modal-status-claim-guide-f-w: 500;
+    --modal-status-claim-guide-l-h: 22px;
+    --modal-status-claim-guide-f-c: #FBFBFB;
+    --modal-status-claim-step-bg: #15171F;
+    --modal-status-claim-step-radius: 8px;
+    --modal-status-claim-step-number-bg: #3F3F3F;
+    --modal-status-claim-step-number-radius: 12px;
+    --modal-status-claim-step-number-f-s: 13px;
+    --modal-status-claim-step-number-f-w: 700;
+    --modal-status-claim-step-f-s: 13px;
+    --modal-status-claim-step-f-w: 500;
+    --modal-status-claim-step-l-h: 16px;
+    --modal-status-claim-step-f-c: #FBFBFB;
+
+    /* Secondary "Close" button: Button/Header-bg on the shell, no border. */
+    --modal-status-btn-bg: #3F3F3F;
+    --modal-status-btn-f-s: 16px;
+    --modal-status-btn-f-w: 500;
+    --modal-status-btn-l-h: 22px;
+    --modal-status-btn-f-c: #FBFBFB;
+    --modal-status-btn-border-w: 0;
+    --modal-status-btn-border-c: transparent;
+    --modal-status-btn-radius: 80px;
+    --modal-status-btn-strong-f-w: 700;
+
+    --modal-status-btn-hover-bg: #505050;
+    --modal-status-btn-hover-f-s: 16px;
+    --modal-status-btn-hover-f-w: 500;
+    --modal-status-btn-hover-f-c: #FBFBFB;
+    --modal-status-btn-hover-border-w: 0;
+    --modal-status-btn-hover-border-c: transparent;
+    --modal-status-btn-hover-radius: 80px;
+
+    /* Disabled keeps the resting surface and mutes the label, as the button
+       component does. */
+    --modal-status-btn-disabled-bg: #3F3F3F;
+    --modal-status-btn-disabled-f-s: 16px;
+    --modal-status-btn-disabled-f-w: 500;
+    --modal-status-btn-disabled-f-c: #8C8C8C;
+    --modal-status-btn-disabled-border-w: 0;
+    --modal-status-btn-disabled-border-c: transparent;
+    --modal-status-btn-disabled-radius: 80px;
+
+    --modal-status-loader-c: #F36A3D;
+    --modal-status-loader-radius: 50%;
+    --modal-status-loader-track-c: rgba(251, 251, 251, 0.12);
+
+    /* Claim CTA reuses READY Button_d in its accent variant. */
+    --modal-popup-btn-f-s: 18px;
+    --modal-popup-btn-f-w: 600;
+    --modal-popup-btn-l-h: 18px;
+    --modal-primary-btn-bg: #F36A3D;
+    --modal-primary-btn-hover-bg: #D95A30;
+
+    --modal-deal-name-f-s: 18px;
+    --modal-deal-name-f-w: 600;
+    --modal-deal-name-f-c: #FBFBFB;
+    --modal-deal-btn-f-s: 18px;
+    --modal-deal-back-f-s: 13px;
+    --modal-deal-back-l-h: 16px;
+    --modal-deal-back-f-c: #8C8C8C;
     --modal-deal-markdown-bg: #171717;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: rgba(140, 140, 140, 0.30);
@@ -208,94 +634,225 @@
     --modal-deal-consent-f-c: #8C8C8C;
     --modal-deal-terms-btn-hover-f-c: #F36A3D;
 
-    --scrollbar-bg: #BFBFBF66;
+    /* 8px bar, fully rounded: Surface/Elevated thumb in a Surface/Card track. */
+    --scrollbar-bg: #3F3F3F;
 
-    --search-bg: #000000;
-    --search-menu-bg: #000000;
-    --search-f-s: 17px;
-    --search-f-w: 400;
-    /* Here */
-    --search-f-c: #FFFFFF;
-    --search-option-f-c: #FBFBFB;
-    --search-option-f-s: 17px;
-    --search-option-f-w: 500;
-    --search-option-hover-bg: #1F232E;
-    --search-radius: 8px;
-    --search-menu-radius: 8px;
+    /* Field carries no fill of its own — the 2px stroke is the whole control,
+       and focus swaps it to Border/Focus. */
+    --search-bg: transparent;
+    --search-f-s: 16px;
+    --search-f-w: 500;
+    --search-l-h: 22px;
+    --search-f-c: #FBFBFB;
+    --search-radius: 10px;
+    --search-border-w: 2px;
+    --search-border-c: #3F3F3F;
+    --search-border-focus-c: #FBFBFB;
+    --search-placeholder-f-c: #3F3F3F;
+
+    --search-menu-bg: #171717;
+    --search-menu-radius: 10px;
     --search-menu-border-w: 1px;
-    --search-menu-border-c: rgba(102, 102, 102, 0.1);
-    --search-border-w: 0;
-    --search-border-c: transparent;
-    --search-placeholder-f-c: #8C8C8C;
-    --search-scrollbar-bg: #c8ccce;
+    --search-menu-border-c: #3F3F3F;
+    --search-option-f-s: 14px;
+    --search-option-f-w: 500;
+    --search-option-f-c: #FBFBFB;
+    --search-option-hover-bg: #3F3F3F;
+    --search-no-results-hint-f-c: #8C8C8C;
+    --search-scrollbar-bg: #3F3F3F;
+    --search-skeleton-bg: #3F3F3F;
+    --search-skeleton-radius: 4px;
 
     --history-title-f-s: 28px;
     --history-title-f-w: 700;
-    --history-title-f-c: #FFFFFF;
+    --history-title-f-c: #FBFBFB;
 
-    --history-back-f-s: 16px;
+    --history-back-f-s: 13px;
     --history-back-f-w: 500;
     --history-back-f-c: #8C8C8C;
 
-    --history-back-hover-f-s: 16px;
+    /* Hover lifts the whole control to Text/Primary. The arrow's colour is
+       baked into its SVG, so the icon is repainted through a mask of itself. */
+    --history-back-l-h: 16px;
+    --history-back-hover-f-s: 13px;
     --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #8C8C8C;
+    --history-back-hover-f-c: #FBFBFB;
+    --history-back-icon-src: url('/ARGENT/icons/dark/arrow-left.svg');
+    --history-back-icon-hover-f-c: #FBFBFB;
 
 
     --history-table-radius: 12px;
-    --history-table-header-bg: #242424;
-    --history-table-header-border-c: rgba(0, 0, 0, 0.30);
+    /* Column strip sits on the page, separated from the rows by the same
+       hairline they use between themselves. */
+    --history-table-header-bg: #171717;
+    --history-table-header-border-c: #3F3F3F;
     --history-table-header-border-w: 1px;
     --history-table-header-radius: 0;
 
-    --history-table-header-f-s: 15px;
-    --history-table-header-f-w: 400;
+    --history-table-header-f-s: 14px;
+    --history-table-header-f-w: 500;
     --history-table-header-f-c: #8C8C8C;
 
     --history-table-row-border-w: 1px;
-    --history-table-row-border-c: #DCE0E9;
-    --history-table-row-bg: #242424;
+    --history-table-row-border-c: #3F3F3F;
+    --history-table-row-bg: #171717;
 
-    --history-table-row-hover-bg: #242424D9;
-    --history-table-row-active-bg: #242424D9;
+    --history-table-row-hover-bg: #3F3F3F;
+    --history-table-row-active-bg: #3F3F3F;
     --history-claimed-icon-bg: #3F3F3F;
-    --history-details-btn-bg: #3F3F3F;
-    --history-purchase-name-f-s: 17px;
-    --history-purchase-name-f-w: 500;
+    /* The row's chevron carries no fill of its own. */
+    --history-details-btn-bg: transparent;
+    --history-details-btn-radius: 40px;
+
+    /* Retailer marks keep the light ring they carry on the cards. */
+    --history-logo-radius: 100px;
+    --history-logo-border-w: 1px;
+    --history-logo-border-c: #DCE0E9;
+    --history-logo-fallback-bg: #242424;
+    --history-logo-fallback-border-w: 1px;
+    --history-logo-fallback-border-c: #DCE0E9;
+    --history-logo-fallback-f-c: #FBFBFB;
+    --history-logo-fallback-f-w: 700;
+    --history-logo-fallback-f-s: 20px;
+    --history-logo-fallback-f-s-two-letters: 16px;
+    --history-logo-fallback-l-h: 16px;
+
+    --history-purchase-name-f-s: 15px;
+    --history-purchase-name-f-w: 400;
+    --history-purchase-name-l-h: 22px;
     --history-purchase-name-f-c: #FBFBFB;
 
-    --history-amount-f-s: 17px;
+    --history-amount-f-s: 15px;
     --history-amount-f-w: 400;
+    --history-amount-l-h: 22px;
     --history-amount-f-c: #FBFBFB;
 
-    --history-status-f-s: 17px;
+    /* The totals row sets every cell bold; the rest stay Regular. */
+    --history-claim-row-f-w: 700;
+    --history-claim-row-f-c: #FBFBFB;
+
+    /* Base is the claimable green; the rest override it per status. */
+    --history-status-f-s: 15px;
     --history-status-f-w: 400;
-    --history-status-f-c: #0BA;
+    --history-status-l-h: 22px;
+    --history-status-f-c: #71CC49;
+    --history-status-pending-f-c: #8C8C8C;
     --history-status-canceled-f-c: #FF5C71;
-    --history-status-claimed-f-c: #FFC95C;
-    --history-status-pending-f-c: #FBFBFB;
-    --history-status-total-claims-f-c: #FBFBFB;
-    --history-status-total-claims-f-w: 700;
+    --history-status-claimed-f-c: #F36A3D;
+    --history-status-claimed-f-w: 400;
 
-    --history-description-f-s: 16px;
-    --history-description-f-w: 400;
+    --history-description-f-s: 14px;
+    --history-description-f-w: 500;
+    --history-description-l-h: 22px;
     --history-description-f-c: #FBFBFB;
-    --history-description-bold-f-w: 600;
+    --history-description-bold-f-w: 700;
 
-    --history-empty-f-s: 18px;
-    --history-empty-f-w: 500;
-    --history-empty-f-c: #FFF;
+    --history-empty-f-s: 15px;
+    --history-empty-f-w: 400;
+    --history-empty-l-h: 22px;
+    --history-empty-f-c: #8C8C8C;
 
-    --faq-question-f-s: 17px;
+    /* Page toolbar: centred title with the back control pinned left. */
+    --page-toolbar-title-f-s: 18px;
+    --page-toolbar-title-f-w: 600;
+    --page-toolbar-title-l-h: 18px;
+    --page-toolbar-title-f-c: #FBFBFB;
+    --page-toolbar-back-f-s: 13px;
+    --page-toolbar-back-f-w: 500;
+    --page-toolbar-back-l-h: 16px;
+    --page-toolbar-back-f-c: #8C8C8C;
+
+    /* FAQ rows: page colour at rest, Surface/Hover once open or hovered,
+       separated by a hairline rather than sitting in cards. */
+    --faq-item-bg: #171717;
+    --faq-item-hover-bg: #3F3F3F;
+    --faq-item-radius: 0;
+    --faq-row-hover-bg: #3F3F3F;
+    --faq-row-border-c: #3F3F3F;
+    --faq-divider-c: #3F3F3F;
+    --faq-divider-w: 1px;
+
+    --faq-question-f-s: 16px;
     --faq-question-f-w: 700;
+    --faq-question-l-h: 22px;
     --faq-question-f-c: #FBFBFB;
 
     --faq-answer-f-s: 16px;
     --faq-answer-f-w: 400;
-    --faq-answer-f-c: #FBFBFB;
+    --faq-answer-l-h: 24px;
+    --faq-answer-f-c: #8C8C8C;
+    --faq-answer-hover-f-c: #8C8C8C;
 
     --faq-link-f-s: 16px;
-    --faq-link-f-w: 700;
+    --faq-link-f-w: 400;
+    --faq-link-l-h: 24px;
+    --faq-link-f-c: #F36A3D;
+
+    /* Chevron rides a 32px pill on Surface/Elevated. */
+    --faq-details-btn-bg: #3F3F3F;
+    --faq-details-btn-radius: 40px;
+    --faq-chevron-f-c: #8C8C8C;
+    --faq-chevron-active-f-c: #8C8C8C;
+
+    --faq-skeleton-bg: #3F3F3F;
+    --faq-skeleton-radius: 4px;
+    --faq-skeleton-bar-bg: #3F3F3F;
+    --faq-skeleton-bar-radius: 4px;
+
+    /* ---------------------------------------------------------------------
+       Not drawn in Figma. Derived from the READY palette so nothing falls
+       back to a built-in default: surfaces step #171717 → #242424 → #3F3F3F,
+       text steps #FBFBFB → #8C8C8C → #3F3F3F, accent #F36A3D.
+       Replace any of these the moment a real frame turns up.
+       --------------------------------------------------------------------- */
+
+    /* Scroll affordances. The track is the card surface, the thumb the one
+       above it, so the bar reads on both the page and inside modals. */
+    --scrollbar-track-bg: #242424;
+    --scrollbar-radius: 100px;
+    --search-menu-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+
+    /* Back-to-top: 44px circle, Button/Filter-bg lifting to Surface/Elevated. */
+    --back-to-top-bg: #242424;
+    --back-to-top-hover-bg: #3F3F3F;
+    --back-to-top-border-w: 1px;
+    --back-to-top-border-c: #3F3F3F;
+    --back-to-top-radius: 80px;
+    --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    /* Shimmer that sweeps every skeleton; peaks at the skeleton's own fill. */
+    --skeleton-sweep: linear-gradient(90deg, rgba(63, 63, 63, 0) 0%, #3F3F3F 50%, rgba(63, 63, 63, 0) 100%);
+
+    /* Fades over the scrolling card grid and category strip. */
+    --cards-fog-color: #171717;
+    --tabs-fog-color: #171717;
+
+    --loading-msg-l-h: 16px;
+    --rewards-amount-l-h: 34px;
+    --history-table-header-l-h: 22px;
+    --history-page-back-f-c: #8C8C8C;
+    --history-claimed-icon-border-w: 0;
+    --history-claimed-icon-border-c: transparent;
+
+    /* Campaign variants of the retailer flag and badge: accent fill, so the
+       label flips to the on-accent colour. */
+    --retailer-card-amount-campaign-f-c: #FFFFFF;
+    --retailer-card-flag-campaign-f-w: 700;
+
+    /* Terms sheet. The Figma variant is still Solflare's, so these follow the
+       other modals instead of copying it. */
+    --modal-terms-bg: #242424;
+    --modal-terms-surface-bg: #242424;
+    --modal-terms-radius: 8px;
+    --modal-deal-markdown-l-h: 18px;
+    --modal-deal-markdown-list-f-s: 12px;
+    --modal-deal-markdown-h3-f-w: 700;
+    --modal-deal-markdown-h3-l-h: 18px;
+    --modal-deal-terms-btn-f-c: #8C8C8C;
+    --modal-deal-logo-border-w: 1px;
+    --modal-deal-logo-border-c: #DCE0E9;
+    --modal-primary-btn-disabled-bg: #3F3F3F;
+    --modal-explain-close-radius: 8px;
 }
 
 * {
