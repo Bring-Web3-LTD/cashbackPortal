@@ -1,29 +1,33 @@
 .card {
     position: relative;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    width: 138px;
-    height: 118px;
-    padding: 17.659px 43.211px 19px 42.56px;
+    width: 100%;
+    /* 210-256 is the design's range. Some widths cannot be tiled inside it —
+       at 1209 four columns give a 266 track and five give 210 minus a hair —
+       so the card stops at 256 and the grid centres the slack. */
+    min-width: min(210px, 100%);
+    max-width: 256px;
+    height: 154px;
+    padding: 15px 16px 14px;
     background: var(--retailer-card-bg);
-    border-width: var(--retailer-card-border-w);
-    border-style: solid;
-    border-color: var(--retailer-card-border-color);
-    border-radius: 9px;
+    box-shadow: inset 0 0 0 var(--retailer-card-border-w) var(--retailer-card-border-color);
+    border-radius: var(--retailer-card-radius, 12px);
     cursor: pointer;
     user-select: none;
     transition: .2s;
 }
 
+
 .card:hover {
-    border-color: var(--retailer-card--hover-border-color);
+    box-shadow: inset 0 0 0 var(--retailer-card-border-w) var(--retailer-card--hover-border-color);
     background: var(--retailer-card-hover-bg, var(--retailer-card-bg));
 }
 
 .card:active {
-    border-color: var(--retailer-card--hover-border-color);
+    box-shadow: inset 0 0 0 var(--retailer-card-border-w) var(--retailer-card--hover-border-color);
     background: var(--retailer-card-hover-bg, var(--retailer-card-bg));
 }
 
@@ -31,55 +35,58 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    box-sizing: border-box;
+    width: 58px;
+    height: 58px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: var(--retailer-card-img-bg, #FFFFFF);
     border-width: var(--retailer-card-img-border-w);
     border-style: solid;
     border-color: var(--retailer-card-img-border-c);
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
+/* One box, not two: the 58 disc carries the fill and the ring, and the initials
+   sit straight in it. A nested inner disc left a halo of the outer fill. */
 .fallback_logo_container {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    border-width: var(--retailer-card-img-border-w);
-    border-style: solid;
-    border-color: var(--retailer-card-img-border-c);
-    border: var(--retailer-logo-fallback-border-w, 1px) solid var(--retailer-logo-fallback-border-c, var(--retailer-card-img-border-c));
-    border-radius: 50%;
+    box-sizing: border-box;
+    width: 58px;
+    height: 58px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--retailer-logo-fallback-bg);
+    border: var(--retailer-logo-fallback-border-w) solid var(--retailer-logo-fallback-border-c);
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .logo_container_campaign {
-    border-color: var(--retailer-card-img-border-campaign-c, var(--retailer-card-img-border-c));
+    border-color: var(--retailer-card-img-border-campaign-c);
 }
 
 .logo {
     object-fit: contain;
     width: 58px;
     height: 58px;
-    border-radius: 50%;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .fallback_logo {
-    display: flex;
-    width: 56px;
-    height: 56px;
-    padding: 4px 3.9px 4px 4.1px;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 50%;
+    color: var(--retailer-logo-fallback-f-c);
+    font-size: var(--retailer-logo-fallback-f-s);
+    font-weight: var(--retailer-logo-fallback-f-w);
+    line-height: var(--retailer-logo-fallback-l-h, 22px);
     text-align: center;
-    font-style: normal;
-    background: var(--retailer-logo-fallback-bg,var(--retailer-card-img-border-c));
-    color: var(--retailer-logo-fallback-f-c, white);
-    font-size: var(--retailer-logo-fallback-f-s, 24px);
-    font-weight: var(--retailer-logo-fallback-f-w, 700);
     text-transform: uppercase;
 }
+
+/* Two letters drop a size so the pair still fits the same disc. */
 .fallback_logo_two_letters {
-    font-size: var(--retailer-logo-fallback-f-s-two-letters, 37px); 
-    background: var(--retailer-logo-fallback-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));  
+    font-size: var(--retailer-logo-fallback-f-s-two-letters);
 }
 
 .retailer_name {
@@ -87,8 +94,8 @@
     font-weight: var(--retailer-card-name-f-w);
     color: var(--retailer-card-name-f-c);
     white-space: nowrap;
-    line-height: 20.8px;
-    margin: 4px 0;
+    line-height: var(--retailer-card-name-l-h, 22px);
+    margin-top: 6px;
 }
 
 .cashback_rate {
@@ -96,31 +103,41 @@
     font-weight: var(--retailer-card-amount-f-w);
     color: var(--retailer-card-amount-f-c);
     background: var(--retailer-card-amount-bg);
-    padding: 6px;
-    width: 160px;
-    border-radius: 50px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    width: 100%;
+    min-width: 170px;
+    max-width: 175px;
+    height: 26px;
+    padding: 5px 8px;
+    border-radius: var(--retailer-card-amount-radius, 100px);
+    line-height: var(--retailer-card-amount-l-h, 16px);
     text-align: center;
     white-space: nowrap;
 }
 
 .cashback_rate_campaign {
-    background: var(--retailer-card-amount-campaign-bg, var(--retailer-card-amount-bg));
+    background: var(--retailer-card-amount-campaign-bg);
     color: var(--retailer-card-amount-campaign-f-c, var(--retailer-card-amount-f-c));
-    font-weight: var(--retailer-card-amount-campaign-f-w, var(--retailer-card-amount-f-w));
+    font-weight: var(--retailer-card-amount-campaign-f-w);
 }
 
 .flag {
     position: absolute;
-    top: 16px;
-    right: 0;
-    min-width: 37px;
-    max-width: 56px;
-    width: fit-content;
-    height: fit-content;
+    top: 15px;
+    right: -1px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 30px;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
-    line-height: 12px;
-    vertical-align: middle;
+    line-height: var(--retailer-card-flag-l-h, 20px);
     text-align: center;
     padding: 5px 8px;
     color: var(--retailer-card-flag-f-c);
@@ -131,56 +148,60 @@
 }
 
 .flag_campaign {
-    background: var(--retailer-card-flag-campaign-bg, var(--retailer-card-flag-bg));
-    color: var(--retailer-card-flag-campaign-f-c, var(--retailer-card-flag-f-c));
+    background: var(--retailer-card-flag-campaign-bg);
+    color: var(--retailer-card-flag-campaign-f-c);
     font-weight: var(--retailer-card-flag-campaign-f-w, var(--retailer-card-flag-f-w));
 }
 
-/* The placeholder card can drop the real card's border and sit on its own
-   surface; both fall back to the card's values. */
+/* Skeleton card. Matches the real card's box so nothing jumps when the data
+   lands: 154 tall, same 15/16/14 padding, same 210-256 range. The bars are
+   hardcoded geometry; only their fills and radii are themed. */
 .skeleton_card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-width: min(210px, 100%);
+    max-width: 256px;
+    height: 154px;
+    padding: 15px 16px 14px;
+    overflow: hidden;
     background: var(--retailer-card-skeleton-card-bg, var(--retailer-card-bg));
-    border-width: var(--retailer-card-skeleton-border-w, var(--retailer-card-border-w));
+    box-shadow: inset 0 0 0 var(--retailer-card-skeleton-border-w, 1px) var(--retailer-card-skeleton-border-c, var(--retailer-card-border-color));
+    border-radius: var(--retailer-card-skeleton-radius, var(--retailer-card-radius, 12px));
 }
 
-/* Placeholder blocks can be a plain surface rather than the cashback badge's
-   tint; falls back to it so platforms that set neither are unchanged. */
 .skeleton_logo,
 .skeleton_retailer_name,
 .skeleton_cashback_rate {
+    flex-shrink: 0;
     background: var(--retailer-card-skeleton-bg, var(--retailer-card-amount-bg));
 }
 
 .skeleton_logo {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    width: 58px;
+    height: 58px;
+    border-radius: var(--retailer-card-logo-radius, 50%);
 }
 
 .skeleton_text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
-    margin-top: 8px;
 }
 
 .skeleton_retailer_name {
-    width: 90px;
-    height: 14px;
-    border-radius: 100px;
+    width: 80px;
+    height: 12px;
+    border-radius: var(--retailer-card-skeleton-name-radius, 5px);
 }
 
 .skeleton_cashback_rate {
-    width: 150px;
-    height: 16px;
-    border-radius: 100px;
-}
-
-@media screen and (max-width: 768px) {
-    .card {
-        width: 152px;
-        padding: 17.659px 9.441px 15.522px 8.559px;
-    }
+    width: 100%;
+    height: 12px;
+    border-radius: var(--retailer-card-skeleton-badge-radius, 8px);
 }

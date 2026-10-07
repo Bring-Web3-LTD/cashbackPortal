@@ -373,6 +373,28 @@ html, body {
 
 .controls label.row { cursor: pointer; }
 
+/* Screen jumps: small chips that wrap, rather than one full-width button per
+   state — the drawer stays short enough to leave collapsed. */
+.controls .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.controls .chips button {
+    width: auto;
+    flex: none;
+    padding: 3px 7px;
+    background: #1f2530;
+    border: 1px solid #2a313c;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 15px;
+}
+
+.controls .chips button:hover { background: #262d3a; }
+
 /* Custom checkboxes: native look replaced with a rounded square that fills
    with the accent blue and pops in a checkmark (clip-path) when checked. */
 .controls .row input[type="checkbox"] {

@@ -1,268 +1,129 @@
+/**
+ * Desktop dashboard balance block: Pending and Claimable cards, each shedding
+ * its badge then its button as it narrows, plus the link to the full ledger.
+ * Pure UI — logic in useRewardsDesktop.
+ */
 import styles from './styles.module.css'
-import fetchCache from '../../api/fetchCache'
-import StatusModal from '../Modals/StatusModal/StatusModal'
-import { useRouteLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import claimSubmit from '../../api/claim/submit'
-import claimInitiate from '../../api/claim/initiate'
 import { Oval } from 'react-loader-spinner'
-import message from '../../utils/message'
-import { useQueryClient } from '@tanstack/react-query'
-import { useAnalytics } from '../../hooks/useAnalytics'
-import { formatCurrency } from '../../pages/History/helpers'
-import { ENV } from '../../config'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
-import Icon from '../Icon/Icon'
-
+import { useRewardsDesktop } from './useRewardsDesktop'
 
 const Rewards = () => {
-    const navigate = useNavigate()
-    const { t } = useTranslation()
-    const { sendAnalyticsEvent } = useAnalytics()
-    const queryClient = useQueryClient()
-    const [searchParams] = useSearchParams()
-    const { platform, cryptoSymbols, userId, flowId, autoclaim } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
-    const [modalState, setModalState] = useState('close')
-    const [loginModalState, setLoginModalState] = useState('close')
-    const [claimStatus, setClaimStatus] = useState<'success' | 'failure' | 'loading'>('loading')
-    const [loading, setLoading] = useState(false)
-    const isAutoClaim = autoclaim
-    const limit = searchParams.get('limit') || Infinity
-
-    const { data: balance } = useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = {
-                platform,
-                userId,
-                flowId
-            }
-
-            if (walletAddress) body.walletAddress = walletAddress
-
-            return await fetchCache(body)
-        },
-        queryKey: ["balance", walletAddress],
-        enabled: !!walletAddress,
-    })
-    const currentCryptoSymbol = balance?.data?.eligible[0]?.tokenSymbol || cryptoSymbols[0]
-    const minimumClaimThreshold = balance?.data?.eligible[0]?.minimumClaimThreshold || -1
-    const eligibleTokenNumber = balance?.data?.eligible[0]?.tokenAmount || -1
-    const claimAmount = ENV === 'prod' ? eligibleTokenNumber : Math.min(eligibleTokenNumber, +limit)
-
-    useEffect(() => {
-        // Define the message handler
-        const handleMessage = async (event: MessageEvent) => {
-            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
-                return; // Ignore messages from untrusted origins
-            }
-            // Handle the message data here
-            if (event.data.action === 'SIGNATURE') {
-                sendAnalyticsEvent('claim_submit', {
-                    category: 'user_action',
-                    details: claimAmount,
-                    process: 'submit'
-                })
-                setModalState('open')
-                const body: Parameters<typeof claimSubmit>[0] = {
-                    walletAddress,
-                    targetWalletAddress: walletAddress,
-                    tokenSymbol: currentCryptoSymbol,
-                    tokenAmount: claimAmount,
-                    signature: event.data.signature,
-                    message: event.data.message,
-                    platform,
-                    userId,
-                    flowId
-                }
-                if (event.data.key) body.key = event.data.key
-                const res = await claimSubmit(body)
-
-                if (res?.ok) {
-                    setClaimStatus('success')
-                    sendAnalyticsEvent('claim_accepted', {
-                        category: 'system',
-                        action: 'request',
-                        details: claimAmount,
-                    })
-                    queryClient.invalidateQueries({ queryKey: ["balance", walletAddress] })
-                } else {
-                    setClaimStatus('failure')
-                    sendAnalyticsEvent('claim_failed', {
-                        category: 'system',
-                        action: 'request',
-                        details: `${claimAmount}, ${res}`,
-                    })
-                }
-                setLoading(false)
-            } else if (event.data.action === 'ABORT_SIGN_MESSAGE') {
-                setLoading(false)
-            }
-        };
-
-        // Set up the event listener
-        window.addEventListener('message', handleMessage);
-
-        // Clean up the event listener on component unmount
-        return () => {
-            window.removeEventListener('message', handleMessage);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [claimAmount, currentCryptoSymbol, eligibleTokenNumber, loading, platform, queryClient, sendAnalyticsEvent, walletAddress]);
-
-    // Get the message to sign from the API and post a message to parent page a request to sign the message
-    const signMessage = async () => {
-        setLoading(true)
-
-        const res = await claimInitiate({
-            platform,
-            walletAddress,
-            targetWalletAddress: walletAddress,
-            tokenSymbol: currentCryptoSymbol,
-            tokenAmount: claimAmount,
-            userId,
-            flowId
-        })
-
-        sendAnalyticsEvent('claim_open', {
-            category: 'user_action',
-            action: 'click',
-            details: claimAmount,
-            process: 'initiate'
-        })
-
-        const messageToSign = res?.messageToSign
-
-        if (!messageToSign) {
-            setLoading(false)
-            return
-        }
-
-        message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
-    }
-
-    const eligibleTokenAmount =
-        (balance?.data?.eligible[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            // minimumFractionDigits: balance?.data?.eligible[0]?.tokenAmount ? 0 : 2,
-            maximumFractionDigits: 2,
-        })
-
-    const eligibleTotalEstimatedUsd = formatCurrency(balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0)
-    // (balance?.data?.eligible[0]?.totalEstimatedUsd ?? 0).toLocaleString(undefined, {
-    //     style: "currency",
-    //     currency: "USD",
-    // })
-
-    const pendingTokenAmount =
-        (balance?.data?.totalPendings[0]?.tokenAmount ?? 0).toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            // minimumFractionDigits: balance?.data?.totalPendings[0]?.tokenAmount ? 0 : 2,
-            maximumFractionDigits: 2,
-        })
-
-    const pendingTotalEstimatedUsd = formatCurrency(balance?.data?.totalPendings[0]?.totalEstimatedUsd ?? 0)
+    const {
+        isAutoClaim,
+        claim,
+        claimDisabled,
+        loading,
+        pendingCard,
+        claimableCard,
+        currentCryptoSymbol,
+        pendingTokenAmount,
+        pendingTotalEstimatedUsd,
+        eligibleTokenAmount,
+        eligibleTotalEstimatedUsd,
+        cardAction,
+        openHistory,
+        tooltipAt,
+        showTooltip,
+        tooltipHandlers,
+        loginOpen,
+        closeLogin,
+        labels,
+    } = useRewardsDesktop()
 
     return (
-        <div className={styles.container}>
-            {!isAutoClaim ?
-                <div className={styles.subcontainer}>
-                    <div className={styles.reward_details}>
-                        <div className={`${styles.icon_container} ${styles.claim_icon}`}>
-                            <Icon
-                                className={styles.icon}
-                                name="gift.svg"
-                                alt="gift icon"
-                            />
-                        </div>
-                        <div className={styles.reward_details_subcontainer}>
-                            <div className={`${styles.amount} ${styles.amount_claim}`}>
-                                {balance?.data?.eligible[0]?.tokenAmount ? `${eligibleTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}
-                            </div>
-                            <div className={`${styles.rewards_usd} ${styles.claim_usd}`}>
-                                {+eligibleTokenAmount.split(/\s/)[0] < minimumClaimThreshold ?
-                                    `Minimum claim amount: ${minimumClaimThreshold} ${currentCryptoSymbol}`
-                                    :
-                                    `Current value: ${eligibleTotalEstimatedUsd}`
-                                }
-
-                            </div>
+        <>
+            <div
+                ref={pendingCard.ref}
+                className={styles.card}
+                {...cardAction(!pendingCard.fit.action, () => openHistory(true))}
+            >
+                <div className={styles.left_cluster}>
+                    <div className={styles.values}>
+                        <div className={styles.card_label}>{labels.pending}</div>
+                        <div ref={pendingCard.amountRef} className={styles.amount_row}>
+                            <span>{pendingTokenAmount}</span>
+                            <span>{currentCryptoSymbol}</span>
                         </div>
                     </div>
+                    {pendingCard.fit.badge ? (
+                        <div ref={pendingCard.badgeRef} className={styles.badge}>{pendingTotalEstimatedUsd}</div>
+                    ) : null}
+                </div>
+                {pendingCard.fit.action ? (
+                    <button
+                        id="rewards-view-btn"
+                        className={styles.card_btn}
+                        onClick={() => openHistory(true)}
+                    >
+                        {labels.details}
+                    </button>
+                ) : null}
+            </div>
+            {!isAutoClaim ?
+                <div
+                    ref={claimableCard.ref}
+                    className={`${styles.card} ${claimDisabled ? styles.card_disabled : ''}`}
+                    {...cardAction(!claimableCard.fit.action, claim, claimDisabled)}
+                    {...tooltipHandlers}
+                >
+                    <div className={styles.left_cluster}>
+                        <div className={styles.values}>
+                            <div className={styles.card_label}>{labels.claimable}</div>
+                            <div ref={claimableCard.amountRef} className={styles.amount_row}>
+                                <span>{eligibleTokenAmount}</span>
+                                <span>{currentCryptoSymbol}</span>
+                            </div>
+                        </div>
+                        {claimableCard.fit.badge ? (
+                            <div ref={claimableCard.badgeRef} className={styles.badge}>{eligibleTotalEstimatedUsd}</div>
+                        ) : null}
+                    </div>
+                    {claimableCard.fit.action ? (
                     <button
                         id="rewards-claim-btn"
-                        className={`${styles.btn} ${styles.claim_btn} ${loading ? styles.loading_btn : ''}`}
-                        onClick={() => signMessage()}
-                        disabled={eligibleTokenNumber === -1 || minimumClaimThreshold === -1 || eligibleTokenNumber < minimumClaimThreshold || loading}
+                        className={styles.card_btn}
+                        onClick={claim}
+                        disabled={claimDisabled}
                     >
-                        {
-                            loading ?
-                                // Oval writes `color` straight into the SVG `stroke`
-                                // attribute, where a var() never resolves — so the
-                                // theme drives it through the wrapper's `color`.
-                                <span className={styles.loader}>
-                                    <Oval
-                                        visible={true}
-                                        height="20"
-                                        width="20"
-                                        color="currentColor"
-                                        secondaryColor='grey'
-                                        strokeWidth={6}
-                                        ariaLabel="oval-loading"
-                                    />
-                                </span>
-                                :
-                                t('claimCashback')
-                        }
+                        {loading ?
+                            // Oval writes `color` straight into the SVG `stroke`
+                            // attribute, where a var() never resolves — so the
+                            // theme drives it through the wrapper's `color`.
+                            <span className={styles.loader}>
+                                <Oval
+                                    visible={true}
+                                    height="20"
+                                    width="20"
+                                    color="currentColor"
+                                    secondaryColor='grey'
+                                    strokeWidth={6}
+                                    ariaLabel="oval-loading"
+                                />
+                            </span>
+                            : labels.claim}
                     </button>
+                    ) : null}
                 </div>
                 : null}
-            <div className={`${styles.subcontainer} ${isAutoClaim ? styles.full_width : ''}`}>
-                <div className={styles.reward_details}>
-                    <div className={`${styles.icon_container} ${styles.pending_icon}`}>
-                        <Icon className={styles.icon} name="coins.svg" alt="coins icon" />
-                    </div>
-                    <div className={styles.reward_details_subcontainer}>
-                        <div className={`${styles.amount} ${styles.amount_pending}`}>
-                            <span>
-                                {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}`}
-                            </span>
-                            {
-                                t('pendingRewards') !== 'pendingRewards' ?
-                                    <span className={styles.pending_rewards_text}> {t('pendingRewards')}</span>
-                                    : null
-                            }
-                        </div>
-                        {/* <div className={`${styles.amount} ${styles.amount_pending}`}>
-                            {`${balance?.data?.totalPendings[0]?.tokenAmount ? `${pendingTokenAmount} ${currentCryptoSymbol}` : `0 ${cryptoSymbols[0]}`}${t('pendingRewards') !== 'pendingRewards' ? ` ${t('pendingRewards')}` : ''}`}
-                        </div> */}
-                        <div className={`${styles.rewards_usd} ${styles.pending_usd}`}>Current value: <br className={styles.br} />{pendingTotalEstimatedUsd}</div>
-                    </div>
-                </div>
-                <button
-                    id="rewards-view-btn"
-                    className={`${styles.btn} ${styles.pending_btn}`}
-                    onClick={() => walletAddress ? navigate('/history') : setLoginModalState('open')}
+            <button
+                id="rewards-history-btn"
+                className={styles.history_card}
+                onClick={() => openHistory()}
+            >
+                {labels.historyCard}
+            </button>
+            {showTooltip && tooltipAt && (
+                <div
+                    role="tooltip"
+                    className={styles.tooltip}
+                    style={{ left: tooltipAt.left, top: tooltipAt.top }}
                 >
-                    {t('viewRewards')}
-                </button>
-            </div>
-            <StatusModal
-                status={claimStatus}
-                open={modalState !== 'close'}
-                closeFn={() => {
-                    setModalState('close')
-                    setClaimStatus('loading')
-                }}
-            />
-            <LoginModal
-                closeFn={() => setLoginModalState('close')}
-                open={loginModalState !== 'close'}
-            />
-        </div>
+                    {labels.minimumClaim}
+                </div>
+            )}
+            <LoginModal closeFn={closeLogin} open={loginOpen} />
+        </>
     )
 }
 

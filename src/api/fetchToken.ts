@@ -25,6 +25,14 @@ interface Response {
         walletName?: string
         bringTou?: string
         privacy?: string
+        // Dashboard state, resolved server side from the API key.
+        isHub?: boolean
+        couponsEnabled?: boolean
+        firstTimeUser?: boolean
+        /** Coupon partner iframe. Null when coupons are off or outside the US. */
+        couponsIframeSrc?: string | null
+        /** Where the claim guide sends a hub user to install the wallet. */
+        chromeStoreUrl?: string
     }
 }
 

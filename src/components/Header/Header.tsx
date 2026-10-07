@@ -1,77 +1,95 @@
+/**
+ * Desktop header: title (with the wallet mark in the hub) and the help
+ * actions, which collapse into an overflow menu when the bar narrows.
+ * Pure UI — logic in useHeaderDesktop.
+ */
 import styles from './styles.module.css'
-import { useTranslation } from 'react-i18next'
-import { Link, useRouteLoaderData } from 'react-router-dom'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { ENV } from '../../config'
+import { Link } from 'react-router-dom'
+import Icon from '../Icon/Icon'
+import ExplainModal from '../Modals/ExplainModal/ExplainModal'
+import { useHeaderDesktop, type Action } from './useHeaderDesktop'
 
 const Header = () => {
-    const { t } = useTranslation()
-    const { platform, bringTou, privacy } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+    const {
+        isHub,
+        scrolled,
+        helpRef,
+        menuOpen,
+        toggleMenu,
+        closeMenu,
+        explainOpen,
+        closeExplain,
+        barActions,
+        menuActions,
+        labels,
+    } = useHeaderDesktop()
+
+    const renderAction = (action: Action, className: string, suffix: string) => (
+        action.to ? (
+            <Link
+                key={action.key}
+                id={`header-${action.key}-${suffix}`}
+                to={action.to}
+                className={className}
+                onClick={closeMenu}
+                {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+                {action.label}
+            </Link>
+        ) : (
+            <button
+                key={action.key}
+                id={`header-${action.key}-${suffix}`}
+                className={className}
+                onClick={() => { action.onClick?.(); closeMenu() }}
+            >
+                {action.label}
+            </button>
+        )
+    )
+
+    const title = <h1 className={styles.title}>{labels.title}</h1>
 
     return (
-        <div className={styles.header}>
-            {
-                privacy || bringTou ?
-                    <div className={styles.legal_links}>
-                        {
-                            privacy ?
-                                <a
-                                    id="header-privacy-link"
-                                    href={privacy}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={styles.legal_link}
-                                >
-                                    {t('privacy', 'Privacy')}
-                                </a>
-                                : null
-                        }
-                        {
-                            bringTou ?
-                                <a
-                                    id="header-terms-link"
-                                    href={bringTou}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={styles.legal_link}
-                                >
-                                    {t('termsOfUse', 'Terms of Use')}
-                                </a>
-                                : null
-                        }
+        <header className={[
+            styles.header,
+            isHub ? styles.hub : styles.in_app,
+            scrolled ? styles.scrolled : '',
+        ].filter(Boolean).join(' ')}>
+            {isHub ? (
+                <div className={styles.brand}>
+                    {/* Platforms ship a raster mark; DEFAULT carries the generic SVG. */}
+                    <Icon
+                        className={styles.wallet_logo}
+                        name="wallet-logo.png"
+                        fallbackName="wallet-logo.svg"
+                        alt=""
+                    />
+                    {title}
+                </div>
+            ) : title}
+            <div className={styles.help} ref={helpRef}>
+                <div className={styles.actions}>
+                    {barActions.map(action => renderAction(action, styles.btn, 'link'))}
+                </div>
+                <button
+                    id="header-more-btn"
+                    className={styles.more}
+                    aria-label={labels.moreActions}
+                    aria-haspopup="menu"
+                    aria-expanded={menuOpen}
+                    onClick={toggleMenu}
+                >
+                    <span className={styles.dots} />
+                </button>
+                {menuOpen && (
+                    <div className={styles.menu} role="menu">
+                        {menuActions.map(action => renderAction(action, styles.menu_row, 'row'))}
                     </div>
-                    : null
-            }
-            {
-                t('title') ?
-                    <h1 className={styles.title}>{t('title')}</h1>
-                    : null
-            }
-            {
-                t('subtitle') ?
-                    <h2 className={styles.subtitle}>{t('subtitle')}</h2>
-                    : null
-            }
-            <div className={styles.btns}>
-                <Link
-                    id="header-faq-link"
-                    to={'/faq'}
-                    className={styles.btn}
-                >
-                    {t('needHelp')}
-                </Link>
-                <Link
-                    id="header-support-link"
-                    to={supportUrl}
-                    target='_blank'
-                    className={styles.btn}
-                >
-                    {t('frequentlyAskedQuestion')}
-                </Link>
+                )}
             </div>
-        </div>
+            <ExplainModal open={explainOpen} closeFn={closeExplain} />
+        </header>
     )
 }
 

@@ -1,6 +1,8 @@
 export const API_KEY = import.meta.env.VITE_API_KEY || ''
 export const API_URL_PLATFORMS = `${import.meta.env.VITE_API_URL}platforms/`
 export const API_URL_PORTAL = `${import.meta.env.VITE_API_URL}portal/`
+// bringAuth lambda — /v1/auth/* (email OTP + wallet↔email pairing).
+export const API_URL_AUTH = `${import.meta.env.VITE_API_URL}auth/`
 export const DEV_MODE = import.meta.env.VITE_ENV === 'development'
 export const TEST_ID = import.meta.env.VITE_TEST_ID || ''
 export const ENV = import.meta.env.VITE_ENV || 'development'

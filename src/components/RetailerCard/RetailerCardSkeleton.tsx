@@ -2,11 +2,11 @@ import styles from './styles.module.css'
 
 const RetailerCardSkeleton = () => {
     return (
-        <div className={`${styles.card} ${styles.skeleton_card}`}>
-            <div className={styles.skeleton_logo} />
+        <div className={styles.skeleton_card}>
+            <div className={`${styles.skeleton_logo} skeleton_shimmer`} />
             <div className={styles.skeleton_text}>
-                <div className={styles.skeleton_retailer_name} />
-                <div className={styles.skeleton_cashback_rate} />
+                <div className={`${styles.skeleton_retailer_name} skeleton_shimmer`} />
+                <div className={`${styles.skeleton_cashback_rate} skeleton_shimmer`} />
             </div>
         </div>
     )

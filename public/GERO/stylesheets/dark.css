@@ -3,18 +3,14 @@
 */
 :root {
     --bg: transparent;
-    /* transparent --bg: sticky filters would scroll over content with no
-       backdrop, so pin them off */
-    --filters-position: static;
-    --header-bg: transparent;
+    /* Opaque: the header pins while the cards scroll under it, so a see-through
+       bar would let rows show through. Matches the card surface. */
+    --header-bg: #1A1A1A;
 
     --title-f-s: 28px;
     --title-f-w: 700;
     --title-f-c: #FFFFFF;
 
-    --subtitle-f-s: 18px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #FFFFFF;
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
     --legal-link-f-c: #7A7D83;
@@ -30,12 +26,8 @@
     --header-btn-radius: 100px;
     /* 12px insets, not 16 — at 16 the longer label stops fitting the fixed
        160px pill and wraps out of it. */
-    --header-btn-p: 9px 12px;
-    --header-btn-w: 160px;
     /* 9px insets + 20px line box; the portal's 29px default clipped the label. */
-    --header-btn-h: 38px;
     /* Sentence case — capitalize would give "Missing A Reward?". */
-    --header-btn-transform: none;
 
     --header-btn-hover-bg: rgba(30, 35, 48, 0.35);
     --header-btn-hover-f-c: #00C8DB;
@@ -220,14 +212,12 @@
 
     /* Modal shell + copy, shared by every modal. The claim popups sit centred
        in the viewport, so no vertical nudge. */
-    --modal-offset-top: 0px;
     --modal-bg: #1B1E24;
     --modal-overlay-bg: rgba(0, 0, 0, 0.8);
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 12px;
     /* Modal.tsx renders the close icon at 20px; this bumps it to 24. */
-    --modal-close-size: 24px;
     --modal-title-f-s: 18px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #FFFFFF;
@@ -298,7 +288,6 @@
     --modal-deal-markdown-h3-f-s: 13px;
     --modal-deal-markdown-h3-f-w: 600;
     --modal-deal-markdown-h3-f-c: #FFFFFF;
-    --modal-deal-markdown-scrollbar-bg: rgba(245, 248, 255, 0.10);
     /* "By clicking Go Shopping you accept the Terms" — the sentence is muted,
        the Terms link is white and underlined. */
     --modal-deal-consent-f-s: 13px;
@@ -352,7 +341,6 @@
     --modal-status-loader-c: #00DFF3;
 
     --scrollbar-bg: #282B30;
-    --scrollbar-w: 12px;
 
     /* Search. The input has no fill and keeps the same border in every state,
        so no --search-border-focus-c: it falls back to --search-border-c. */
@@ -394,7 +382,6 @@
     --history-back-icon-src: url('/GERO/icons/dark/arrow-left.svg');
     --history-back-icon-hover-f-c: #A8ADBF;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #000000;
     /* Shorthand, so the header is divided on its bottom edge only, and with a

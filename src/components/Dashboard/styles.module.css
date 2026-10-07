@@ -1,0 +1,224 @@
+/* Dashboard row: optional tab switcher, then the banner filling the rest. */
+.bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    /* Explicit: the cards size off it with height 100%, which needs a
+       definite height to resolve against. */
+    height: 86px;
+    /* No max-width: the row fills the body column so its side padding matches
+       the grid. The design's 1344 is 1440 minus the page gutter, which the
+       page container already applies.
+       No min-width either: the parent centres its children, so a row wider
+       than the column spills into both gutters and breaks that alignment.
+       The cards absorb the loss instead, collapsing per the container queries. */
+    min-width: 0;
+}
+
+.switcher {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    width: 127px;
+    padding: 12px 10px;
+    background: var(--dashboard-switcher-bg);
+    border-radius: var(--dashboard-switcher-radius);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+}
+
+.tab {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: var(--dashboard-tab-f-s);
+    font-weight: var(--dashboard-tab-f-w);
+    line-height: var(--dashboard-tab-l-h);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* Inset 1px on each side: the chip sits in a full-width track that pads itself
+   by a pixel, so the pill is 2 narrower than the idle tab above it. */
+.tab_active {
+    width: auto;
+    align-self: stretch;
+    height: 30px;
+    margin: 0 1px;
+    padding: 4px 8px;
+    overflow: hidden;
+    background: var(--dashboard-tab-active-bg);
+    color: var(--dashboard-tab-active-f-c);
+    border-radius: var(--dashboard-tab-active-radius);
+}
+
+.tab_idle {
+    padding: 0 10px;
+    color: var(--dashboard-tab-idle-f-c);
+    border-radius: var(--dashboard-tab-idle-radius);
+}
+
+.banner {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 86px;
+    min-width: 500px;
+    padding: 24px;
+    background: var(--dashboard-banner-bg);
+    /* Inset so the stroke does not add to the 86px row height. */
+    box-shadow: inset 0 0 0 var(--dashboard-banner-border-w) var(--dashboard-banner-border-c);
+    border-radius: var(--dashboard-banner-radius);
+}
+
+.banner_content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 100px;
+    overflow: hidden;
+}
+
+.banner_title,
+.banner_text {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.banner_title {
+    font-size: var(--dashboard-banner-title-f-s);
+    font-weight: var(--dashboard-banner-title-f-w);
+    line-height: var(--dashboard-banner-title-l-h);
+    color: var(--dashboard-banner-title-f-c);
+}
+
+.banner_text {
+    font-size: var(--dashboard-banner-text-f-s);
+    font-weight: var(--dashboard-banner-text-f-w);
+    line-height: var(--dashboard-banner-text-l-h);
+    color: var(--dashboard-banner-text-f-c);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.action {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 92px;
+    max-width: 160px;
+    height: 46px;
+    padding: 0 12px;
+    border-radius: var(--dashboard-action-radius, 100px);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action_primary {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-f-c);
+    border: none;
+    font-size: var(--dashboard-action-f-s);
+    font-weight: var(--dashboard-action-f-w);
+    line-height: var(--dashboard-action-l-h);
+}
+
+.action_primary:hover {
+    background: var(--primary-btn-hover-bg, var(--primary-btn-bg));
+}
+
+.action_secondary {
+    background: var(--dashboard-action-secondary-bg);
+    color: var(--dashboard-action-secondary-f-c);
+    border-width: var(--dashboard-action-secondary-border-w);
+    border-style: solid;
+    border-color: var(--dashboard-action-secondary-border-c);
+    font-size: var(--dashboard-action-secondary-f-s);
+    font-weight: var(--dashboard-action-secondary-f-w);
+    line-height: var(--dashboard-action-secondary-l-h);
+}
+
+.action_secondary:hover {
+    background: var(--dashboard-action-secondary-hover-bg, var(--dashboard-action-secondary-bg));
+}
+
+/* The loading page sets the row 20 below the header; the loaded page sits
+   flush against it. */
+.bar_skeleton {
+    margin-top: 20px;
+}
+
+/* Loading placeholder for the summary row. Same 86 height and 14 gap as the
+   real row, so nothing shifts when the balance lands. */
+.skeleton_row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    height: 86px;
+}
+
+.skeleton_card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    /* Share the row evenly; min-width 1 lets them keep shrinking. */
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 86px;
+    padding: 16px;
+    overflow: hidden;
+    background: var(--dashboard-skeleton-card-bg, var(--dashboard-card-bg));
+    border: 1px solid var(--dashboard-skeleton-border-c, var(--dashboard-card-border-c));
+    border-radius: var(--dashboard-skeleton-radius, var(--dashboard-card-radius));
+}
+
+.skeleton_bar {
+    flex-shrink: 0;
+    height: 12px;
+    max-width: 100%;
+    background: var(--dashboard-skeleton-bar-bg, var(--retailer-card-amount-bg));
+    border-radius: var(--dashboard-skeleton-bar-radius, 4px);
+}
+
+.skeleton_bar_label {
+    width: 121px;
+}
+
+.skeleton_bar_amount {
+    width: 380px;
+}

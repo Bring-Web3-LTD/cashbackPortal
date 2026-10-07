@@ -1,22 +1,18 @@
 import styles from './styles.module.css'
 // hooks
-import { Fragment, MouseEvent, useEffect, useId, useRef, useState } from "react"
+import { Fragment } from "react"
 
 // components
 import Select, {
     components,
     StylesConfig,
-    SingleValue,
-    MultiValue,
     ControlProps,
     NoticeProps,
     SingleValueProps,
-    SelectInstance,
 } from "react-select"
-import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
-import { useDebounce } from 'use-debounce'
 import Icon from '../Icon/Icon'
+import { useSearchDesktop } from './useSearchDesktop'
 
 interface Props {
     options: ReactSelectOptionType[]
@@ -25,12 +21,24 @@ interface Props {
 }
 
 const optionRowStyle = {
+    display: "flex",
+    alignItems: "center",
+    // The list is a flex column with a max height: without this the rows shrink
+    // to fit once there are enough of them, instead of keeping 33 and scrolling.
+    flexShrink: 0,
     fontWeight: "var(--search-option-f-w, var(--search-f-w, 400))",
-    fontSize: "var(--search-option-f-s, 15px)",
-    lineHeight: "22px",
+    fontSize: "var(--search-option-f-s, 14px)",
+    lineHeight: "var(--search-option-l-h, 20px)",
     height: "33px",
     color: "var(--search-option-f-c)",
-    padding: "5px 20px 5px 39px",
+    padding: "0 20px 0 39px",
+} as const
+
+const singleOptionRowStyle = {
+    fontWeight: "var(--search-single-option-f-w, 500)",
+    fontSize: "var(--search-single-option-f-s, 15px)",
+    lineHeight: "var(--search-single-option-l-h, 22px)",
+    height: "42px",
 } as const
 
 const customStyles: StylesConfig<ReactSelectOptionType> = {
@@ -47,18 +55,16 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
             border: `var(--search-border-w) solid ${borderColor}`,
         },
         backgroundColor: "var(--search-bg)",
-        width: "438px",
+        boxSizing: "border-box",
+        width: "100%",
         height: "46px",
-        padding: "8px 8px 8px 17px",
-        gap: "6px",
+        padding: "11px 14px",
         fontSize: "var(--search-f-s)",
         fontWeight: "var(--search-f-w)",
+        lineHeight: "var(--search-l-h, 24px)",
         cursor: "text",
         boxShadow: "none",
         outline: "none !important",
-        "@media only screen and (max-width: 1280px)": {
-            width: "342px",
-        }
         }
     },
     menuList: (base) => ({
@@ -75,14 +81,14 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
     }),
     menu: (base) => ({
         ...base,
-        marginTop: "6px",
+        marginTop: "4px",
         backgroundColor: "var(--search-menu-bg, var(--search-bg))",
-        border: "var(--search-menu-border-w, 0) solid var(--search-menu-border-c, transparent)",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
-        borderRadius: "var(--search-menu-radius, 12px)",
+        border: "var(--search-menu-border-w, 1px) solid var(--search-menu-border-c, transparent)",
+        boxShadow: "var(--search-menu-shadow, 0 8px 24px rgba(0, 0, 0, 0.4))",
+        borderRadius: "var(--search-menu-radius, 10px)",
         overflow: "hidden",
-        paddingTop: "10px",
-        paddingBottom: "15px",
+        paddingTop: "8px",
+        paddingBottom: "8px",
         fontSize: "var(--search-f-s)",
         zIndex: 10,
     }),
@@ -91,6 +97,7 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         return {
             ...base,
             ...optionRowStyle,
+            ...(isSingleOption ? singleOptionRowStyle : {}),
             backgroundColor: isSingleOption
                 ? "transparent"
                 : state.isFocused
@@ -107,22 +114,33 @@ const customStyles: StylesConfig<ReactSelectOptionType> = {
         ...base,
         "input[type='text']:focus": { boxShadow: "none" },
         color: "var(--search-f-c)",
+        margin: 0,
+        padding: 0,
     }),
     placeholder: (base) => ({
         ...base,
-        color: 'var(--search-placeholder-f-c)'
+        color: 'var(--search-placeholder-f-c)',
+        margin: 0,
     }),
     singleValue: (base) => ({
         ...base,
         color: 'var(--search-f-c)',
+        margin: 0,
     }),
     valueContainer: (base) => ({
         ...base,
         padding: 0,
+        // The 8px belongs between the glyph and the text only. A gap on the
+        // control would also land after the text, since react-select still
+        // renders an empty indicators container as the last flex child.
+        marginLeft: "8px",
     }),
     noOptionsMessage: (base) => ({
         ...base,
-        padding: "5px 20px 5px 39px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+        padding: "12px 14px",
         textAlign: "left",
         color: "var(--search-option-f-c)",
     }),
@@ -138,17 +156,19 @@ const CustomSingleValue = (
 }
 
 const CustomNoOptionsMessage = (props: NoticeProps<ReactSelectOptionType>) => {
+    const { t } = useTranslation()
+
     if (props.selectProps.inputValue.length <= 1) {
         return null
     }
 
     return (
         <components.NoOptionsMessage {...props}>
-            <div style={{ fontSize: 15, fontWeight: 500, lineHeight: "24px", color: "var(--search-option-f-c)" }}>
-                No results.
+            <div className={styles.no_results_title}>
+                {t('searchNoResults')}
             </div>
-            <div style={{ fontSize: 14, fontWeight: 400, lineHeight: "16px", color: "var(--search-no-results-hint-f-c, var(--search-option-f-c))" }}>
-                Try a different search term
+            <div className={styles.no_results_hint}>
+                {t('searchNoResultsHint')}
             </div>
         </components.NoOptionsMessage>
     )
@@ -173,108 +193,29 @@ const CustomControl = (props: ControlProps<ReactSelectOptionType>) => {
 }
 
 const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
-    const id = useId()
-    const [input, setInput] = useState('')
-    const [debouncedInput] = useDebounce(input, 500)
-    const [filteredOptions, setFilteredOptions] = useState<ReactSelectOptionType[]>(options)
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [isFocused, setIsFocused] = useState(false)
-    const selectRef = useRef<SelectInstance<ReactSelectOptionType> | null>(null)
-    const { sendAnalyticsEvent } = useAnalytics()
-    const { t } = useTranslation()
-
-    useEffect(() => {
-        if (!debouncedInput.length) return
-        sendAnalyticsEvent("search_input", {
-            category: "user_action",
-            action: "input",
-            details: debouncedInput,
-            hasResults: !!filteredOptions.length,
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedInput])
-
-    const handleChange = (
-        item:
-            | SingleValue<ReactSelectOptionType>
-            | MultiValue<ReactSelectOptionType>
-            | null,
-    ) => {
-        if (!item || Array.isArray(item)) return
-        const { value } = item as ReactSelectOptionType
-
-        sendAnalyticsEvent("search_select", {
-            category: "user_action",
-            action: "select",
-            details: value,
-        })
-
-        onChangeFn({ value, label: value })
-        // Blurring fires the Select's onBlur, which sets isFocused(false) –
-        // keep focus state driven by a single source (the blur event).
-        selectRef.current?.blur()
-    }
-
-    const handleInputChange = (inputValue: string) => {
-        setInput(inputValue)
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        if (!inputValue || (inputValue?.trim()).length < 2) {
-            if (isMenuOpen) setIsMenuOpen(false)
-            if (filteredOptions.length) {
-                setFilteredOptions([])
-            }
-        } else {
-            const input = inputValue.trimStart().toLowerCase()
-            if (!isMenuOpen && input.length > 1) setIsMenuOpen(true)
-
-            // if (input.length === 3) {
-            //     sendAnalyticsEvent("search_input", {
-            //         category: "user_action",
-            //         action: "input",
-            //         details: input,
-            //     })
-            // }
-            let filtered: ReactSelectOptionType[] = []
-            const notFirstWordMatches: ReactSelectOptionType[] = []
-            if (options?.length) {
-                options.forEach((e) => {
-                    if (e.label.toLowerCase().startsWith(input)) {
-                        filtered.push(e)
-                    } else if (
-                        e.label.includes(" ") &&
-                        !e.label.toLowerCase().startsWith(input)
-                    ) {
-                        const words = e.label.toLowerCase().split(/\s+/)
-                        if (words.some((word: string) => word.startsWith(input))) {
-                            notFirstWordMatches.push(e)
-                        }
-                    }
-                })
-                if (notFirstWordMatches.length) {
-                    filtered = filtered.concat(notFirstWordMatches)
-                }
-            }
-            setFilteredOptions(filtered)
-        }
-    }
-
-    const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-        const target = e.target as HTMLElement
-
-        if (target.id.includes("option")) return;
-        setIsFocused(true)
-    }
+    const {
+        id,
+        selectRef,
+        filteredOptions,
+        isMenuOpen,
+        isFocused,
+        handleChange,
+        handleInputChange,
+        handleClick,
+        blur,
+        labels,
+    } = useSearchDesktop({ options, onChangeFn })
 
     return (
         <div
             id="search-container"
-            onClick={e => handleClick(e)}
+            onClick={handleClick}
             className={styles.search}>
             <Select
                 id="search-select"
                 ref={selectRef}
                 instanceId={id}
-                placeholder={t('searchPlaceholder')}
+                placeholder={labels.placeholder}
                 styles={customStyles}
                 components={{
                     DropdownIndicator: () => null,
@@ -289,7 +230,7 @@ const Search = ({ options, value, onChangeFn }: Props): JSX.Element => {
                 onChange={handleChange}
                 onInputChange={handleInputChange}
                 value={value}
-                onBlur={() => setIsFocused(false)}
+                onBlur={blur}
             />
         </div>
     )

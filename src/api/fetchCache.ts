@@ -10,6 +10,8 @@ interface Data {
     totalPendings: Token[]
     totalEarned?: Token[]
     movements: Movements
+    /** No rewards and no history at all. Absent until the call resolves. */
+    firstTimeUser?: boolean
 }
 
 interface Response {
