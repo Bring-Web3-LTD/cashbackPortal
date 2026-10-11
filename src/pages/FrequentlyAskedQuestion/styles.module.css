@@ -231,10 +231,13 @@
         background: var(--faq-row-hover-bg, var(--history-table-row-hover-bg));
     }
 
+    /* Size and weight read the resting toolbar tokens, not the hover ones:
+       the label only changes colour. Platforms with no toolbar tokens keep
+       their old hover values through the fallbacks. */
     .back_btn:hover {
-        font-size: var(--history-back-hover-f-s);
-        font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c);
+        font-size: var(--page-toolbar-back-f-s, var(--history-back-hover-f-s));
+        font-weight: var(--page-toolbar-back-f-w, var(--history-back-hover-f-w));
+        color: var(--page-toolbar-back-hover-f-c, var(--history-back-hover-f-c));
     }
 
     .back_btn:hover .back_icon::after {

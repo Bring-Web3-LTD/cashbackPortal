@@ -128,7 +128,9 @@
 .flag {
     position: absolute;
     top: 15px;
-    right: -1px;
+    /* Flush with the card edge, as drawn. The card's stroke is an inset
+       shadow, so there is no border box to sit outside of. */
+    right: 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;

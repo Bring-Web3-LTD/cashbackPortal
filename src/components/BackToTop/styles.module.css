@@ -28,7 +28,8 @@
     }
 }
 
+/* The arrow is drawn 24 wide by 16 tall, not square. */
 .icon {
-    width: 16px;
+    width: 24px;
     height: 16px;
 }

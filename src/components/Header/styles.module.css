@@ -129,9 +129,12 @@
     height: 38px;
     padding: 9px 14px;
     background: var(--header-more-bg);
-    border-width: var(--header-more-border-w);
-    border-style: solid;
-    border-color: var(--header-more-border-c);
+    /* Inset rather than a border: a Figma stroke is drawn inside the box and
+       does not move the padding, so a real border would push the dots in by
+       its width and take those 2px off the 18 they need. Falling back to 0
+       also keeps the nine platforms that declare no width off `medium`. */
+    border: none;
+    box-shadow: inset 0 0 0 var(--header-more-border-w, 0) var(--header-more-border-c, transparent);
     border-radius: var(--header-more-radius, 100px);
     cursor: pointer;
     transition: .2s;
@@ -143,13 +146,16 @@
 
 .more:active {
     background: var(--header-more-pressed-bg, var(--header-more-hover-bg));
-    border-width: var(--header-more-pressed-border-w, var(--header-more-border-w));
-    border-color: var(--header-more-pressed-border-c, var(--header-more-border-c));
+    box-shadow: inset 0 0 0
+        var(--header-more-pressed-border-w, var(--header-more-border-w, 0))
+        var(--header-more-pressed-border-c, var(--header-more-border-c, transparent));
 }
 
-/* Three 4px dots at 0/7/14 across an 18x4 box. */
+/* Three 4px dots at 0/7/14 across an 18x4 box. flex-shrink or the border
+   steals from the 18 and the last dot is cut in half. */
 .dots {
     display: block;
+    flex-shrink: 0;
     width: 18px;
     height: 4px;
     background: radial-gradient(circle at 2px 2px, var(--header-more-dot-c) 2px, transparent 2px) 0 0 / 7px 4px repeat-x;

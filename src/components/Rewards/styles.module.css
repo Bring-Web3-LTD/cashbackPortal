@@ -134,7 +134,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    min-width: 85px;
+    width: 85px;
     height: 100%;
     padding: 16px 20px;
     overflow: hidden;

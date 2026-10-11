@@ -36,7 +36,7 @@
     --bg: #090C11;
     --skeleton-sweep: linear-gradient(90deg, rgba(34, 38, 45, 0) 0%, #22262D 50%, rgba(34, 38, 45, 0) 100%);
     --title-l-h: 28px;
-    --header-logo-radius: 12px;
+    --header-logo-radius: 100px;
     --header-more-bg: #090C11;
     --header-more-hover-bg: #282B30;
     --header-more-dot-c: #F5F8FF;
@@ -69,8 +69,8 @@
     --legal-link-l-h: 16px;
     --legal-link-f-c: #B1B4BB;
     --legal-link-decoration: underline;
-    --header-btn-bg: #090C11;
-    --header-btn-hover-bg: #1B1E24;
+    --header-btn-bg: rgba(245, 248, 255, 0.08);
+    --header-btn-hover-bg: rgba(245, 248, 255, 0.16);
     --header-btn-f-s: 14px;
     --header-btn-f-w: 400;
     --header-btn-l-h: 20px;
@@ -190,7 +190,7 @@
 
     --deals-amount-f-s: 15px;
     --deals-amount-f-w: 500;
-    --deals-amount-f-c: #6C6F75;
+    --deals-amount-f-c: #66686E;
 
     --loading-msg-f-s: 15px;
     --loading-msg-l-h: 16px;
@@ -231,10 +231,10 @@
     --category-skeleton-bg: #1A1D22;
     --category-skeleton-radius: 5px;
 
-    --back-to-top-bg: #12151A;
-    --back-to-top-hover-bg: #16181D;
+    --back-to-top-bg: #282B30;
+    --back-to-top-hover-bg: #2C2F36;
     --back-to-top-border-w: 1px;
-    --back-to-top-border-c: rgba(102, 104, 110, 0.3);
+    --back-to-top-border-c: #66686E;
     --back-to-top-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
     --modal-popup-frame-bg: #161B26;
@@ -283,7 +283,7 @@
     --modal-pair-otp-border-w: 1px;
     --modal-pair-otp-border-c: #66686E;
     --modal-pair-otp-filled-border-c: #F5F8FF;
-    --modal-pair-otp-error-border-c: #FF1351;
+    --modal-pair-otp-error-border-c: #DA3F49;
     --modal-pair-otp-radius: 5px;
     --modal-pair-otp-filled-radius: 8px;
     --modal-pair-otp-error-border-w: 1.5px;
@@ -294,7 +294,7 @@
     --modal-pair-error-f-s: 12px;
     --modal-pair-error-f-w: 500;
     --modal-pair-error-l-h: 16px;
-    --modal-pair-error-f-c: #FF1351;
+    --modal-pair-error-f-c: #DA3F49;
     --modal-pair-resend-f-s: 13px;
     --modal-pair-resend-f-w: 700;
     --modal-pair-resend-l-h: 18px;
@@ -315,7 +315,7 @@
     --dashboard-card-label-disabled-f-w: 500;
     --dashboard-card-label-disabled-l-h: 22px;
     --dashboard-card-btn-disabled-l-h: 24px;
-    --dashboard-card-label-disabled-f-c: #66686E;
+    --dashboard-card-label-disabled-f-c: #B1B4BB;
     --dashboard-history-disabled-f-c: #66686E;
     --dashboard-card-radius: 12px;
     --dashboard-card-border-w: 1px;
@@ -374,7 +374,7 @@
     --dashboard-action-f-w: 700;
     --dashboard-action-l-h: 22px;
     --dashboard-action-secondary-f-s: 16px;
-    --dashboard-action-secondary-f-w: 400;
+    --dashboard-action-secondary-f-w: 700;
     --dashboard-action-secondary-l-h: 24px;
     --dashboard-action-secondary-border-w: 1px;
     --dashboard-switcher-bg: #1B1E24;
@@ -382,7 +382,7 @@
     --dashboard-tab-active-f-c: #1F2018;
     --dashboard-tab-idle-f-c: #66686E;
     --dashboard-banner-bg: #12151A;
-    --dashboard-banner-border-c: rgba(102, 104, 110, 0.75);
+    --dashboard-banner-border-c: #66686E;
     --dashboard-banner-title-f-c: #F5F8FF;
     --dashboard-banner-text-f-c: #B1B4BB;
     --dashboard-action-secondary-bg: rgba(245, 248, 255, 0.08);
@@ -613,6 +613,7 @@
     --page-toolbar-back-f-w: 500;
     --page-toolbar-back-l-h: 15px;
     --page-toolbar-back-f-c: #B1B4BB;
+    --page-toolbar-back-hover-f-c: #F5F8FF;
     --history-title-f-s: 22px;
     --history-title-f-w: 700;
     --history-title-f-c: #F5F8FF;

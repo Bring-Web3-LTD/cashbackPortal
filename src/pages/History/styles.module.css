@@ -103,12 +103,13 @@
     transition: opacity .2s;
 }
 
-/* The columns are fixed, so a narrow viewport scrolls the table sideways
-   rather than reflowing it or dropping a column. */
+/* The columns are fixed, so a narrow viewport scrolls sideways rather than
+   reflowing the table or dropping a column. No overflow of its own: the table
+   overflows the page instead, so the bar sits at the bottom of the window
+   rather than directly under the rows. */
 .table_scroll {
     width: 100%;
     margin-top: 24px;
-    overflow-x: auto;
 }
 
 /* 879 to 1280: the columns hold their drawn widths at the top of that range and
@@ -458,10 +459,13 @@ b {
         background: var(--history-table-row-hover-bg);
     }
 
+    /* Size and weight read the resting toolbar tokens, not the hover ones:
+       the label only changes colour. Platforms with no toolbar tokens keep
+       their old hover values through the fallbacks. */
     .back_btn:hover {
-        font-size: var(--history-back-hover-f-s);
-        font-weight: var(--history-back-hover-f-w);
-        color: var(--history-back-hover-f-c);
+        font-size: var(--page-toolbar-back-f-s, var(--history-back-hover-f-s));
+        font-weight: var(--page-toolbar-back-f-w, var(--history-back-hover-f-w));
+        color: var(--page-toolbar-back-hover-f-c, var(--history-back-hover-f-c));
     }
 
     .back_btn:hover .back_icon::after {

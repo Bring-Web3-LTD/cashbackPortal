@@ -16,6 +16,7 @@ const Rewards = () => {
         loading,
         pendingCard,
         claimableCard,
+        claimBtnRef,
         currentCryptoSymbol,
         pendingTokenAmount,
         pendingTotalEstimatedUsd,
@@ -82,6 +83,7 @@ const Rewards = () => {
                     {claimableCard.fit.action ? (
                     <button
                         id="rewards-claim-btn"
+                        ref={claimBtnRef}
                         className={styles.card_btn}
                         onClick={claim}
                         disabled={claimDisabled}

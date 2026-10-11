@@ -83,6 +83,10 @@ export const useRewardsDesktop = () => {
 
     const pendingCard = useCardFit()
     const claimableCard = useCardFit()
+    // The tooltip points at the pill, but the pill is disabled and so takes no
+    // pointer events - the card is what hears the hover. Measure the pill
+    // through a ref rather than from the event's target.
+    const claimBtnRef = useRef<HTMLButtonElement>(null)
 
     const [loginOpen, setLoginOpen] = useState(false)
 
@@ -115,7 +119,10 @@ export const useRewardsDesktop = () => {
     // be inviting. Empty while it is claimable, so the card takes no handlers.
     const tooltipHandlers = claimDisabled ? {
         onMouseEnter: (e: MouseEvent<HTMLDivElement>) => {
-            const r = e.currentTarget.getBoundingClientRect()
+            // Falls back to the card, which is the trigger once it is too
+            // narrow for the pill and the pill is no longer rendered.
+            const el = claimBtnRef.current ?? e.currentTarget
+            const r = el.getBoundingClientRect()
             setTooltipAt({ left: r.left + r.width / 2, top: r.top })
         },
         onMouseLeave: () => setTooltipAt(null),
@@ -160,6 +167,7 @@ export const useRewardsDesktop = () => {
         loading,
         pendingCard,
         claimableCard,
+        claimBtnRef,
         currentCryptoSymbol,
         pendingTokenAmount,
         pendingTotalEstimatedUsd,

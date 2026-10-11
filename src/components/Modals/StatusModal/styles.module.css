@@ -210,10 +210,12 @@
     transition: .2s;
 }
 
+/* No font-size or font-weight here: every platform sets the hover pair to its
+   resting values, so they only ever re-stated what was already applied - while
+   outranking .btn_strong, which dropped Try Again from 700 to 400 on hover and
+   made the label reflow. */
 .btn:hover {
     background: var(--modal-status-btn-hover-bg);
-    font-size: var(--modal-status-btn-hover-f-s);
-    font-weight: var(--modal-status-btn-hover-f-w);
     color: var(--modal-status-btn-hover-f-c);
     border-width: var(--modal-status-btn-hover-border-w);
     border-color: var(--modal-status-btn-hover-border-c);
