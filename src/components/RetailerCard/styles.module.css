@@ -128,14 +128,18 @@
 .flag {
     position: absolute;
     top: 15px;
-    /* Flush with the card edge, as drawn. The card's stroke is an inset
-       shadow, so there is no border box to sit outside of. */
-    right: 0;
+    /* Stops where the card's stroke starts rather than painting over it. The
+       stroke is an inset shadow, so it eats into the box rather than wrapping
+       it and there is no border edge to sit against - hence the explicit
+       inset, with the width giving back the same amount so the left edge
+       stays where it is drawn. Figma pins the flag flush and lets it cover
+       the stroke; this keeps the outline unbroken instead. */
+    right: var(--retailer-card-border-w, 0px);
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 55px;
+    width: 56px;
     height: 30px;
     font-size: var(--retailer-card-flag-f-s);
     font-weight: var(--retailer-card-flag-f-w);
