@@ -176,8 +176,15 @@ export const useRewardsDesktop = () => {
         cardAction,
         openHistory,
         tooltipAt,
-        // The threshold is unknown until the balance lands; no number, no tip.
-        showTooltip: Boolean(tooltipAt) && minimumClaimThreshold > 0,
+        // Only when there is a balance the minimum is holding back. With
+        // nothing to claim - before the first reward, or straight after a
+        // claim empties it - the threshold is not the reason the button is
+        // disabled, so naming it reads as an error. Same rule as the mobile
+        // block's belowMinimum. No threshold yet means no number to show.
+        showTooltip:
+            Boolean(tooltipAt) &&
+            minimumClaimThreshold > 0 &&
+            (eligible?.tokenAmount ?? 0) > 0,
         tooltipHandlers,
         loginOpen,
         closeLogin: () => setLoginOpen(false),
