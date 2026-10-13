@@ -1,23 +1,35 @@
+/* The cap belongs on the grid, not the card. Capping the card instead left each
+   track wider than its card and split the slack around every one of them, which
+   read as a bigger gap between cards. Capping the grid keeps the tracks at 256
+   and the gap at exactly 16, with the leftover collecting after the last
+   column — so the first card still lines up with the header and the body.
+   Each cap is N tracks of 256 plus N-1 gaps of 16. */
 .container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    width: 100%;
+    max-width: 1344px;
+    column-gap: 16px;
+    row-gap: 16px;
 }
 
-@media screen and (max-width: 1190px) {
+@media screen and (max-width: 1209px) {
     .container {
         grid-template-columns: repeat(4, 1fr);
+        max-width: 1072px;
     }
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 951px) {
     .container {
         grid-template-columns: repeat(3, 1fr);
+        max-width: 800px;
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 701px) {
     .container {
         grid-template-columns: repeat(2, 1fr);
+        max-width: 528px;
     }
 }

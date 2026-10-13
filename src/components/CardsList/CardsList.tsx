@@ -1,8 +1,11 @@
+/**
+ * The retailer grid, or a full screen of placeholders while it loads.
+ * Pure UI — logic in useCardsListDesktop.
+ */
 import styles from './styles.module.css'
 import RetailerCard from '../RetailerCard/RetailerCard'
 import RetailerCardSkeleton from '../RetailerCard/RetailerCardSkeleton'
-import { useEffect, useState } from 'react'
-import fetchTerms from '../../utils/fetchTerms'
+import { useCardsListDesktop } from './useCardsListDesktop'
 
 interface Metadata {
     iconQueryParam: string
@@ -21,34 +24,14 @@ interface Props {
 }
 
 const CardsList = ({ retailers, metadata, loading, search, isDemo }: Props) => {
-    const [generalTerms, setGeneralTerms] = useState('')
-    const [topGeneralTerms, setTopGeneralTerms] = useState('')
+    const { generalTerms, topGeneralTerms, showSkeleton } = useCardsListDesktop({
+        generalTermsUrl: metadata?.generalTermsUrl,
+        topGeneralTermsUrl: metadata?.topGeneralTermsUrl,
+        loading,
+        hasMetadata: Boolean(metadata),
+    })
 
-    useEffect(() => {
-        if (!metadata?.generalTermsUrl || !metadata?.topGeneralTermsUrl) return
-        if (generalTerms && topGeneralTerms) return
-
-        const controller = new AbortController()
-
-        Promise.all([
-            fetchTerms(metadata.topGeneralTermsUrl),
-            fetchTerms(metadata.generalTermsUrl)
-        ])
-            .then(([topTerms, terms]) => {
-                if (!controller.signal.aborted) {
-                    setTopGeneralTerms(topTerms)
-                    setGeneralTerms(terms)
-                }
-            })
-            .catch((error) => {
-                if (!controller.signal.aborted) {
-                    console.error('Failed to fetch terms:', error)
-                }
-            })
-        return () => controller.abort()
-    }, [metadata?.generalTermsUrl, metadata?.topGeneralTermsUrl, generalTerms, topGeneralTerms])
-
-    if (loading || !metadata) {
+    if (showSkeleton || !metadata) {
         return (
             <div className={styles.container}>
                 {Array.from({ length: 25 }, (_, i) => (
