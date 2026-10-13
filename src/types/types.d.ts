@@ -67,6 +67,8 @@ interface LoaderData {
     variant: string
     bringTou?: string
     privacy?: string
+    /** Support site from the token; see utils/supportUrl for the fallback. */
+    supportUrl?: string
 }
 
 

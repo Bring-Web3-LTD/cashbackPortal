@@ -122,6 +122,7 @@ const rootLoader = async () => {
             privacy: params.get('privacy') || undefined,
             couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
             chromeStoreUrl: params.get('chromeStoreUrl') || undefined,
+            supportUrl: params.get('supportUrl') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()
