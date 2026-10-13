@@ -16,6 +16,9 @@ interface Response {
         userId: string | undefined
         isTester?: boolean
         autoclaim?: boolean
+        /** How the platform pays out. On `noClaim` the platform pays its users
+         *  outside the portal, so there is no claim action at all. */
+        claimType?: 'manualClaim' | 'autoClaim' | 'noClaim' | null
         theme?: string
         terms?: boolean
         extensionId?: string

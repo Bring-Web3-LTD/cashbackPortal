@@ -44,7 +44,7 @@ export const useHistoryDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { sendAnalyticsEvent } = useAnalytics()
-    const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, iconsPath, defaultIconsPath, userId, flowId, noClaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [activeRow, setActiveRow] = useState(-1)
     const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
@@ -96,7 +96,11 @@ export const useHistoryDesktop = () => {
             // The purchase date, which is what the row is about.
             date: formatShortDate(deal.date ?? deal.startDate),
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
-            status: formatStatus(deal.status, deal.eligibleDate),
+            // /cache calls every approved reward claimable, but on a noClaim
+            // platform there is nothing to claim: it is saved for the user.
+            status: noClaim && deal.status === 'claimable'
+                ? t('statusApproved')
+                : formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerDisplayName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 export const useWhatsThis = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { chromeStoreUrl, isHub } = useRouteLoaderData('root') as LoaderData
+    const { chromeStoreUrl, isHub, noClaim } = useRouteLoaderData('root') as LoaderData
 
     const close = () => navigate(-1)
     const goHome = () => navigate('/')
@@ -23,7 +23,10 @@ export const useWhatsThis = () => {
         cards: [
             { icon: 'scissors.svg', title: t('coupons'), text: t('whatsThisCoupons') },
             { icon: 'shopping-bag.svg', title: t('cashback'), text: t('whatsThisCashback') },
-            { icon: 'wallet.svg', title: t('claim'), text: t('whatsThisClaim') },
+            // A noClaim platform pays out itself: the claim card explains that.
+            noClaim
+                ? { icon: 'wallet.svg', title: t('noClaimTitle'), text: t('noClaimText') }
+                : { icon: 'wallet.svg', title: t('claim'), text: t('whatsThisClaim') },
         ],
         close,
         goHome,

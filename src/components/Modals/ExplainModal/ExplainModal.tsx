@@ -16,7 +16,7 @@ const shellOverrides = {
 type Props = Omit<ComponentProps<typeof Modal>, 'children'>
 
 const ExplainModal = ({ open, closeFn }: Props) => {
-    const { cards, claimDisabled, claimAndClose, labels } = useExplainModal(closeFn)
+    const { cards, noClaim, claimDisabled, claimAndClose, labels } = useExplainModal(closeFn)
 
     return (
         <Modal
@@ -52,6 +52,8 @@ const ExplainModal = ({ open, closeFn }: Props) => {
                         </div>
                     ))}
                 </div>
+                {/* Nothing to claim on a noClaim platform. */}
+                {noClaim ? null : (
                 <div className={styles.action_area}>
                     <button
                         id="explain-modal-btn"
@@ -62,6 +64,7 @@ const ExplainModal = ({ open, closeFn }: Props) => {
                         {labels.claimCashback}
                     </button>
                 </div>
+                )}
                 </div>
             </div>
         </Modal>

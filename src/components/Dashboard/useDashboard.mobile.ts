@@ -27,7 +27,7 @@ export interface DashboardProps {
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, couponsEnabled, isHub, noClaim } = useRouteLoaderData('root') as LoaderData
     const { data } = useBalance()
 
     const eligible = selectEligible(data)
@@ -39,7 +39,8 @@ export const useDashboard = () => {
         coupons: t('coupons'),
         cashback: t('cashback'),
         pending: t('pending'),
-        claim: t('claim'),
+        // A noClaim platform pays out itself: approved rewards are saved.
+        claim: noClaim ? t('approved') : t('claim'),
         whatsThis: t('whatsThis'),
         pairWallet: t('pairWallet'),
         smartCashback: t('smartCashback'),
@@ -50,6 +51,7 @@ export const useDashboard = () => {
         firstTimeUser: selectFirstTimeUser(data),
         couponsEnabled: !!couponsEnabled,
         isHub: !!isHub,
+        noClaim: !!noClaim,
         pending: {
             amount: pending?.tokenAmountDisplay ?? '0.00',
             symbol: pending?.tokenSymbol ?? fallbackSymbol,

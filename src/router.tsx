@@ -54,6 +54,7 @@ const rootLoader = async () => {
         const extensionId = res.info.extensionId || urlExtensionId || null
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
+        const noClaim = res.info.claimType === 'noClaim'
         const maxWidth = mobilePortalMaxWidth(platform)
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= maxWidth
         // Same number drives the CSS width caps, including the body-portaled modals.
@@ -92,6 +93,7 @@ const rootLoader = async () => {
             extensionId,
             showTerms,
             autoclaim,
+            noClaim,
             useMobilePortal,
             flowId,
             variant,
@@ -106,6 +108,7 @@ const rootLoader = async () => {
         const theme = urlTheme || 'light'
         const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
         const autoclaim = params.get('autoclaim') === 'true'
+        const noClaim = params.get('claimType') === 'noClaim'
         const dev = {
             walletAddress: params.get('walletAddress') || null,
             platform: params.get('platform'),
@@ -151,6 +154,7 @@ const rootLoader = async () => {
             flowId,
             showTerms,
             autoclaim,
+            noClaim,
             useMobilePortal,
             extensionId: urlExtensionId,
             variant,
