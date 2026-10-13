@@ -35,7 +35,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 43px;
+    gap: 32px;
     padding-bottom: 32px;
 }
 
@@ -94,6 +94,7 @@
 }
 
 .filter {
+    box-sizing: border-box;
     display: flex;
     gap: 12px;
     align-items: center;
@@ -106,14 +107,22 @@
     border-style: solid;
     border-color: var(--filter-btn-border-c);
     border-radius: var(--filter-btn-radius);
-    padding: 16px 12px 16px 15px;
+    padding: 0 15px;
     cursor: pointer;
     transition: .2s;
 }
 
+/* The asset ships at 16; the tag draws it at 10. */
+.filter img {
+    width: 10px;
+    height: 10px;
+}
+
+/* Falls back to the resting values, so a platform that declares no hover - as
+   SOLFLARE does not, its design having no such state - simply does not change. */
 .filter:hover {
-    background: var(--filter-btn-hover-bg);
-    color: var(--filter-btn-hover-f-c);
+    background: var(--filter-btn-hover-bg, var(--filter-btn-bg));
+    color: var(--filter-btn-hover-f-c, var(--filter-btn-f-c));
 }
 
 .not_available_container {

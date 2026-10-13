@@ -43,7 +43,10 @@ const singleOptionRowStyle = {
 
 const customStyles: StylesConfig<ReactSelectOptionType> = {
     control: (base, state) => {
-        const borderColor = state.isFocused
+        // hasValue, not just focus: the design's Filter state keeps the bright
+        // stroke while a term is still filtering, the same reason the magnifier
+        // stays lit after blur.
+        const borderColor = state.isFocused || state.hasValue
             ? "var(--search-border-focus-c, var(--search-border-c))"
             : "var(--search-border-c)"
         return {

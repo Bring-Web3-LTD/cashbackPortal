@@ -74,9 +74,12 @@
     --header-btn-f-s: 14px;
     --header-btn-f-w: 400;
     --header-btn-l-h: 20px;
-    --header-btn-f-c: #B1B4BB;
+    --header-btn-f-c: #F5F8FF;
+    --header-btn-hover-f-c: #F5F8FF;
     --header-btn-border-w: 1px;
-    --header-btn-border-c: rgba(102, 104, 110, 0.3);
+    --header-btn-hover-border-w: 1px;
+    --header-btn-border-c: #66686E;
+    --header-btn-hover-border-c: #66686E;
     --header-btn-radius: 100px;
 
     --rewards-bg: #1B1E24;
@@ -198,10 +201,10 @@
     --loading-msg-f-c: #F5F8FF;
 
     --filter-btn-f-s: 14px;
-    --filter-btn-f-w: 500;
+    --filter-btn-f-w: 700;
     --filter-btn-f-c: #F5F8FF;
-    --filter-btn-bg: #1B1E24;
-    --filter-btn-hover-bg: #282B30;
+    --filter-btn-bg: #2C2F36;
+    --filter-btn-hover-bg: #2C2F36;
     --filter-btn-hover-f-c: #F5F8FF;
     --filter-btn-border-w: 0;
     --filter-btn-border-c: transparent;
@@ -272,7 +275,7 @@
     --modal-pair-input-border-w: 1px;
     --modal-pair-input-border-c: rgba(102, 104, 110, 0.3);
     --modal-pair-input-empty-border-c: #F5F8FF;
-    --modal-pair-input-error-border-c: #DA493F;
+    --modal-pair-input-error-border-c: #DA3F49;
     --modal-pair-input-radius: 8px;
     --modal-pair-input-f-s: 15px;
     --modal-pair-input-f-w: 500;
@@ -342,8 +345,8 @@
     --dashboard-skeleton-bar-bg: #1A1D22;
     --dashboard-skeleton-radius: 12px;
     --dashboard-skeleton-bar-radius: 4px;
-    --dashboard-card-hover-bg: #16181D;
-    --dashboard-card-border-c: rgba(102, 104, 110, 0.75);
+    --dashboard-card-hover-bg: #12151A;
+    --dashboard-card-border-c: #66686E;
     --dashboard-card-label-f-c: #FFEF46;
     --dashboard-card-amount-f-c: #F5F8FF;
     --dashboard-badge-bg: #282B30;
@@ -600,7 +603,7 @@
     --search-menu-border-w: 1px;
     --search-menu-border-c: rgba(102, 104, 110, 0.75);
     --search-border-w: 2px;
-    --search-border-c: rgba(102, 104, 110, 0.75);
+    --search-border-c: #66686E;
     --search-border-focus-c: #F5F8FF;
     --search-placeholder-f-c: #66686E;
     --search-scrollbar-bg: #282B30;
@@ -614,6 +617,10 @@
     --page-toolbar-back-l-h: 15px;
     --page-toolbar-back-f-c: #B1B4BB;
     --page-toolbar-back-hover-f-c: #F5F8FF;
+    /* The arrow's colour is baked into its SVG, so the hover tint is painted
+       through a mask of the same file. Both themes share the one asset. */
+    --history-back-icon-src: url('/SOLFLARE/icons/dark/arrow-left.svg');
+    --history-back-icon-hover-f-c: #FFFFFF;
     --history-title-f-s: 22px;
     --history-title-f-w: 700;
     --history-title-f-c: #F5F8FF;
