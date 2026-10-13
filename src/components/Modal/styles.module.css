@@ -1,61 +1,100 @@
+/* The dialog can outgrow the window - a short viewport, or one narrower than
+   the dialog's own min-width. The overlay scrolls so none of it is stranded;
+   the body is locked while it is open, so the scroll stops here rather than
+   chaining to the page behind. */
 .overlay {
     position: fixed;
     inset: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    overflow: auto;
+    overscroll-behavior: contain;
     z-index: 10;
     background: var(--modal-overlay-bg);
 }
 
+/* Same as the page: no bar down the right, only along the bottom. It still
+   scrolls both ways. Setting scrollbar-width here instead would cost Chrome
+   these rules altogether, and with them the bottom bar. */
+.overlay::-webkit-scrollbar:vertical {
+    width: 0;
+}
+
+.overlay::-webkit-scrollbar:horizontal {
+    height: 8px;
+}
+
+/* Centres while there is room, and gives way instead of clipping when there is
+   not - which `align-items: center` cannot do, since it overflows both ends of
+   the scrollport and the top becomes unreachable. */
 .modal {
-    --_modal-bg: var(--custom-modal-bg, var(--modal-bg));
-    --_modal-radius: var(--custom-modal-radius, var(--modal-radius));
-    --_modal-h: var(--custom-modal-h, var(--modal-h, auto));
-    --padding: 24px;
-    margin-top: var(--modal-offset-top);
+    box-sizing: border-box;
     position: relative;
-    height: var(--_modal-h);
-    max-height: calc(621px - var(--padding) * 2);
-    width: calc(512px - var(--modal-px, var(--padding)) * 2);
+    margin: auto;
+    width: 100%;
+    min-width: 420px;
+    max-width: 512px;
     display: flex;
     justify-content: center;
-    padding: var(--modal-pt, var(--padding)) var(--modal-px, var(--padding)) var(--modal-pb, var(--padding));
-    background: var(--_modal-bg);
+    padding: 24px;
+    background: var(--custom-modal-bg, var(--modal-bg));
     border-width: var(--modal-border-w);
     border-style: solid;
     border-color: var(--modal-border-c);
-    border-radius: var(--_modal-radius);
+    border-radius: var(--custom-modal-radius, var(--modal-radius));
     user-select: none;
     -webkit-user-select: none;
 }
 
+/* A 40 target holding a 24 glyph, which is how every modal draws it. */
 .close_btn {
-    --corner: 32px;
     position: absolute;
-    top: var(--custom-modal-close-top, var(--modal-close-top, 32px));
-    right: var(--custom-modal-close-right, var(--modal-close-right, 32px));
-    padding: var(--modal-close-pad, 1px 6px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 32px;
+    right: 32px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: var(--modal-close-radius, 8px);
     z-index: 11;
     cursor: pointer;
     background: transparent;
     border: none;
     outline: none;
+    transition: background-color .2s;
 }
 
 .close_btn img {
-    width: var(--modal-close-size, 20px);
-    height: var(--modal-close-size, 20px);
+    width: 24px;
+    height: 24px;
 }
 
-@media screen and (max-width: 768px) {
-    .modal {
-        width: calc(345px - var(--padding) * 2);
+/* The glyph's colour is baked into its SVG, so CSS cannot repaint the <img>.
+   The hover tint is painted through a mask of the same icon instead. A platform
+   that points --modal-close-icon-src nowhere leaves the overlay transparent, so
+   nothing changes for it. */
+.close_btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--modal-close-hover-f-c, transparent);
+    -webkit-mask: var(--modal-close-icon-src) center / 24px 24px no-repeat;
+    mask: var(--modal-close-icon-src) center / 24px 24px no-repeat;
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .close_btn:hover {
+        background: var(--modal-close-hover-bg, transparent);
     }
-}
 
-@media screen and (max-height: 710px) {
-    .modal {
-        margin-top: 0;
+    .close_btn:hover::after {
+        opacity: 1;
     }
 }

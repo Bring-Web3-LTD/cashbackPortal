@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { DashboardMode } from '../../components/Dashboard/useDashboard'
+import { DashboardMode } from '../../components/Dashboard/useDashboard.mobile'
 import { CategoriesItem } from '../../components/Categories/useCategories'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
@@ -26,7 +26,7 @@ const SEARCH_MIN_CHARS = 2
 // Only https may reach the coupons <iframe src> — an iframe src is an
 // injection sink (a javascript: URL would run in the portal's origin), so
 // allowlist the scheme even though the value arrives via the verified JWT.
-const safeIframeSrc = (src?: string): string | undefined => {
+const safeIframeSrc = (src?: string | null): string | undefined => {
     if (!src) return undefined
     try {
         return new URL(src).protocol === 'https:' ? src : undefined
@@ -54,11 +54,13 @@ export const useHomePage = () => {
     // keeps showing it after the balance query refetches to 0.
     const [claimedDisplay, setClaimedDisplay] = useState('0.00')
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
-    // The pairing flow signs through the same SIGN_MESSAGE channel, so this
-    // listener must answer only the signatures it asked for.
-    const awaitingClaimSignatureRef = useRef(false)
     const claimExplorerLinkRef = useRef(claimExplorerLink)
     useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
+    // SIGNATURE is a broadcast, and the reply carries nothing tying it to the
+    // request that asked for it. Without this gate the claim flow also answers
+    // the signature the pairing flow asked for (usePairWallet gates its own the
+    // same way) and submits a claim with it.
+    const awaitingSignatureRef = useRef(false)
 
     const { data: filters, isLoading: isLoadingCategories } = useCategories()
     const categories = selectCategories(filters)
@@ -139,7 +141,7 @@ export const useHomePage = () => {
     }
 
     const handleCloseClaim = () => {
-        awaitingClaimSignatureRef.current = false
+        awaitingSignatureRef.current = false
         setClaimState(null)
         setClaimExplorerLink(null)
     }
@@ -167,7 +169,8 @@ export const useHomePage = () => {
             return
         }
 
-        awaitingClaimSignatureRef.current = true
+        // Armed only here, so the listener answers this request and no other.
+        awaitingSignatureRef.current = true
         message({
             messageToSign: initiated.messageToSign,
             amount: claimAmount,
@@ -179,17 +182,17 @@ export const useHomePage = () => {
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) return
-            // Ignore the pairing flow's signature round-trip.
-            if (!awaitingClaimSignatureRef.current) return
+            // Not ours: the pairing flow (or any other surface) asked for it.
+            if (!awaitingSignatureRef.current) return
 
             if (event.data.action === 'ABORT_SIGN_MESSAGE') {
-                awaitingClaimSignatureRef.current = false
+                awaitingSignatureRef.current = false
                 setClaimState('confirm')
                 return
             }
 
             if (event.data.action !== 'SIGNATURE') return
-            awaitingClaimSignatureRef.current = false
+            awaitingSignatureRef.current = false
             if (!walletAddress || !eligible) {
                 setClaimState('failure')
                 return

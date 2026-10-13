@@ -2,7 +2,7 @@
  * paired / failed. Pure UI — logic in usePairWalletModal. */
 import { createPortal } from 'react-dom'
 import Icon from '../Icon/Icon'
-import { usePairWalletModal, PairWalletModalProps } from './usePairWalletModal'
+import { usePairWalletModal, PairWalletModalProps } from './usePairWalletModal.mobile'
 import styles from './styles.mobile.module.css'
 
 const PairWalletModal = (props: PairWalletModalProps) => {

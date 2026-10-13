@@ -1,70 +1,56 @@
 /**
- * View adapter for the mobile Pair Wallet sheet. Holds no flow logic of its
- * own — it wires three pieces together:
+ * Logic hook for the desktop pair-wallet modal. Composes the shared flow and
+ * the OTP inputs, owns the submit handler and the focus the code step needs,
+ * and resolves the labels — so the view is pure UI.
  *
- *   usePairWallet  the pairing flow (steps, the three /v1/auth/pair/* calls,
- *                  the signature round-trip). No DOM, no i18n.
- *   useOtpInputs   the code-box refs and caret behaviour.
- *   useTranslation turns the flow's error *keys* into rendered strings.
- *
- * A desktop Pair Wallet view imports usePairWallet directly and does its own
- * two lines of wiring; nothing here is in its way.
+ * The flow itself (validation, API round-trips) stays in usePairWallet, which
+ * the mobile sheet shares.
  */
+import { FormEvent, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { usePairWallet } from '../../hooks/usePairWallet'
+import { usePairWallet } from './usePairWallet'
 import { useOtpInputs } from './useOtpInputs'
 
-export type { PairStep } from '../../hooks/usePairWallet'
-
-export interface PairWalletModalProps {
-    open: boolean
-    onClose: () => void
-}
-
-export const usePairWalletModal = ({ open }: PairWalletModalProps) => {
+export const usePairWalletModal = (open: boolean) => {
     const { t } = useTranslation()
-    const pair = usePairWallet({ open })
+    const flow = usePairWallet({ open })
+    const { step, code, setCode, codeLength, clearCodeError, codeErrorKey, submitCode, submitEmail } = flow
+
     const otp = useOtpInputs({
-        code: pair.code,
-        setCode: pair.setCode,
-        length: pair.codeLength,
-        onEdit: pair.clearCodeError,
+        code,
+        setCode,
+        length: codeLength,
+        onEdit: clearCodeError,
     })
 
+    const isCode = step === 'code'
+
+    // The code arrives by mail, so the user comes back to this screen from
+    // another window — put the caret where they need it.
+    useEffect(() => {
+        if (isCode) otp.focusFirst()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isCode])
+
     return {
-        step: pair.step,
-        busy: pair.busy,
+        ...flow,
+        ...otp,
+        isCode,
+        submit: (e: FormEvent) => {
+            e.preventDefault()
+            if (isCode) submitCode()
+            else submitEmail()
+        },
+        // The key is chosen by the flow, so the view never resolves one itself.
+        codeError: codeErrorKey ? t(codeErrorKey) : '',
         labels: {
-            title: t('pairWallet'),
-            emailTitle: t('pairEmailTitle'),
-            emailPlaceholder: t('pairEmailPlaceholder'),
-            submitEmail: t('pairSubmitEmail'),
-            codeTitle: t('pairCodeTitle'),
-            resendCode: t('pairResendCode'),
-            confirm: t('confirm'),
-            tryAgain: t('tryAgain'),
-            successTitle: t('pairSuccessTitle'),
-            close: t('close'),
-            back: t('back'),
+            enterCode: t('enterCode'),
+            pairWallet: t('pairWallet'),
+            signInWithGoogle: t('signInWithGoogle'),
+            or: t('or'),
+            emailPlaceholder: t('emailPlaceholder'),
+            resendCode: t('resendCode'),
+            submit: t(isCode ? 'confirm' : 'pair'),
         },
-        email: pair.email,
-        setEmail: pair.setEmail,
-        emailError: pair.emailErrorKey ? t(pair.emailErrorKey) : null,
-        submitEmail: pair.submitEmail,
-        canSubmitEmail: pair.canSubmitEmail,
-        code: pair.code,
-        codeError: pair.codeErrorKey ? t(pair.codeErrorKey) : null,
-        digitRefs: otp.digitRefs,
-        handleDigitChange: otp.handleDigitChange,
-        handleDigitKeyDown: otp.handleDigitKeyDown,
-        canSubmitCode: pair.canSubmitCode,
-        submitCode: pair.submitCode,
-        // The caret goes back to the first box before the new code lands.
-        resendCode: () => {
-            otp.focusFirst()
-            pair.resendCode()
-        },
-        fatalError: t(pair.fatalErrorKey),
-        goToEmail: pair.goToEmail,
     }
 }

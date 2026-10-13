@@ -37,6 +37,9 @@ export type PairReason =
     | 'address_already_paired'
     | 'email_already_paired'
     | 'address_has_rewards'
+    // google — the code was spent, expired or forged, or the token it bought
+    // failed a check. Never a config fault: those answer 500/internal_error.
+    | 'google_invalid'
     // verify-otp — Cognito verification outcomes, distinguishable on purpose
     | 'missing_fields'
     | 'wrong_code'
@@ -119,9 +122,27 @@ export const pairVerifyOtp = (
 ) => authPost<PairNonce>('pair/verify-otp', body)
 
 /**
- * Consumes the nonce and persists the pair. Everything trusted comes from the
- * nonce row — the request contributes only the nonce and the signature (base58,
- * the same shape the claim flow's `SIGNATURE` message already returns).
+ * Google sign-in stands in for initiate + verify-otp: the ID token the backend
+ * exchanges the code for already proves the address is the user's, so there is
+ * no code to mail. The address still has to be proved, so this answers with the
+ * same nonce shape and the flow continues into `pairConfirm` unchanged.
+ *
+ * `code` is the popup's one-time authorization code — see utils/google.ts.
  */
-export const pairConfirm = (body: AuthBody & { nonce: string; signature: string }) =>
-    authPost<{ message: 'paired' }>('pair/confirm', body)
+export const pairGoogle = (body: AuthBody & { code: string; address: string }) =>
+    authPost<PairNonce>('pair/google', body)
+
+/**
+ * Consumes the nonce and persists the pair. Everything trusted comes from the
+ * nonce row — the request adds only what the wallet answered with.
+ *
+ * `signature` is base58, the same shape the claim flow's `SIGNATURE` message
+ * returns. `message` and `key` ride along for the same reason claim-submit
+ * sends them: a wallet echoes back the text it actually signed (which need not
+ * be byte-identical to what it was handed) and, on chains where the signing key
+ * is not the address, the key that signed. The backend can ignore both and
+ * rebuild from the nonce row, but without them a mismatch is undiagnosable.
+ */
+export const pairConfirm = (
+    body: AuthBody & { nonce: string; signature: string; message?: string; key?: string },
+) => authPost<{ message: 'paired' }>('pair/confirm', body)

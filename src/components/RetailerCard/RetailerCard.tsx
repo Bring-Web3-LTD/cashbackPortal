@@ -1,26 +1,11 @@
+/**
+ * One retailer tile in the grid: logo, name and cashback rate, opening the
+ * terms modal on click. Pure UI — logic in useRetailerCardDesktop.
+ */
 import styles from './styles.module.css'
-import { useEffect, useMemo, useState } from 'react'
-import formatCashback from '../../utils/formatCashback'
-import { useRouteLoaderData } from 'react-router-dom'
-import activate from '../../api/activate'
 import RetailerCardModal from '../Modals/RetailerCardModal/RetailerCardModal'
-import { useAnalytics } from '../../hooks/useAnalytics'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
 import LoginModal from '../Modals/LoginModal/LoginModal'
-import fetchTerms from '../../utils/fetchTerms'
-import injectCashback from '../../utils/injectCashback'
-import { getInitials } from '../../utils/getInitials'
-
-const isBigCashback = (symbol: string, amount: number) => {
-    switch (symbol) {
-        case "%":
-            return amount > 4
-        case "$":
-            return amount > 10
-        default:
-            return false
-    }
-}
+import { useRetailerCardDesktop } from './useRetailerCardDesktop'
 
 interface Props extends Retailer {
     topGeneralTerms: string
@@ -49,108 +34,28 @@ const RetailerCard = ({
     isDemo,
     campaignId
 }: Props) => {
-    const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress, isTester } = useWalletAddress()
-    const { sendAnalyticsEvent } = useAnalytics()
-    const [fallbackLogo, setFallbackLogo] = useState('')
-    const [redirectLink, setRedirectLink] = useState('')
-    const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
-    const [modalState, setModalState] = useState('close')
-    const [loginModalState, setLoginModalState] = useState('close')
-    // Set when the user hits "connect" from this card's login modal, so the
-    // card can re-open itself once the wallet address lands.
-    const [reopenAfterConnect, setReopenAfterConnect] = useState(false)
-    const [terms, setTerms] = useState('')
-
-    const cashback = useMemo(() => formatCashback(maxCashback, cashbackSymbol, cashbackCurrency), [cashbackCurrency, cashbackSymbol, maxCashback])
-    const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
-    const isCampaign = useMemo(() => Boolean(campaignId), [campaignId])
-
-    const label = displayName || name
-
-    const offerName = useMemo(() => {
-        // Long names (>22 chars) are always truncated to 20 + ".."
-        if (name.length > 22) return name.slice(0, 20) + '..'
-
-        // Search results with a section: show "name/section"
-        // Truncate section to fit within 22 chars total, minimum 3 chars of section shown
-        // If section can't fit 3 chars, show name only
-        if (search && section) {
-            const full = `${name}/${section}`
-            if (full.length <= 22) return full
-            const availableForSection = 22 - name.length - 1 - 2 // 1 for "/", 2 for ".."
-            if (availableForSection >= 3) return `${name}/${section.slice(0, availableForSection)}..`
-            return name
-        }
-
-        // Search results without a section: show name (already truncated above if >22)
-        if (search) return name
-
-        // Default (non-search): show "/section" if available, otherwise name
-        return section ? `/${section}` : label
-    }, [label, search, section])
-
-    const activateDeal = async () => {
-        if (!walletAddress) return
-
-        const body: Parameters<typeof activate>[0] = {
-            platform,
-            itemId: id,
-            walletAddress,
-            userId,
-            flowId,
-            tokenSymbol: cryptoSymbols[0]
-        }
-
-        if (search?.value) body['search'] = search.value
-
-        if (isTester && isDemo) body.isDemo = true
-
-        const res = await activate(body)
-        setPopupData({
-            iframeUrl: res.iframeUrl,
-            token: res.token,
-            domain: res.domain
-        })
-        setRedirectLink(res.url)
-        setModalState('open')
-    }
-
-    const handleClick = () => {
-        if (!walletAddress) {
-            setLoginModalState('open')
-            return
-        }
-        activateDeal()
-        setModalState('loading')
-        sendAnalyticsEvent('retailer_open', {
-            category: 'user_action',
-            action: 'click',
-            details: label,
-            process: 'activate'
-        })
-    }
-
-    useEffect(() => {
-        if (!reopenAfterConnect || !walletAddress) return
-        setReopenAfterConnect(false)
-        handleClick()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reopenAfterConnect, walletAddress])
-
-    useEffect(() => {
-        if (!termsUrl || terms.length || modalState === 'close') return
-
-        const fetches = [fetchTerms(termsUrl)]
-        if (campaignUrl) fetches.push(fetchTerms(campaignUrl))
-
-        Promise.all(fetches)
-            .then(([retailerTerms, campaignTerms]) => {
-                setTerms(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback))
-            })
-            .catch(console.error)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [modalState])
+    const {
+        iconsPath,
+        label,
+        cashback,
+        offerName,
+        isBig,
+        isCampaign,
+        fallbackLogo,
+        useFallbackLogo,
+        handleClick,
+        terms,
+        redirectLink,
+        popupData,
+        modalOpen,
+        closeModal,
+        loginOpen,
+        onConnect,
+        closeLogin,
+    } = useRetailerCardDesktop({
+        id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
+        campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
+    })
 
     return (
         <>
@@ -175,7 +80,7 @@ const RetailerCard = ({
                             loading='eager'
                             src={iconPath}
                             alt={`${label} logo`}
-                            onError={() => setFallbackLogo(getInitials(label))}
+                            onError={useFallbackLogo}
                         />
                     }
                 </div>
@@ -183,15 +88,8 @@ const RetailerCard = ({
                 <div id={`retailer-cashback-rate-${name}`} className={`${styles.cashback_rate} ${isCampaign ? styles.cashback_rate_campaign : ''}`}>{isCampaign ? '' : 'Up to '}{cashback} cashback</div>
             </div>
             <RetailerCardModal
-                open={modalState !== 'close'}
-                closeFn={() => {
-                    setModalState('close')
-                    sendAnalyticsEvent('popup_close', {
-                        category: 'user_action',
-                        action: 'click',
-                        details: 'Retailer',
-                    })
-                }}
+                open={modalOpen}
+                closeFn={closeModal}
                 {...(!fallbackLogo && { backgroundColor })}
                 iconPath={iconPath}
                 name={label}
@@ -202,9 +100,9 @@ const RetailerCard = ({
                 {...popupData}
             />
             <LoginModal
-                open={loginModalState !== 'close'}
-                onConnect={() => setReopenAfterConnect(true)}
-                closeFn={() => setLoginModalState('close')}
+                open={loginOpen}
+                onConnect={onConnect}
+                closeFn={closeLogin}
             />
         </>
     )

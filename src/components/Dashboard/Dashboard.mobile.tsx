@@ -1,7 +1,7 @@
 /** Generic mobile dashboard bar. Slots are driven by `firstTimeUser`,
  * `couponsEnabled` and `isHub`. Pure UI — logic in useDashboard. */
 import Icon from '../Icon/Icon'
-import { useDashboard, DashboardProps, DashboardMode } from './useDashboard'
+import { useDashboard, DashboardProps, DashboardMode } from './useDashboard.mobile'
 import styles from './styles.mobile.module.css'
 
 const TABS: DashboardMode[] = ['coupons', 'cashback']

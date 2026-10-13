@@ -1,44 +1,135 @@
-.modal {
+/* Type A shell: the sections span its full width and only the 24px bottom
+   exposes the frame colour behind them. The 10px inset belongs to the content,
+   not here - header and footer run edge to edge. */
+.overlay .shell {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 288px;
+    min-height: 288px;
+    padding: 0 0 24px;
+    overflow: hidden;
+}
+
+/* In flow, not floating over the content: the 132 the content gets is what is
+   left once this band and the footer have taken theirs. */
+.header {
+    flex-shrink: 0;
+    width: 100%;
+    height: 56px;
+    background: var(--modal-bg);
+}
+
+.overlay .close {
+    top: 16px;
+    right: 16px;
+}
+
+.overlay .close img {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+.content {
+    box-sizing: border-box;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
+    gap: 5px;
+    min-height: 0;
     width: 100%;
-    padding-top: 6px;
-    padding-bottom: 20px;
+    padding: 0 10px;
+    background: var(--modal-bg);
+}
+
+/* 50 + 5 gap + 57 is the drawn block; the rest of the 132 falls below it. */
+.icon_area {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-end;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    gap: 10px;
+    padding: 9px 9px 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Fixed box + filled img: platform wallet.svg files ship different intrinsic
+   sizes (41x36, 48x48, 65x65), so the asset must not size the frame. */
+.icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 41px;
+    height: 36px;
+}
+
+.icon_img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.paragraph {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 57px;
+    width: 100%;
+    padding-top: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .title {
-    margin-top: 11px;
-    margin-bottom: 17px;
-    font-size: var(--modal-title-f-s);
-    font-weight: var(--modal-title-f-w);
-    color: var(--modal-title-f-c);
-    width: 100%;
-    line-height: 24px;
-    text-align: center;
+    font-size: var(--modal-popup-title-f-s);
+    font-weight: var(--modal-popup-title-f-w);
+    line-height: var(--modal-popup-title-l-h);
+    color: var(--modal-popup-title-f-c);
 }
 
 .subtitle {
-    font-size: var(--modal-paragraph-f-s);
-    font-weight: var(--modal-paragraph-f-w);
-    color: var(--modal-paragraph-f-c);
-    margin-bottom: 17px;
-    line-height: 22px;
-    text-align: center;
+    font-size: var(--modal-popup-text-f-s);
+    font-weight: var(--modal-popup-text-f-w);
+    line-height: var(--modal-popup-text-l-h);
+    color: var(--modal-popup-text-f-c);
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    flex-shrink: 0;
+    height: 76px;
+    width: 100%;
+    padding: 2px 24px 0;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+    /* Sits above the shell's skirt, so its own bottom corners are on show. */
+    border-radius: 0 0 var(--modal-popup-radius, var(--modal-radius)) var(--modal-popup-radius, var(--modal-radius));
 }
 
 .btn {
     display: flex;
-    padding: 13px 24px;
-    justify-content: center;
     align-items: center;
-    gap: 6px;
-    align-self: stretch;
-    /* Popup CTAs can differ from the rewards CTA (e.g. a solid fill where the
-       banner uses a gradient); falls back to it when unset. */
+    justify-content: center;
+    width: 100%;
+    min-width: 100px;
+    height: 46px;
+    padding: 0;
     background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
-    font-size: var(--primary-btn-f-s);
-    font-weight: var(--primary-btn-f-w);
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
     color: var(--primary-btn-f-c);
     border-width: var(--primary-btn-border-w);
     border-style: solid;

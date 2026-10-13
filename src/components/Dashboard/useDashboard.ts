@@ -1,68 +1,80 @@
 /**
- * Logic hook for the generic mobile dashboard bar. Picks the slots from the
- * three state flags, derives the Pending / Claim values from the shared
- * balance query, and owns the nav handlers — so the view stays pure UI.
+ * Logic hook for the dashboard bar. Owns the onboarding-vs-rewards decision,
+ * the two modals' state, the dev wrapper's flag report and its pairing jump —
+ * so the view is pure UI.
  */
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-    useBalance,
-    selectEligible,
-    selectPending,
-    selectFirstTimeUser,
-} from '../../hooks/useBalance'
-import { formatCurrency } from '../../pages/History/helpers'
-
-export type DashboardMode = 'cashback' | 'coupons'
-
-export interface DashboardProps {
-    mode: DashboardMode
-    onModeChange: (mode: DashboardMode) => void
-    /** Opens the claim flow from the Claim tile. */
-    onClaim: () => void
-    /** Opens the email pairing flow from the Pair Wallet pill. */
-    onPairWallet: () => void
-}
+import { useRouteLoaderData } from 'react-router-dom'
+import message from '../../utils/message'
+import { useBalance, selectFirstTimeUser } from '../../hooks/useBalance'
+import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
+import { ENV } from '../../config'
 
 export const useDashboard = () => {
     const { t } = useTranslation()
-    const navigate = useNavigate()
-    const { cryptoSymbols, couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
-    const { data } = useBalance()
+    const { isHub, couponsEnabled, firstTimeUser: firstTimeOverride } = useRouteLoaderData('root') as LoaderData
 
-    const eligible = selectEligible(data)
-    const pending = selectPending(data)
-    const fallbackSymbol = cryptoSymbols?.[0] ?? ''
+    // Optimistically onboarding until /cache says the user already has
+    // activity. Re-derived from the live query, so earning a first reward
+    // leaves the onboarding state without waiting for a reload.
+    const { data: balance, isLoading: balanceLoading } = useBalance()
+    const skeletonPreview = useSkeletonPreview()
 
-    const labels = {
-        rewards: t('rewards'),
-        coupons: t('coupons'),
-        cashback: t('cashback'),
-        pending: t('pending'),
-        claim: t('claim'),
-        whatsThis: t('whatsThis'),
-        pairWallet: t('pairWallet'),
-        smartCashback: t('smartCashback'),
-        more: t('more'),
-    }
+    // What /cache says, or the true default when it has not answered — which
+    // includes after a disconnect, since the query is keyed on the address and
+    // its data goes with it.
+    const backendFirstTimeUser = selectFirstTimeUser(balance)
+
+    // Only the portal calls /cache, so report the resolved flag back to the
+    // dev wrapper for its Dashboard flags panel. Dev only — the embedding host
+    // in production has no use for it.
+    useEffect(() => {
+        if (ENV === 'prod') return
+        message({
+            action: 'PORTAL_FLAGS',
+            isHub: Boolean(isHub),
+            couponsEnabled: Boolean(couponsEnabled),
+            firstTimeUser: backendFirstTimeUser,
+        })
+    }, [isHub, couponsEnabled, backendFirstTimeUser])
+
+    const [explainOpen, setExplainOpen] = useState(false)
+    const [pairOpen, setPairOpen] = useState(false)
+
+    // The dev wrapper's screen picker jumps into the pairing flow, which needs
+    // the modal open first. usePairWallet applies the screen itself.
+    useEffect(() => {
+        if (ENV === 'prod') return
+        const openForDev = (event: MessageEvent) => {
+            if (event.source !== window.parent) return
+            if (event.data?.to !== 'bringweb3' || event.data.action !== 'PAIR_DEV_OPEN') return
+            setPairOpen(true)
+        }
+        window.addEventListener('message', openForDev)
+        return () => window.removeEventListener('message', openForDev)
+    }, [])
 
     return {
-        firstTimeUser: selectFirstTimeUser(data),
-        couponsEnabled: !!couponsEnabled,
-        isHub: !!isHub,
-        pending: {
-            amount: pending?.tokenAmountDisplay ?? '0.00',
-            symbol: pending?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(pending?.totalEstimatedUsd ?? 0),
+        // Wallet apps hold an address already; pairing ends in a signature,
+        // which the hub has no wallet for.
+        showPairWallet: !isHub,
+        couponsEnabled,
+        showSkeleton: balanceLoading || skeletonPreview,
+        firstTimeUser: firstTimeOverride ?? backendFirstTimeUser,
+        explainOpen,
+        openExplain: () => setExplainOpen(true),
+        closeExplain: () => setExplainOpen(false),
+        pairOpen,
+        openPair: () => setPairOpen(true),
+        closePair: () => setPairOpen(false),
+        labels: {
+            couponsTab: t('couponsTab'),
+            cashbackTab: t('cashbackTab'),
+            welcomeTitle: t('welcomeTitle'),
+            welcomeText: t('welcomeText'),
+            pairWallet: t('pairWallet'),
+            whatsThis: t('whatsThis'),
         },
-        claim: {
-            amount: eligible?.tokenAmountDisplay ?? '0.00',
-            symbol: eligible?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(eligible?.totalEstimatedUsd ?? 0),
-        },
-        labels,
-        goToPending: () => navigate('/pending'),
-        goToMore: () => navigate('/history'),
-        goToWhatsThis: () => navigate('/whats-this'),
     }
 }

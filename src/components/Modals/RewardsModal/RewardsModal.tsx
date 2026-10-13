@@ -35,7 +35,7 @@ const RewardsModal = ({ open, closeFn, eligibleTokenAmount, currentCryptoSymbol 
     useEffect(() => {
         // Define the message handler
         const handleMessage = async (event: MessageEvent) => {
-            if (event.data.to !== 'bringweb3' || event.origin === window.location.origin) {
+            if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) {
                 return; // Ignore messages from untrusted origins
             }
             // Handle the message data here

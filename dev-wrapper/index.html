@@ -96,7 +96,33 @@
                         <input id="statusPreview" type="checkbox" />
                         <span>Status modal preview</span>
                     </label>
+
+                    <label class="row">
+                        <input id="skeletonPreview" type="checkbox" />
+                        <span>Skeleton mode</span>
+                    </label>
                 </fieldset>
+
+                <fieldset>
+                    <legend>Dashboard flags</legend>
+                    <label class="row">
+                        <input id="firstTimeUser" type="checkbox" />
+                        <span>First time user</span>
+                    </label>
+                    <label class="row">
+                        <input id="couponsEnabled" type="checkbox" />
+                        <span>Coupons enabled</span>
+                    </label>
+                    <label class="row">
+                        <input id="isHub" type="checkbox" />
+                        <span>Hub (email) — off = wallet app</span>
+                    </label>
+                </fieldset>
+
+                <details class="debug">
+                    <summary>Pair Wallet screens</summary>
+                    <div id="pairScreens" class="chips"></div>
+                </details>
 
                 <fieldset>
                     <legend>Wallet</legend>

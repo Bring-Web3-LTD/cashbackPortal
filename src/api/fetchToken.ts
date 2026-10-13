@@ -19,19 +19,19 @@ interface Response {
         theme?: string
         terms?: boolean
         extensionId?: string
-        // Resolved server-side from the /check/portal API key.
-        couponsEnabled?: boolean
-        // Partner coupon storefront embedded in the Coupons tab. Resolved per
-        // platform (and per `devicePlatform`) by /check/portal.
-        couponsIframeSrc?: string
-        isHub?: boolean
         // Optional wallet identity fields passed through from /check/portal
         // and embedded in the issued JWT. Surfaced in the Mobile Portal UI.
         walletEmoji?: string
         walletName?: string
         bringTou?: string
         privacy?: string
-        // Wallet install link (e.g. Chrome Web Store), powers "Download Wallet".
+        // Dashboard state, resolved server side from the API key.
+        isHub?: boolean
+        couponsEnabled?: boolean
+        firstTimeUser?: boolean
+        /** Coupon partner iframe. Null when coupons are off or outside the US. */
+        couponsIframeSrc?: string | null
+        /** Where the claim guide sends a hub user to install the wallet. */
         chromeStoreUrl?: string
     }
 }
