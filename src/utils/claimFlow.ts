@@ -4,6 +4,8 @@ export type ClaimModalState =
     | 'success'
     | 'failure'
     | 'minimum'
+    /** No wallet paired yet — shows the balance card + pairing steps. */
+    | 'instructions'
 
 export const shortenWalletAddress = (
     value: string | null | undefined,

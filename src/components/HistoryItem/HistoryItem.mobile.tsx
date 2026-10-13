@@ -16,9 +16,7 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
 
     return (
         <div
-            className={`${styles.item} ${isOpen ? styles.itemOpen : ''} ${
-                expandable ? styles.itemExpandable : ''
-            }`}
+            className={`${styles.item} ${isOpen ? styles.itemOpen : ''}`}
         >
             <button
                 type="button"
@@ -31,11 +29,11 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
             >
                 <span
                     className={`${styles.avatar} ${row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
-                    style={!row.isClaim && !fallbackLogo ? { background: row.iconBg || '#FFFFFF' } : undefined}
+                    style={!row.isClaim && !fallbackLogo && row.iconBg ? { background: row.iconBg } : undefined}
                     aria-hidden="true"
                 >
                     {row.isClaim ? (
-                        <Icon name="gift.svg" className={styles.avatarImg} alt="" />
+                        <Icon name="gift-solid.svg" className={styles.avatarImg} alt="" />
                     ) : !imgFailed && row.iconSrc ? (
                         <img
                             className={styles.avatarImg}
