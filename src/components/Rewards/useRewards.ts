@@ -7,7 +7,7 @@ import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { ENV } from '../../config'
+import { buildSupportUrl } from '../../utils/supportUrl'
 
 export interface RewardsProps {
     /** Override the Claimable card's "Claim" click handler. */
@@ -17,11 +17,11 @@ export interface RewardsProps {
 export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { platform, cryptoSymbols, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, noClaim, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
 
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress ?? ''}&env=${ENV}`
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)

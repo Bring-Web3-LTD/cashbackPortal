@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { ENV } from '../../config'
+import { buildSupportUrl } from '../../utils/supportUrl'
 
 export interface Action {
     key: string
@@ -21,13 +21,13 @@ export interface Action {
 
 export const useHeaderDesktop = () => {
     const { t } = useTranslation()
-    const { platform, isHub } = useRouteLoaderData('root') as LoaderData
+    const { platform, isHub, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [menuOpen, setMenuOpen] = useState(false)
     const [explainOpen, setExplainOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const helpRef = useRef<HTMLDivElement>(null)
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress}&env=${ENV}`
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
 
     // The fade only belongs there once rows are actually passing underneath.
     useEffect(() => {

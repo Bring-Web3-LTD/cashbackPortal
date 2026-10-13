@@ -36,6 +36,8 @@ interface Response {
         couponsIframeSrc?: string | null
         /** Where the claim guide sends a hub user to install the wallet. */
         chromeStoreUrl?: string
+        /** Support site, picked by the backend from the wrapper's origin. */
+        supportUrl?: string
     }
 }
 
