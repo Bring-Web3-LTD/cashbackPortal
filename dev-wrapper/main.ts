@@ -52,6 +52,9 @@ const PROVIDER_API: Record<string, { url?: string; key?: string }> = {
     casper: { url: env.VITE_PORTAL_API_CASPER, key: env.VITE_PORTAL_API_KEY_CASPER },
     ecko: { url: env.VITE_PORTAL_API_ECKO, key: env.VITE_PORTAL_API_KEY_ECKO },
     ready: { url: env.VITE_PORTAL_API_READY, key: env.VITE_PORTAL_API_KEY_READY },
+    // Bring portal key (platform 13, BRING theme, claimType noClaim) — the
+    // in-repo stand-in for the Bring wrapper app.
+    bring: { url: env.VITE_PORTAL_API_BRING, key: env.VITE_PORTAL_API_KEY_BRING },
 }
 
 // The API URL has the shape `https://host/<stage>/v1/extension/check/portal`.
@@ -76,6 +79,8 @@ const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key ||
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
+// Email the Bring provider signs in with when the field is left empty.
+const DEFAULT_EMAIL = ((env.VITE_PORTAL_EMAIL as string | undefined) ?? '').trim()
 const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
 const DEFAULT_VIEW_MODE = ((env.VITE_PORTAL_VIEW_MODE as string | undefined) ?? '').trim().toLowerCase()
 
@@ -87,6 +92,7 @@ const $ = <T extends HTMLElement>(id: string) => {
 
 const themeEl = $<HTMLSelectElement>('theme')
 const walletEl = $<HTMLInputElement>('wallet')
+const walletLabelEl = $<HTMLSpanElement>('walletLabel')
 const extensionEl = $<HTMLInputElement>('extensionId')
 const walletNameEl = $<HTMLInputElement>('walletName')
 const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
@@ -834,21 +840,28 @@ clearMsgLogBtn.addEventListener('click', () => {
 const shortAddress = (addr: string) =>
     addr.length > 10 ? `${addr.slice(0, 4)}…${addr.slice(-4)}` : addr
 
+// Bring users sign in by email, not with a wallet. Until the email login
+// (TODO#702) and the email-session JWT (TODO#661) exist, the mock session
+// stands in behind a "Sign in" button.
+const isBring = () => walletProviderEl.value === 'bring'
+
 function setWalletButton(address: string | null) {
     if (address) {
         walletBtn.dataset.state = 'connected'
-        walletBtn.textContent = shortAddress(address)
-        walletBtn.title = `${address} — click to disconnect`
+        walletBtn.textContent = isBring() ? address : shortAddress(address)
+        walletBtn.title = `${address} — click to ${isBring() ? 'sign out' : 'disconnect'}`
     } else {
         walletBtn.dataset.state = 'disconnected'
-        walletBtn.textContent = 'Connect wallet'
-        walletBtn.title = 'Click to connect mock wallet'
+        walletBtn.textContent = isBring() ? 'Sign in' : 'Connect wallet'
+        walletBtn.title = isBring() ? 'Click to sign in with email (mock session for now)' : 'Click to connect mock wallet'
     }
 }
 
 setWalletButton(walletEl.value.trim() || null)
 
 walletEl.addEventListener('input', () => {
+    // Typing an email is not signing in; only the Sign in button does that.
+    if (isBring()) return
     setWalletButton(walletEl.value.trim() || null)
 })
 
@@ -859,7 +872,7 @@ const wallet = createMockWallet({
 // `wallet` above is the in-page mock. The bridge always talks to a single
 // `MockWallet` reference, so we wrap a proxy that forwards to whichever
 // adapter the user picks in the sidebar (mock | nightly | ...).
-type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready'
+type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready' | 'bring'
 const WALLET_PROVIDER_KEY = 'bring-dev-wrapper:wallet-provider'
 
 const mockAdapter = wallet
@@ -918,6 +931,24 @@ const getReadyAdapter = (): MockWallet => {
     if (!readyAdapter) readyAdapter = createReadyWallet()
     return readyAdapter
 }
+// Bring: the identity is an email, not a wallet. The "address" this adapter
+// hands the bridge is the email; bootstrap() sends it as `email`, plus a
+// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (Bring is noClaim).
+let bringEmail: string | null = null
+const defaultBringEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
+const bringAdapter: MockWallet = {
+    getAddress: () => bringEmail,
+    async connect(override) {
+        bringEmail = override || defaultBringEmail()
+        return bringEmail
+    },
+    async signMessage() {
+        throw new Error('Bring has no wallet to sign with')
+    },
+    async disconnect() {
+        bringEmail = null
+    },
+}
 
 const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProviderId | null) ?? 'mock'
 walletProviderEl.value = initialProvider
@@ -934,6 +965,7 @@ const pickAdapter = (): MockWallet => {
         case 'casper': return getCasperAdapter()
         case 'ecko': return getEckoAdapter()
         case 'ready': return getReadyAdapter()
+        case 'bring': return bringAdapter
         default: return mockAdapter
     }
 }
@@ -945,7 +977,25 @@ const walletProxy: MockWallet = {
     disconnect: () => pickAdapter().disconnect(),
 }
 
+// What the connect buttons pass the adapter: the typed address (or the default)
+// for the mock, the typed email for Bring, nothing for extensions, which own
+// the key.
+const connectOverride = (): string | undefined => {
+    if (activeProvider === 'mock') return walletEl.value.trim() || DEFAULT_WALLET || undefined
+    if (isBring()) return walletEl.value.trim() || undefined
+    return undefined
+}
+
 const applyProviderUi = () => {
+    setWalletButton(walletBtn.dataset.state === 'connected' ? walletEl.value.trim() || null : null)
+    walletLabelEl.textContent = isBring() ? 'Email' : 'Wallet address'
+    if (isBring()) {
+        walletEl.readOnly = false
+        walletEl.type = 'email'
+        walletEl.placeholder = DEFAULT_EMAIL || 'you@example.com (empty = random dev email)'
+        return
+    }
+    walletEl.type = 'text'
     const isExternal = activeProvider !== 'mock'
     // External wallets supply their own address; the input becomes a display.
     walletEl.readOnly = isExternal
@@ -996,7 +1046,8 @@ const bridge = createPortalBridge({
     onAddressChange: (address) => {
         walletEl.value = address ?? ''
         setWalletButton(address)
-        if (address) appendLog('info', `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
+        // The Bring identity is an email: log the event, not the address.
+        if (address) appendLog('info', isBring() ? 'Bring signed in' : `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
     },
 })
 
@@ -1006,6 +1057,7 @@ const bridge = createPortalBridge({
 //  - external: the extension owns the address, so we can't fill it in up front;
 //    instead connect once the portal iframe has loaded, which prompts the
 //    extension if it's available ("if possible").
+//  - Bring: sign in with the typed / default email once the iframe has loaded.
 if (startConnected) {
     if (activeProvider === 'mock') {
         if (DEFAULT_WALLET.trim()) {
@@ -1013,26 +1065,27 @@ if (startConnected) {
             setWalletButton(DEFAULT_WALLET.trim())
             void mockAdapter.connect(DEFAULT_WALLET.trim())
         }
+    } else if (activeProvider === 'bring') {
+        // Same as the mock: sign in before the first load, so the portal starts
+        // with the session. A SESSION_UPDATE sent on iframe load arrives before
+        // the portal listens for it and is lost.
+        const email = walletEl.value.trim() || defaultBringEmail()
+        walletEl.value = email
+        setWalletButton(email)
+        void bringAdapter.connect(email)
     } else {
-        iframeEl.addEventListener('load', () => { void bridge.connect() }, { once: true })
+        iframeEl.addEventListener('load', () => { void bridge.connect(connectOverride()) }, { once: true })
     }
 }
 
 manualConnectBtn.addEventListener('click', () => {
-    // For external wallets we never pass an override — the extension owns the key.
-    const override = activeProvider === 'mock'
-        ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
-        : undefined
-    void bridge.connect(override)
+    void bridge.connect(connectOverride())
 })
 walletBtn.addEventListener('click', () => {
     if (walletBtn.dataset.state === 'connected') {
         void bridge.disconnect()
     } else {
-        const override = activeProvider === 'mock'
-            ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
-            : undefined
-        void bridge.connect(override)
+        void bridge.connect(connectOverride())
     }
 })
 
@@ -1167,6 +1220,13 @@ function buildIframeSrc(returnedUrl: string, token: string): string {
     }
 }
 
+/** Deterministic 0x address for an email: the first 20 bytes of its SHA-256. */
+async function standInAddress(email: string): Promise<string> {
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email.toLowerCase()))
+    const hex = Array.from(new Uint8Array(hash), (b) => b.toString(16).padStart(2, '0')).join('')
+    return `0x${hex.slice(0, 40)}`
+}
+
 async function bootstrap(walletAddress: string | null): Promise<PortalApiResponse | null> {
     const apiUrl = getApiUrl()
     const apiKey = getApiKey()
@@ -1175,9 +1235,16 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
+    // Bring signs in by email: the identity is an email, never a wallet. The
+    // backend takes no email yet (portal entry from the email session is
+    // TODO#661), and the portal treats a session without a walletAddress as
+    // signed out. Until then the session carries a stand-in address derived
+    // from the email, so the same email always gets the same rewards.
+    const email = isBring() ? walletAddress : null
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
-        walletAddress,
+        walletAddress: email ? await standInAddress(email) : walletAddress,
+        email: email || undefined,
         // Optional wallet identity — /check/portal embeds these in the JWT,
         // surfaced in the Mobile Portal claim screen.
         walletName: walletNameEl.value.trim() || undefined,
@@ -1190,6 +1257,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         devicePlatform: getDevicePlatform(),
     }
 
+    if (email) appendLog('info', `Bring → stand-in address ${body.walletAddress} (until TODO#661)`)
     const requestId = ++pendingId
     setStatus('Calling check/portal…')
 
@@ -1337,6 +1405,9 @@ for (const el of [walletNameEl, walletEmojiEl]) {
 // Wallet input edits go through the bridge so the mock wallet's internal state
 // stays in sync and the same SESSION_UPDATE flow is used.
 walletEl.addEventListener('change', () => {
+    // Bring's field is an email: leaving it is not signing in, only the Sign
+    // in button does that.
+    if (isBring()) return
     const v = walletEl.value.trim()
     if (v) void bridge.connect(v)
     else void bridge.disconnect()

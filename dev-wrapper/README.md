@@ -52,11 +52,12 @@ yarn install
 | --- | --- |
 | `VITE_PORTAL_API` | Full URL of the `check/portal` endpoint (default / fallback). |
 | `VITE_PORTAL_API_KEY` | Partner `x-api-key` header (default / fallback, used when the selected provider has no key of its own — e.g. `mock`). |
-| `VITE_PORTAL_API_KEY_<PROVIDER>` | Per-provider `x-api-key`, picked by the **Wallet provider** selector. `<PROVIDER>` ∈ `MOCK`, `NIGHTLY`, `SOLFLARE`, `YOROI`, `CASPER`, `ECKO`, `READY`. Falls back to `VITE_PORTAL_API_KEY` when unset. |
+| `VITE_PORTAL_API_KEY_<PROVIDER>` | Per-provider `x-api-key`, picked by the **Wallet provider** selector. `<PROVIDER>` ∈ `MOCK`, `NIGHTLY`, `SOLFLARE`, `YOROI`, `GERO`, `CASPER`, `ECKO`, `READY`, `BRING`. Falls back to `VITE_PORTAL_API_KEY` when unset. |
 | `VITE_PORTAL_API_<PROVIDER>` | Optional per-provider API URL override (same `<PROVIDER>` values, including `MOCK`). Falls back to `VITE_PORTAL_API` when unset. |
 | `VITE_PORTAL_EXTENSION_ID` | Default value for the Extension ID input. |
 | `VITE_PORTAL_LOCAL_URL` | If set, the wrapper rewrites the iframe origin to this URL while keeping the `?token=…` query — lets you iterate on the local portal while still using a real dev token. Leave empty to use the API's `iframeUrl` as-is. |
 | `VITE_PORTAL_WALLET` | Optional default wallet address used by the mock wallet on auto-connect. Leave empty for a random throwaway address. |
+| `VITE_PORTAL_EMAIL` | Optional email the **Bring** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). Bring signs in by email, not wallet. Until TODO#661, `check/portal` gets `email` plus a deterministic stand-in `walletAddress` derived from that email (SHA-256, same email → same address and rewards). |
 | `VITE_VISUAL_DIFF` | Start state of the [visual-diff overlay](#visual-diff-overlay). The overlay is **always available**; `1`/`true` starts it expanded, anything else (or unset) starts it collapsed. |
 | `FIGMA_TOKEN` | Server-side Figma personal access token (never exposed to the browser). Lets the overlay's **Figma** field render a frame straight from a Figma link via the dev `/__figma-image` proxy. Create one at <https://www.figma.com/developers/api#access-tokens>. |
 
