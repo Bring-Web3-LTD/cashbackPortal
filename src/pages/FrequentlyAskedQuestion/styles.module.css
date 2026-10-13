@@ -149,11 +149,23 @@
 }
 
 .question {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    text-align: left;
     font-size: var(--faq-question-f-s);
     font-weight: var(--faq-question-f-w);
     color: var(--faq-question-f-c);
     line-height: var(--faq-question-l-h, 24px);
     cursor: pointer;
+}
+
+.question:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 .answer_container {
