@@ -17,7 +17,7 @@ export interface RewardsProps {
 export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, noClaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
 
@@ -44,7 +44,12 @@ export const useRewards = () => {
 
     const labels = {
         rewards: t('rewards'),
-        claimable: t('claimable'),
+        // A noClaim platform pays out itself: approved rewards are saved.
+        claimable: noClaim ? t('approved') : t('claimable'),
+        // Placeholder copy in public/BRING/mobile/translations/en.json until
+        // Product supplies the text (TODO#686).
+        noClaimTitle: t('noClaimTitle'),
+        noClaimText: t('noClaimText'),
         claim: t('claim'),
         pending: t('pending'),
         viewRewards: t('viewRewards'),
@@ -60,6 +65,7 @@ export const useRewards = () => {
         pendingSymbol,
         canOpenClaim,
         belowMinimum,
+        noClaim,
         labels,
         goToHistory: () => navigate('/history'),
         goToFaq: () => navigate('/faq'),

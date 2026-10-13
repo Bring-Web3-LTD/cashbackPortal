@@ -1,8 +1,13 @@
 {
+  "_comment": "noClaimTitle and noClaimText are placeholder copy until Product supplies the text (TODO#686). Replace them and remove this _comment key.",
   "title": "Crypto Cashback",
   "subtitle": "Shop online with any card. Get cashback in Crypto.",
   "claimCashback": "Claim cashback",
   "viewRewards": "View Rewards",
+  "approved": "Approved",
+  "noClaimTitle": "Saved for you",
+  "noClaimText": "Approved rewards are saved for you. There is nothing to claim here.",
+  "statusApproved": "Approved",
   "frequentlyAskedQuestion": "Missing a reward?",
   "searchPlaceholder": "Brand, product, destination...",
   "signNow": "Sign Now",

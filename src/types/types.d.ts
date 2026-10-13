@@ -45,6 +45,10 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    /** `claimType: 'noClaim'` from the token: the platform pays out itself, so
+     *  approved rewards are shown as saved, never as claimable, with no claim
+     *  action anywhere. */
+    noClaim: boolean
     // Dashboard state. `isHub` and `couponsEnabled` come from /verify,
     // `firstTimeUser` from /cache. The dev wrapper can pin any of them via a
     // URL override outside prod.
