@@ -603,6 +603,100 @@ statusPreviewEl.addEventListener('change', () => {
     void refresh()
 })
 
+// Dashboard state flags. The backend owns these (couponsEnabled / isHub from
+// verify, firstTimeUser from cache); the checkbox is seeded from whatever it
+// returned. Ticking it away from that value pins an override on the portal
+// URL for testing; ticking it back to the backend value clears the override.
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub'] as const
+type DashboardFlag = typeof DASHBOARD_FLAGS[number]
+
+// The portal owns these. A box is only an *override* while the developer has
+// deliberately moved it away from the backend value, and that lives in memory
+// only — persisting it meant a stale "0" from an old session kept masking the
+// backend on every later load, which is exactly the bug this replaces.
+const overrides = new Map<DashboardFlag, boolean>()
+const backendFlags: Partial<Record<DashboardFlag, boolean>> = { firstTimeUser: true }
+
+// Drop the keys the persisted version left behind; nothing reads them now.
+for (const name of DASHBOARD_FLAGS) localStorage.removeItem(`bring-dev-wrapper:${name}`)
+
+const dashboardFlagEls = DASHBOARD_FLAGS.map(name => {
+    const el = $<HTMLInputElement>(name)
+    el.checked = Boolean(backendFlags[name])
+    el.addEventListener('change', () => {
+        // Back on the backend value means "no override".
+        if (el.checked === backendFlags[name]) overrides.delete(name)
+        else overrides.set(name, el.checked)
+        // Read from the query string at bootstrap — reload to apply.
+        isFirstLoad = true
+        void refresh()
+    })
+    return [name, el] as const
+})
+
+// Pair Wallet screens. Reaching one for real needs a registered email, a live
+// OTP and a wallet signature, so each chip posts the portal straight to that
+// state. The portal only listens for this outside prod.
+const PAIR_SCREENS: readonly (readonly [string, string])[] = [
+    ['email', 'Email'],
+    ['emailFilled', 'Email·typed'],
+    ['emailInvalid', 'Email·error'],
+    ['code', 'Code'],
+    ['codeFilled', 'Code·typed'],
+    ['codeInvalid', 'Code·error'],
+    ['error', 'Not found'],
+    ['success', 'Paired'],
+]
+
+const postToPortal = (data: Record<string, unknown>, label: string) => {
+    if (!iframeEl.contentWindow || !iframeEl.src) return setStatus('Portal not loaded.', true)
+    try {
+        const msg = { ...data, to: 'bringweb3' }
+        iframeEl.contentWindow.postMessage(msg, new URL(iframeEl.src).origin)
+        recordMessage('out', 'to portal', msg)
+    } catch (err) {
+        setStatus(`${label} failed: ${(err as Error).message}`, true)
+    }
+}
+
+// Forces every loading placeholder on. Live, not a URL param: the point is to
+// hold a skeleton against the design without waiting on a response. Re-sent
+// whenever the portal reloads, since the flag lives in the portal's memory.
+const skeletonPreviewEl = $<HTMLInputElement>('skeletonPreview')
+
+function pushSkeletonMode() {
+    postToPortal({ action: 'PORTAL_SKELETON', on: skeletonPreviewEl.checked }, 'skeleton mode')
+}
+
+skeletonPreviewEl.addEventListener('change', pushSkeletonMode)
+iframeEl.addEventListener('load', () => {
+    if (skeletonPreviewEl.checked) pushSkeletonMode()
+})
+
+const pairScreensEl = $<HTMLDivElement>('pairScreens')
+for (const [screen, label] of PAIR_SCREENS) {
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.textContent = label
+    btn.addEventListener('click', () => {
+        // Opens the modal first — a jump into a closed one renders nothing.
+        postToPortal({ action: 'PAIR_DEV_OPEN' }, 'pair dev open')
+        postToPortal({ action: 'PAIR_DEV_SCREEN', screen }, `pair dev screen: ${screen}`)
+    })
+    pairScreensEl.append(btn)
+}
+
+// Applies the flags the portal resolved from verify / cache, leaving any
+// developer override in place.
+function applyPortalFlags(flags: Record<string, boolean>) {
+    for (const [name, el] of dashboardFlagEls) {
+        const value = flags[name]
+        if (typeof value !== 'boolean') continue
+        backendFlags[name] = value
+        if (!overrides.has(name)) el.checked = value
+    }
+}
+
 const startConnectedEl = $<HTMLInputElement>('startConnected')
 startConnectedEl.checked = startConnected
 startConnectedEl.addEventListener('change', () => {
@@ -892,6 +986,7 @@ const bridge = createPortalBridge({
         appendLog(kind, label, payload)
         if (kind === 'out') recordMessage('out', 'to portal', payload)
     },
+    onPortalFlags: applyPortalFlags,
     // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
     // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
@@ -1157,6 +1252,7 @@ async function refresh() {
         const u = new URL(src)
         if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
         if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+        for (const [name, value] of overrides) u.searchParams.set(name, String(value))
         iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')

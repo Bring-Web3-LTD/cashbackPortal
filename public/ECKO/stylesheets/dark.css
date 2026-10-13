@@ -8,9 +8,6 @@
     --title-f-w: 700;
     --title-f-c: #FFF;
 
-    --subtitle-f-s: 16px;
-    --subtitle-f-w: 700;
-    --subtitle-f-c: #FFF;
 
     --header-btn-f-s: 13px;
     --header-btn-f-w: 500;
@@ -177,7 +174,6 @@
     --category-btn-hover-border-c: transparent;
     --category-btn-hover-radius: 7px;
 
-    --modal-offset-top: -120px;
     --modal-bg: #1A1E3E;
     --modal-overlay-bg: #0C0E1CB2;
     --modal-border-w: 0;
@@ -242,7 +238,6 @@
     --modal-deal-terms-btn-hover-f-c: #FF00B8;
 
     --scrollbar-bg: #404A8D;
-    --scrollbar-w: 10px;
     
     --search-bg: #1A1E3E;
     --search-menu-bg: #1A1E3E;
@@ -275,7 +270,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #FFFFFF;
 
-    --history-back-x-location: 64px;
 
     --history-table-header-bg: #1A1E3E;
     /* Bottom-only rule: the width shorthand zeroes the other three sides,

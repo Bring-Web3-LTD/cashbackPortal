@@ -11,7 +11,7 @@
     color: var(--modal-title-f-c);
     margin-bottom: 6px;
     width: 100%;
-    line-height: 24px;
+    line-height: var(--modal-title-l-h, 24px);
 }
 
 .claim_amount {

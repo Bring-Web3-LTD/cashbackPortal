@@ -8,6 +8,7 @@ Rules for every change in this repo. GDPR and accessibility sections are mandato
 - Most components have a desktop `X.tsx` and a mobile `X.mobile.tsx`. Every rule below applies to both. Update both.
 - i18n: react-i18next. Strings live in `public/<PLATFORM>/translations/<lang>.json`. Never hardcode user-facing text; use `t('key', 'Fallback')`.
 - Checks: `yarn lint` and `yarn build`. No test runner and no jsx-a11y lint, so the checklists below are the enforcement.
+- Logic vs UI: `useX.ts` holds state, effects, queries, handlers and resolved `t()` labels; `X.tsx` only renders. No `useState`/`useEffect`/`useQuery`/`t()` in a `.tsx`.
 
 ## GDPR / privacy
 
@@ -57,3 +58,4 @@ Rules:
 - [ ] Both desktop and `.mobile.tsx` variants updated
 - [ ] No new storage keys, analytics fields, or logs containing personal data
 - [ ] New strings added to the translation JSON, not hardcoded
+- [ ] New or rewritten components split into `useX.ts` + a view with no hooks or `t()`

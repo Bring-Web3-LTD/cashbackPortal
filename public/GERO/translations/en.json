@@ -12,12 +12,13 @@
   "claimToYourWallet": "Claim to your wallet",
   "doneBtn": "Done",
   "back": "Back",
-  "historyTitle": "Cashback history",
+  "historyTitle": "Rewards History",
   "historyColPurchase": "Reward",
   "historyColAmount": "Amount in Token",
   "emptyHistory": "No cashback history",
   "needHelp": "Need Help?",
   "connectYourWallet": "Connect your wallet",
   "connect": "Connect",
-  "termsAndExclusions": "Terms"
+  "termsAndExclusions": "Terms",
+  "detailsTitle": "Rewards Details"
 }

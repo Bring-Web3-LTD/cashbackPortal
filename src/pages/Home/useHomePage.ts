@@ -39,6 +39,11 @@ export const useHomePage = () => {
     const [claimExplorerLink, setClaimExplorerLink] = useState<string | null>(null)
     const claimExplorerLinkRef = useRef(claimExplorerLink)
     useEffect(() => { claimExplorerLinkRef.current = claimExplorerLink }, [claimExplorerLink])
+    // SIGNATURE is a broadcast, and the reply carries nothing tying it to the
+    // request that asked for it. Without this gate the claim flow also answers
+    // the signature the pairing flow asked for (usePairWallet gates its own the
+    // same way) and submits a claim with it.
+    const awaitingSignatureRef = useRef(false)
 
     const { data: filters, isLoading: isLoadingCategories } = useCategories()
     const categories = selectCategories(filters)
@@ -141,6 +146,8 @@ export const useHomePage = () => {
             return
         }
 
+        // Armed only here, so the listener answers this request and no other.
+        awaitingSignatureRef.current = true
         message({
             messageToSign: initiated.messageToSign,
             amount: claimAmount,
@@ -153,12 +160,17 @@ export const useHomePage = () => {
         const handleMessage = async (event: MessageEvent) => {
             if (event.data?.to !== 'bringweb3' || event.origin === window.location.origin) return
 
+            // Not ours: the pairing flow (or any other surface) asked for it.
+            if (!awaitingSignatureRef.current) return
+
             if (event.data.action === 'ABORT_SIGN_MESSAGE') {
+                awaitingSignatureRef.current = false
                 setClaimState('confirm')
                 return
             }
 
             if (event.data.action !== 'SIGNATURE') return
+            awaitingSignatureRef.current = false
             if (!walletAddress || !eligible) {
                 setClaimState('failure')
                 return

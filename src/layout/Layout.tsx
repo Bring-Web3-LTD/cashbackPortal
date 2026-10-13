@@ -3,9 +3,13 @@ import { AnalyticsProvider } from '../context/AnalyticsContext';
 import { MAINTENANCE_MODE } from '../config';
 import '../utils/i18n'
 import { WalletProvider } from '../context/WalletAddressContext';
+import { ClaimProvider } from '../context/ClaimContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
 import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
+import LegalBar from '../components/LegalBar/LegalBar';
+import BackToTop from '../components/BackToTop/BackToTop';
+import styles from './Layout.module.css';
 
 /**
  * Root layout. Hosts the shared providers (Wallet, Analytics) once for both
@@ -30,6 +34,7 @@ const Layout = () => {
             initIsTester={data.isTester}
             initialWalletName={data.walletName}
             initialWalletEmoji={data.walletEmoji}
+            initialCouponsIframeSrc={data.couponsIframeSrc ?? undefined}
             mode={data.useMobilePortal ? 'mobile' : 'desktop'}
         >
             <AnalyticsProvider
@@ -40,7 +45,14 @@ const Layout = () => {
             >
                 {data.useMobilePortal
                     ? <MobileOutlet pathname={location.pathname} />
-                    : <DesktopOutlet pathname={location.pathname} />}
+                    /* Desktop only: the mobile tree runs its own claim flow. */
+                    : <ClaimProvider>
+                        <div className={styles.screen}>
+                            <DesktopOutlet pathname={location.pathname} />
+                            <LegalBar />
+                            <BackToTop />
+                        </div>
+                    </ClaimProvider>}
             </AnalyticsProvider>
         </WalletProvider>
     );

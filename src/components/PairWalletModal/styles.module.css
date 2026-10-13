@@ -1,0 +1,382 @@
+/* Type A shell: the header, content and footer paint it edge to edge, and the
+   24 below the footer is the only frame colour that shows. */
+.overlay .shell {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 0 24px;
+    overflow: hidden;
+}
+
+/* header 56 + content 228 + footer 60, then the 24. */
+.overlay .shell_email {
+    height: 368px;
+}
+
+/* header 56 + content 132 + footer 76, then the 24. */
+.overlay .shell_code {
+    height: 288px;
+}
+
+/* Only the close button sits on it. */
+.header {
+    flex-shrink: 0;
+    height: 56px;
+    width: 100%;
+    background: var(--modal-bg);
+}
+
+/* 16 in from the shell's top-right corner; the 40 target and the 24 glyph come
+   from the shared close button. */
+.overlay .close {
+    top: 16px;
+    right: 16px;
+}
+
+/* Carries both sections so Enter in the field submits, and takes what the
+   fixed-height shell leaves below the header so the footer sits on the skirt. */
+.form {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+}
+
+.content_code {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    min-height: 0;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+/* Reuses the shared popup title: the design's 18/22 here is already what
+   those tokens carry (the email step's 20/26 is the odd one out). */
+.code_title {
+    font-size: var(--modal-popup-title-f-s);
+    font-weight: var(--modal-popup-title-f-w);
+    line-height: var(--modal-popup-title-l-h);
+    color: var(--modal-popup-title-f-c);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* 76 = the 52 row plus the 8 gap and 16 line the error state needs, so the
+   message appears without the boxes moving. */
+.code_group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 76px;
+    width: 464px;
+    max-width: 100%;
+}
+
+/* The row and its message are one unit: the error state stacks them at 8. Sized
+   to the row so the message starts on the first box, and so `stretch` cannot
+   park the row against the group's left edge. */
+.otp_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 460px;
+    max-width: 100%;
+}
+
+/* Boxes share the row evenly, so a 6- or 8-digit code both fit the same 460. */
+.otp {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+/* border-box so the error's thicker rule doesn't grow the 56. */
+.otp_box {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 52px;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--modal-pair-otp-bg);
+    border-width: var(--modal-pair-otp-border-w);
+    border-style: solid;
+    border-color: var(--modal-pair-otp-border-c);
+    border-radius: var(--modal-pair-otp-radius);
+    outline: none;
+    font-size: var(--modal-pair-otp-f-s);
+    font-weight: var(--modal-pair-otp-f-w);
+    line-height: var(--modal-pair-otp-l-h);
+    color: var(--modal-pair-otp-f-c);
+    text-align: center;
+}
+
+/* Same autofill override as the email field — the boxes carry
+   autocomplete="one-time-code", so the OS fills them the same way. */
+.otp_box:-webkit-autofill,
+.otp_box:-webkit-autofill:hover,
+.otp_box:-webkit-autofill:focus,
+.otp_box:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--modal-pair-otp-bg) inset;
+    -webkit-text-fill-color: var(--modal-pair-otp-f-c);
+    caret-color: var(--modal-pair-otp-f-c);
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Only a box that holds a digit brightens its rule and squares off less —
+   focus is not a state in the design, and treating it as one lit up the empty
+   box the caret had just moved to. */
+.otp_box_filled {
+    border-color: var(--modal-pair-otp-filled-border-c);
+    border-radius: var(--modal-pair-otp-filled-radius);
+}
+
+.otp_box_error,
+.otp_box_error:focus {
+    border-width: var(--modal-pair-otp-error-border-w);
+    border-color: var(--modal-pair-otp-error-border-c);
+    border-radius: var(--modal-pair-otp-filled-radius);
+}
+
+.error {
+    font-size: var(--modal-pair-error-f-s);
+    font-weight: var(--modal-pair-error-f-w);
+    line-height: var(--modal-pair-error-l-h);
+    color: var(--modal-pair-error-f-c);
+    text-align: left;
+}
+
+/* 99 x 30: an 18px label in 6/8 of padding, which is the drawn button. */
+.resend {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 6px 8px;
+    overflow: hidden;
+    background: none;
+    border: 0;
+    border-radius: var(--modal-pair-resend-radius);
+    font-size: var(--modal-pair-resend-f-s);
+    font-weight: var(--modal-pair-resend-f-w);
+    line-height: var(--modal-pair-resend-l-h);
+    color: var(--modal-pair-resend-f-c);
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .resend:hover:not(:disabled) {
+        color: var(--modal-pair-resend-hover-f-c, var(--modal-pair-resend-f-c));
+    }
+}
+
+.resend:disabled {
+    color: var(--modal-pair-resend-disabled-f-c, var(--modal-pair-resend-f-c));
+    cursor: default;
+}
+
+/* Fills the shell below the header. Its rows come to 8 + 26 + 20 + 40 + 20 + 15
+   + 20 + 52 + 8 = 209 in a 228 box, so the slack sits under the field. */
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-height: 0;
+    width: 100%;
+    padding: 8px 34px;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+.title {
+    font-size: var(--modal-pair-title-f-s);
+    font-weight: var(--modal-pair-title-f-w);
+    line-height: var(--modal-pair-title-l-h);
+    color: var(--modal-pair-title-f-c);
+    white-space: nowrap;
+}
+
+/* Google's sign-in branding guidelines: white fill, 1px #747775, radius 4,
+   Roboto Medium 14 at 0.25 tracking, 20px logo. Fixed, not themed. */
+.google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+    height: 40px;
+    width: 100%;
+    min-width: 180px;
+    max-width: 400px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #747775;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.google_logo {
+    display: block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.google_label {
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    color: #1F1F1F;
+    white-space: nowrap;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.divider_line {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 1px;
+    background: var(--modal-pair-divider-c);
+}
+
+.divider_label {
+    flex-shrink: 0;
+    font-size: var(--modal-pair-divider-f-s);
+    font-weight: var(--modal-pair-divider-f-w);
+    line-height: var(--modal-pair-divider-l-h);
+    color: var(--modal-pair-divider-f-c);
+    white-space: nowrap;
+}
+
+/* 48, not the 52 the component reserves: the field is drawn at the top of that
+   slot and the 4 below it is empty. 14 + 20 + 14 is the box. */
+.input {
+    flex-shrink: 0;
+    height: 48px;
+    width: 100%;
+    min-width: 180px;
+    max-width: 400px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    background: var(--modal-pair-input-bg);
+    border-width: var(--modal-pair-input-border-w);
+    border-style: solid;
+    border-color: var(--modal-pair-input-border-c);
+    border-radius: var(--modal-pair-input-radius);
+    outline: none;
+    font-size: var(--modal-pair-input-f-s);
+    font-weight: var(--modal-pair-input-f-w);
+    line-height: var(--modal-pair-input-l-h);
+    color: var(--modal-pair-input-f-c);
+}
+
+/* Three states: empty carries the bright border, a filled one drops back to
+   the default. The error is the hook's verdict, not the browser's, so that
+   what the border says and what the API accepts stay the same rule. */
+.input:placeholder-shown {
+    border-color: var(--modal-pair-input-empty-border-c);
+}
+
+.input_error,
+.input_error:placeholder-shown {
+    border-color: var(--modal-pair-input-error-border-c);
+}
+
+.input::placeholder {
+    color: var(--modal-pair-input-placeholder-f-c);
+}
+
+/* Chrome paints an autofilled field with its own pale fill and ignores
+   background-color; an inset shadow is the only way to cover it, and
+   text-fill-color the only way to recolour the text. The long transition stops
+   it flashing back when the field takes focus. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--modal-pair-input-bg) inset;
+    -webkit-text-fill-color: var(--modal-pair-input-f-c);
+    caret-color: var(--modal-pair-input-f-c);
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    flex-shrink: 0;
+    height: 60px;
+    width: 100%;
+    padding: 2px 24px 0;
+    box-sizing: border-box;
+    background: var(--modal-bg);
+}
+
+/* 16 taller, so the resend link below the button overhangs into the frame's
+   24px skirt — which is where the design puts it. The gap takes back the 6 the
+   resend button gained above its label, so the label stays where it is drawn. */
+.footer_code {
+    gap: 10px;
+    height: 76px;
+}
+
+/* flex-shrink: 0 or the code step's footer, which is deliberately shorter than
+   button + gap + resend, shrinks the button instead of letting the link overhang
+   into the frame's skirt. */
+.btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 120px;
+    max-width: 464px;
+    height: 46px;
+    padding: 0;
+    background: var(--modal-primary-btn-bg, var(--primary-btn-bg));
+    font-size: var(--modal-popup-btn-f-s);
+    font-weight: var(--modal-popup-btn-f-w);
+    line-height: var(--modal-popup-btn-l-h);
+    color: var(--primary-btn-f-c);
+    border-width: var(--primary-btn-border-w);
+    border-style: solid;
+    border-color: var(--primary-btn-border-c);
+    border-radius: var(--primary-btn-radius);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--modal-primary-btn-hover-bg, var(--primary-btn-hover-bg));
+}
+
+.btn:disabled {
+    background: var(--modal-primary-btn-disabled-bg, var(--primary-btn-disabled-bg));
+    color: var(--primary-btn-disabled-f-c);
+    cursor: default;
+}
