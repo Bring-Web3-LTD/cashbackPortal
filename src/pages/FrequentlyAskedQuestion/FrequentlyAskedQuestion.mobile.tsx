@@ -10,7 +10,7 @@ import styles from './styles.mobile.module.css'
 const SKELETON_COUNT = 7
 
 const MobileFaq = () => {
-    const { labels, faq, indentationMark, isLoading, openOrder, close, onToggle, openSupport } =
+    const { labels, faq, indentationMark, isLoading, openId, close, onToggle, openSupport } =
         useFaqPage()
 
     return (
@@ -45,8 +45,8 @@ const MobileFaq = () => {
                                         answer={item.answer}
                                         links={item.links ?? []}
                                         indentationMark={indentationMark}
-                                        isOpen={openOrder === item.itemOrder}
-                                        onToggle={() => onToggle(item.itemOrder)}
+                                        isOpen={openId === item.id}
+                                        onToggle={() => onToggle(item.id)}
                                     />
                                 ))}
                             </div>

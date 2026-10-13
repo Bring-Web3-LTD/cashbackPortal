@@ -16,11 +16,12 @@ export const useFaqPage = () => {
     const { platform } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useFaq()
-    const [openOrder, setOpenOrder] = useState<number | null>(null)
+    // Keyed by id: itemOrder repeats across the shared and platform rows.
+    const [openId, setOpenId] = useState<string | null>(null)
 
     const close = () => navigate(-1)
-    const onToggle = (itemOrder: number) =>
-        setOpenOrder((cur) => (cur === itemOrder ? null : itemOrder))
+    const onToggle = (id: string) =>
+        setOpenId((cur) => (cur === id ? null : id))
 
     const faq = data?.faq ?? []
     const indentationMark = data?.indentationMark ?? ''
@@ -40,7 +41,7 @@ export const useFaqPage = () => {
         faq,
         indentationMark,
         isLoading,
-        openOrder,
+        openId,
         close,
         onToggle,
         openSupport: () => window.open(supportUrl, '_blank', 'noopener,noreferrer'),
