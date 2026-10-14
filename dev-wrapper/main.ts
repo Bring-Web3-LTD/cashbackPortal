@@ -993,7 +993,8 @@ const applyProviderUi = () => {
     standaloneRowEl.hidden = !standalone
     hintWrapperEl.hidden = standalone
     hintStandaloneEl.hidden = !standalone
-    for (const id of ['wallet', 'startConnected', 'manualConnect', 'walletName', 'walletEmoji', 'identityStart']) {
+    // identityStart is left to syncIdentityUi, the one place its rule lives
+    for (const id of ['wallet', 'startConnected', 'manualConnect', 'walletName', 'walletEmoji']) {
         $<HTMLInputElement | HTMLButtonElement>(id).disabled = standalone
     }
     // No sign-in to simulate: on rewrds.xyz the portal signs in by itself (#702)
@@ -1054,6 +1055,7 @@ walletProviderEl.addEventListener('change', async () => {
     localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
     appendLog('info', `Wallet provider → ${activeProvider}`)
     applyProviderUi()
+    syncIdentityUi()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
     apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
@@ -1424,7 +1426,7 @@ const saveIdentity = () => {
 const syncIdentityUi = () => {
     const anySet = Boolean(walletNameEl.value.trim() || walletEmojiEl.value.trim())
     identityDotEl.hidden = !anySet
-    identityStartEl.disabled = !anySet
+    identityStartEl.disabled = !anySet || isStandalone()
     // Clearing the last value withdraws the opt-in - nothing left to start with.
     if (!anySet && identityStartEl.checked) {
         identityStartEl.checked = false
