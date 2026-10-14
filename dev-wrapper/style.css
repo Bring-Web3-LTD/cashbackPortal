@@ -458,6 +458,9 @@ html, body {
 
 .controls .row-split .row { margin-bottom: 0; }
 
+/* display: flex above beats the hidden attribute (the Bring standalone row) */
+.controls .row-split[hidden] { display: none; }
+
 .controls button.link-btn {
     width: auto;
     flex: none;
