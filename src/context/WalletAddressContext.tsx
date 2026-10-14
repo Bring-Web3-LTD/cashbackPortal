@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import fetchToken from '../api/fetchToken';
-import { ENV } from '../config';
+import { ENV, STANDALONE } from '../config';
 import { loadStylesheet } from '../utils/loadStylesheet';
 import type { StylesheetMode } from '../utils/loadStylesheet';
 
@@ -64,6 +64,9 @@ export function WalletProvider({
     const [couponsIframeSrc, setCouponsIframeSrc] = useState<string | undefined>(() => safeIframeSrc(initialCouponsIframeSrc))
 
     useEffect(() => {
+        // Standalone mode has no host page, and window.parent is the portal
+        // itself, so any script on it could otherwise swap the session
+        if (STANDALONE) return
         const handleMessage = async (event: MessageEvent) => {
             // Only the embedding host page may drive the session. When the
             // portal is embedded, the host is `window.parent`; anything else -
