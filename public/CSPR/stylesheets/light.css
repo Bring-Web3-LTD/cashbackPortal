@@ -414,7 +414,9 @@
     --modal-bg: #F5F6F7;
     /* Not a dim — the scrim is the page colour at full opacity, so the
        dashboard is covered rather than shaded (Figma 24:1543). */
-    --modal-overlay-bg: #F5F6F7;
+    /* Scrim behind every popup - Text/Primary at 60%. It must stay translucent:
+       the Modal posts this value to the host page so it dims itself to match. */
+    --modal-overlay-bg: rgba(26, 25, 25, 0.60);
     --modal-border-w: 0;
     --modal-border-c: transparent;
     --modal-radius: 5px;
