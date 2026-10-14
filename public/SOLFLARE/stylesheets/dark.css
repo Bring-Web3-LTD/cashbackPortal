@@ -68,6 +68,9 @@
     --legal-link-f-w: 400;
     --legal-link-l-h: 16px;
     --legal-link-f-c: #B1B4BB;
+
+    /* Coupons partner iframe — Figma 3079:3617. */
+    --coupons-frame-bg: #FFFFFF;
     --legal-link-decoration: underline;
     --header-btn-bg: rgba(245, 248, 255, 0.08);
     --header-btn-hover-bg: rgba(245, 248, 255, 0.16);

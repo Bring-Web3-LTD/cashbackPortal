@@ -1,4 +1,5 @@
 .container {
+    flex: 1;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -22,6 +23,7 @@
 /* 1344 is the 1440 design width less its two 48px gutters, which the container
    applies. Capping at 1440 here would have stacked the gutters on top of it. */
 .main {
+    flex: 1;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -163,13 +165,17 @@
 }
 
 
-/* Coupons partner frame replaces the whole browse area below the dashboard. */
+/* Coupons partner frame replaces the whole browse area below the dashboard and
+   runs down to the legal bar (.container and .main grow into the outlet's
+   height). Unthemed white, as in the design: the partner page is light. */
 .coupons_frame {
     display: block;
     flex: 1;
     width: 100%;
-    min-height: 640px;
+    min-height: 480px;
     margin-top: 32px;
+    /* Runs under the 45px legal bar so the bar's gradient fades over it. */
+    margin-bottom: -45px;
     border: 0;
-    background: var(--bg);
+    background: var(--coupons-frame-bg, #fff);
 }
