@@ -157,13 +157,12 @@
     background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
 }
 
-/* Hover tints the card and lifts the action fill. */
+/* Hover tints the card only. The action keeps its own :hover, because the card
+   is the click target solely while the button is hidden - cardAction() wires it
+   on `!fit.action` - so a card-level rule would light a button the pointer is
+   not on. */
 .card:hover:not(.card_disabled) {
     background: var(--dashboard-card-hover-bg, var(--dashboard-card-bg));
-}
-
-.card:hover:not(.card_disabled) .card_btn:not(:disabled) {
-    background: var(--dashboard-card-btn-hover-bg, var(--dashboard-card-btn-bg));
 }
 
 /* Disabled mutes the label and the action; the fill and stroke stay. */

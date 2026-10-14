@@ -1,4 +1,8 @@
-/* Fills the screen column so the legal bar drops to the bottom on short pages. */
+/* Fills the screen column so the legal bar drops to the bottom on short pages.
+   A flex column itself so a page can grow into that height too — the coupons
+   iframe uses it to reach the legal bar. */
 .root {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
