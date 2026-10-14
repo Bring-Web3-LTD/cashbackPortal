@@ -21,25 +21,25 @@
     --header-title-l-h: 24px;
     --header-title-f-c: #FBFBFB;
 
-    /* The three help actions. Secondary Button as the header draws it: the page
-       colour inside a Border/Default hairline, pill radius, muted label. */
-    --header-btn-bg: #171717;
+    /* The three help actions take Button_d type Secondary throughout (6001:3315):
+       Surface/Card inside a Border/Default hairline with a Text/Primary label,
+       lifting to Surface/Elevated on hover. Pill radius from the header.
+       Button_d draws no pressed state, so pressed repeats hover. */
+    --header-btn-bg: #242424;
     --header-btn-f-s: 14px;
     --header-btn-f-w: 500;
     --header-btn-l-h: 22px;
-    --header-btn-f-c: #8C8C8C;
+    --header-btn-f-c: #FBFBFB;
     --header-btn-border-w: 1px;
     --header-btn-border-c: #3F3F3F;
     --header-btn-radius: 100px;
-    /* Figma ships no state for these, so they follow the dots button, which is
-       the same surface one size up. */
-    --header-btn-hover-bg: #242424;
+    --header-btn-hover-bg: #3F3F3F;
     --header-btn-hover-border-w: 1px;
     --header-btn-hover-border-c: #3F3F3F;
     --header-btn-hover-f-c: #FBFBFB;
-    --header-btn-pressed-bg: #8C8C8C;
-    --header-btn-pressed-border-w: 0;
-    --header-btn-pressed-border-c: transparent;
+    --header-btn-pressed-bg: #3F3F3F;
+    --header-btn-pressed-border-w: 1px;
+    --header-btn-pressed-border-c: #3F3F3F;
     --header-btn-pressed-f-c: #FBFBFB;
 
     /* Overflow dots, 46x38. Hover lifts to Surface/Raised; pressed drops the
@@ -159,7 +159,7 @@
     --dashboard-card-border-w: 1px;
     --dashboard-card-border-c: #3F3F3F;
     --dashboard-card-radius: 12px;
-    --dashboard-card-hover-bg: #3F3F3F;
+    --dashboard-card-hover-bg: #242424;
     --dashboard-card-label-f-s: 15px;
     --dashboard-card-label-f-w: 400;
     --dashboard-card-label-l-h: 22px;
@@ -197,7 +197,7 @@
     --dashboard-history-f-s: 16px;
     --dashboard-history-f-w: 700;
     --dashboard-history-l-h: 22px;
-    --dashboard-history-f-c: #8C8C8C;
+    --dashboard-history-f-c: #FBFBFB;
     --dashboard-history-disabled-f-c: #3F3F3F;
 
     --dashboard-switcher-bg: #1B1E24;
@@ -323,7 +323,7 @@
     --category-btn-bg: #171717;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 500;
-    --category-btn-l-h: 22px;
+    --category-btn-l-h: 18px;
     --category-btn-f-c: #FBFBFB;
     --category-btn-border-w: 1px;
     --category-btn-border-c: #3F3F3F;
