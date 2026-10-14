@@ -1,5 +1,6 @@
-import { API_URL_PORTAL, API_KEY } from "../config"
+import { API_URL_PORTAL } from "../config"
 import message from "../utils/message"
+import { apiFetch } from "./request"
 
 interface Body {
     token: string
@@ -39,12 +40,11 @@ interface Response {
 const fetchToken = async (body: Body): Promise<Response> => {
     let status = 0
     try {
-        const res = await fetch(`${API_URL_PORTAL}verify`, {
+        // No `platform` yet - the token is where it comes from - so a 401 here
+        // is not refreshed; the backend reads the platform off the token itself.
+        const res = await apiFetch(`${API_URL_PORTAL}verify`, {
             method: "POST",
-            headers: {
-                "x-api-key": API_KEY,
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ ...body })
         })
         status = res.status

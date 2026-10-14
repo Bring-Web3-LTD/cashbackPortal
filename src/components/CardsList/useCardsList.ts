@@ -33,7 +33,7 @@ export const useCardsList = ({
     hasNextPage,
     onFetchNextPage,
 }: CardsListProps) => {
-    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, isHub } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendAnalyticsEvent } = useAnalytics()
 
@@ -116,20 +116,24 @@ export const useCardsList = ({
         return () => controller.abort()
     }, [activeRetailer, metadata?.retailerTermsBasePath, topGeneralTerms, generalTerms])
 
-    // Pre-activate on modal open (needs a wallet) to fetch the redirect URL so "Go to shop" can be a target="_blank" anchor.
+    // Pre-activate on modal open to fetch the redirect URL so "Go to shop" can be a target="_blank" anchor.
+    // Needs a wallet, except in the hub, where the backend credits the session cookie.
     useEffect(() => {
         setRedirectLink('')
-        if (!activeRetailer || !walletAddress) return
+        if (!activeRetailer || (!walletAddress && !isHub)) return
 
-        let cancelled = false
-        activate({
+        const body: Parameters<typeof activate>[0] = {
             platform,
             itemId: activeRetailer.id,
-            walletAddress,
-            userId,
             flowId,
             tokenSymbol: cryptoSymbols[0],
-        })
+        }
+        if (walletAddress) body.walletAddress = walletAddress
+        // A userId overrides the session server-side, so the hub sends none.
+        if (!isHub) body.userId = userId
+
+        let cancelled = false
+        activate(body)
             .then((res) => {
                 if (!cancelled && res?.url) setRedirectLink(res.url)
             })
@@ -140,7 +144,7 @@ export const useCardsList = ({
         return () => {
             cancelled = true
         }
-    }, [activeRetailer, walletAddress, platform, userId, flowId, cryptoSymbols])
+    }, [activeRetailer, walletAddress, isHub, platform, userId, flowId, cryptoSymbols])
 
     // ── Handlers ──────────────────────────────────────────────────────
     const handleCardClick = (retailer: Retailer) => {

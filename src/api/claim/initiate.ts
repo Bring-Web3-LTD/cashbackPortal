@@ -1,4 +1,5 @@
-import { API_URL_PLATFORMS, API_KEY } from "../../config"
+import { API_URL_PLATFORMS } from "../../config"
+import { apiFetch } from "../request"
 
 interface Body extends BackendRequestBody {
     walletAddress: string | null
@@ -21,13 +22,11 @@ const claimInitiate = async (body: Body): Promise<Response> => {
         return { messageToSign: "", status: 400 }
     }
 
-    const res = await fetch(`${API_URL_PLATFORMS}claim-init`, {
+    const res = await apiFetch(`${API_URL_PLATFORMS}claim-init`, {
         method: "POST",
         body: JSON.stringify(body),
-        headers: {
-            "x-api-key": API_KEY,
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
+        platform: body.platform,
     })
     const data = await res.json()
     return data
