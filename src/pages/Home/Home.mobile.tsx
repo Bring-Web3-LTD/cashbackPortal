@@ -1,16 +1,21 @@
-/** Mobile portal home page: hero + filter row (categories / search / chip) +
- * retailer list + claim modal. Pure UI — logic in useHomePage. */
-import MobileHeroSection from '../../components/HeroSection/HeroSection.mobile'
+/** Mobile portal home page: title + dashboard bar + filter row (categories /
+ * search / chip) + retailer list + claim modal. Pure UI — logic in useHomePage. */
+import MobileDashboard from '../../components/Dashboard/Dashboard.mobile'
 import MobileCategories from '../../components/Categories/Categories.mobile'
 import MobileSearchBar from '../../components/Search/Search.mobile'
 import MobileFilterChip from '../../components/FilterChip/FilterChip.mobile'
 import MobileCardsList from '../../components/CardsList/CardsList.mobile'
 import MobileClaimModal from '../../components/ClaimModal/ClaimModal.mobile'
+import MobilePairWalletModal from '../../components/PairWalletModal/PairWalletModal.mobile'
 import { useHomePage } from './useHomePage'
 import styles from './styles.mobile.module.css'
 
 const MobileHome = () => {
     const {
+        labels,
+        mode,
+        setMode,
+        couponsIframeSrc,
         category,
         setCategory,
         searchOpen,
@@ -38,6 +43,7 @@ const MobileHome = () => {
         claimDisplay,
         claimAmount,
         minimumClaimThreshold,
+        totalEstimatedUsd,
         walletAddress,
         walletName,
         walletEmoji,
@@ -45,6 +51,9 @@ const MobileHome = () => {
         handleOpenClaim,
         handleCloseClaim,
         handleConfirmClaim,
+        pairOpen,
+        handleOpenPair,
+        handleClosePair,
     } = useHomePage()
 
     // Decide what occupies the tabs-row slot. Priority: open input >
@@ -82,18 +91,36 @@ const MobileHome = () => {
 
     return (
         <div className={styles.root} data-testid="mobile-home">
+            <header className={styles.header}>
+                <h1 className={styles.title}>{labels.title}</h1>
+            </header>
             <main className={styles.content}>
-                <MobileHeroSection onClaim={handleOpenClaim} />
-                {renderFilterRow()}
-                <MobileCardsList
-                    retailers={retailers}
-                    metadata={metadata}
-                    isLoading={isLoadingRetailers}
-                    isFetchingNextPage={isFetchingNextPage}
-                    hasNextPage={Boolean(hasNextPage)}
-                    onFetchNextPage={fetchNextPage}
-                    isSearching={isSearching}
+                <MobileDashboard
+                    mode={mode}
+                    onModeChange={setMode}
+                    onClaim={handleOpenClaim}
+                    onPairWallet={handleOpenPair}
                 />
+                {mode === 'coupons' ? (
+                    <iframe
+                        className={styles.couponsFrame}
+                        src={couponsIframeSrc}
+                        title={labels.coupons}
+                    />
+                ) : (
+                    <>
+                        {renderFilterRow()}
+                        <MobileCardsList
+                            retailers={retailers}
+                            metadata={metadata}
+                            isLoading={isLoadingRetailers}
+                            isFetchingNextPage={isFetchingNextPage}
+                            hasNextPage={Boolean(hasNextPage)}
+                            onFetchNextPage={fetchNextPage}
+                            isSearching={isSearching}
+                        />
+                    </>
+                )}
             </main>
             <MobileClaimModal
                 state={claimState}
@@ -101,6 +128,7 @@ const MobileHome = () => {
                 tokenAmountDisplay={claimDisplay}
                 tokenAmount={claimAmount}
                 minimumClaimThreshold={minimumClaimThreshold}
+                totalEstimatedUsd={totalEstimatedUsd}
                 walletAddress={walletAddress}
                 walletName={walletName}
                 walletEmoji={walletEmoji}
@@ -109,6 +137,7 @@ const MobileHome = () => {
                 onConfirm={handleConfirmClaim}
                 onTryAgain={handleConfirmClaim}
             />
+            <MobilePairWalletModal open={pairOpen} onClose={handleClosePair} />
         </div>
     )
 }

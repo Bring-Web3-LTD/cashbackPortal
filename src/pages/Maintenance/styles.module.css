@@ -12,5 +12,5 @@
 }
 
 .icon {
-    fill: white
+    fill: var(--maintenance-icon-c, white);
 }

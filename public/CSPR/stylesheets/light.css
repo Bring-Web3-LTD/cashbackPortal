@@ -9,9 +9,6 @@
     --title-f-s: 25px;
     --title-f-w: 700;
 
-    --subtitle-f-s: 18px;
-    --subtitle-f-w: 400;
-    --subtitle-f-c: #1A1919;
 
     --legal-link-f-c: #1A1919;
 
@@ -149,9 +146,6 @@
     --category-btn-hover-border-c:transparent;
     --category-btn-hover-radius: 6px;
 
-    --modal-h: 221px;
-    --modal-close-size: 24px;
-    --modal-offset-top: -120px;
     --modal-bg: #F5F6F7;
     --modal-overlay-bg: rgba(43, 43, 43, 0.6);
     --modal-border-w: 0;
@@ -164,29 +158,15 @@
     --modal-paragraph-f-w: 400;
     --modal-paragraph-f-c: #1A1919;
 
-    /* Claim status modal (success / error / processing) — its own white
-       surface, taller than the shared --modal-h. */
     --modal-status-bg: #FFFFFF;
     --modal-status-radius: 12px;
-    /* Opt out of the shared 221px --modal-h; the margins below size it to
-       Figma's 455px and it can't clip if the copy ever wraps. */
-    --modal-status-h: auto;
-    --modal-status-mt: 96px;
-    --modal-status-mb: 97px;
-
-    /* Close button centred in the 72px header, 22px from the modal's right
-       edge; offsets account for the button's own 1px 6px padding. */
-    --modal-status-close-top: 23px;
-    --modal-status-close-right: 16px;
 
     /* Sampled off the Figma loader asset: solid ring sweeping #F0F1F4 -> #0A2EBF,
-       34px across with a 3.5px stroke. */
+       with a 3.5px stroke. */
     --modal-status-loader-c: #0A2EBF;
     --modal-status-loader-track-c: #F0F1F4;
-    --modal-status-loader-size: 34px;
     --modal-status-loader-stroke: 3.5px;
 
-    --modal-status-title-mt: 8px;
     --modal-status-title-f-s: 30px;
     --modal-status-title-f-w: 600;
     --modal-status-title-l-h: 38px;
@@ -194,14 +174,11 @@
     --modal-status-title-success-f-c: #2DDC88;
     --modal-status-title-failure-f-c: #CC000F;
 
-    --modal-status-msg-mt: 8px;
-    --modal-status-msg-mb: 24px;
     --modal-status-msg-l-h: 24px;
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
     --modal-status-msg-f-c: #1A1919;
 
-    --modal-status-btn-height: 48px;
     --modal-status-btn-bg: var(--pending-btn-bg);
     --modal-status-btn-f-s: 18px;
     --modal-status-btn-f-w: 700;
@@ -287,7 +264,6 @@
     --retailer-logo-fallback-border-c: rgba(220, 224, 233, 0.50);
 
     --scrollbar-bg: var(--Content-Light-contentSecondary, #84868C);
-    --scrollbar-w: 10px;
 
     --search-bg: #FFFFFF;
     --search-menu-bg: #FFFFFF;
@@ -320,7 +296,6 @@
     --history-back-hover-f-w: 500;
     --history-back-hover-f-c: #0A2EBF;
 
-    --history-back-x-location: 64px;
 
     --history-table-radius: 12px;
     --history-table-header-bg: #FFF;
