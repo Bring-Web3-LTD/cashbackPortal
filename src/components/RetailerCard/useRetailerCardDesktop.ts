@@ -70,7 +70,7 @@ export const useRetailerCardDesktop = ({
     id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
     campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
 }: Args) => {
-    const { platform, cryptoSymbols, userId, flowId, iconsPath, supportUrl } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, iconsPath, supportUrl, isHub } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
     const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
@@ -92,17 +92,21 @@ export const useRetailerCardDesktop = ({
         [name, label, section, search],
     )
 
+    // Needs a wallet, except in the hub, where the backend credits the session cookie.
+    const canActivate = Boolean(walletAddress) || Boolean(isHub)
+
     const activateDeal = async () => {
-        if (!walletAddress) return
+        if (!canActivate) return
 
         const body: Parameters<typeof activate>[0] = {
             platform,
             itemId: id,
-            walletAddress,
-            userId,
             flowId,
             tokenSymbol: cryptoSymbols[0]
         }
+        if (walletAddress) body.walletAddress = walletAddress
+        // A userId overrides the session server-side, so the hub sends none.
+        if (!isHub) body.userId = userId
 
         if (search?.value) body['search'] = search.value
 
@@ -119,7 +123,7 @@ export const useRetailerCardDesktop = ({
     }
 
     const handleClick = () => {
-        if (!walletAddress) {
+        if (!canActivate) {
             setLoginModalState('open')
             return
         }

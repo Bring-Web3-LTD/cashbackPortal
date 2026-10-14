@@ -139,7 +139,8 @@ interface Link {
 }
 
 interface BackendRequestBody {
-    userId: string
+    // Both absent for a hub user, who earns under the session cookie instead.
+    userId?: string
     walletAddress?: string | null
     platform: string
     flowId: string

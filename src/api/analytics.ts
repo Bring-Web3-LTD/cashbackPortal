@@ -1,4 +1,5 @@
-import { API_URL_PLATFORMS, API_KEY } from "../config"
+import { API_URL_PLATFORMS } from "../config"
+import { apiFetch } from "./request"
 
 interface Body {
     type: string
@@ -17,13 +18,11 @@ interface Body {
 const analytics = async (body: Body) => {
     body.timestamp = Date.now()
 
-    const res = await fetch(`${API_URL_PLATFORMS}analytics`, {
+    const res = await apiFetch(`${API_URL_PLATFORMS}analytics`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY
-        },
-        body: JSON.stringify(body)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        platform: body.platform,
     })
     const data = await res.json();
     return data;
