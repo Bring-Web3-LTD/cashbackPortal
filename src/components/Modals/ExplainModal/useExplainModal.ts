@@ -4,12 +4,14 @@
  * pure UI.
  */
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
 import { useClaim } from '../../../hooks/useClaim'
 
 const CARDS = ['coupons', 'cashback', 'claim'] as const
 
 export const useExplainModal = (closeFn: () => void) => {
     const { t } = useTranslation()
+    const { noClaim } = useRouteLoaderData('root') as LoaderData
     // The same action the claimable card's button runs, off the same rule for
     // when it is available - so the two cannot disagree.
     const { claim, claimDisabled } = useClaim()
@@ -18,9 +20,11 @@ export const useExplainModal = (closeFn: () => void) => {
         cards: CARDS.map(card => ({
             key: card,
             icon: `explain-${card}.svg`,
-            title: t(`explain_${card}_title`),
-            text: t(`explain_${card}_text`),
+            // A noClaim platform pays out itself: the claim card explains that.
+            title: noClaim && card === 'claim' ? t('noClaimTitle') : t(`explain_${card}_title`),
+            text: noClaim && card === 'claim' ? t('noClaimText') : t(`explain_${card}_text`),
         })),
+        noClaim,
         claimDisabled,
         claimAndClose: () => { claim(); closeFn() },
         labels: {

@@ -93,12 +93,14 @@
     text-align: center;
 }
 
+/* 204 is the design's floor; longer copy (noClaim) or zoom grows the row, and
+   stretch keeps the three cards the same height. */
 .grid {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 12px;
     width: 100%;
-    height: 204px;
+    min-height: 204px;
 }
 
 .card {
@@ -109,7 +111,6 @@
     align-items: flex-start;
     gap: 16px;
     min-width: 0;
-    height: 100%;
     padding: 20px;
     background: var(--modal-explain-card-bg);
     /* Inset: the design's stroke sits inside the box, so it must not add to
@@ -221,7 +222,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        height: auto;
+        min-height: 0;
     }
 
     .card {
@@ -230,7 +231,6 @@
         align-items: flex-start;
         gap: 16px;
         width: 100%;
-        height: auto;
     }
 
     .card_content {

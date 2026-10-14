@@ -16,6 +16,9 @@ interface Response {
         userId: string | undefined
         isTester?: boolean
         autoclaim?: boolean
+        /** How the platform pays out. On `noClaim` the platform pays its users
+         *  outside the portal, so there is no claim action at all. */
+        claimType?: 'manualClaim' | 'autoClaim' | 'noClaim' | null
         theme?: string
         terms?: boolean
         extensionId?: string
@@ -33,6 +36,8 @@ interface Response {
         couponsIframeSrc?: string | null
         /** Where the claim guide sends a hub user to install the wallet. */
         chromeStoreUrl?: string
+        /** Support site, picked by the backend from the wrapper's origin. */
+        supportUrl?: string
     }
 }
 

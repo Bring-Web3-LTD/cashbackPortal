@@ -1,4 +1,5 @@
 {
+    "_comment": "noClaimTitle and noClaimText are placeholder copy until Product supplies the text (TODO#686). Replace them and remove this _comment key.",
     "title": "Cashback",
     "back": "Back",
     "rewards": "Rewards",
@@ -36,6 +37,10 @@
     "smartCashback": "Smart Cashback",
     "more": "More",
     "claimable": "Claimable",
+    "approved": "Approved",
+    "noClaimTitle": "Saved for you",
+    "noClaimText": "Approved rewards are saved for you. There is nothing to claim here.",
+    "statusApproved": "Approved",
     "cashbackEarned": "Cashback earned",
     "currentValue": "Current value",
     "pending": "Pending",
