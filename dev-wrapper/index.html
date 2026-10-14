@@ -12,9 +12,13 @@
         <header class="bar">
             <div class="bar-text">
                 <h1>Cashback Portal: dev wrapper</h1>
-                <p class="hint">
+                <p class="hint" id="hintWrapper">
                     Simulates a partner page embedding the portal via the
                     <code>POST /v1/extension/check/portal</code> bootstrap call.
+                </p>
+                <p class="hint" id="hintStandalone" hidden>
+                    <strong>Standalone (Bring), not a real wrapper:</strong> as on rewrds.xyz, the portal loads
+                    with no token and calls <code>POST /v1/platforms/check/portal</code> itself.
                 </p>
             </div>
             <div class="view-toolbar">
@@ -151,6 +155,11 @@
                         </label>
                         <button id="manualConnect" type="button" class="link-btn"
                             title="Manually run the wallet connect flow and push the session to the portal">Send connect</button>
+                    </div>
+                    <div id="standaloneRow" class="row-split" hidden>
+                        <span>Standalone: the portal fetches its own session</span>
+                        <button id="standaloneOpen" type="button" class="link-btn"
+                            title="Open the standalone portal as the whole page: the real case for cookies and window.parent">Open top-level ↗</button>
                     </div>
                     <details class="debug">
                         <summary>Wallet identity (optional)<span id="identityDot" class="identity-dot"
