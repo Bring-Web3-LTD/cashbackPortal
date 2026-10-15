@@ -43,7 +43,10 @@ const Dashboard = ({ view, onViewChange }: Props) => {
 
     return (
         <div className={`${styles.bar} ${showSkeleton ? styles.bar_skeleton : ''}`}>
-            {couponsEnabled && (
+            {/* Held back until the balance has loaded: the switcher is live
+                content, so showing it beside skeleton cards reads as a
+                half-finished page rather than a loading one. */}
+            {couponsEnabled && !showSkeleton && (
                 <div className={styles.switcher}>
                     <div className={styles.tabs}>
                         {renderTab('coupons', labels.couponsTab)}
