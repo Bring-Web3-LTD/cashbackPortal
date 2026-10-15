@@ -10,6 +10,7 @@ import {
     selectEligible,
     selectPending,
     selectFirstTimeUser,
+    selectCanPairWallet,
 } from '../../hooks/useBalance'
 import { formatCurrency } from '../../pages/History/helpers'
 
@@ -50,6 +51,8 @@ export const useDashboard = () => {
         firstTimeUser: selectFirstTimeUser(data),
         couponsEnabled: !!couponsEnabled,
         isHub: !!isHub,
+        // Per-platform backend switch (/cache canPairWallet).
+        showPairWallet: selectCanPairWallet(data),
         pending: {
             amount: pending?.tokenAmountDisplay ?? '0.00',
             symbol: pending?.tokenSymbol ?? fallbackSymbol,

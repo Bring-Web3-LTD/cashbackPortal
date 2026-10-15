@@ -1,5 +1,5 @@
 /** Generic mobile dashboard bar. Slots are driven by `firstTimeUser`,
- * `couponsEnabled` and `isHub`. Pure UI — logic in useDashboard. */
+ * `couponsEnabled`, `isHub` and `showPairWallet`. Pure UI — logic in useDashboard. */
 import Icon from '../Icon/Icon'
 import { useDashboard, DashboardProps, DashboardMode } from './useDashboard.mobile'
 import styles from './styles.mobile.module.css'
@@ -11,6 +11,7 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
         firstTimeUser,
         couponsEnabled,
         isHub,
+        showPairWallet,
         pending,
         claim,
         labels,
@@ -50,7 +51,7 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
                             <p className={styles.brandText}>{labels.smartCashback}</p>
                         </div>
                     ) : null}
-                    {isHub ? null : (
+                    {showPairWallet ? (
                         <button
                             type="button"
                             className={`${styles.pill} ${styles.pillAccent}`}
@@ -58,7 +59,7 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
                         >
                             {labels.pairWallet}
                         </button>
-                    )}
+                    ) : null}
                     <button
                         type="button"
                         className={`${styles.pill} ${isHub ? styles.pillNarrow : ''}`}

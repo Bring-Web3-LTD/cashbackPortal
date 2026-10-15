@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import message from '../../utils/message'
-import { useBalance, selectFirstTimeUser } from '../../hooks/useBalance'
+import { useBalance, selectFirstTimeUser, selectCanPairWallet } from '../../hooks/useBalance'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 import { ENV } from '../../config'
 
@@ -56,9 +56,9 @@ export const useDashboard = () => {
     }, [])
 
     return {
-        // Wallet apps hold an address already; pairing ends in a signature,
-        // which the hub has no wallet for.
-        showPairWallet: !isHub,
+        // Per-platform backend switch (/cache canPairWallet), so enabling a
+        // platform is a config change on the server, not a portal release.
+        showPairWallet: selectCanPairWallet(balance),
         couponsEnabled,
         showSkeleton: balanceLoading || skeletonPreview,
         firstTimeUser: firstTimeOverride ?? backendFirstTimeUser,
