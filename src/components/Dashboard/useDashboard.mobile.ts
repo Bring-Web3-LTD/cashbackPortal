@@ -10,6 +10,7 @@ import {
     selectEligible,
     selectPending,
     selectFirstTimeUser,
+    selectCanPairWallet,
 } from '../../hooks/useBalance'
 import { formatCurrency } from '../../pages/History/helpers'
 
@@ -27,7 +28,7 @@ export interface DashboardProps {
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, couponsEnabled, isHub, canPairWallet: canPairOverride } = useRouteLoaderData('root') as LoaderData
     const { data } = useBalance()
 
     const eligible = selectEligible(data)
@@ -50,6 +51,8 @@ export const useDashboard = () => {
         firstTimeUser: selectFirstTimeUser(data),
         couponsEnabled: !!couponsEnabled,
         isHub: !!isHub,
+        // Per-platform backend switch (/cache canPairWallet).
+        showPairWallet: canPairOverride ?? selectCanPairWallet(data),
         pending: {
             amount: pending?.tokenAmountDisplay ?? '0.00',
             symbol: pending?.tokenSymbol ?? fallbackSymbol,

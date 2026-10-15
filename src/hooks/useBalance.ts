@@ -49,3 +49,10 @@ export const selectTotalEarned = (data: BalanceResponse | undefined) =>
  */
 export const selectFirstTimeUser = (data: BalanceResponse | undefined) =>
     typeof data?.data?.firstTimeUser === 'boolean' ? data.data.firstTimeUser : true
+
+/**
+ * Whether this platform shows the "Pair wallet" button. The backend decides
+ * per platform; hidden until /cache says otherwise.
+ */
+export const selectCanPairWallet = (data: BalanceResponse | undefined) =>
+    data?.data?.canPairWallet === true

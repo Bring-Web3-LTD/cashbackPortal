@@ -12,6 +12,8 @@ interface Data {
     movements: Movements
     /** No rewards and no history at all. Absent until the call resolves. */
     firstTimeUser?: boolean
+    /** Backend per-platform switch for the "Pair wallet" button. Absent = hidden. */
+    canPairWallet?: boolean
 }
 
 interface Response {
