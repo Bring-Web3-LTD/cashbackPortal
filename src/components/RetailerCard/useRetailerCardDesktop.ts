@@ -14,6 +14,7 @@ import injectCashback from '../../utils/injectCashback'
 import { getInitials } from '../../utils/getInitials'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -69,8 +70,9 @@ export const useRetailerCardDesktop = ({
     id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
     campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
 }: Args) => {
-    const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
+    const { identity, isIdentified } = useRequestIdentity()
     const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
@@ -92,15 +94,14 @@ export const useRetailerCardDesktop = ({
     )
 
     const activateDeal = async () => {
-        if (!walletAddress) return
+        if (!isIdentified) return
 
         const body: Parameters<typeof activate>[0] = {
             platform,
             itemId: id,
-            walletAddress,
-            userId,
             flowId,
-            tokenSymbol: cryptoSymbols[0]
+            tokenSymbol: cryptoSymbols[0],
+            ...identity,
         }
 
         if (search?.value) body['search'] = search.value
@@ -118,7 +119,7 @@ export const useRetailerCardDesktop = ({
     }
 
     const handleClick = () => {
-        if (!walletAddress) {
+        if (!isIdentified) {
             setLoginModalState('open')
             return
         }
