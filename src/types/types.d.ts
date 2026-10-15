@@ -133,7 +133,8 @@ interface Link {
 }
 
 interface BackendRequestBody {
-    userId: string
+    /** Absent in hub mode, where the session cookie identifies the user. */
+    userId?: string
     walletAddress?: string | null
     platform: string
     flowId: string
