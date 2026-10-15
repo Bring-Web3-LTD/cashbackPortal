@@ -411,11 +411,14 @@
     --back-to-top-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.4);
 
     /* Modal shell + copy, shared by every modal. */
-    --modal-bg: #F5F6F7;
-    /* Not a dim — the scrim is the page colour at full opacity, so the
-       dashboard is covered rather than shaded (Figma 24:1543). */
+    /* Surface/Card,Modal - not Background/Page. The Type A shell paints the
+       frame colour and the sections paint this over it, so a page-coloured
+       value here shows as a band in the shell's 24px bottom padding. */
+    --modal-bg: #FFFFFF;
     /* Scrim behind every popup - Text/Primary at 60%. It must stay translucent:
-       the Modal posts this value to the host page so it dims itself to match. */
+       the Modal posts this value to the host page so it dims itself to match.
+       Figma 24:1543 draws an opaque page-colour cover instead; the translucent
+       scrim is a deliberate override. */
     --modal-overlay-bg: rgba(26, 25, 25, 0.60);
     --modal-border-w: 0;
     --modal-border-c: transparent;
@@ -515,7 +518,7 @@
     --modal-pair-input-border-w: 1px;
     --modal-pair-input-border-c: #E1E1E1;
     --modal-pair-input-empty-border-c: #E1E1E1;
-    --modal-pair-input-error-border-c: #E1E1E1;
+    --modal-pair-input-error-border-c: #CC000F;
     --modal-pair-input-f-c: #1A1919;
     --modal-pair-input-f-s: 15px;
     --modal-pair-input-f-w: 500;
@@ -531,7 +534,7 @@
     /* Error only thickens the box; the colour holds. The red is carried by the
        message underneath. */
     --modal-pair-otp-error-border-w: 1.5px;
-    --modal-pair-otp-error-border-c: #E1E1E1;
+    --modal-pair-otp-error-border-c: #CC000F;
     --modal-pair-otp-f-c: #1A1919;
     --modal-pair-otp-f-s: 22px;
     --modal-pair-otp-f-w: 700;
