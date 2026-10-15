@@ -43,24 +43,25 @@
     --header-title-l-h: 28px;
     --header-title-f-c: #FFFFFF;
 
-    /* The three help actions. Page-coloured inside a Border/Default hairline,
-       pill radius, muted label. Figma ships no state for these, so they follow
-       the dots button, which is the same surface one size up. */
-    --header-btn-bg: #1A1E3E;
+    /* The three help actions take Button_d type Secondary throughout (4035:2194):
+       Surface/Card inside a Border/Secondary hairline with a Text/Primary label,
+       tinting to Surface/retailer-card-hover on hover. Pill radius from the
+       header. Button_d draws no pressed state, so pressed repeats hover. */
+    --header-btn-bg: rgba(17, 19, 41, 0.85);
     --header-btn-f-s: 14px;
     --header-btn-f-w: 400;
     --header-btn-l-h: 20px;
-    --header-btn-f-c: #AEB0BB;
+    --header-btn-f-c: #FFFFFF;
     --header-btn-border-w: 1px;
     --header-btn-border-c: #404A8D;
     --header-btn-radius: 100px;
-    --header-btn-hover-bg: #242838;
+    --header-btn-hover-bg: #21254C;
     --header-btn-hover-border-w: 1px;
     --header-btn-hover-border-c: #404A8D;
     --header-btn-hover-f-c: #FFFFFF;
-    --header-btn-pressed-bg: #7A7D83;
-    --header-btn-pressed-border-w: 0;
-    --header-btn-pressed-border-c: transparent;
+    --header-btn-pressed-bg: #21254C;
+    --header-btn-pressed-border-w: 1px;
+    --header-btn-pressed-border-c: #404A8D;
     --header-btn-pressed-f-c: #FFFFFF;
 
     /* Overflow dots, 46x38. Hover lifts to Surface/Raised; pressed drops the
@@ -244,7 +245,7 @@
     --category-arrow-radius: 7px;
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
-    --category-btn-l-h: 24px;
+    --category-btn-l-h: 20px;
     --category-btn-f-c: #FFFFFF;
     --category-btn-border-w: 0;
     --category-btn-border-c: transparent;
@@ -268,7 +269,7 @@
     /* Type A popups (Connect, Install, Go Shopping, Terms, Pair). The shell is
        Background/partner-card; header, body and footer sit on Surface/Card. */
     --modal-popup-frame-bg: #13172F;
-    --modal-popup-radius: 12px;
+    --modal-popup-radius: 5px;
     --modal-popup-avatar-border-w: 1px;
     --modal-popup-avatar-border-c: #404A8D;
     --modal-popup-loader-track-c: rgba(0, 0, 0, 0.2);
@@ -342,14 +343,19 @@
 
     --modal-close-radius: 8px;
     --modal-close-hover-bg: #21254C;
-    --modal-close-hover-f-c: #FFFFFF;
+    /* Matches the x-mark asset's own fill, so hover changes only the plate -
+       which is all the Close Button draws (4035:1804). The component paints
+       this through a mask of the icon, so any other value repaints the glyph. */
+    --modal-close-hover-f-c: #AEB0BB;
     --modal-close-icon-src: url('/ECKO/icons/dark/x-mark.svg');
 
     --modal-bg: rgba(17, 19, 41, 0.85);
     --modal-overlay-bg: rgba(12, 14, 28, 0.70);
     --modal-border-w: 0;
     --modal-border-c: transparent;
-    --modal-radius: 12px;
+    /* Figma's --radius/modal. The type A header and footer round at 12, so the
+       shell only shows this radius on the two bottom corners, below them. */
+    --modal-radius: 5px;
     --modal-title-f-s: 17px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #FFFFFF;
@@ -373,7 +379,7 @@
     --dashboard-card-border-w: 1px;
     --dashboard-card-border-c: #404A8D;
     --dashboard-card-radius: 12px;
-    --dashboard-card-hover-bg: #21254C;
+    --dashboard-card-hover-bg: rgba(17, 19, 41, 0.85);
     --dashboard-card-label-f-s: 15px;
     --dashboard-card-label-f-w: 400;
     --dashboard-card-label-l-h: 24px;
@@ -431,7 +437,7 @@
     --dashboard-banner-bg: rgba(17, 19, 41, 0.85);
     --dashboard-banner-radius: 8px;
     --dashboard-banner-border-w: 1px;
-    --dashboard-banner-border-c: #FFFFFF;
+    --dashboard-banner-border-c: #404A8D;
     --dashboard-banner-title-f-s: 20px;
     --dashboard-banner-title-f-w: 700;
     --dashboard-banner-title-l-h: 26px;
@@ -439,7 +445,8 @@
     --dashboard-banner-text-f-s: 15px;
     --dashboard-banner-text-f-w: 400;
     --dashboard-banner-text-l-h: 24px;
-    --dashboard-banner-text-f-c: #FFFFFF;
+    /* Text/Secondary - only the title is Text/Primary (4035:2312). */
+    --dashboard-banner-text-f-c: #AEB0BB;
     --dashboard-action-f-s: 17px;
     --dashboard-action-f-w: 700;
     --dashboard-action-l-h: 24px;
