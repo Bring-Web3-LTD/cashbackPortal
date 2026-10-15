@@ -13,7 +13,12 @@ import { ENV } from '../../config'
 
 export const useDashboard = () => {
     const { t } = useTranslation()
-    const { isHub, couponsEnabled, firstTimeUser: firstTimeOverride } = useRouteLoaderData('root') as LoaderData
+    const {
+        isHub,
+        couponsEnabled,
+        firstTimeUser: firstTimeOverride,
+        canPairWallet: canPairOverride,
+    } = useRouteLoaderData('root') as LoaderData
 
     // Optimistically onboarding until /cache says the user already has
     // activity. Re-derived from the live query, so earning a first reward
@@ -25,6 +30,7 @@ export const useDashboard = () => {
     // includes after a disconnect, since the query is keyed on the address and
     // its data goes with it.
     const backendFirstTimeUser = selectFirstTimeUser(balance)
+    const backendCanPairWallet = selectCanPairWallet(balance)
 
     // Only the portal calls /cache, so report the resolved flag back to the
     // dev wrapper for its Dashboard flags panel. Dev only — the embedding host
@@ -36,8 +42,9 @@ export const useDashboard = () => {
             isHub: Boolean(isHub),
             couponsEnabled: Boolean(couponsEnabled),
             firstTimeUser: backendFirstTimeUser,
+            canPairWallet: backendCanPairWallet,
         })
-    }, [isHub, couponsEnabled, backendFirstTimeUser])
+    }, [isHub, couponsEnabled, backendFirstTimeUser, backendCanPairWallet])
 
     const [explainOpen, setExplainOpen] = useState(false)
     const [pairOpen, setPairOpen] = useState(false)
@@ -58,7 +65,7 @@ export const useDashboard = () => {
     return {
         // Per-platform backend switch (/cache canPairWallet), so enabling a
         // platform is a config change on the server, not a portal release.
-        showPairWallet: selectCanPairWallet(balance),
+        showPairWallet: canPairOverride ?? backendCanPairWallet,
         couponsEnabled,
         showSkeleton: balanceLoading || skeletonPreview,
         firstTimeUser: firstTimeOverride ?? backendFirstTimeUser,

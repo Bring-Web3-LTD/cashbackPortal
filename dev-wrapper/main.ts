@@ -604,10 +604,10 @@ statusPreviewEl.addEventListener('change', () => {
 })
 
 // Dashboard state flags. The backend owns these (couponsEnabled / isHub from
-// verify, firstTimeUser from cache); the checkbox is seeded from whatever it
+// verify, firstTimeUser / canPairWallet from cache); the checkbox is seeded from whatever it
 // returned. Ticking it away from that value pins an override on the portal
 // URL for testing; ticking it back to the backend value clears the override.
-const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub'] as const
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet'] as const
 type DashboardFlag = typeof DASHBOARD_FLAGS[number]
 
 // The portal owns these. A box is only an *override* while the developer has
