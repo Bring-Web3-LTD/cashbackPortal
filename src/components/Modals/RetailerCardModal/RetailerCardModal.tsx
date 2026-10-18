@@ -96,8 +96,15 @@ const RetailerCardModal = ({
                     {/* initial={false} so the panel is painted outright when the
                         modal opens. Its variants start at opacity 0 for the
                         terms slide; without this they also run on first mount
-                        and the whole panel, logo included, fades up at it. */}
-                    <AnimatePresence mode="wait" initial={false}>
+                        and the whole panel, logo included, fades up at it.
+
+                        popLayout, not wait: `wait` holds the incoming panel
+                        until the outgoing one has fully left, so the modal
+                        renders nothing for the length of the exit and the swap
+                        reads as a blink. popLayout takes the leaving panel out
+                        of flow instead, so the two overlap and the slide is
+                        continuous in both directions. */}
+                    <AnimatePresence mode="popLayout" initial={false}>
                         {showingTerms ? (
                             <motion.div
                                 key="terms"

@@ -30,6 +30,6 @@
     font-weight: var(--legal-link-f-w);
     line-height: var(--legal-link-l-h, 16px);
     color: var(--legal-link-f-c);
-    text-decoration: var(--legal-link-decoration, underline);
+    text-decoration: underline;
     text-underline-position: from-font;
 }
