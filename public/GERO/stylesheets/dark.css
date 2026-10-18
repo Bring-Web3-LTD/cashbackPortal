@@ -87,7 +87,7 @@
     --dashboard-card-border-w: 1px;
     --dashboard-card-border-c: #262931;
     --dashboard-card-radius: 10px;
-    --dashboard-card-hover-bg: #182526;
+    --dashboard-card-hover-bg: #141414;
     --dashboard-card-label-f-s: 15px;
     --dashboard-card-label-f-w: 400;
     --dashboard-card-label-l-h: 20px;
@@ -144,7 +144,7 @@
        asking for action on an otherwise quiet bar. */
     --dashboard-banner-bg: #141414;
     --dashboard-banner-border-w: 1px;
-    --dashboard-banner-border-c: #FFFFFF;
+    --dashboard-banner-border-c: #262931;
     --dashboard-banner-radius: 10px;
     --dashboard-banner-title-f-s: 20px;
     --dashboard-banner-title-f-w: 700;
@@ -362,7 +362,9 @@
     --category-btn-bg: rgba(0, 0, 0, 0.75);
     --category-btn-f-s: 15px;
     --category-btn-f-w: 400;
-    --category-btn-l-h: 20px;
+    /* The chip is a fixed 36 box with 8px padding and a 1px hairline, leaving an
+       18px content box; a taller line overflows it and the label sits low. */
+    --category-btn-l-h: 18px;
     --category-btn-f-c: #A8ADBF;
     --category-btn-border-w: 1px;
     --category-btn-border-c: #262931;
@@ -438,9 +440,13 @@
        --retailer-custom-modal-bg and --retailer-custom-modal-radius stay unset:
        the popup paints its header, content and footer over the card in
        --modal-bg, so the card itself never shows. The terms view is the one
-       place it does, and there it is darker and rounder. */
-    --modal-terms-bg: #141414;
-    --modal-terms-radius: 16px;
+       place it does: its sections cover all but the shell's 24px bottom
+       padding, so --modal-terms-bg is the strip you see there. Both read off
+       the Terms variant (2751:5261), where the shell is a blue-tinted dark that
+       appears nowhere else in this sheet. */
+    --modal-terms-bg: #161B26;
+    --modal-terms-surface-bg: #1B1E24;
+    --modal-terms-radius: 20px;
     --modal-deal-logo-border-w: 1px;
     --modal-deal-logo-border-c: rgba(86, 98, 99, 0.75);
     --modal-deal-name-f-s: 18px;
@@ -453,7 +459,7 @@
     --modal-deal-back-l-h: 18px;
     /* Terms panel: every line is primary text on the card surface; only the
        heading is semi-bold. */
-    --modal-deal-markdown-bg: #141414;
+    --modal-deal-markdown-bg: rgba(27, 30, 36, 0.20);
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: rgba(86, 98, 99, 0.3);
     --modal-deal-markdown-radius: 8px;
@@ -804,9 +810,11 @@
     --history-amount-l-h: 20px;
     --history-amount-f-c: #FFFFFF;
 
-    /* The totals row sets every cell bold; the rest stay Regular. */
+    /* The totals row sets every cell bold; the rest stay Regular. This colour
+       reaches only its status cell, which takes the claimed accent like the
+       rows below it - the bold weight is what marks it as a summary. */
     --history-claim-row-f-w: 700;
-    --history-claim-row-f-c: #FFFFFF;
+    --history-claim-row-f-c: #00DFF3;
 
     /* Base is the claimable green; the rest override it per status. */
     --history-status-f-s: 15px;
