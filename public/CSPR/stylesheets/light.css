@@ -88,7 +88,7 @@
     --header-menu-border-w: 1px;
     --header-menu-border-c: #EDEEF0;
     --header-menu-radius: 12px;
-    --header-menu-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.4);
+    --header-menu-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.40);
     --header-menu-item-f-s: 15px;
     --header-menu-item-f-w: 500;
     --header-menu-item-f-c: #0A2EBF;
@@ -278,7 +278,7 @@
     --dashboard-badge-f-s: 15px;
     --dashboard-badge-f-w: 500;
     --dashboard-badge-l-h: 20px;
-    --dashboard-badge-radius: 6px;
+    --dashboard-badge-radius: 80px;
 
     /* History entry point. Its label is secondary text, not the accent, and it
        drops to muted when disabled. */
@@ -422,7 +422,7 @@
     --modal-overlay-bg: rgba(26, 25, 25, 0.60);
     --modal-border-w: 0;
     --modal-border-c: transparent;
-    --modal-radius: 5px;
+    --modal-radius: 6px;
     --modal-title-f-s: 20px;
     --modal-title-f-w: 700;
     --modal-title-f-c: #1A1919;
@@ -439,12 +439,9 @@
        and this modal is white. */
     --modal-close-icon-src: url('/CSPR/icons/light/x-mark.svg');
 
-    --custom-modal-bg: #FFFFFF;
-    --custom-modal-radius: 12px;
-
     /* Popup type A shell (Install / Go Shopping / Verify / Pair / Terms). */
     --modal-popup-frame-bg: #FFFFFF;
-    --modal-popup-radius: 12px;
+    --modal-popup-radius: 6px;
     --modal-popup-title-f-c: #1A1919;
     --modal-popup-title-f-s: 18px;
     --modal-popup-title-f-w: 700;
@@ -467,7 +464,10 @@
     --modal-popup-avatar-border-w: 1px;
     --modal-popup-avatar-border-c: #EDEEF0;
     --modal-popup-loader-radius: 100px;
-    --modal-popup-loader-track-c: #EDEEF0;
+    /* The spinner sits on the accent fill, so its track is a translucent white
+       veil rather than a palette surface - white at 20%, with the arc taking the
+       button's own white through currentColor (24:1148). */
+    --modal-popup-loader-track-c: rgba(255, 255, 255, 0.2);
 
     /* "What's this?" explainer. */
     --modal-explain-bg: #FFFFFF;
@@ -586,10 +586,10 @@
 
     /* Go Shopping modal + its terms view. */
     --retailer-custom-modal-bg: #FFFFFF;
-    --retailer-custom-modal-radius: 12px;
+    --retailer-custom-modal-radius: 6px;
     --modal-terms-bg: #FFFFFF;
     --modal-terms-surface-bg: #F5F6F7;
-    --modal-terms-radius: 12px;
+    --modal-terms-radius: 6px;
     --modal-deal-logo-bg: #FFFFFF;
     --modal-deal-logo-border-w: 1px;
     --modal-deal-logo-border-c: #EDEEF0;
