@@ -14,7 +14,6 @@
     --legal-link-f-s: 10px;
     --legal-link-f-w: 400;
     --legal-link-f-c: #7A7D83;
-    --legal-link-decoration: none;
     /* "Need Help?" / "Missing a reward?" are secondary buttons: no fill,
        accent label, muted outline. */
     --header-btn-bg: transparent;

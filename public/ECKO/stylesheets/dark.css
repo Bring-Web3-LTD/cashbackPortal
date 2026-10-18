@@ -350,7 +350,7 @@
     --modal-close-icon-src: url('/ECKO/icons/dark/x-mark.svg');
 
     --modal-bg: rgba(17, 19, 41, 0.85);
-    --modal-overlay-bg: rgba(12, 14, 28, 0.70);
+    --modal-overlay-bg: rgba(0, 0, 0, 0.70);
     --modal-border-w: 0;
     --modal-border-c: transparent;
     /* Figma's --radius/modal. The type A header and footer round at 12, so the
@@ -780,9 +780,8 @@
     --history-amount-l-h: 24px;
     --history-amount-f-c: #FFFFFF;
 
-    /* The totals row sets every cell bold; the rest stay Regular. */
     --history-claim-row-f-w: 700;
-    --history-claim-row-f-c: #FFFFFF;
+    --history-claim-row-f-c: #FFD300;
 
     /* Base is the claimable green; the rest override it per status. */
     --history-status-f-s: 15px;
