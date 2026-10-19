@@ -469,7 +469,7 @@
     /* What's This explainer: three feature cards on the modal surface, each
        with an Accent-free Surface/Elevated icon plate. */
     --modal-explain-bg: #13172F;
-    --modal-explain-radius: 12px;
+    --modal-explain-radius: 5px;
     --modal-explain-title-f-s: 17px;
     --modal-explain-title-f-w: 700;
     --modal-explain-title-l-h: 24px;
@@ -488,7 +488,7 @@
     --modal-explain-card-title-f-c: #FFFFFF;
     --modal-explain-card-text-f-s: 13px;
     --modal-explain-card-text-f-w: 500;
-    --modal-explain-card-text-l-h: 22px;
+    --modal-explain-card-text-l-h: 18px;
     --modal-explain-card-text-f-c: #AEB0BB;
     --modal-explain-icon-bg: #4B57A7;
     --modal-explain-icon-radius: 12px;
