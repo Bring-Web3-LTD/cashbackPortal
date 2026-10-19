@@ -228,6 +228,21 @@
     pointer-events: none;
 }
 
+/* noClaim: the claim button's slot holds the note's one-line title, sized
+   like the button so it sheds at the same width. */
+.no_claim {
+    flex: 0 1 auto;
+    min-width: 80px;
+    overflow: hidden;
+    font-size: var(--dashboard-card-label-f-s);
+    font-weight: 600;
+    line-height: var(--dashboard-card-label-l-h);
+    color: var(--dashboard-card-label-f-c);
+    text-align: right;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 /* Anchored above the trigger and centred on it. Fixed because the card clips
    its overflow and establishes a containing block via container-type. */
 .tooltip {

@@ -1,0 +1,7 @@
+{
+  "_comment": "noClaimTitle and noClaimText are placeholder copy until Product supplies the text (TODO#686). Replace them and remove this _comment key.",
+  "title": "Rewards Hub",
+  "subtitle": "Shop online with any card. Earn rewards in tokenized gold (XAUT0).",
+  "noClaimTitle": "Claiming is coming soon",
+  "noClaimText": "Every reward you earn is saved for you, nothing is lost. Once claiming opens you can withdraw your XAUT0 to a Solana wallet."
+}

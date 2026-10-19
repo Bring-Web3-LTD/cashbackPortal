@@ -87,6 +87,11 @@
     cursor: pointer;
 }
 
+/* noClaim's Approved tile: same look, but nothing to press. */
+.tileReadout {
+    cursor: default;
+}
+
 /* The label + value are 50px against 49px of inner height. Figma clips the
    overflow; flex would shrink both boxes and lift the $-line by a pixel. */
 .tileLabel {

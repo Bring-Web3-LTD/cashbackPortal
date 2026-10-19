@@ -7,7 +7,7 @@ import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
-import { ENV } from '../../config'
+import { buildSupportUrl } from '../../utils/supportUrl'
 
 export interface RewardsProps {
     /** Override the Claimable card's "Claim" click handler. */
@@ -17,11 +17,11 @@ export interface RewardsProps {
 export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { platform, cryptoSymbols } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, noClaim, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
 
-    const supportUrl = `https://support.bring.network/?platform=${platform}&address=${walletAddress ?? ''}&env=${ENV}`
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)
@@ -44,7 +44,12 @@ export const useRewards = () => {
 
     const labels = {
         rewards: t('rewards'),
-        claimable: t('claimable'),
+        // A noClaim platform pays out itself: approved rewards are saved.
+        claimable: noClaim ? t('approved') : t('claimable'),
+        // Placeholder copy in public/BRING/mobile/translations/en.json until
+        // Product supplies the text (TODO#686).
+        noClaimTitle: t('noClaimTitle'),
+        noClaimText: t('noClaimText'),
         claim: t('claim'),
         pending: t('pending'),
         viewRewards: t('viewRewards'),
@@ -60,6 +65,7 @@ export const useRewards = () => {
         pendingSymbol,
         canOpenClaim,
         belowMinimum,
+        noClaim,
         labels,
         goToHistory: () => navigate('/history'),
         goToFaq: () => navigate('/faq'),

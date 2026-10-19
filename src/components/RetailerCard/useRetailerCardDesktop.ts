@@ -11,6 +11,7 @@ import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
 import formatCashback from '../../utils/formatCashback'
 import injectCashback from '../../utils/injectCashback'
+import { injectSupportUrl } from '../../utils/supportUrl'
 import { getInitials } from '../../utils/getInitials'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
@@ -69,7 +70,7 @@ export const useRetailerCardDesktop = ({
     id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
     campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
 }: Args) => {
-    const { platform, cryptoSymbols, userId, flowId, iconsPath } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, iconsPath, supportUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
     const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
@@ -147,7 +148,7 @@ export const useRetailerCardDesktop = ({
 
         Promise.all(fetches)
             .then(([retailerTerms, campaignTerms]) => {
-                setTerms(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback))
+                setTerms(injectSupportUrl(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback), supportUrl))
             })
             .catch(console.error)
         // eslint-disable-next-line react-hooks/exhaustive-deps

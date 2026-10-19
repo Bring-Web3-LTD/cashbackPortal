@@ -61,7 +61,7 @@ const useCardFit = () => {
 export const useRewardsDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, autoclaim } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, autoclaim, noClaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     // The signature round-trip and the status modal it drives live in one
     // place, because the What's This modal offers the same action.
@@ -117,7 +117,7 @@ export const useRewardsDesktop = () => {
     // Nothing to press while the claim is under the minimum, so the reason
     // surfaces on hover instead of on a click the disabled control should not
     // be inviting. Empty while it is claimable, so the card takes no handlers.
-    const tooltipHandlers = claimDisabled ? {
+    const tooltipHandlers = claimDisabled && !noClaim ? {
         onMouseEnter: (e: MouseEvent<HTMLDivElement>) => {
             // Falls back to the card, which is the trigger once it is too
             // narrow for the pill and the pill is no longer rendered.
@@ -150,7 +150,11 @@ export const useRewardsDesktop = () => {
 
     const labels = {
         pending: t('pending'),
-        claimable: t('claimable'),
+        // A noClaim platform pays out itself: approved rewards are saved.
+        claimable: noClaim ? t('approved') : t('claimable'),
+        // Placeholder copy in public/BRING/translations/en.json until
+        // Product supplies the text (TODO#686). The body text is in What's This.
+        noClaimTitle: t('noClaimTitle'),
         details: t('details'),
         claim: t('claim'),
         historyCard: t('historyCard'),
@@ -162,6 +166,7 @@ export const useRewardsDesktop = () => {
 
     return {
         isAutoClaim: autoclaim,
+        noClaim,
         claim,
         claimDisabled,
         loading,

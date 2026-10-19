@@ -11,6 +11,7 @@ import activate from '../../api/activate'
 import fetchTerms from '../../utils/fetchTerms'
 import formatCashback from '../../utils/formatCashback'
 import injectCashback from '../../utils/injectCashback'
+import { injectSupportUrl } from '../../utils/supportUrl'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import type { RetailersMetadata } from '../../hooks/useRetailers'
@@ -33,7 +34,7 @@ export const useCardsList = ({
     hasNextPage,
     onFetchNextPage,
 }: CardsListProps) => {
-    const { platform, cryptoSymbols, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, supportUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendAnalyticsEvent } = useAnalytics()
 
@@ -107,14 +108,14 @@ export const useCardsList = ({
             .then(([retailerTerms, campaignTerms]) => {
                 if (controller.signal.aborted) return
                 const cashback = formatCashback(activeRetailer.maxCashback, activeRetailer.cashbackSymbol, activeRetailer.cashbackCurrency)
-                setActiveTerms(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback))
+                setActiveTerms(injectSupportUrl(injectCashback(campaignTerms || topGeneralTerms + retailerTerms + generalTerms, cashback), supportUrl))
             })
             .catch((err) => {
                 if (!controller.signal.aborted) console.error('Failed to fetch retailer terms', err)
             })
 
         return () => controller.abort()
-    }, [activeRetailer, metadata?.retailerTermsBasePath, topGeneralTerms, generalTerms])
+    }, [activeRetailer, metadata?.retailerTermsBasePath, topGeneralTerms, generalTerms, supportUrl])
 
     // Pre-activate on modal open (needs a wallet) to fetch the redirect URL so "Go to shop" can be a target="_blank" anchor.
     useEffect(() => {

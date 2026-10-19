@@ -11,6 +11,7 @@ import { useRewardsDesktop } from './useRewardsDesktop'
 const Rewards = () => {
     const {
         isAutoClaim,
+        noClaim,
         claim,
         claimDisabled,
         loading,
@@ -61,7 +62,31 @@ const Rewards = () => {
                     </button>
                 ) : null}
             </div>
-            {!isAutoClaim ?
+            {noClaim ?
+                // The platform pays out itself: approved rewards are saved for
+                // the user. The 86px card only fits a line, so it carries the
+                // note's title where the button would be, shed like the button
+                // as the card narrows; What's This holds the full explanation.
+                <div ref={claimableCard.ref} className={styles.card}>
+                    <div className={styles.left_cluster}>
+                        <div className={styles.values}>
+                            <div className={styles.card_label}>{labels.claimable}</div>
+                            <div ref={claimableCard.amountRef} className={styles.amount_row}>
+                                <span>{eligibleTokenAmount}</span>
+                                <span>{currentCryptoSymbol}</span>
+                            </div>
+                        </div>
+                        {claimableCard.fit.badge ? (
+                            <div ref={claimableCard.badgeRef} className={styles.badge}>{eligibleTotalEstimatedUsd}</div>
+                        ) : null}
+                    </div>
+                    {claimableCard.fit.action ? (
+                        <div id="rewards-no-claim-note" role="note" className={styles.no_claim}>
+                            {labels.noClaimTitle}
+                        </div>
+                    ) : null}
+                </div>
+            : !isAutoClaim ?
                 <div
                     ref={claimableCard.ref}
                     className={`${styles.card} ${claimDisabled ? styles.card_disabled : ''}`}

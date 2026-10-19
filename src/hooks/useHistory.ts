@@ -10,6 +10,7 @@
  * selector pattern so the page component stays presentation-only.
  */
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
 import { useBalance } from './useBalance'
 import {
     createDescription,
@@ -69,6 +70,7 @@ interface UseHistoryResult {
 
 export const useHistory = (): UseHistoryResult => {
     const { t } = useTranslation()
+    const { noClaim } = useRouteLoaderData('root') as LoaderData
     const query = useBalance()
 
     /** Rows show the status name itself, not the "In X days" countdown. */
@@ -137,7 +139,9 @@ export const useHistory = (): UseHistoryResult => {
             isClaim: false,
             amountDisplay: `${deal.tokenAmountDisplay ?? deal.tokenAmount}`,
             tokenSymbol: deal.tokenSymbol,
-            status: statusLabel(key),
+            // /cache calls every approved reward claimable, but on a noClaim
+            // platform there is nothing to claim: it is saved for the user.
+            status: noClaim && key === 'claimable' ? t('statusApproved') : statusLabel(key),
             rawStatus: key,
             description:
                 deal.history?.map((h) =>

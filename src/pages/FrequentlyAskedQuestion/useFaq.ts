@@ -13,11 +13,11 @@ import { useWalletAddress } from '../../hooks/useWalletAddress'
 type FaqResponse = Awaited<ReturnType<typeof fetchFaq>>
 
 export const useFaq = (): UseQueryResult<FaqResponse> => {
-    const { platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, supportUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
 
     return useQuery({
         queryKey: ['faq', walletAddress, platform],
-        queryFn: () => fetchFaq({ walletAddress: walletAddress ?? undefined, platform, userId, flowId }),
+        queryFn: () => fetchFaq({ walletAddress: walletAddress ?? undefined, platform, userId, flowId, supportUrl }),
     })
 }

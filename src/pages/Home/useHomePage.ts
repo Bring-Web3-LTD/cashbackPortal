@@ -37,7 +37,7 @@ const safeIframeSrc = (src?: string | null): string | undefined => {
 
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc, noClaim } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
@@ -127,6 +127,8 @@ export const useHomePage = () => {
     }
 
     const handleOpenClaim = () => {
+        // The platform pays out itself; the backend refuses the claim too.
+        if (noClaim) return
         // No wallet paired yet — show the pairing steps instead of the flow.
         if (!walletAddress) {
             setClaimState('instructions')
