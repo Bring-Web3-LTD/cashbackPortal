@@ -4,7 +4,8 @@ import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher, Wh
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
+import checkPortal from './api/checkPortal';
+import { DEV_MODE, ENV, STANDALONE, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
@@ -12,7 +13,8 @@ import { selectVariant } from './utils/ABTest/platform-variants';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
-    const token = params.get('token')
+    // Standalone mode has no wrapper to put the token on the URL: fetch it here
+    const token = STANDALONE ? await checkPortal(params.get('flowId')) : params.get('token')
     // URL-provided values are kept as a fallback for backward compatibility.
     // The token (verify response) is the newer source of truth and wins when
     // it carries the value.
@@ -72,6 +74,12 @@ const rootLoader = async () => {
         const activeNs = useMobilePortal ? `${platform}_MOBILE` : platform
         await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', platform] : [platform])
         i18n.setDefaultNamespace(activeNs)
+
+        // Standalone mode is the whole page, not an iframe: brand the tab too
+        if (STANDALONE) {
+            document.title = i18n.t('title', 'Rewards')
+            document.querySelector('link[rel="icon"]')?.setAttribute('href', `/${stylePlatform}/favicon.png`)
+        }
 
         if (ENV === 'prod') {
             delete res.info.isTester

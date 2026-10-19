@@ -987,6 +987,18 @@ const connectOverride = (): string | undefined => {
 }
 
 const applyProviderUi = () => {
+    // Bring always runs standalone: the wallet controls feed check/portal,
+    // which the wrapper does not call there, so they are disabled
+    const standalone = isStandalone()
+    standaloneRowEl.hidden = !standalone
+    hintWrapperEl.hidden = standalone
+    hintStandaloneEl.hidden = !standalone
+    // identityStart is left to syncIdentityUi, the one place its rule lives
+    for (const id of ['wallet', 'startConnected', 'manualConnect', 'walletName', 'walletEmoji']) {
+        $<HTMLInputElement | HTMLButtonElement>(id).disabled = standalone
+    }
+    // No sign-in to simulate: on rewrds.xyz the portal signs in by itself (#702)
+    walletBtn.hidden = standalone
     setWalletButton(walletBtn.dataset.state === 'connected' ? walletEl.value.trim() || null : null)
     walletLabelEl.textContent = isBring() ? 'Email' : 'Wallet address'
     if (isBring()) {
@@ -1008,6 +1020,30 @@ const applyProviderUi = () => {
             ? `${walletEl.value} — click to disconnect`
             : 'Click to connect mock wallet')
 }
+// Standalone mode (TODO#701): on rewrds.xyz the portal runs with no wrapper and
+// fetches its own session. For Bring (the only standalone platform for now) the
+// wrapper skips check/portal and loads the local portal with `?standalone=true`
+// (honoured outside prod only) and no token, so the portal's own bootstrap runs.
+const standaloneRowEl = $<HTMLElement>('standaloneRow')
+const hintWrapperEl = $<HTMLElement>('hintWrapper')
+const hintStandaloneEl = $<HTMLElement>('hintStandalone')
+const isStandalone = () => activeProvider === 'bring'
+
+function standaloneSrc(): string | null {
+    if (!LOCAL_PORTAL_URL) return null
+    const u = new URL(LOCAL_PORTAL_URL)
+    u.search = ''
+    u.searchParams.set('standalone', 'true')
+    applyDevParams(u)
+    return u.toString()
+}
+
+$<HTMLButtonElement>('standaloneOpen').addEventListener('click', () => {
+    const src = standaloneSrc()
+    if (!src) return setStatus('Standalone needs VITE_PORTAL_LOCAL_URL (the local portal)', true)
+    window.open(src, '_blank', 'noopener')
+})
+
 applyProviderUi()
 
 walletProviderEl.addEventListener('change', async () => {
@@ -1019,6 +1055,7 @@ walletProviderEl.addEventListener('change', async () => {
     localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
     appendLog('info', `Wallet provider → ${activeProvider}`)
     applyProviderUi()
+    syncIdentityUi()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
     apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
@@ -1040,6 +1077,8 @@ const bridge = createPortalBridge({
     // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
     // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
+        // Standalone: the portal owns its session; nothing to push
+        if (isStandalone()) return null
         const data = await bootstrap(address)
         return data?.token ?? null
     },
@@ -1057,7 +1096,7 @@ const bridge = createPortalBridge({
 //  - external: the extension owns the address, so we can't fill it in up front;
 //    instead connect once the portal iframe has loaded, which prompts the
 //    extension if it's available ("if possible").
-//  - Bring: sign in with the typed / default email once the iframe has loaded.
+//  - Bring: nothing; it runs standalone and the portal fetches its own session.
 if (startConnected) {
     if (activeProvider === 'mock') {
         if (DEFAULT_WALLET.trim()) {
@@ -1066,13 +1105,7 @@ if (startConnected) {
             void mockAdapter.connect(DEFAULT_WALLET.trim())
         }
     } else if (activeProvider === 'bring') {
-        // Same as the mock: sign in before the first load, so the portal starts
-        // with the session. A SESSION_UPDATE sent on iframe load arrives before
-        // the portal listens for it and is lost.
-        const email = walletEl.value.trim() || defaultBringEmail()
-        walletEl.value = email
-        setWalletButton(email)
-        void bringAdapter.connect(email)
+        // Standalone: the portal fetches its own session, no wallet to bring up
     } else {
         iframeEl.addEventListener('load', () => { void bridge.connect(connectOverride()) }, { once: true })
     }
@@ -1308,7 +1341,25 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     return data
 }
 
+// Dev-only portal URL params, the same on a token load and a standalone load
+function applyDevParams(u: URL) {
+    if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
+    if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+    for (const [name, value] of overrides) u.searchParams.set(name, String(value))
+}
+
 async function refresh() {
+    if (isStandalone()) {
+        // The portal bootstraps itself; there is no session to push later
+        if (!isFirstLoad) return
+        const src = standaloneSrc()
+        if (!src) return setStatus('Standalone needs VITE_PORTAL_LOCAL_URL (the local portal)', true)
+        iframeEl.src = src
+        lastUrlEl.value = src
+        isFirstLoad = false
+        setStatus('Loaded standalone: the portal fetches its own session.')
+        return
+    }
     const walletValue = walletEl.value.trim()
     const data = await bootstrap(walletValue === '' ? null : walletValue)
     if (!data) return
@@ -1318,9 +1369,7 @@ async function refresh() {
         // First load: token is embedded in portalUrl's query string.
         const src = buildIframeSrc(portalUrl!, token)
         const u = new URL(src)
-        if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
-        if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
-        for (const [name, value] of overrides) u.searchParams.set(name, String(value))
+        applyDevParams(u)
         iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')
@@ -1377,7 +1426,7 @@ const saveIdentity = () => {
 const syncIdentityUi = () => {
     const anySet = Boolean(walletNameEl.value.trim() || walletEmojiEl.value.trim())
     identityDotEl.hidden = !anySet
-    identityStartEl.disabled = !anySet
+    identityStartEl.disabled = !anySet || isStandalone()
     // Clearing the last value withdraws the opt-in - nothing left to start with.
     if (!anySet && identityStartEl.checked) {
         identityStartEl.checked = false

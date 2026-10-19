@@ -11,7 +11,6 @@ import Dashboard from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
 import CardsList from '../../components/CardsList/CardsList'
-import CampaignEndModal from '../../components/Modals/CampaignEndModal/CampaignEndModal'
 // Rendered only by the ?test=status preview below.
 import StatusModal from '../../components/Modals/StatusModal/StatusModal'
 import Icon from '../../components/Icon/Icon'
@@ -43,8 +42,6 @@ const Home = () => {
         categories,
         searchTerms,
         dealsCount,
-        campaignEndOpen,
-        dismissCampaignEnd,
         statusPreview,
         testStatus,
         setTestStatus,
@@ -174,10 +171,6 @@ const Home = () => {
                 >{isFetchingNextPage ? labels.loading : ''}</div>
                 </>)}
             </main>
-            <CampaignEndModal
-                open={campaignEndOpen}
-                closeFn={dismissCampaignEnd}
-            />
         </div>
     )
 }

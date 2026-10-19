@@ -1,7 +1,7 @@
 /**
  * Logic hook for the desktop home page. Owns the retailers and filters
  * queries, the infinite scroll, the search/category filters, the coupons view
- * switch and the campaign-ended modal — so the page view is pure UI.
+ * switch — so the page view is pure UI.
  *
  * Named for the surface because `useHomePage` is the mobile home's hook.
  */
@@ -14,7 +14,6 @@ import { useCategories } from './useCategories'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
-import { parseCampaignId } from '../../utils/campaigns'
 import { ENV } from '../../config'
 import type { PortalView } from '../../components/Dashboard/Dashboard'
 import type { StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
@@ -31,13 +30,10 @@ export const useHomeDesktop = () => {
     // that show the dashboard but not the browse area.
     const routedView = (useLocation().state as { view?: PortalView } | null)?.view
     const [view, setView] = useState<PortalView>(routedView ?? 'cashback')
-    const campaign = parseCampaignId(searchParams.get('campaignId'))
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
     const [isDemo, setIsDemo] = useState(false)
-    const [campaignEndModalStatus, setCampaignEndModalStatus] = useState<'idle' | 'show' | 'shown'>('idle')
-    const [isFirstLoadComplete, setIsFirstLoadComplete] = useState(false)
     const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
 
     const paginationRef = useRef<HTMLDivElement>(null)
@@ -52,7 +48,6 @@ export const useHomeDesktop = () => {
         isFetching,
         isFetchingNextPage,
         isLoading: isLoadingRetailers,
-        isSuccess: isRetailersSuccess,
     } = useRetailers({ category, search })
 
     useEffect(() => {
@@ -60,18 +55,6 @@ export const useHomeDesktop = () => {
             fetchNextPage()
         }
     }, [isVisible, fetchNextPage, isFetchingNextPage])
-
-    useEffect(() => {
-        if (isRetailersSuccess && !isFirstLoadComplete && campaignEndModalStatus === 'idle') {
-            setIsFirstLoadComplete(true)
-
-            if (campaign && !retailers.pages[0].campaigns?.includes(campaign.id)) {
-                setCampaignEndModalStatus('show')
-            } else {
-                setCampaignEndModalStatus('shown')
-            }
-        }
-    }, [isRetailersSuccess, isFirstLoadComplete, campaignEndModalStatus, campaign, retailers?.pages])
 
     const scrollToTop = () => {
         if (!scrollRef?.current) return
@@ -135,8 +118,6 @@ export const useHomeDesktop = () => {
         dealsCount: isLoadingRetailers
             ? "Searching for deals..."
             : `Showing ${retailersMetadata?.totalItems} deals`,
-        campaignEndOpen: Boolean(campaign) && campaignEndModalStatus === 'show',
-        dismissCampaignEnd: () => setCampaignEndModalStatus('shown'),
         // Drives the ?test=status preview, which opens StatusModal in any
         // state without running a claim. Non-production only, like the other
         // tester-facing affordances.

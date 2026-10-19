@@ -146,6 +146,12 @@ Open <http://localhost:5174>.
 - **Toggle button** on the sidebar edge collapses the controls to give the
   iframe full width (the header view toolbar stays available).
 
+## Standalone (Bring, TODO#701)
+
+On `rewrds.xyz` the portal runs with no wrapper: it calls `check/portal` itself and has no `token` on its URL. The **Bring** provider always runs that way (the only standalone platform for now; the header says so and the wallet inputs are disabled): the wrapper makes no `check/portal` call and loads `VITE_PORTAL_LOCAL_URL` with `?standalone=true` (honoured outside prod only). The portal needs `VITE_STANDALONE_API_KEY` (the Bring portal key) in its own `.env.local`, and optionally `VITE_STANDALONE_API_URL`.
+
+The portal still sits in the wrapper's iframe there, so cookies and `window.parent` behave like an embed. **Open top-level ↗** opens the same URL as the whole page, which is the real case.
+
 ## Visual diff overlay
 
 A dev-only tool for pixel-comparing the running page against a design. It lays
