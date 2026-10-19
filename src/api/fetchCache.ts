@@ -30,6 +30,10 @@ const fetchCache = async (body: Body): Promise<Response> => {
     // ("Missing walletAddress") means it found none, a 200 means it did.
     if (!body.walletAddress && (res.ok || res.status === 400)) setSignedIn(res.ok)
 
+    // An error body has none of the balance fields; returned as data it would
+    // render as an empty, first-time account. Let the query fail instead.
+    if (!res.ok) throw new Error(`cache ${res.status}`)
+
     const data = await res.json()
     return data
 }
