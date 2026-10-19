@@ -8,11 +8,9 @@
  */
 import { useState } from 'react'
 import { useLocation, useNavigate, useRouteLoaderData } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import fetchCache from '../../api/fetchCache'
 import { useAnalytics } from '../../hooks/useAnalytics'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useBalance } from '../../hooks/useBalance'
 import { createDescription, formatCurrency, formatDate, formatShortDate, formatStatus } from './helpers'
 
 export interface HistoryRow {
@@ -44,20 +42,11 @@ export const useHistoryDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { sendAnalyticsEvent } = useAnalytics()
-    const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { iconsPath, defaultIconsPath } = useRouteLoaderData('root') as LoaderData
     const [activeRow, setActiveRow] = useState(-1)
     const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
 
-    const { data } = useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = { platform, userId, flowId }
-            if (walletAddress) body.walletAddress = walletAddress
-            return await fetchCache(body)
-        },
-        queryKey: ["balance", walletAddress],
-        enabled: !!walletAddress,
-    })
+    const { data } = useBalance()
 
     const balance = data?.data
 
