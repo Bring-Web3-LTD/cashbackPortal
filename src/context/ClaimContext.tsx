@@ -41,6 +41,11 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const [statusOpen, setStatusOpen] = useState(false)
     const [claimStatus, setClaimStatus] = useState<StatusModalState>('loading')
     const [loading, setLoading] = useState(false)
+    // What the claim was submitted for. The success card cannot read the live
+    // amount: landing the claim invalidates the balance, and the refetch comes
+    // back with the post-claim figure - zero - which then replaces the number
+    // the user just claimed.
+    const [submittedAmount, setSubmittedAmount] = useState<number | null>(null)
     // SIGNATURE is a broadcast: the wallet answers the page, and the reply
     // carries nothing tying it to the request that asked for it. This provider
     // wraps the whole desktop tree, so without this gate it also answers the
@@ -82,6 +87,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                     details: claimAmount,
                     process: 'submit'
                 })
+                setSubmittedAmount(claimAmount)
                 setStatusOpen(true)
                 const body: Parameters<typeof claimSubmit>[0] = {
                     walletAddress,
@@ -173,7 +179,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                 status={claimStatus}
                 amount={claimStatus === 'claim'
                     ? `${eligibleTokenAmount} ${currentCryptoSymbol}`
-                    : `${claimAmount} ${currentCryptoSymbol}`}
+                    : `${submittedAmount ?? claimAmount} ${currentCryptoSymbol}`}
                 usdValue={eligibleTotalEstimatedUsd || undefined}
                 claimUrl={chromeStoreUrl}
                 address={walletAddress}
@@ -181,6 +187,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
                 closeFn={() => {
                     setStatusOpen(false)
                     setClaimStatus('loading')
+                    setSubmittedAmount(null)
                 }}
             />
         </ClaimContext.Provider>
