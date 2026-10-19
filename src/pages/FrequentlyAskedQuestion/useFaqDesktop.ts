@@ -41,7 +41,7 @@ export const useFaqDesktop = () => {
                 action: 'click',
                 details: 'to: /'
             })
-            navigate(-1)
+            navigate('/')
         },
         labels: {
             back: t('back'),

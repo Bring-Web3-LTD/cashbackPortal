@@ -38,7 +38,7 @@ export const useHistoryPage = (only?: 'pending') => {
         rows: only ? rows.filter((row) => row.rawStatus === only) : rows,
         isLoading,
         openId,
-        close: () => navigate(-1),
+        close: () => navigate('/'),
         onToggle: (id: string) => setOpenId((cur) => (cur === id ? null : id)),
         goToFaq: () => navigate('/faq'),
         goToWhatsThis: () => navigate('/whats-this'),

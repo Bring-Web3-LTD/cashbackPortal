@@ -222,7 +222,7 @@ const HistoryMobile = () => {
                         action: 'click',
                         details: 'to: /'
                     })
-                    navigate(-1)
+                    navigate('/')
                 }}
             >
                 <Icon name="arrow-left.svg" alt="" />

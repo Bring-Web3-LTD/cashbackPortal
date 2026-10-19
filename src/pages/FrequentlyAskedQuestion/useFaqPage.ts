@@ -19,7 +19,7 @@ export const useFaqPage = () => {
     // Keyed by id: itemOrder repeats across the shared and platform rows.
     const [openId, setOpenId] = useState<string | null>(null)
 
-    const close = () => navigate(-1)
+    const close = () => navigate('/')
     const onToggle = (id: string) =>
         setOpenId((cur) => (cur === id ? null : id))
 
