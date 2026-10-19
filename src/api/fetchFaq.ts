@@ -35,12 +35,7 @@ const fetchFaq = async (body: Body): Promise<Response> => {
         body.walletAddress = 'null'
     }
 
-    const res = await apiFetch(`${API_URL_PLATFORMS}faq`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-        platform: body.platform,
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}faq`, { method: "POST", json: body })
     const data = await res.json()
     return data
 }

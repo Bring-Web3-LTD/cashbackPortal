@@ -18,12 +18,7 @@ interface Body {
 const analytics = async (body: Body) => {
     body.timestamp = Date.now()
 
-    const res = await apiFetch(`${API_URL_PLATFORMS}analytics`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        platform: body.platform,
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}analytics`, { method: 'POST', json: body })
     const data = await res.json();
     return data;
 }

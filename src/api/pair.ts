@@ -72,11 +72,7 @@ interface AuthBody {
 
 const authPost = async <T>(path: string, body: AuthBody): Promise<PairResult<T>> => {
     try {
-        const res = await apiFetch(`${API_URL_AUTH}${path}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        })
+        const res = await apiFetch(`${API_URL_AUTH}${path}`, { method: 'POST', json: body })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) {
             return {

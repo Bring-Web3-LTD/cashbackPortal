@@ -47,11 +47,7 @@ const fetchToken = async (body: Body): Promise<Response> => {
     try {
         // No `platform` yet - the token is where it comes from - so a 401 here
         // is not refreshed; the backend reads the platform off the token itself.
-        const res = await apiFetch(`${API_URL_PORTAL}verify`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...body })
-        })
+        const res = await apiFetch(`${API_URL_PORTAL}verify`, { method: "POST", json: body })
         status = res.status
         const data = await res.json()
 

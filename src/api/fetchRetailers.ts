@@ -25,13 +25,7 @@ interface Response {
 }
 
 const fetchRetailers = async (body: Body): Promise<Response> => {
-    const res = await apiFetch(`${API_URL_PLATFORMS}retailers`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        platform: body.platform,
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}retailers`, { method: "POST", mode: "cors", json: body })
 
     const data = await res.json()
 

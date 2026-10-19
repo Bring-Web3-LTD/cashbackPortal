@@ -24,12 +24,7 @@ interface Response {
 const fetchCache = async (body: Body): Promise<Response> => {
     body.type = "aggregated"
 
-    const res = await apiFetch(`${API_URL_PLATFORMS}cache`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-        platform: body.platform,
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}cache`, { method: "POST", json: body })
 
     // Without a wallet the backend answers from the session cookie: a 400
     // ("Missing walletAddress") means it found none, a 200 means it did.

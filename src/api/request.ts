@@ -67,16 +67,25 @@ const refreshSession = (platform: string): Promise<boolean> =>
         .finally(() => { refreshing = undefined }))
 
 // ── Fetch ──────────────────────────────────────────────────────────────
-export interface ApiInit extends RequestInit {
-    /** Names the platform on the refresh body. Without it a 401 is not retried. */
+export interface ApiInit extends Omit<RequestInit, 'body'> {
+    /** Sent stringified as the JSON body. Its `platform` field, when present,
+     *  is the one the refresh asks for. */
+    json?: object
+    /** Only for calls without a JSON body (GET). Without a platform a 401 is not retried. */
     platform?: string
 }
 
-export const apiFetch = async (url: string, { platform, ...init }: ApiInit = {}): Promise<Response> => {
+export const apiFetch = async (url: string, { json, platform: named, ...init }: ApiInit = {}): Promise<Response> => {
+    const platform = named ?? (json as { platform?: string } | undefined)?.platform
     const send = () => fetch(url, {
         ...init,
         credentials: sessionCookies ? 'include' : 'same-origin',
-        headers: { 'x-api-key': API_KEY, ...init.headers },
+        headers: {
+            'x-api-key': API_KEY,
+            ...(json && { 'Content-Type': 'application/json' }),
+            ...init.headers,
+        },
+        body: json && JSON.stringify(json),
     })
 
     const res = await send()

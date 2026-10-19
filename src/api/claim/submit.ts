@@ -23,12 +23,7 @@ interface Response {
 const claimSubmit = async (body: Body): Promise<Response | undefined> => {
     if (!body.walletAddress || !body.targetWalletAddress) return
 
-    const res = await apiFetch(`${API_URL_PLATFORMS}claim-submit`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-        platform: body.platform,
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}claim-submit`, { method: "POST", json: body })
     const data = await res.json().catch(() => ({}))
     return { ...data, ok: res.ok }
 }
