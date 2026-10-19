@@ -45,8 +45,8 @@ interface Response {
 const fetchToken = async (body: Body): Promise<Response> => {
     let status = 0
     try {
-        // No `platform` yet - the token is where it comes from - so a 401 here
-        // is not refreshed; the backend reads the platform off the token itself.
+        // The body is the token alone; the backend reads the platform off it,
+        // so a 401 here is not refreshed.
         const res = await apiFetch(`${API_URL_PORTAL}verify`, { method: "POST", json: body })
         status = res.status
         const data = await res.json()
