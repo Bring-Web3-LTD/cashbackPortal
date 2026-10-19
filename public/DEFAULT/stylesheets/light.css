@@ -414,8 +414,6 @@
     --modal-deal-name-f-s: 18px;
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #1F2937;
-    --modal-deal-back-f-s: 13px;
-    --modal-deal-back-f-c: #6B7280;
     --modal-terms-bg: #F0F2F5;
     --modal-terms-surface-bg: #FFFFFF;
     --modal-terms-radius: 12px;
@@ -520,18 +518,15 @@
     --page-toolbar-back-f-w: 500;
     --page-toolbar-back-l-h: 15px;
     --page-toolbar-back-f-c: #6B7280;
+    --page-toolbar-back-hover-f-c: #1F2937;
+    /* The arrow's colour is baked into its SVG, so the hover tint is painted
+       through a mask of the same file. The asset carries the resting colour
+       and this lifts it with the label. */
+    --history-back-icon-src: url('/DEFAULT/icons/light/arrow-left.svg');
+    --history-back-icon-hover-f-c: #1F2937;
     --history-title-f-s: 20px;
     --history-title-f-w: 600;
     --history-title-f-c: #1F2937;
-
-    --history-back-f-s: 14px;
-    --history-back-f-w: 500;
-    --history-back-f-c: #1F2937;
-
-    --history-back-hover-f-s: 14px;
-    --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: var(--history-back-f-c);
-
 
     --history-table-header-bg: #F9FAFB;
     --history-table-header-border-c: transparent;

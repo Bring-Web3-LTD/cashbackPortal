@@ -74,21 +74,12 @@ const RetailerCardModal = ({
                         className={styles.back_btn}
                         onClick={closeTerms}
                     >
-                    <div 
-                        id="back_icon_container"
-                        className={styles.back_icon_container}
-                    >
-                        <Icon
-                            name="arrow-left.svg"
-                            alt="arrow-left"
-                        />
-                    </div>
-                    <div
-                        id="back_txt_container"
-                        className={styles.back_txt_container}
-                    >
-                        <span>{labels.back}</span>
-                    </div>
+                        <span className={styles.back_icon}>
+                            <Icon name="arrow-left.svg" alt="" />
+                        </span>
+                        <span className={styles.back_btn_text}>
+                            {labels.back}
+                        </span>
                     </button>
                 )}
                 {!showingTerms && <div className={styles.header} />}

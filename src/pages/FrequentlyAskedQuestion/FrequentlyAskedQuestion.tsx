@@ -87,7 +87,7 @@ const FrequentlyAskedQuestion = () => {
         onClick={e => { e.preventDefault(); goBack() }}
       >
         <span className={styles.back_icon}>
-          <Icon name="arrow-left.svg" alt="arrow" />
+          <Icon name="arrow-left.svg" alt="" />
         </span>
         <span className={styles.back_btn_text}>
           {labels.back}
