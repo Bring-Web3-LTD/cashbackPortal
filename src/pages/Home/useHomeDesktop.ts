@@ -37,7 +37,6 @@ export const useHomeDesktop = () => {
     const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
 
     const paginationRef = useRef<HTMLDivElement>(null)
-    const scrollRef = useRef<HTMLDivElement>(null)
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch, isLoading: isLoadingCategories } = useCategories()
@@ -56,10 +55,14 @@ export const useHomeDesktop = () => {
         }
     }, [isVisible, fetchNextPage, isFetchingNextPage])
 
-    const scrollToTop = () => {
-        if (!scrollRef?.current) return
-        scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+    /* The document is the scroller - globals.css hides its bar but the page
+       still scrolls - so this goes to the top of the page, header included.
+       Scrolling <main> into view instead aligned its first child with the
+       scrollport top, which is underneath the sticky header: the dashboard
+       ended up behind the bar with its last rows showing through the 20px
+       fade, and once the dashboard was filtered away the search row landed
+       there instead. */
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
     const retailersList = retailers?.pages.flatMap((page) => page.items) ?? []
     const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
@@ -73,7 +76,6 @@ export const useHomeDesktop = () => {
         setView,
         showCoupons: Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons'),
         couponsIframeSrc,
-        scrollRef,
         paginationRef,
         search,
         category,
