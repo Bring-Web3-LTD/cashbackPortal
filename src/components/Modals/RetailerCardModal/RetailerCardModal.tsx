@@ -2,7 +2,6 @@ import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import TermsMarkdown from '../../TermsMarkdown/TermsMarkdown'
 import { ComponentProps } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { isDesktop } from 'react-device-detect'
 import Icon from '../../Icon/Icon'
 import { useRetailerCardModalDesktop } from './useRetailerCardModalDesktop'
@@ -84,31 +83,16 @@ const RetailerCardModal = ({
                 )}
                 {!showingTerms && <div className={styles.header} />}
                 <div className={styles.modal_container}>
-                    {/* initial={false} so the panel is painted outright when the
-                        modal opens. Its variants start at opacity 0 for the
-                        terms slide; without this they also run on first mount
-                        and the whole panel, logo included, fades up at it.
-
-                        popLayout, not wait: `wait` holds the incoming panel
-                        until the outgoing one has fully left, so the modal
-                        renders nothing for the length of the exit and the swap
-                        reads as a blink. popLayout takes the leaving panel out
-                        of flow instead, so the two overlap and the slide is
-                        continuous in both directions. */}
-                    <AnimatePresence mode="popLayout" initial={false}>
-                        {showingTerms ? (
-                            <motion.div
-                                key="terms"
-                                initial={{ x: 0, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: '100%', opacity: 0 }}
-                                transition={{
-                                    type: "tween",
-                                    duration: 0.2,
-                                    ease: "easeInOut"
-                                }}
-                                className={styles.modal}
-                            >
+                    {/* Swapped outright, not animated. Both framer modes read as
+                        a fault here: `wait` empties the shell for the length of
+                        the exit, and `popLayout` keeps both panels mounted so
+                        the leaving text slides across the arriving text for
+                        200ms. Measuring the box proved nothing moves or re-wraps
+                        - the overlap itself was what looked like the wording
+                        settling. The shell is a fixed 288, so an instant swap
+                        has nothing to blink. */}
+                    {showingTerms ? (
+                            <div className={styles.modal}>
                                 {terms ? (
                             <TermsMarkdown
                                 terms={terms}
@@ -119,20 +103,9 @@ const RetailerCardModal = ({
                                         Loading...
                                     </div>
                                 )}
-                            </motion.div>
+                            </div>
                         ) : (
-                            <motion.div
-                                key="main"
-                                initial={{ x: 0, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: '-100%', opacity: 0 }}
-                                transition={{
-                                    type: "tween",
-                                    duration: 0.2,
-                                    ease: "easeInOut"
-                                }}
-                                className={styles.go_shop}
-                            >
+                            <div className={styles.go_shop}>
                                 <div className={styles.content}>
                                     <div className={styles.body}>
                                         <div className={styles.text_section}>
@@ -199,9 +172,8 @@ const RetailerCardModal = ({
                                         </span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
-                    </AnimatePresence>
                 </div>
             </Modal>
         )

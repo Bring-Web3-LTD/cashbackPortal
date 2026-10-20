@@ -1,6 +1,5 @@
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import Icon from '../../components/Icon/Icon'
 import Dashboard from '../../components/Dashboard/Dashboard'
@@ -89,14 +88,8 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, 
                     </button>
                 </div>
             </div>
-            <AnimatePresence>
-                {isActive && <motion.div
-                    className={styles.description_container}
-                    initial={{ height: 0, opacity: 0, minHeight: 0 }}
-                    animate={{ height: 'auto', opacity: 1, minHeight: '40px' }}
-                    exit={{ height: 0, opacity: 0, minHeight: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
+            {isActive && (
+                <div className={styles.description_container}>
                     <div>
                         {description.map((item, index) => {
                             
@@ -121,8 +114,8 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, 
                             )
                         })}
                     </div>
-                </motion.div>}
-            </AnimatePresence>
+                </div>
+            )}
         </div >
     )
 }

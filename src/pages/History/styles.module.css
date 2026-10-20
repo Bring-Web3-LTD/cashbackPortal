@@ -311,8 +311,11 @@
     transform: rotate(180deg);
 }
 
+/* min-height came from the open state of the expand animation; it is declared
+   here now that the row simply renders open. */
 .description_container {
     overflow: hidden;
+    min-height: 40px;
     padding-left: 100px;
 }
 

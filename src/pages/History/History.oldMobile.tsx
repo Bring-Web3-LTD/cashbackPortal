@@ -1,6 +1,5 @@
 import styles from './styles.oldMobile.module.css'
 import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import fetchCache from '../../api/fetchCache'
@@ -100,14 +99,8 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                 <div className={styles.status_label}>{t('historyColStatus')}:</div>
                 <div className={`${styles.status} ${status.toLowerCase().startsWith('in ') ? styles.pending : styles[status.toLowerCase()] || ''}`}>{status}</div>
             </div>
-            <AnimatePresence>
-                {isActive && <motion.div
-                    className={styles.description_container}
-                    initial={{ height: 0, opacity: 0, minHeight: 0 }}
-                    animate={{ height: 'auto', opacity: 1, minHeight: '40px' }}
-                    exit={{ height: 0, opacity: 0, minHeight: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
+            {isActive && (
+                <div className={styles.description_container}>
                     <div>
                         {description.map((item, index) => {
                             
@@ -132,8 +125,8 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                             )
                         })}
                     </div>
-                </motion.div>}
-            </AnimatePresence>
+                </div>
+            )}
         </div >
     )
 }
