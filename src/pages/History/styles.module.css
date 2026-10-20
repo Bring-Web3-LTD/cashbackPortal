@@ -1,25 +1,14 @@
+/* The side gutter lives on the outlet, which also holds the header, so the bar
+   and the body stay aligned. */
 .container {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 0 48px;
 }
 
-@media screen and (max-width: 1111px) {
-    .container {
-        padding: 0 32px;
-    }
-}
-
-@media screen and (max-width: 839px) {
-    .container {
-        padding: 0 20px;
-    }
-}
-
-/* 1440 less the two 48px gutters the container applies. */
+/* 1440 less the two 48px gutters the outlet applies. */
 .main {
     box-sizing: border-box;
     display: flex;

@@ -1,8 +1,35 @@
 /* Fills the screen column so the legal bar drops to the bottom on short pages.
    A flex column itself so a page can grow into that height too — the coupons
-   iframe uses it to reach the legal bar. */
+   iframe uses it to reach the legal bar.
+
+   Owns the page gutter now that the header lives here rather than in each
+   page: the bar has to line up with the body under it, and both take their
+   width from this box. */
 .root {
     flex: 1;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    padding: 0 48px;
+}
+
+@media screen and (max-width: 1111px) {
+    .root {
+        padding: 0 32px;
+    }
+}
+
+@media screen and (max-width: 839px) {
+    .root {
+        padding: 0 20px;
+    }
+}
+
+/* The keyed page below the header. Grows into the column so a page can still
+   fill the height. */
+.page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }

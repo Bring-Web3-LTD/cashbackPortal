@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import Icon from '../../components/Icon/Icon'
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { getInitials } from '../../utils/getInitials'
 import { useHistoryDesktop, type HistoryRow } from './useHistoryDesktop'
@@ -134,7 +133,6 @@ const HistoryDesktop = () => {
 
     return (
         <div className={styles.container}>
-            <Header />
             <main className={styles.main}>
             {/* Same row as the home page; switching view leaves for it. */}
             <Dashboard

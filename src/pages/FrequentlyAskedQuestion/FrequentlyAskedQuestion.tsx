@@ -3,7 +3,6 @@ import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Icon from '../../components/Icon/Icon'
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { useFaqDesktop, SKELETON_ROWS } from './useFaqDesktop'
 
@@ -72,7 +71,6 @@ const FrequentlyAskedQuestion = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
       <main className={styles.main}>
       {/* Same row as the home page; switching view leaves for it. */}
       <Dashboard

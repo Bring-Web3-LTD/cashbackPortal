@@ -6,7 +6,6 @@
 // Styles
 import styles from './styles.module.css'
 // Components
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
@@ -106,7 +105,6 @@ const Home = () => {
                     />
                 </label>
                 : null}
-            <Header />
             <main className={styles.main}>
                 <Dashboard view={view} onViewChange={setView} />
                 {showCoupons ? (
