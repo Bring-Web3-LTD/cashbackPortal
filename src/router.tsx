@@ -27,8 +27,9 @@ const rootLoader = async () => {
     // flag by putting an explicit true/false on the URL; anything else falls
     // through to the backend value. The override is prod-gated so a crafted
     // URL cannot flip hub/coupons behaviour for a real user.
-    // firstTimeUser has no verify value — it comes from /cache at render time,
-    // so the loader only carries an explicit dev override (undefined = none).
+    // firstTimeUser / canPairWallet have no verify value — they come from /cache
+    // at render time, so the loader only carries an explicit dev override
+    // (undefined = none).
     const readOverride = (name: string): boolean | undefined => {
         if (ENV === 'prod') return undefined
         const value = params.get(name)
@@ -107,7 +108,8 @@ const rootLoader = async () => {
             variant,
             isHub: readFlag('isHub', res.info.isHub),
             couponsEnabled: readFlag('couponsEnabled', res.info.couponsEnabled),
-            firstTimeUser: readOverride('firstTimeUser')
+            firstTimeUser: readOverride('firstTimeUser'),
+            canPairWallet: readOverride('canPairWallet'),
         }
     }
 
@@ -169,7 +171,8 @@ const rootLoader = async () => {
             variant,
             isHub: readFlag('isHub'),
             couponsEnabled: readFlag('couponsEnabled'),
-            firstTimeUser: readOverride('firstTimeUser')
+            firstTimeUser: readOverride('firstTimeUser'),
+            canPairWallet: readOverride('canPairWallet'),
         }
     }
 

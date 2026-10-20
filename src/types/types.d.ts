@@ -50,11 +50,12 @@ interface LoaderData {
      *  action anywhere. */
     noClaim: boolean
     // Dashboard state. `isHub` and `couponsEnabled` come from /verify,
-    // `firstTimeUser` from /cache. The dev wrapper can pin any of them via a
-    // URL override outside prod.
+    // `firstTimeUser` / `canPairWallet` from /cache. The dev wrapper can pin
+    // any of them via a URL override outside prod.
     isHub?: boolean
     couponsEnabled?: boolean
     firstTimeUser?: boolean
+    canPairWallet?: boolean
     /** Coupon partner iframe. Null when coupons are off or outside the US. */
     couponsIframeSrc?: string | null
     /** Where the claim guide sends a hub user to install the wallet. */

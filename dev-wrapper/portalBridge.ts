@@ -40,7 +40,7 @@ export interface PortalBridgeOptions {
     shouldAutoSign?: () => boolean
     /**
      * Dashboard flags the portal resolved at runtime. Only the portal calls
-     * /cache, so values sourced from it (firstTimeUser) are reported back here
+     * /cache, so values sourced from it (firstTimeUser, canPairWallet) are reported back here
      * rather than being readable from the bootstrap token.
      */
     onPortalFlags?: (flags: Record<string, boolean>) => void
