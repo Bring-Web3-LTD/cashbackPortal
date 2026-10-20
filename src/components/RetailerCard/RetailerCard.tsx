@@ -70,21 +70,21 @@ const RetailerCard = ({
 
     const offerName = useMemo(() => {
         // Long names (>22 chars) are always truncated to 20 + ".."
-        if (name.length > 22) return name.slice(0, 20) + '..'
+        if (label.length > 22) return label.slice(0, 20) + '..'
 
         // Search results with a section: show "name/section"
         // Truncate section to fit within 22 chars total, minimum 3 chars of section shown
         // If section can't fit 3 chars, show name only
         if (search && section) {
-            const full = `${name}/${section}`
+            const full = `${label}/${section}`
             if (full.length <= 22) return full
-            const availableForSection = 22 - name.length - 1 - 2 // 1 for "/", 2 for ".."
-            if (availableForSection >= 3) return `${name}/${section.slice(0, availableForSection)}..`
-            return name
+            const availableForSection = 22 - label.length - 1 - 2 // 1 for "/", 2 for ".."
+            if (availableForSection >= 3) return `${label}/${section.slice(0, availableForSection)}..`
+            return label
         }
 
         // Search results without a section: show name (already truncated above if >22)
-        if (search) return name
+        if (search) return label
 
         // Default (non-search): show "/section" if available, otherwise name
         return section ? `/${section}` : label
