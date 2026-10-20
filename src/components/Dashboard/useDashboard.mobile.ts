@@ -28,7 +28,7 @@ export interface DashboardProps {
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, couponsEnabled, isHub, canPairWallet: canPairOverride } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, couponsEnabled, isHub, noClaim, canPairWallet: canPairOverride } = useRouteLoaderData('root') as LoaderData
     const { data } = useBalance()
 
     const eligible = selectEligible(data)
@@ -40,7 +40,8 @@ export const useDashboard = () => {
         coupons: t('coupons'),
         cashback: t('cashback'),
         pending: t('pending'),
-        claim: t('claim'),
+        // A noClaim platform pays out itself: approved rewards are saved.
+        claim: noClaim ? t('approved') : t('claim'),
         whatsThis: t('whatsThis'),
         pairWallet: t('pairWallet'),
         smartCashback: t('smartCashback'),
@@ -53,6 +54,7 @@ export const useDashboard = () => {
         isHub: !!isHub,
         // Per-platform backend switch (/cache canPairWallet).
         showPairWallet: canPairOverride ?? selectCanPairWallet(data),
+        noClaim: !!noClaim,
         pending: {
             amount: pending?.tokenAmountDisplay ?? '0.00',
             symbol: pending?.tokenSymbol ?? fallbackSymbol,

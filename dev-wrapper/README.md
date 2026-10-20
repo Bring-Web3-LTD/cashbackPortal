@@ -52,11 +52,12 @@ yarn install
 | --- | --- |
 | `VITE_PORTAL_API` | Full URL of the `check/portal` endpoint (default / fallback). |
 | `VITE_PORTAL_API_KEY` | Partner `x-api-key` header (default / fallback, used when the selected provider has no key of its own — e.g. `mock`). |
-| `VITE_PORTAL_API_KEY_<PROVIDER>` | Per-provider `x-api-key`, picked by the **Wallet provider** selector. `<PROVIDER>` ∈ `MOCK`, `NIGHTLY`, `SOLFLARE`, `YOROI`, `CASPER`, `ECKO`, `READY`. Falls back to `VITE_PORTAL_API_KEY` when unset. |
+| `VITE_PORTAL_API_KEY_<PROVIDER>` | Per-provider `x-api-key`, picked by the **Wallet provider** selector. `<PROVIDER>` ∈ `MOCK`, `NIGHTLY`, `SOLFLARE`, `YOROI`, `GERO`, `CASPER`, `ECKO`, `READY`, `BRING`. Falls back to `VITE_PORTAL_API_KEY` when unset. |
 | `VITE_PORTAL_API_<PROVIDER>` | Optional per-provider API URL override (same `<PROVIDER>` values, including `MOCK`). Falls back to `VITE_PORTAL_API` when unset. |
 | `VITE_PORTAL_EXTENSION_ID` | Default value for the Extension ID input. |
 | `VITE_PORTAL_LOCAL_URL` | If set, the wrapper rewrites the iframe origin to this URL while keeping the `?token=…` query — lets you iterate on the local portal while still using a real dev token. Leave empty to use the API's `iframeUrl` as-is. |
 | `VITE_PORTAL_WALLET` | Optional default wallet address used by the mock wallet on auto-connect. Leave empty for a random throwaway address. |
+| `VITE_PORTAL_EMAIL` | Optional email the **Bring** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). Bring signs in by email, not wallet. Until TODO#661, `check/portal` gets `email` plus a deterministic stand-in `walletAddress` derived from that email (SHA-256, same email → same address and rewards). |
 | `VITE_VISUAL_DIFF` | Start state of the [visual-diff overlay](#visual-diff-overlay). The overlay is **always available**; `1`/`true` starts it expanded, anything else (or unset) starts it collapsed. |
 | `FIGMA_TOKEN` | Server-side Figma personal access token (never exposed to the browser). Lets the overlay's **Figma** field render a frame straight from a Figma link via the dev `/__figma-image` proxy. Create one at <https://www.figma.com/developers/api#access-tokens>. |
 
@@ -144,6 +145,12 @@ Open <http://localhost:5174>.
   read-only view of the last `portalUrl`, raw token, and decoded JWT payload.
 - **Toggle button** on the sidebar edge collapses the controls to give the
   iframe full width (the header view toolbar stays available).
+
+## Standalone (Bring, TODO#701)
+
+On `rewrds.xyz` the portal runs with no wrapper: it calls `check/portal` itself and has no `token` on its URL. The **Bring** provider always runs that way (the only standalone platform for now; the header says so and the wallet inputs are disabled): the wrapper makes no `check/portal` call and loads `VITE_PORTAL_LOCAL_URL` with `?standalone=true` (honoured outside prod only). The portal needs `VITE_STANDALONE_API_KEY` (the Bring portal key) in its own `.env.local`, and optionally `VITE_STANDALONE_API_URL`.
+
+The portal still sits in the wrapper's iframe there, so cookies and `window.parent` behave like an embed. **Open top-level ↗** opens the same URL as the whole page, which is the real case.
 
 ## Visual diff overlay
 

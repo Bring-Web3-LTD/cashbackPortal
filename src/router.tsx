@@ -4,7 +4,8 @@ import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher, Wh
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
 import fetchToken from './api/fetchToken';
-import { DEV_MODE, ENV, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
+import checkPortal from './api/checkPortal';
+import { DEV_MODE, ENV, STANDALONE, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
@@ -12,7 +13,8 @@ import { selectVariant } from './utils/ABTest/platform-variants';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
-    const token = params.get('token')
+    // Standalone mode has no wrapper to put the token on the URL: fetch it here
+    const token = STANDALONE ? await checkPortal(params.get('flowId')) : params.get('token')
     // URL-provided values are kept as a fallback for backward compatibility.
     // The token (verify response) is the newer source of truth and wins when
     // it carries the value.
@@ -55,6 +57,7 @@ const rootLoader = async () => {
         const extensionId = res.info.extensionId || urlExtensionId || null
         const showTerms = res.info.terms !== false || SHOW_TERMS_PLATFORMS.includes(platform)
         const autoclaim = !!res.info.autoclaim
+        const noClaim = res.info.claimType === 'noClaim'
         const maxWidth = mobilePortalMaxWidth(platform)
         const useMobilePortal = MOBILE_PORTAL_PLATFORMS.includes(platform) && window.innerWidth <= maxWidth
         // Same number drives the CSS width caps, including the body-portaled modals.
@@ -72,6 +75,12 @@ const rootLoader = async () => {
         const activeNs = useMobilePortal ? `${platform}_MOBILE` : platform
         await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', platform] : [platform])
         i18n.setDefaultNamespace(activeNs)
+
+        // Standalone mode is the whole page, not an iframe: brand the tab too
+        if (STANDALONE) {
+            document.title = i18n.t('title', 'Rewards')
+            document.querySelector('link[rel="icon"]')?.setAttribute('href', `/${stylePlatform}/favicon.png`)
+        }
 
         if (ENV === 'prod') {
             delete res.info.isTester
@@ -93,6 +102,7 @@ const rootLoader = async () => {
             extensionId,
             showTerms,
             autoclaim,
+            noClaim,
             useMobilePortal,
             flowId,
             variant,
@@ -108,6 +118,7 @@ const rootLoader = async () => {
         const theme = urlTheme || 'light'
         const showTerms = params.get('terms')?.toLowerCase() !== 'false' || SHOW_TERMS_PLATFORMS.includes((params.get('platform') || '').toUpperCase())
         const autoclaim = params.get('autoclaim') === 'true'
+        const noClaim = params.get('claimType') === 'noClaim'
         const dev = {
             walletAddress: params.get('walletAddress') || null,
             platform: params.get('platform'),
@@ -121,6 +132,7 @@ const rootLoader = async () => {
             privacy: params.get('privacy') || undefined,
             couponsIframeSrc: params.get('couponsIframeSrc') || undefined,
             chromeStoreUrl: params.get('chromeStoreUrl') || undefined,
+            supportUrl: params.get('supportUrl') || undefined,
         }
         if (!dev.platform) throw Error('Missing platform')
         const devPlatform = dev.platform.toUpperCase()
@@ -153,6 +165,7 @@ const rootLoader = async () => {
             flowId,
             showTerms,
             autoclaim,
+            noClaim,
             useMobilePortal,
             extensionId: urlExtensionId,
             variant,

@@ -20,7 +20,9 @@ export const useFaqDesktop = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const { sendAnalyticsEvent } = useAnalytics()
-    const [currentIndex, setCurrentIndex] = useState(-1)
+    // Keyed by id: itemOrder repeats across the shared and platform rows, and
+    // platform rows may use negative values.
+    const [openId, setOpenId] = useState<string | null>(null)
 
     const { data, isLoading } = useFaq()
     const skeletonPreview = useSkeletonPreview()
@@ -29,9 +31,9 @@ export const useFaqDesktop = () => {
         faq: data?.faq,
         indentationMark: data?.indentationMark,
         showSkeleton: isLoading || skeletonPreview,
-        isOpen: (itemOrder: number) => currentIndex === itemOrder,
+        isOpen: (id: string) => openId === id,
         // Clicking the open entry closes it.
-        toggle: (itemOrder: number) => setCurrentIndex(current => current === itemOrder ? -1 : itemOrder),
+        toggle: (id: string) => setOpenId(current => current === id ? null : id),
         goToView: (view: 'coupons' | 'cashback') => navigate('/', { state: { view } }),
         goBack: () => {
             sendAnalyticsEvent('topbar_back', {

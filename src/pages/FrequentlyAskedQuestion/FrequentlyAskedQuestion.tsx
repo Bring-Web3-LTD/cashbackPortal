@@ -110,14 +110,18 @@ const FrequentlyAskedQuestion = () => {
               className={styles.collapsible}
             >
               <div className={styles.text_col}>
-                <div
+                <button
+                  type="button"
                   className={styles.question}
-                  onClick={() => toggle(item.itemOrder)}
+                  aria-expanded={isOpen(item.id)}
+                  aria-controls={`faq-answer-${item.id}`}
+                  onClick={() => toggle(item.id)}
                 >
                   {item.question}
-                </div>
+                </button>
                 <AnimatePresence>
-                  {isOpen(item.itemOrder) && <motion.div
+                  {isOpen(item.id) && <motion.div
+                    id={`faq-answer-${item.id}`}
                     className={styles.answer_container}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
@@ -132,13 +136,17 @@ const FrequentlyAskedQuestion = () => {
                   </motion.div>}
                 </AnimatePresence>
               </div>
+              {/* Mouse shortcut for the question button above, which is the
+                  keyboard and screen-reader control; one tab stop per row. */}
               <div className={styles.content_cell}>
                 <button
                   id={`faq-details-btn-${item.id}`}
-                  className={`${styles.details_btn} ${isOpen(item.itemOrder) ? styles.rotate : ''}`}
-                  onClick={() => toggle(item.itemOrder)}
+                  className={`${styles.details_btn} ${isOpen(item.id) ? styles.rotate : ''}`}
+                  onClick={() => toggle(item.id)}
+                  tabIndex={-1}
+                  aria-hidden="true"
                 >
-                  <Icon name="arrow-down.svg" alt="arrow-down" />
+                  <Icon name="arrow-down.svg" alt="" />
                 </button>
               </div>
             </div>
