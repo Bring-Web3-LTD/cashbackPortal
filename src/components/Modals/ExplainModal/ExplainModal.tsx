@@ -1,5 +1,5 @@
 /**
- * What's This: three cards explaining the portal, then the claim CTA.
+ * What's This: three cards explaining the portal, then a "Got it" dismiss.
  * Pure UI — logic in useExplainModal.
  */
 import styles from './styles.module.css'
@@ -16,7 +16,7 @@ const shellOverrides = {
 type Props = Omit<ComponentProps<typeof Modal>, 'children'>
 
 const ExplainModal = ({ open, closeFn }: Props) => {
-    const { cards, noClaim, claimDisabled, claimAndClose, labels } = useExplainModal(closeFn)
+    const { cards, labels } = useExplainModal()
 
     return (
         <Modal
@@ -52,19 +52,16 @@ const ExplainModal = ({ open, closeFn }: Props) => {
                         </div>
                     ))}
                 </div>
-                {/* Nothing to claim on a noClaim platform. */}
-                {noClaim ? null : (
                 <div className={styles.action_area}>
                     <button
                         id="explain-modal-btn"
+                        type="button"
                         className={styles.btn}
-                        disabled={claimDisabled}
-                        onClick={claimAndClose}
+                        onClick={closeFn}
                     >
-                        {labels.claimCashback}
+                        {labels.gotIt}
                     </button>
                 </div>
-                )}
                 </div>
             </div>
         </Modal>
