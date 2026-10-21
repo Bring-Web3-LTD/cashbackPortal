@@ -32,19 +32,19 @@ const isBigCashback = (symbol: string, amount: number) => {
  * where the section still fits three characters, otherwise the name alone.
  */
 const buildOfferName = (
-    name: string, label: string, section: string, isSearch: boolean,
+    label: string, section: string, isSearch: boolean,
 ) => {
-    if (name.length > 22) return name.slice(0, 20) + '..'
+    if (label.length > 22) return label.slice(0, 20) + '..'
 
     if (isSearch && section) {
-        const full = `${name}/${section}`
+        const full = `${label}/${section}`
         if (full.length <= 22) return full
-        const availableForSection = 22 - name.length - 1 - 2 // 1 for "/", 2 for ".."
-        if (availableForSection >= 3) return `${name}/${section.slice(0, availableForSection)}..`
-        return name
+        const availableForSection = 22 - label.length - 1 - 2 // 1 for "/", 2 for ".."
+        if (availableForSection >= 3) return `${label}/${section.slice(0, availableForSection)}..`
+        return label
     }
 
-    if (isSearch) return name
+    if (isSearch) return label
 
     return section ? `/${section}` : label
 }
@@ -88,8 +88,8 @@ export const useRetailerCardDesktop = ({
     const isBig = useMemo(() => isBigCashback(cashbackSymbol, maxCashback), [cashbackSymbol, maxCashback])
     const isCampaign = Boolean(campaignId)
     const offerName = useMemo(
-        () => buildOfferName(name, label, section, Boolean(search)),
-        [name, label, section, search],
+        () => buildOfferName(label, section, Boolean(search)),
+        [label, section, search],
     )
 
     const activateDeal = async () => {
