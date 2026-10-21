@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="wallet-logo">
+<path d="M0 24C0 10.7452 10.7452 0 24 0V0C37.2548 0 48 10.7452 48 24V24C48 37.2548 37.2548 48 24 48V48C10.7452 48 0 37.2548 0 24V24Z" fill="#111329" fill-opacity="0.85"/>
+<path id="Path 143464" d="M28.993 27.9803L27.4313 26.7389L23.986 24.001L27.4313 21.2622L28.993 20.022L30.5551 21.2622L34 24.001L30.5551 26.7389L28.993 27.9803ZM28.993 31.8174V40L14 28.0901L19.1519 23.9996L28.993 31.8174ZM14 19.91V28.0894L19.1519 23.999L28.9926 16.1832V8L14 19.91Z" fill="url(#paint0_linear_0_19)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_19" x1="13.44" y1="7.104" x2="38.9537" y2="23.0501" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFD300"/>
+<stop offset="1" stop-color="#FF00B8"/>
+</linearGradient>
+</defs>
+</svg>

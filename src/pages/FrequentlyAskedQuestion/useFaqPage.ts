@@ -4,27 +4,46 @@
  * flag so the page view is pure UI.
  */
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useFaq } from './useFaq'
+import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { buildSupportUrl } from '../../utils/supportUrl'
 
 export const useFaqPage = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { platform, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useFaq()
-    const [openOrder, setOpenOrder] = useState<number | null>(null)
+    // Keyed by id: itemOrder repeats across the shared and platform rows.
+    const [openId, setOpenId] = useState<string | null>(null)
 
-    const close = () => navigate(-1)
-    const onToggle = (itemOrder: number) =>
-        setOpenOrder((cur) => (cur === itemOrder ? null : itemOrder))
+    const close = () => navigate('/')
+    const onToggle = (id: string) =>
+        setOpenId((cur) => (cur === id ? null : id))
 
     const faq = data?.faq ?? []
     const indentationMark = data?.indentationMark ?? ''
 
+    // Same destination as the More page's "Missing Reward" action.
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
+
     const labels = {
         title: t('faq'),
         intro: t('faqIntro'),
+        didntFind: t('didntFind'),
+        contactUs: t('contactUs'),
     }
 
-    return { labels, faq, indentationMark, isLoading, openOrder, close, onToggle }
+    return {
+        labels,
+        faq,
+        indentationMark,
+        isLoading,
+        openId,
+        close,
+        onToggle,
+        openSupport: () => window.open(supportUrl, '_blank', 'noopener,noreferrer'),
+    }
 }

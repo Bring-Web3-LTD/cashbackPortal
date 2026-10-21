@@ -52,6 +52,9 @@ const PROVIDER_API: Record<string, { url?: string; key?: string }> = {
     casper: { url: env.VITE_PORTAL_API_CASPER, key: env.VITE_PORTAL_API_KEY_CASPER },
     ecko: { url: env.VITE_PORTAL_API_ECKO, key: env.VITE_PORTAL_API_KEY_ECKO },
     ready: { url: env.VITE_PORTAL_API_READY, key: env.VITE_PORTAL_API_KEY_READY },
+    // Bring portal key (platform 13, BRING theme, claimType noClaim) — the
+    // in-repo stand-in for the Bring wrapper app.
+    bring: { url: env.VITE_PORTAL_API_BRING, key: env.VITE_PORTAL_API_KEY_BRING },
 }
 
 // The API URL has the shape `https://host/<stage>/v1/extension/check/portal`.
@@ -76,6 +79,8 @@ const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key ||
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
+// Email the Bring provider signs in with when the field is left empty.
+const DEFAULT_EMAIL = ((env.VITE_PORTAL_EMAIL as string | undefined) ?? '').trim()
 const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
 const DEFAULT_VIEW_MODE = ((env.VITE_PORTAL_VIEW_MODE as string | undefined) ?? '').trim().toLowerCase()
 
@@ -87,6 +92,7 @@ const $ = <T extends HTMLElement>(id: string) => {
 
 const themeEl = $<HTMLSelectElement>('theme')
 const walletEl = $<HTMLInputElement>('wallet')
+const walletLabelEl = $<HTMLSpanElement>('walletLabel')
 const extensionEl = $<HTMLInputElement>('extensionId')
 const walletNameEl = $<HTMLInputElement>('walletName')
 const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
@@ -603,6 +609,100 @@ statusPreviewEl.addEventListener('change', () => {
     void refresh()
 })
 
+// Dashboard state flags. The backend owns these (couponsEnabled / isHub from
+// verify, firstTimeUser / canPairWallet from cache); the checkbox is seeded from whatever it
+// returned. Ticking it away from that value pins an override on the portal
+// URL for testing; ticking it back to the backend value clears the override.
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet'] as const
+type DashboardFlag = typeof DASHBOARD_FLAGS[number]
+
+// The portal owns these. A box is only an *override* while the developer has
+// deliberately moved it away from the backend value, and that lives in memory
+// only — persisting it meant a stale "0" from an old session kept masking the
+// backend on every later load, which is exactly the bug this replaces.
+const overrides = new Map<DashboardFlag, boolean>()
+const backendFlags: Partial<Record<DashboardFlag, boolean>> = { firstTimeUser: true }
+
+// Drop the keys the persisted version left behind; nothing reads them now.
+for (const name of DASHBOARD_FLAGS) localStorage.removeItem(`bring-dev-wrapper:${name}`)
+
+const dashboardFlagEls = DASHBOARD_FLAGS.map(name => {
+    const el = $<HTMLInputElement>(name)
+    el.checked = Boolean(backendFlags[name])
+    el.addEventListener('change', () => {
+        // Back on the backend value means "no override".
+        if (el.checked === backendFlags[name]) overrides.delete(name)
+        else overrides.set(name, el.checked)
+        // Read from the query string at bootstrap — reload to apply.
+        isFirstLoad = true
+        void refresh()
+    })
+    return [name, el] as const
+})
+
+// Pair Wallet screens. Reaching one for real needs a registered email, a live
+// OTP and a wallet signature, so each chip posts the portal straight to that
+// state. The portal only listens for this outside prod.
+const PAIR_SCREENS: readonly (readonly [string, string])[] = [
+    ['email', 'Email'],
+    ['emailFilled', 'Email·typed'],
+    ['emailInvalid', 'Email·error'],
+    ['code', 'Code'],
+    ['codeFilled', 'Code·typed'],
+    ['codeInvalid', 'Code·error'],
+    ['error', 'Not found'],
+    ['success', 'Paired'],
+]
+
+const postToPortal = (data: Record<string, unknown>, label: string) => {
+    if (!iframeEl.contentWindow || !iframeEl.src) return setStatus('Portal not loaded.', true)
+    try {
+        const msg = { ...data, to: 'bringweb3' }
+        iframeEl.contentWindow.postMessage(msg, new URL(iframeEl.src).origin)
+        recordMessage('out', 'to portal', msg)
+    } catch (err) {
+        setStatus(`${label} failed: ${(err as Error).message}`, true)
+    }
+}
+
+// Forces every loading placeholder on. Live, not a URL param: the point is to
+// hold a skeleton against the design without waiting on a response. Re-sent
+// whenever the portal reloads, since the flag lives in the portal's memory.
+const skeletonPreviewEl = $<HTMLInputElement>('skeletonPreview')
+
+function pushSkeletonMode() {
+    postToPortal({ action: 'PORTAL_SKELETON', on: skeletonPreviewEl.checked }, 'skeleton mode')
+}
+
+skeletonPreviewEl.addEventListener('change', pushSkeletonMode)
+iframeEl.addEventListener('load', () => {
+    if (skeletonPreviewEl.checked) pushSkeletonMode()
+})
+
+const pairScreensEl = $<HTMLDivElement>('pairScreens')
+for (const [screen, label] of PAIR_SCREENS) {
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.textContent = label
+    btn.addEventListener('click', () => {
+        // Opens the modal first — a jump into a closed one renders nothing.
+        postToPortal({ action: 'PAIR_DEV_OPEN' }, 'pair dev open')
+        postToPortal({ action: 'PAIR_DEV_SCREEN', screen }, `pair dev screen: ${screen}`)
+    })
+    pairScreensEl.append(btn)
+}
+
+// Applies the flags the portal resolved from verify / cache, leaving any
+// developer override in place.
+function applyPortalFlags(flags: Record<string, boolean>) {
+    for (const [name, el] of dashboardFlagEls) {
+        const value = flags[name]
+        if (typeof value !== 'boolean') continue
+        backendFlags[name] = value
+        if (!overrides.has(name)) el.checked = value
+    }
+}
+
 const startConnectedEl = $<HTMLInputElement>('startConnected')
 startConnectedEl.checked = startConnected
 startConnectedEl.addEventListener('change', () => {
@@ -740,21 +840,28 @@ clearMsgLogBtn.addEventListener('click', () => {
 const shortAddress = (addr: string) =>
     addr.length > 10 ? `${addr.slice(0, 4)}…${addr.slice(-4)}` : addr
 
+// Bring users sign in by email, not with a wallet. Until the email login
+// (TODO#702) and the email-session JWT (TODO#661) exist, the mock session
+// stands in behind a "Sign in" button.
+const isBring = () => walletProviderEl.value === 'bring'
+
 function setWalletButton(address: string | null) {
     if (address) {
         walletBtn.dataset.state = 'connected'
-        walletBtn.textContent = shortAddress(address)
-        walletBtn.title = `${address} — click to disconnect`
+        walletBtn.textContent = isBring() ? address : shortAddress(address)
+        walletBtn.title = `${address} — click to ${isBring() ? 'sign out' : 'disconnect'}`
     } else {
         walletBtn.dataset.state = 'disconnected'
-        walletBtn.textContent = 'Connect wallet'
-        walletBtn.title = 'Click to connect mock wallet'
+        walletBtn.textContent = isBring() ? 'Sign in' : 'Connect wallet'
+        walletBtn.title = isBring() ? 'Click to sign in with email (mock session for now)' : 'Click to connect mock wallet'
     }
 }
 
 setWalletButton(walletEl.value.trim() || null)
 
 walletEl.addEventListener('input', () => {
+    // Typing an email is not signing in; only the Sign in button does that.
+    if (isBring()) return
     setWalletButton(walletEl.value.trim() || null)
 })
 
@@ -765,7 +872,7 @@ const wallet = createMockWallet({
 // `wallet` above is the in-page mock. The bridge always talks to a single
 // `MockWallet` reference, so we wrap a proxy that forwards to whichever
 // adapter the user picks in the sidebar (mock | nightly | ...).
-type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready'
+type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready' | 'bring'
 const WALLET_PROVIDER_KEY = 'bring-dev-wrapper:wallet-provider'
 
 const mockAdapter = wallet
@@ -824,6 +931,24 @@ const getReadyAdapter = (): MockWallet => {
     if (!readyAdapter) readyAdapter = createReadyWallet()
     return readyAdapter
 }
+// Bring: the identity is an email, not a wallet. The "address" this adapter
+// hands the bridge is the email; bootstrap() sends it as `email`, plus a
+// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (Bring is noClaim).
+let bringEmail: string | null = null
+const defaultBringEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
+const bringAdapter: MockWallet = {
+    getAddress: () => bringEmail,
+    async connect(override) {
+        bringEmail = override || defaultBringEmail()
+        return bringEmail
+    },
+    async signMessage() {
+        throw new Error('Bring has no wallet to sign with')
+    },
+    async disconnect() {
+        bringEmail = null
+    },
+}
 
 const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProviderId | null) ?? 'mock'
 walletProviderEl.value = initialProvider
@@ -840,6 +965,7 @@ const pickAdapter = (): MockWallet => {
         case 'casper': return getCasperAdapter()
         case 'ecko': return getEckoAdapter()
         case 'ready': return getReadyAdapter()
+        case 'bring': return bringAdapter
         default: return mockAdapter
     }
 }
@@ -851,7 +977,37 @@ const walletProxy: MockWallet = {
     disconnect: () => pickAdapter().disconnect(),
 }
 
+// What the connect buttons pass the adapter: the typed address (or the default)
+// for the mock, the typed email for Bring, nothing for extensions, which own
+// the key.
+const connectOverride = (): string | undefined => {
+    if (activeProvider === 'mock') return walletEl.value.trim() || DEFAULT_WALLET || undefined
+    if (isBring()) return walletEl.value.trim() || undefined
+    return undefined
+}
+
 const applyProviderUi = () => {
+    // Bring always runs standalone: the wallet controls feed check/portal,
+    // which the wrapper does not call there, so they are disabled
+    const standalone = isStandalone()
+    standaloneRowEl.hidden = !standalone
+    hintWrapperEl.hidden = standalone
+    hintStandaloneEl.hidden = !standalone
+    // identityStart is left to syncIdentityUi, the one place its rule lives
+    for (const id of ['wallet', 'startConnected', 'manualConnect', 'walletName', 'walletEmoji']) {
+        $<HTMLInputElement | HTMLButtonElement>(id).disabled = standalone
+    }
+    // No sign-in to simulate: on rewrds.xyz the portal signs in by itself (#702)
+    walletBtn.hidden = standalone
+    setWalletButton(walletBtn.dataset.state === 'connected' ? walletEl.value.trim() || null : null)
+    walletLabelEl.textContent = isBring() ? 'Email' : 'Wallet address'
+    if (isBring()) {
+        walletEl.readOnly = false
+        walletEl.type = 'email'
+        walletEl.placeholder = DEFAULT_EMAIL || 'you@example.com (empty = random dev email)'
+        return
+    }
+    walletEl.type = 'text'
     const isExternal = activeProvider !== 'mock'
     // External wallets supply their own address; the input becomes a display.
     walletEl.readOnly = isExternal
@@ -864,6 +1020,30 @@ const applyProviderUi = () => {
             ? `${walletEl.value} — click to disconnect`
             : 'Click to connect mock wallet')
 }
+// Standalone mode (TODO#701): on rewrds.xyz the portal runs with no wrapper and
+// fetches its own session. For Bring (the only standalone platform for now) the
+// wrapper skips check/portal and loads the local portal with `?standalone=true`
+// (honoured outside prod only) and no token, so the portal's own bootstrap runs.
+const standaloneRowEl = $<HTMLElement>('standaloneRow')
+const hintWrapperEl = $<HTMLElement>('hintWrapper')
+const hintStandaloneEl = $<HTMLElement>('hintStandalone')
+const isStandalone = () => activeProvider === 'bring'
+
+function standaloneSrc(): string | null {
+    if (!LOCAL_PORTAL_URL) return null
+    const u = new URL(LOCAL_PORTAL_URL)
+    u.search = ''
+    u.searchParams.set('standalone', 'true')
+    applyDevParams(u)
+    return u.toString()
+}
+
+$<HTMLButtonElement>('standaloneOpen').addEventListener('click', () => {
+    const src = standaloneSrc()
+    if (!src) return setStatus('Standalone needs VITE_PORTAL_LOCAL_URL (the local portal)', true)
+    window.open(src, '_blank', 'noopener')
+})
+
 applyProviderUi()
 
 walletProviderEl.addEventListener('change', async () => {
@@ -875,6 +1055,7 @@ walletProviderEl.addEventListener('change', async () => {
     localStorage.setItem(WALLET_PROVIDER_KEY, activeProvider)
     appendLog('info', `Wallet provider → ${activeProvider}`)
     applyProviderUi()
+    syncIdentityUi()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
     apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
@@ -892,16 +1073,20 @@ const bridge = createPortalBridge({
         appendLog(kind, label, payload)
         if (kind === 'out') recordMessage('out', 'to portal', payload)
     },
+    onPortalFlags: applyPortalFlags,
     // LOGIN / SIGN_MESSAGE are always auto-answered (the bridge defaults to
     // responding); the old opt-out toggles were removed.
     refreshToken: async (address) => {
+        // Standalone: the portal owns its session; nothing to push
+        if (isStandalone()) return null
         const data = await bootstrap(address)
         return data?.token ?? null
     },
     onAddressChange: (address) => {
         walletEl.value = address ?? ''
         setWalletButton(address)
-        if (address) appendLog('info', `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
+        // The Bring identity is an email: log the event, not the address.
+        if (address) appendLog('info', isBring() ? 'Bring signed in' : `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
     },
 })
 
@@ -911,6 +1096,7 @@ const bridge = createPortalBridge({
 //  - external: the extension owns the address, so we can't fill it in up front;
 //    instead connect once the portal iframe has loaded, which prompts the
 //    extension if it's available ("if possible").
+//  - Bring: nothing; it runs standalone and the portal fetches its own session.
 if (startConnected) {
     if (activeProvider === 'mock') {
         if (DEFAULT_WALLET.trim()) {
@@ -918,26 +1104,21 @@ if (startConnected) {
             setWalletButton(DEFAULT_WALLET.trim())
             void mockAdapter.connect(DEFAULT_WALLET.trim())
         }
+    } else if (activeProvider === 'bring') {
+        // Standalone: the portal fetches its own session, no wallet to bring up
     } else {
-        iframeEl.addEventListener('load', () => { void bridge.connect() }, { once: true })
+        iframeEl.addEventListener('load', () => { void bridge.connect(connectOverride()) }, { once: true })
     }
 }
 
 manualConnectBtn.addEventListener('click', () => {
-    // For external wallets we never pass an override — the extension owns the key.
-    const override = activeProvider === 'mock'
-        ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
-        : undefined
-    void bridge.connect(override)
+    void bridge.connect(connectOverride())
 })
 walletBtn.addEventListener('click', () => {
     if (walletBtn.dataset.state === 'connected') {
         void bridge.disconnect()
     } else {
-        const override = activeProvider === 'mock'
-            ? (walletEl.value.trim() || DEFAULT_WALLET || undefined)
-            : undefined
-        void bridge.connect(override)
+        void bridge.connect(connectOverride())
     }
 })
 
@@ -1072,6 +1253,13 @@ function buildIframeSrc(returnedUrl: string, token: string): string {
     }
 }
 
+/** Deterministic 0x address for an email: the first 20 bytes of its SHA-256. */
+async function standInAddress(email: string): Promise<string> {
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email.toLowerCase()))
+    const hex = Array.from(new Uint8Array(hash), (b) => b.toString(16).padStart(2, '0')).join('')
+    return `0x${hex.slice(0, 40)}`
+}
+
 async function bootstrap(walletAddress: string | null): Promise<PortalApiResponse | null> {
     const apiUrl = getApiUrl()
     const apiKey = getApiKey()
@@ -1080,9 +1268,16 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
+    // Bring signs in by email: the identity is an email, never a wallet. The
+    // backend takes no email yet (portal entry from the email session is
+    // TODO#661), and the portal treats a session without a walletAddress as
+    // signed out. Until then the session carries a stand-in address derived
+    // from the email, so the same email always gets the same rewards.
+    const email = isBring() ? walletAddress : null
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
-        walletAddress,
+        walletAddress: email ? await standInAddress(email) : walletAddress,
+        email: email || undefined,
         // Optional wallet identity — /check/portal embeds these in the JWT,
         // surfaced in the Mobile Portal claim screen.
         walletName: walletNameEl.value.trim() || undefined,
@@ -1095,6 +1290,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         devicePlatform: getDevicePlatform(),
     }
 
+    if (email) appendLog('info', `Bring → stand-in address ${body.walletAddress} (until TODO#661)`)
     const requestId = ++pendingId
     setStatus('Calling check/portal…')
 
@@ -1145,7 +1341,25 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     return data
 }
 
+// Dev-only portal URL params, the same on a token load and a standalone load
+function applyDevParams(u: URL) {
+    if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
+    if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+    for (const [name, value] of overrides) u.searchParams.set(name, String(value))
+}
+
 async function refresh() {
+    if (isStandalone()) {
+        // The portal bootstraps itself; there is no session to push later
+        if (!isFirstLoad) return
+        const src = standaloneSrc()
+        if (!src) return setStatus('Standalone needs VITE_PORTAL_LOCAL_URL (the local portal)', true)
+        iframeEl.src = src
+        lastUrlEl.value = src
+        isFirstLoad = false
+        setStatus('Loaded standalone: the portal fetches its own session.')
+        return
+    }
     const walletValue = walletEl.value.trim()
     const data = await bootstrap(walletValue === '' ? null : walletValue)
     if (!data) return
@@ -1155,8 +1369,7 @@ async function refresh() {
         // First load: token is embedded in portalUrl's query string.
         const src = buildIframeSrc(portalUrl!, token)
         const u = new URL(src)
-        if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
-        if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+        applyDevParams(u)
         iframeEl.src = u.toString()
         isFirstLoad = false
         setStatus('Loaded.')
@@ -1213,7 +1426,7 @@ const saveIdentity = () => {
 const syncIdentityUi = () => {
     const anySet = Boolean(walletNameEl.value.trim() || walletEmojiEl.value.trim())
     identityDotEl.hidden = !anySet
-    identityStartEl.disabled = !anySet
+    identityStartEl.disabled = !anySet || isStandalone()
     // Clearing the last value withdraws the opt-in - nothing left to start with.
     if (!anySet && identityStartEl.checked) {
         identityStartEl.checked = false
@@ -1241,6 +1454,9 @@ for (const el of [walletNameEl, walletEmojiEl]) {
 // Wallet input edits go through the bridge so the mock wallet's internal state
 // stays in sync and the same SESSION_UPDATE flow is used.
 walletEl.addEventListener('change', () => {
+    // Bring's field is an email: leaving it is not signing in, only the Sign
+    // in button does that.
+    if (isBring()) return
     const v = walletEl.value.trim()
     if (v) void bridge.connect(v)
     else void bridge.disconnect()

@@ -45,6 +45,21 @@ interface LoaderData {
     extensionId: string | null
     showTerms: boolean
     autoclaim: boolean
+    /** `claimType: 'noClaim'` from the token: the platform pays out itself, so
+     *  approved rewards are shown as saved, never as claimable, with no claim
+     *  action anywhere. */
+    noClaim: boolean
+    // Dashboard state. `isHub` and `couponsEnabled` come from /verify,
+    // `firstTimeUser` / `canPairWallet` from /cache. The dev wrapper can pin
+    // any of them via a URL override outside prod.
+    isHub?: boolean
+    couponsEnabled?: boolean
+    firstTimeUser?: boolean
+    canPairWallet?: boolean
+    /** Coupon partner iframe. Null when coupons are off or outside the US. */
+    couponsIframeSrc?: string | null
+    /** Where the claim guide sends a hub user to install the wallet. */
+    chromeStoreUrl?: string
     // Mobile Portal — optional wallet identity surfaced from the JWT, plus the
     // computed flag that drives whether the mobile UI is rendered for this load.
     walletEmoji?: string
@@ -53,6 +68,8 @@ interface LoaderData {
     variant: string
     bringTou?: string
     privacy?: string
+    /** Support site from the token; see utils/supportUrl for the fallback. */
+    supportUrl?: string
 }
 
 
@@ -65,7 +82,7 @@ interface Token {
     tokenInUsd: number
     totalEstimatedUsd: number
     // Backend-formatted display string for the amount. May contain Unicode
-    // subscript digits (₀–₉) — render via <TokenAmount /> on mobile.
+    // subscript digits (₀–₉), which render as-is.
     tokenAmountDisplay?: string
 }
 

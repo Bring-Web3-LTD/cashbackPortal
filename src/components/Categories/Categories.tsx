@@ -1,7 +1,11 @@
+/**
+ * Desktop categories row: a horizontally scrolling pill list with fade veils
+ * and arrows at whichever end still has content.
+ * Pure UI — logic in useCategoriesDesktop.
+ */
 import styles from './styles.module.css'
-import { useEffect, useRef, useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
-import useWindowSize from '../../hooks/useWindowSize';
+import Icon from '../Icon/Icon'
+import { useCategoriesDesktop } from './useCategoriesDesktop'
 
 interface Props {
     categories: Category[];
@@ -9,65 +13,24 @@ interface Props {
     onClickFn: (category: Category) => void;
 }
 
-const sizes = [
-    [1190, 10],
-    [990, 8],
-    [300, 3]
-]
-
 const Categories = ({ categories, category, onClickFn }: Props) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [maxCategories, setMaxCategories] = useState(10)
-    const view = useWindowSize()
+    const {
+        showSkeleton,
+        skeletonCount,
+        scrollRef,
+        overflow,
+        measure,
+        scrollLeft,
+        scrollRight,
+        swipeHandlers,
+        labels,
+    } = useCategoriesDesktop(categories)
 
-    useEffect(() => {
-        for (const item of sizes) {
-            if (view.width >= item[0]) {
-                setMaxCategories(item[1])
-                break
-            }
-        }
-    }, [view.width])
-
-    const scrollLeft = (): void => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: -500, behavior: 'smooth' });
-        }
-    };
-
-    const scrollRight = (): void => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: 500, behavior: 'smooth' });
-        }
-    };
-
-    const handlers = useSwipeable({
-        onSwipedLeft: () => scrollRight(),
-        onSwipedRight: () => scrollLeft(),
-    });
-
-    if (!categories.length) {
+    if (showSkeleton) {
         return (
-            <div className={styles.container}>
-                {Array(maxCategories).fill(0).map((_, index) => (
-                    <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton}`} key={index}></button>
-                ))}
-            </div>
-        )
-    }
-
-    if (categories.length <= maxCategories) {
-        return (
-            <div className={styles.container}>
-                {categories.map(cat => (
-                    <button
-                        id={`category-${cat.name}`}
-                        onClick={() => onClickFn(cat)}
-                        key={cat.id}
-                        className={`${styles.category} ${cat === category ? styles.selected : ''}`}
-                    >
-                        {cat.name}
-                    </button>
+            <div className={`${styles.container} ${styles.skeleton_row}`}>
+                {Array(skeletonCount).fill(0).map((_, index) => (
+                    <button id={`category-skeleton-${index}`} className={`${styles.category} ${styles.skeleton} skeleton_shimmer`} key={index}></button>
                 ))}
             </div>
         )
@@ -75,18 +38,12 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
 
     return (
         <div className={styles.container}>
-            <button
-                id="categories-arrow-left"
-                className={`${styles.arrow} ${styles.arrow_left}`}
-                onClick={scrollLeft}
-            >
-                &#8249;
-            </button>
             <div
                 id="categories-scrollable"
                 className={styles.categories}
-                {...handlers}
+                {...swipeHandlers}
                 ref={scrollRef}
+                onScroll={measure}
             >
                 {categories.map(cat => (
                     <button
@@ -99,13 +56,32 @@ const Categories = ({ categories, category, onClickFn }: Props) => {
                     </button>
                 ))}
             </div>
-            <button
-                id="categories-arrow-right"
-                className={`${styles.arrow} ${styles.arrow_right}`}
-                onClick={scrollRight}
-            >
-                &#8250;
-            </button>
+            {overflow.left ? (
+                <>
+                    <div className={`${styles.veil} ${styles.veil_left}`} />
+                    <button
+                        id="categories-arrow-left"
+                        className={`${styles.arrow} ${styles.arrow_left}`}
+                        aria-label={labels.scrollLeft}
+                        onClick={scrollLeft}
+                    >
+                        <Icon className={styles.arrow_icon} name="chevron-left.svg" alt="" />
+                    </button>
+                </>
+            ) : null}
+            {overflow.right ? (
+                <>
+                    <div className={`${styles.veil} ${styles.veil_right}`} />
+                    <button
+                        id="categories-arrow-right"
+                        className={`${styles.arrow} ${styles.arrow_right}`}
+                        aria-label={labels.scrollRight}
+                        onClick={scrollRight}
+                    >
+                        <Icon className={styles.arrow_icon} name="chevron-right.svg" alt="" />
+                    </button>
+                </>
+            ) : null}
         </div>
     );
 };

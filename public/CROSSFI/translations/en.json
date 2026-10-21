@@ -12,6 +12,7 @@
     "claimToYourWallet": "Claim to your wallet",
     "doneBtn": "Done",
     "back": "Back",
-    "historyTitle": "Transaction history",
-    "emptyHistory": "No transaction history yet"
+    "historyTitle": "Rewards History",
+    "emptyHistory": "No transaction history yet",
+    "detailsTitle": "Rewards Details"
 }

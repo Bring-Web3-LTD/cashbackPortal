@@ -3,6 +3,10 @@ import { API_URL_PLATFORMS, API_KEY } from "../config"
 interface Body extends BackendRequestBody {
     walletAddress: string | undefined
     platform: string
+    /** Support site from /verify, so the backend builds the FAQ's support
+     *  links for this wrapper (support.rewrds.xyz on rewrds.xyz). The backend
+     *  accepts only sites it knows; without it they stay on support.bring.network. */
+    supportUrl?: string
 }
 
 interface Link {

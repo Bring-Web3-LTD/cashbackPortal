@@ -3,13 +3,14 @@
  * `useMobilePortal` loader flag. Mobile pages are the `.mobile` views
  * colocated with their desktop counterparts under `src/pages/`.
  */
-import { useRouteLoaderData } from 'react-router-dom'
+import { Navigate, useRouteLoaderData } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'
 import MobileHome from './pages/Home/Home.mobile'
 import MobileHistory from './pages/History/History.mobile'
 import MobileFaq from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion.mobile'
+import MobileWhatsThis from './pages/WhatsThis/WhatsThis.mobile'
 
 export const HomeDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
@@ -21,7 +22,19 @@ export const HistoryDispatcher = () => {
     return useMobilePortal ? <MobileHistory /> : <History />
 }
 
+/** The History sheet filtered to pending rows. Mobile-only — desktop goes home. */
+export const PendingDispatcher = () => {
+    const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
+    return useMobilePortal ? <MobileHistory only="pending" /> : <Navigate to="/" replace />
+}
+
 export const FaqDispatcher = () => {
     const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
     return useMobilePortal ? <MobileFaq /> : <FrequentlyAskedQuestion />
+}
+
+/** Mobile-only screen — desktop has no "What's This?" view, so it goes back home. */
+export const WhatsThisDispatcher = () => {
+    const { useMobilePortal } = useRouteLoaderData('root') as LoaderData
+    return useMobilePortal ? <MobileWhatsThis /> : <Navigate to="/" replace />
 }

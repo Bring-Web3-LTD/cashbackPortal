@@ -9,6 +9,8 @@
  * `src/pages/History/History.oldMobile.tsx` but adapted to a React-Query
  * selector pattern so the page component stays presentation-only.
  */
+import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
 import { useBalance } from './useBalance'
 import {
     createDescription,
@@ -67,7 +69,18 @@ interface UseHistoryResult {
 }
 
 export const useHistory = (): UseHistoryResult => {
+    const { t } = useTranslation()
+    const { noClaim } = useRouteLoaderData('root') as LoaderData
     const query = useBalance()
+
+    /** Rows show the status name itself, not the "In X days" countdown. */
+    const statusLabel = (key: string): string =>
+        ({
+            claimed: t('statusClaimed'),
+            claimable: t('statusClaimable'),
+            cancelled: t('statusCancelled'),
+            pending: t('statusPending'),
+        })[key] ?? key
 
     const balance = query.data?.data
     const retailerIconBasePath = query.data?.retailerIconBasePath
@@ -96,13 +109,15 @@ export const useHistory = (): UseHistoryResult => {
     Object.entries(claimsBySymbol).forEach(([symbol, agg]) => {
         rows.push({
             id: `claim-${symbol}`,
-            retailerName: 'Total Claims',
+            retailerName: t('totalClaims'),
             date: '',
             iconSrc: '',
             isClaim: true,
-            amountDisplay: String(agg.tokenAmount),
+            // Summed floats — 0.015 + 0.006 is 0.020999999999999998 raw, which
+            // overflows the pill. Trim the binary noise, keep real precision.
+            amountDisplay: String(Number(agg.tokenAmount.toFixed(8))),
             tokenSymbol: symbol,
-            status: formatStatus('claimed'),
+            status: statusLabel('claimed'),
             rawStatus: 'claimed',
             description: agg.description,
         })
@@ -112,6 +127,7 @@ export const useHistory = (): UseHistoryResult => {
     balance?.movements?.deals?.forEach((deal, i) => {
         const rawDate = deal.startDate || deal.date || ''
         const formatted = formatStatus(deal.status, deal.eligibleDate)
+        const key = statusKey(deal.status, formatted)
         rows.push({
             id: `deal-${deal.retailerName ?? 'deal'}-${i}`,
             retailerName: deal.retailerDisplayName,
@@ -123,8 +139,10 @@ export const useHistory = (): UseHistoryResult => {
             isClaim: false,
             amountDisplay: `${deal.tokenAmountDisplay ?? deal.tokenAmount}`,
             tokenSymbol: deal.tokenSymbol,
-            status: formatted,
-            rawStatus: statusKey(deal.status, formatted),
+            // /cache calls every approved reward claimable, but on a noClaim
+            // platform there is nothing to claim: it is saved for the user.
+            status: noClaim && key === 'claimable' ? t('statusApproved') : statusLabel(key),
+            rawStatus: key,
             description:
                 deal.history?.map((h) =>
                     createDescription({ ...h, retailerName: deal.retailerDisplayName }),

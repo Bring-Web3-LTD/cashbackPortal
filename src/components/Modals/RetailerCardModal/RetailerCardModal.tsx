@@ -1,15 +1,10 @@
 import styles from './styles.module.css'
 import Modal from '../../Modal/Modal'
 import TermsMarkdown from '../../TermsMarkdown/TermsMarkdown'
-import { ComponentProps, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import message from '../../../utils/message'
-import { useAnalytics } from '../../../hooks/useAnalytics'
-import { useRouteLoaderData } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { ComponentProps } from 'react'
 import { isDesktop } from 'react-device-detect'
 import Icon from '../../Icon/Icon'
-import { getInitials } from '../../../utils/getInitials'
+import { useRetailerCardModalDesktop } from './useRetailerCardModalDesktop'
 
 interface Props extends Omit<ComponentProps<typeof Modal>, 'children'> {
     backgroundColor?: string | undefined,
@@ -47,47 +42,28 @@ const RetailerCardModal = ({
     fallbackLogo: fallbackLogoProp
 }: Props) => {
 
-    const { sendAnalyticsEvent } = useAnalytics()
-    const { extensionId, cryptoSymbols, showTerms } = useRouteLoaderData('root') as LoaderData
-    const [fallbackLogo, setFallbackLogo] = useState(fallbackLogoProp || '')
-    const [showingTerms, setShowingTerms] = useState(false)
-    const { t } = useTranslation()
-
-    const onClose = () => {
-        setShowingTerms(false)
-        message({ action: 'POPUP_CLOSED' })
-        closeFn()
-    }
-
-    const activate = () => {
-        window.postMessage({
-            from: 'bringweb3',
-            action: 'PORTAL_ACTIVATE',
-            extensionId,
-            time: 30 * 60 * 1000, // 30 minutes
-            domain,
-            iframeUrl,
-            token
-        })
-        onClose()
-        sendAnalyticsEvent('retailer_shop', {
-            category: 'user_action',
-            action: 'click',
-            details: name,
-        })
-    }
+    const {
+        showTerms,
+        showingTerms,
+        openTerms,
+        closeTerms,
+        fallbackLogo,
+        useFallbackLogo,
+        onClose,
+        activate,
+        labels,
+    } = useRetailerCardModalDesktop({
+        closeFn, name, cashback, iframeUrl, token, domain, fallbackLogo: fallbackLogoProp,
+    })
 
     if (isDesktop && !showTerms) {
         return (
             <Modal
                 showCloseBtn={!showingTerms}
-                xMarkPath='x-mark-light.svg'
                 className={`${styles.retailer_overlay} ${styles.retailer_overlay_desktop}`}
-                style={{
-                    '--modal-h': showingTerms ? 'calc(288px - 40px - 6px)' : 'calc(288px - 40px - 24px)',
-                    '--modal-pb': showingTerms ? '6px' : '24px',
-                    ...(showingTerms ? termsShellOverrides : {}),
-                }}
+                contentClassName={showingTerms ? styles.shell_terms : styles.shell}
+                closeBtnClassName={styles.close}
+                style={showingTerms ? termsShellOverrides : undefined}
                 open={open}
                 closeFn={onClose}
             >
@@ -95,40 +71,28 @@ const RetailerCardModal = ({
                     <button
                         id="retailer-modal-back-btn"
                         className={styles.back_btn}
-                        onClick={() => setShowingTerms(false)}
+                        onClick={closeTerms}
                     >
-                    <div 
-                        id="back_icon_container"
-                        className={styles.back_icon_container}
-                    >
-                        <Icon
-                            name="arrow-left.svg"
-                            alt="arrow-left"
-                        />
-                    </div>
-                    <div
-                        id="back_txt_container"
-                        className={styles.back_txt_container}
-                    >
-                        <span>{t('back')}</span>
-                    </div>
+                        <span className={styles.back_icon}>
+                            <Icon name="arrow-left.svg" alt="" />
+                        </span>
+                        <span className={styles.back_btn_text}>
+                            {labels.back}
+                        </span>
                     </button>
                 )}
+                {!showingTerms && <div className={styles.header} />}
                 <div className={styles.modal_container}>
-                    <AnimatePresence mode="wait">
-                        {showingTerms ? (
-                            <motion.div
-                                key="terms"
-                                initial={{ x: 0, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: '100%', opacity: 0 }}
-                                transition={{
-                                    type: "tween",
-                                    duration: 0.2,
-                                    ease: "easeInOut"
-                                }}
-                                className={styles.modal}
-                            >
+                    {/* Swapped outright, not animated. Both framer modes read as
+                        a fault here: `wait` empties the shell for the length of
+                        the exit, and `popLayout` keeps both panels mounted so
+                        the leaving text slides across the arriving text for
+                        200ms. Measuring the box proved nothing moves or re-wraps
+                        - the overlap itself was what looked like the wording
+                        settling. The shell is a fixed 288, so an instant swap
+                        has nothing to blink. */}
+                    {showingTerms ? (
+                            <div className={styles.modal}>
                                 {terms ? (
                             <TermsMarkdown
                                 terms={terms}
@@ -139,40 +103,43 @@ const RetailerCardModal = ({
                                         Loading...
                                     </div>
                                 )}
-                            </motion.div>
+                            </div>
                         ) : (
-                            <motion.div
-                                key="main"
-                                initial={{ x: 0, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: '-100%', opacity: 0 }}
-                                transition={{
-                                    type: "tween",
-                                    duration: 0.2,
-                                    ease: "easeInOut"
-                                }}
-                                className={styles.go_shop}
-                            >
-                                <div className={styles.go_shop_top}>
-                                    <div
-                                        className={styles.logo_container}
-                                        style={{ backgroundColor: backgroundColor || 'white' }}
-                                    >
-                                        {fallbackLogo ?
-                                            <div className={styles.fallback_logo}>{fallbackLogo}</div>
-                                            :
-                                            <img
-                                                className={`${styles.logo} ${styles.logo_big}`}
-                                                loading='eager'
-                                                src={iconPath}
-                                                alt={`${name} logo`}
-                                                onError={() => setFallbackLogo(getInitials(name))}
-                                            />
-                                        }
+                            <div className={styles.go_shop}>
+                                <div className={styles.content}>
+                                    <div className={styles.body}>
+                                        <div className={styles.text_section}>
+                                            <div className={styles.provider}>
+                                                <div className={styles.avatar}>
+                                                    <div
+                                                        className={styles.avatar_image}
+                                                        style={{ backgroundColor: backgroundColor || 'white' }}
+                                                    >
+                                                        {fallbackLogo ?
+                                                            <div className={styles.avatar_fallback}>{fallbackLogo}</div>
+                                                            :
+                                                            <img
+                                                                className={styles.avatar_logo}
+                                                                loading='eager'
+                                                                src={iconPath}
+                                                                alt={`${name} logo`}
+                                                                onError={useFallbackLogo}
+                                                            />
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div className={styles.wrapper}>
+                                                    <div className={styles.title_row}>
+                                                        <div className={styles.title}>
+                                                            {labels.shopAndEarn}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className={styles.retailer_name}>Shop and earn up to {cashback} {cryptoSymbols[0]} cashback</div>
                                 </div>
-                                <div className={styles.go_shop_bottom}>
+                                <div className={styles.footer}>
                                     {redirectLink && terms ?
                                         <a
                                             id="retailer-modal-start-shopping-btn"
@@ -182,29 +149,31 @@ const RetailerCardModal = ({
                                             target='_blank'
                                             rel="noopener noreferrer"
                                         >
-                                            {t('startShopping')}
+                                            {labels.startShopping}
                                         </a>
                                         :
                                         <button
                                             id="retailer-modal-loading-btn"
                                             className={`${styles.start_btn} ${styles.loading_btn}`}
                                             disabled={true}
-                                            aria-label={t('loadingBtn')}
+                                            aria-label={labels.loadingBtn}
                                         >
                                             <span className={styles.loader} />
                                         </button>
                                     }
-                                    <div className={styles.consent_txt}>
-                                        By clicking Go Shopping, you accept the <button
-                                            id="retailer-modal-terms-btn"
-                                            className={styles.terms_btn}
-                                            onClick={() => setShowingTerms(true)}
-                                        >{t('termsAndExclusions')}</button>
+                                    <div className={styles.terms}>
+                                        <span className={styles.terms_text}>
+                                            {labels.termsConsent}{' '}
+                                            <button
+                                                id="retailer-modal-terms-btn"
+                                                className={styles.terms_btn}
+                                                onClick={openTerms}
+                                            >{labels.termsAndExclusions}</button>
+                                        </span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
-                    </AnimatePresence>
                 </div>
             </Modal>
         )
@@ -230,7 +199,7 @@ const RetailerCardModal = ({
                                 loading='eager'
                                 src={iconPath}
                                 alt={`${name} logo`}
-                                onError={() => setFallbackLogo(getInitials(name))}
+                                onError={useFallbackLogo}
                             />
                         }
                     </div>
@@ -259,7 +228,7 @@ const RetailerCardModal = ({
                         href={redirectLink}
                         target='_blank'
                     >
-                        {t('startShopping')}
+                        {labels.startShopping}
                     </a>
                     :
                     <button
@@ -267,11 +236,11 @@ const RetailerCardModal = ({
                         className={styles.start_btn}
                         disabled={true}
                     >
-                        {t('loadingBtn')}
+                        {labels.loadingBtn}
                     </button>
                 }
                 <div className={styles.consent_txt}>
-                    By clicking Go Shopping, you accept the {t('termsAndExclusions')} above.
+                    By clicking Go Shopping, you accept the {labels.termsAndExclusions} above.
                 </div>
             </div>
         </Modal>

@@ -1,0 +1,5 @@
+/* BRING mobile (TODO#659) — placeholder until the Bring design exists in
+   Figma. Inherits everything from DEFAULT/mobile/stylesheets/dark.css. Only
+   used when BRING is listed in VITE_MOBILE_PORTAL_PLATFORMS. */
+:root {
+}

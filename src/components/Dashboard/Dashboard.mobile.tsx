@@ -1,0 +1,125 @@
+/** Generic mobile dashboard bar. Slots are driven by `firstTimeUser`,
+ * `couponsEnabled`, `isHub` and `showPairWallet`. Pure UI — logic in useDashboard. */
+import Icon from '../Icon/Icon'
+import { useDashboard, DashboardProps, DashboardMode } from './useDashboard.mobile'
+import styles from './styles.mobile.module.css'
+
+const TABS: DashboardMode[] = ['coupons', 'cashback']
+
+const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps) => {
+    const {
+        firstTimeUser,
+        couponsEnabled,
+        isHub,
+        showPairWallet,
+        noClaim,
+        pending,
+        claim,
+        labels,
+        goToPending,
+        goToMore,
+        goToWhatsThis,
+    } = useDashboard()
+
+    const claimTile = (
+        <>
+            <span className={styles.tileLabel}>{labels.claim}</span>
+            <span className={styles.tileValue}>
+                <span className={styles.amountRow}>
+                    <span className={styles.amount}>{claim.amount}</span>
+                    <span className={styles.symbol}>{claim.symbol}</span>
+                </span>
+                <span className={styles.usd}>{claim.usd}</span>
+            </span>
+        </>
+    )
+
+    return (
+        <section className={styles.root} aria-label={labels.rewards}>
+            {couponsEnabled ? (
+                <div className={styles.tabs} role="tablist">
+                    {TABS.map((tab) => (
+                        <button
+                            key={tab}
+                            type="button"
+                            role="tab"
+                            aria-selected={mode === tab}
+                            className={`${styles.tab} ${mode === tab ? styles.tabActive : ''}`}
+                            onClick={() => onModeChange(tab)}
+                        >
+                            {labels[tab]}
+                        </button>
+                    ))}
+                </div>
+            ) : null}
+
+            {firstTimeUser ? (
+                <>
+                    {isHub && !couponsEnabled ? (
+                        <div className={styles.brand}>
+                            <Icon
+                                name="smart-cashback.svg"
+                                className={styles.brandIcon}
+                                aria-hidden="true"
+                            />
+                            <p className={styles.brandText}>{labels.smartCashback}</p>
+                        </div>
+                    ) : null}
+                    {showPairWallet ? (
+                        <button
+                            type="button"
+                            className={`${styles.pill} ${styles.pillAccent}`}
+                            onClick={onPairWallet}
+                        >
+                            {labels.pairWallet}
+                        </button>
+                    ) : null}
+                    <button
+                        type="button"
+                        className={`${styles.pill} ${isHub ? styles.pillNarrow : ''}`}
+                        onClick={goToWhatsThis}
+                    >
+                        {labels.whatsThis}
+                    </button>
+                </>
+            ) : (
+                <>
+                    <button type="button" className={styles.tile} onClick={goToPending}>
+                        <span className={styles.tileLabel}>{labels.pending}</span>
+                        <span className={styles.tileValue}>
+                            <span className={styles.amountRow}>
+                                <span className={styles.amount}>{pending.amount}</span>
+                                <span className={styles.symbol}>{pending.symbol}</span>
+                            </span>
+                            <span className={styles.usd}>{pending.usd}</span>
+                        </span>
+                    </button>
+                    {/* Nothing to claim on a noClaim platform, so the tile is
+                        a plain readout rather than a dead button. */}
+                    {noClaim ? (
+                        <div className={`${styles.tile} ${styles.tileClaim} ${styles.tileReadout}`}>{claimTile}</div>
+                    ) : (
+                        <button type="button" className={`${styles.tile} ${styles.tileClaim}`} onClick={onClaim}>
+                            {claimTile}
+                        </button>
+                    )}
+                </>
+            )}
+
+            <button
+                type="button"
+                className={styles.iconBtn}
+                onClick={goToMore}
+                aria-label={labels.more}
+            >
+                <Icon
+                    name={firstTimeUser ? 'chat.svg' : 'more-dots.svg'}
+                    className={firstTimeUser ? styles.chatIcon : styles.moreIcon}
+                    aria-hidden="true"
+                />
+            </button>
+        </section>
+    )
+}
+
+export default Dashboard
