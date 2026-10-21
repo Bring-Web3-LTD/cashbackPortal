@@ -453,10 +453,6 @@
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #FFFFFF;
     --modal-deal-btn-f-s: 18px;
-    --modal-deal-back-f-c: #A8ADBF;
-    --modal-deal-back-f-s: 13px;
-    --modal-deal-back-f-w: 600;
-    --modal-deal-back-l-h: 18px;
     /* Terms panel: every line is primary text on the card surface; only the
        heading is semi-bold. */
     --modal-deal-markdown-bg: rgba(27, 30, 36, 0.20);
@@ -745,14 +741,7 @@
     --modal-close-hover-f-c: #FFFFFF;
     --modal-close-icon-src: url('/GERO/icons/dark/x-mark.svg');
 
-    --history-back-f-s: 13px;
-    --history-back-f-w: 400;
-    --history-back-l-h: 17px;
-    --history-back-f-c: #A8ADBF;
-
-    --history-back-hover-f-s: 13px;
-    --history-back-hover-f-w: 400;
-    --history-back-hover-f-c: #FFFFFF;
+    --page-toolbar-back-hover-f-c: #FFFFFF;
     /* Opt in to tinting the back arrow on hover: the icon doubles as the mask,
        so one file covers both states. */
     --history-back-icon-src: url('/GERO/icons/dark/arrow-left.svg');
@@ -837,7 +826,6 @@
     --history-empty-f-w: 400;
     --history-empty-l-h: 20px;
     --history-empty-f-c: #7A7D83;
-    --history-page-back-f-c: #A8ADBF;
 
     /* FAQ. Its rows are divided more faintly than the history table's. */
     --faq-row-border-c: #262931;

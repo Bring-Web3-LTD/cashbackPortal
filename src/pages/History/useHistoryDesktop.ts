@@ -142,7 +142,7 @@ export const useHistoryDesktop = () => {
                 action: 'click',
                 details: 'to: /'
             })
-            navigate(-1)
+            navigate('/')
         },
         labels: {
             back: t('back'),

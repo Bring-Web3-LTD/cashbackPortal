@@ -273,37 +273,76 @@
     color: var(--modal-popup-terms-f-c);
 }
 
+/* Same control as the History and FAQ toolbars, so it reads the same token
+   family: a back link that changed size between the pages and the terms panel
+   was the whole reason this was split in two. Only the placement is local -
+   here it floats over the panel instead of sitting in a toolbar row.
+   font-family because this one is a <button>, which does not inherit it. */
 .back_btn {
     position: absolute;
-    display: flex;
-    align-items: center;
-    padding: 0;
-    gap: 4px;
     top: 16px;
     left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: fit-content;
+    padding: 0;
     background: none;
     border: none;
     cursor: pointer;
-    line-height: var(--modal-deal-back-l-h, var(--history-back-l-h, 22px));
-    height: fit-content;
-    font-size: var(--modal-deal-back-f-s, var(--history-back-f-s));
-    font-weight: var(--history-back-f-w);
-    color: var(--modal-deal-back-f-c, var(--modal-deal-name-f-c));
-    letter-spacing: 0.5px;
+    font-family: inherit;
+    font-size: var(--page-toolbar-back-f-s, 13px);
+    font-weight: var(--page-toolbar-back-f-w, 500);
+    line-height: var(--page-toolbar-back-l-h, 15px);
+    color: var(--page-toolbar-back-f-c, currentColor);
+    transition: .2s;
 }
 
-.back_icon_container{
-    display: flex;
-    min-width: 24px;
-    min-width: 24px;
-    justify-content: center;
-    align-items: center;
+/* Fixed 24 box with the asset filled to it: platform arrows ship at different
+   intrinsic sizes, which otherwise moves both the glyph and the 4px gap. */
+.back_icon {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
 }
 
-.back_txt_container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.back_icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* The arrow's colour is baked into its SVG, so CSS can't repaint the <img>.
+   A platform opts into the hover tint by pointing --history-back-icon-src at
+   its own arrow and setting --history-back-icon-hover-f-c; set neither and the
+   overlay stays transparent and nothing changes. */
+.back_icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--history-back-icon-hover-f-c, transparent);
+    -webkit-mask: var(--history-back-icon-src) center / contain no-repeat;
+    mask: var(--history-back-icon-src) center / contain no-repeat;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+/* Size and weight read the resting toolbar tokens, not the hover ones: the
+   label only changes colour. Platforms with no toolbar tokens keep their old
+   hover values through the fallbacks. */
+@media (hover: hover) {
+    .back_btn:hover {
+        font-size: var(--page-toolbar-back-f-s, 13px);
+        font-weight: var(--page-toolbar-back-f-w, 500);
+        color: var(--page-toolbar-back-hover-f-c, var(--page-toolbar-back-f-c, currentColor));
+    }
+
+    .back_btn:hover .back_icon::after {
+        opacity: 1;
+    }
 }
 
 .full {
@@ -434,11 +473,17 @@
     height: 20px;
     --stroke: 2.5px;
     border-radius: var(--modal-popup-loader-radius, 50%);
+    /* Every stop is spread across a hair rather than landing twice on the same
+       position: a zero-length stop asks for a hard edge, and a hard gradient
+       stop is rasterised without antialiasing - so the arc's ends and the
+       ring's inner edge came out stepped, and rotating them made the steps
+       crawl. 2deg at this radius is about a third of a pixel, so the gap still
+       reads as the hard edge the design draws. */
     background:
-        conic-gradient(from 0deg, currentColor 270deg, transparent 270deg),
+        conic-gradient(from 0deg, currentColor 269deg, transparent 271deg),
         var(--modal-popup-loader-track-c, transparent);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
-    mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke)), #000 calc(100% - var(--stroke)));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke) - 0.5px), #000 calc(100% - var(--stroke) + 0.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--stroke) - 0.5px), #000 calc(100% - var(--stroke) + 0.5px));
     animation: go-shop-spin 0.7s linear infinite;
 }
 

@@ -1,9 +1,7 @@
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import Icon from '../../components/Icon/Icon'
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { getInitials } from '../../utils/getInitials'
 import { useHistoryDesktop, type HistoryRow } from './useHistoryDesktop'
@@ -90,14 +88,8 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, 
                     </button>
                 </div>
             </div>
-            <AnimatePresence>
-                {isActive && <motion.div
-                    className={styles.description_container}
-                    initial={{ height: 0, opacity: 0, minHeight: 0 }}
-                    animate={{ height: 'auto', opacity: 1, minHeight: '40px' }}
-                    exit={{ height: 0, opacity: 0, minHeight: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
+            {isActive && (
+                <div className={styles.description_container}>
                     <div>
                         {description.map((item, index) => {
                             
@@ -122,8 +114,8 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, 
                             )
                         })}
                     </div>
-                </motion.div>}
-            </AnimatePresence>
+                </div>
+            )}
         </div >
     )
 }
@@ -134,7 +126,6 @@ const HistoryDesktop = () => {
 
     return (
         <div className={styles.container}>
-            <Header />
             <main className={styles.main}>
             {/* Same row as the home page; switching view leaves for it. */}
             <Dashboard

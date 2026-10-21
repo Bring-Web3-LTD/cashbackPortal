@@ -6,7 +6,6 @@
 // Styles
 import styles from './styles.module.css'
 // Components
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import Search from '../../components/Search/Search'
 import Categories from '../../components/Categories/Categories'
@@ -14,7 +13,6 @@ import CardsList from '../../components/CardsList/CardsList'
 // Rendered only by the ?test=status preview below.
 import StatusModal from '../../components/Modals/StatusModal/StatusModal'
 import Icon from '../../components/Icon/Icon'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useHomeDesktop } from './useHomeDesktop'
 
 const Home = () => {
@@ -27,7 +25,6 @@ const Home = () => {
         setView,
         showCoupons,
         couponsIframeSrc,
-        scrollRef,
         paginationRef,
         search,
         category,
@@ -108,8 +105,7 @@ const Home = () => {
                     />
                 </label>
                 : null}
-            <Header />
-            <main ref={scrollRef} className={styles.main}>
+            <main className={styles.main}>
                 <Dashboard view={view} onViewChange={setView} />
                 {showCoupons ? (
                     <iframe
@@ -132,22 +128,20 @@ const Home = () => {
                                 value={search}
                                 onChangeFn={changeSearch}
                             />
-                            <AnimatePresence>
-                                {search?.value || category?.name ?
-                                    <motion.button
-                                        id="home-filter-reset-btn"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                        className={styles.filter}
-                                        onClick={resetFilters}
-                                    >
-                                        <span>{search?.value || category?.name}</span>
-                                        <Icon name="x-mark-filter.svg" alt="x-icon" />
-                                    </motion.button>
-                                    : null}
-                            </AnimatePresence>
+                            {/* No entry animation: the chip is the direct answer
+                                to the click that created it, so a fade only
+                                delays it - and under StrictMode the remount
+                                replayed it as a blink. */}
+                            {search?.value || category?.name ?
+                                <button
+                                    id="home-filter-reset-btn"
+                                    className={styles.filter}
+                                    onClick={resetFilters}
+                                >
+                                    <span>{search?.value || category?.name}</span>
+                                    <Icon name="x-mark-filter.svg" alt="" />
+                                </button>
+                                : null}
                         </div>
                         <div id="deals-amount" className={styles.deals_amount}>{dealsCount}</div>
                     </div>

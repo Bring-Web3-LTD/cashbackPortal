@@ -1,25 +1,14 @@
+/* The side gutter lives on the outlet, which also holds the header, so the bar
+   and the body stay aligned. */
 .container {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 0 48px;
 }
 
-@media screen and (max-width: 1111px) {
-    .container {
-        padding: 0 32px;
-    }
-}
-
-@media screen and (max-width: 839px) {
-    .container {
-        padding: 0 20px;
-    }
-}
-
-/* 1440 less the two 48px gutters the container applies. */
+/* 1440 less the two 48px gutters the outlet applies. */
 .main {
     box-sizing: border-box;
     display: flex;
@@ -62,10 +51,10 @@
     align-items: center;
     gap: 4px;
     text-decoration: none;
-    font-size: var(--page-toolbar-back-f-s, var(--history-back-f-s));
-    font-weight: var(--page-toolbar-back-f-w, var(--history-back-f-w));
+    font-size: var(--page-toolbar-back-f-s, 13px);
+    font-weight: var(--page-toolbar-back-f-w, 500);
     line-height: var(--page-toolbar-back-l-h, 15px);
-    color: var(--page-toolbar-back-f-c, var(--history-page-back-f-c, var(--history-back-f-c)));
+    color: var(--page-toolbar-back-f-c, currentColor);
     transition: .2s;
 }
 
@@ -322,8 +311,11 @@
     transform: rotate(180deg);
 }
 
+/* min-height came from the open state of the expand animation; it is declared
+   here now that the row simply renders open. */
 .description_container {
     overflow: hidden;
+    min-height: 40px;
     padding-left: 100px;
 }
 
@@ -463,9 +455,9 @@ b {
        the label only changes colour. Platforms with no toolbar tokens keep
        their old hover values through the fallbacks. */
     .back_btn:hover {
-        font-size: var(--page-toolbar-back-f-s, var(--history-back-hover-f-s));
-        font-weight: var(--page-toolbar-back-f-w, var(--history-back-hover-f-w));
-        color: var(--page-toolbar-back-hover-f-c, var(--history-back-hover-f-c));
+        font-size: var(--page-toolbar-back-f-s, 13px);
+        font-weight: var(--page-toolbar-back-f-w, 500);
+        color: var(--page-toolbar-back-hover-f-c, var(--page-toolbar-back-f-c, currentColor));
     }
 
     .back_btn:hover .back_icon::after {

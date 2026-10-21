@@ -1,24 +1,12 @@
+/* The side gutter lives on the outlet, which also holds the header, so the bar
+   and the body stay aligned. Below 839 that is 20px for every page; the FAQ's
+   dev note asked for a 24px floor, which a shared gutter cannot keep. */
 .container {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 0 48px;
-}
-
-@media screen and (max-width: 1111px) {
-    .container {
-        padding: 0 32px;
-    }
-}
-
-/* Floor is 24 here, not the 20 the browse page uses: the FAQ's dev note gives
-   the gutter as max 48, min 24. */
-@media screen and (max-width: 839px) {
-    .container {
-        padding: 0 24px;
-    }
 }
 
 .main {
@@ -71,10 +59,10 @@
     align-items: center;
     gap: 4px;
     text-decoration: none;
-    font-size: var(--page-toolbar-back-f-s, var(--history-back-f-s));
-    font-weight: var(--page-toolbar-back-f-w, var(--history-back-f-w));
+    font-size: var(--page-toolbar-back-f-s, 13px);
+    font-weight: var(--page-toolbar-back-f-w, 500);
     line-height: var(--page-toolbar-back-l-h, 15px);
-    color: var(--page-toolbar-back-f-c, var(--history-page-back-f-c, var(--history-back-f-c)));
+    color: var(--page-toolbar-back-f-c, currentColor);
     transition: .2s;
 }
 
@@ -247,9 +235,9 @@
        the label only changes colour. Platforms with no toolbar tokens keep
        their old hover values through the fallbacks. */
     .back_btn:hover {
-        font-size: var(--page-toolbar-back-f-s, var(--history-back-hover-f-s));
-        font-weight: var(--page-toolbar-back-f-w, var(--history-back-hover-f-w));
-        color: var(--page-toolbar-back-hover-f-c, var(--history-back-hover-f-c));
+        font-size: var(--page-toolbar-back-f-s, 13px);
+        font-weight: var(--page-toolbar-back-f-w, 500);
+        color: var(--page-toolbar-back-hover-f-c, var(--page-toolbar-back-f-c, currentColor));
     }
 
     .back_btn:hover .back_icon::after {

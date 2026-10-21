@@ -599,9 +599,6 @@
     --modal-deal-name-f-c: #1A1919;
     --modal-deal-btn-f-s: 18px;
     --modal-deal-rate-radius: 6px;
-    --modal-deal-back-f-c: #72737A;
-    --modal-deal-back-f-s: 13px;
-    --modal-deal-back-l-h: 20px;
     --modal-deal-markdown-bg: #FFFFFF;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: #EDEEF0;
@@ -809,15 +806,7 @@
 
     /* "Back" is a muted 13/500 label beside a 24px arrow; hover lifts both to
        primary text. */
-    --history-back-f-s: 13px;
-    --history-back-f-w: 500;
-    --history-back-f-c: #72737A;
-    --history-back-l-h: 15px;
-    --history-page-back-f-c: #72737A;
-
-    --history-back-hover-f-s: 13px;
-    --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #1A1919;
+    --page-toolbar-back-hover-f-c: #1A1919;
     /* Opt in to tinting the back arrow: the icon doubles as its own mask. */
     --history-back-icon-src: url('/CSPR/icons/light/arrow-left.svg');
     --history-back-icon-hover-f-c: #1A1919;

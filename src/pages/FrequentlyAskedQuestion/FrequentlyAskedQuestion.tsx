@@ -1,9 +1,7 @@
 import { FC } from 'react'
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
 import Icon from '../../components/Icon/Icon'
-import Header from '../../components/Header/Header'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { useFaqDesktop, SKELETON_ROWS } from './useFaqDesktop'
 
@@ -72,7 +70,6 @@ const FrequentlyAskedQuestion = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
       <main className={styles.main}>
       {/* Same row as the home page; switching view leaves for it. */}
       <Dashboard
@@ -87,7 +84,7 @@ const FrequentlyAskedQuestion = () => {
         onClick={e => { e.preventDefault(); goBack() }}
       >
         <span className={styles.back_icon}>
-          <Icon name="arrow-left.svg" alt="arrow" />
+          <Icon name="arrow-left.svg" alt="" />
         </span>
         <span className={styles.back_btn_text}>
           {labels.back}
@@ -119,22 +116,18 @@ const FrequentlyAskedQuestion = () => {
                 >
                   {item.question}
                 </button>
-                <AnimatePresence>
-                  {isOpen(item.id) && <motion.div
+                {isOpen(item.id) && (
+                  <div
                     id={`faq-answer-${item.id}`}
                     className={styles.answer_container}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
                   >
                     <AnswerParser
                       answer={item.answer}
                       links={item.links || []}
                       indentationMark={indentationMark ?? ''}
                     />
-                  </motion.div>}
-                </AnimatePresence>
+                  </div>
+                )}
               </div>
               {/* Mouse shortcut for the question button above, which is the
                   keyboard and screen-reader control; one tab stop per row. */}

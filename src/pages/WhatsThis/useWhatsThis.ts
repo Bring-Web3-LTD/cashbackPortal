@@ -10,7 +10,7 @@ export const useWhatsThis = () => {
     const navigate = useNavigate()
     const { chromeStoreUrl, isHub, noClaim } = useRouteLoaderData('root') as LoaderData
 
-    const close = () => navigate(-1)
+    const close = () => navigate('/')
     const goHome = () => navigate('/')
 
     return {

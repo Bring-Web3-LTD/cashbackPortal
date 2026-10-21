@@ -19,9 +19,9 @@
     align-items: center;
     gap: 6px;
     text-decoration: none;
-    font-size: var(--history-back-f-s);
-    font-weight: var(--history-back-f-w);
-    color: var(--history-back-f-c);
+    font-size: var(--page-toolbar-back-f-s, 13px);
+    font-weight: var(--page-toolbar-back-f-w, 500);
+    color: var(--page-toolbar-back-f-c, currentColor);
     transition: .2s;
     top: calc(40px + 37px);
     left: calc(50vw - 171px);

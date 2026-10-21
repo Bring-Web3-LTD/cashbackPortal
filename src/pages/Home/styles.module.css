@@ -1,26 +1,14 @@
+/* The side gutter lives on the outlet, which also holds the header, so the bar
+   and the body stay aligned. */
 .container {
     flex: 1;
     display: flex;
     align-items: center;
     flex-direction: column;
     box-sizing: border-box;
-    /* Side padding sits here, not on .main, so the header aligns with the body. */
-    padding: 0 48px;
 }
 
-@media screen and (max-width: 1111px) {
-    .container {
-        padding: 0 32px;
-    }
-}
-
-@media screen and (max-width: 839px) {
-    .container {
-        padding: 0 20px;
-    }
-}
-
-/* 1344 is the 1440 design width less its two 48px gutters, which the container
+/* 1344 is the 1440 design width less its two 48px gutters, which the outlet
    applies. Capping at 1440 here would have stacked the gutters on top of it. */
 .main {
     flex: 1;

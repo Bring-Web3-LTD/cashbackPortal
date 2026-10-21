@@ -615,9 +615,6 @@
     --modal-deal-name-f-w: 600;
     --modal-deal-name-f-c: #FBFBFB;
     --modal-deal-btn-f-s: 18px;
-    --modal-deal-back-f-s: 13px;
-    --modal-deal-back-l-h: 16px;
-    --modal-deal-back-f-c: #8C8C8C;
     --modal-deal-markdown-bg: #171717;
     --modal-deal-markdown-border-w: 1px;
     --modal-deal-markdown-border-c: rgba(140, 140, 140, 0.30);
@@ -667,16 +664,9 @@
     --history-title-f-w: 700;
     --history-title-f-c: #FBFBFB;
 
-    --history-back-f-s: 13px;
-    --history-back-f-w: 500;
-    --history-back-f-c: #8C8C8C;
-
     /* Hover lifts the whole control to Text/Primary. The arrow's colour is
        baked into its SVG, so the icon is repainted through a mask of itself. */
-    --history-back-l-h: 16px;
-    --history-back-hover-f-s: 13px;
-    --history-back-hover-f-w: 500;
-    --history-back-hover-f-c: #FBFBFB;
+    --page-toolbar-back-hover-f-c: #FBFBFB;
     --history-back-icon-src: url('/ARGENT/icons/dark/arrow-left.svg');
     --history-back-icon-hover-f-c: #FBFBFB;
 
@@ -830,7 +820,6 @@
     --loading-msg-l-h: 16px;
     --rewards-amount-l-h: 34px;
     --history-table-header-l-h: 22px;
-    --history-page-back-f-c: #8C8C8C;
     --history-claimed-icon-border-w: 0;
     --history-claimed-icon-border-c: transparent;
 

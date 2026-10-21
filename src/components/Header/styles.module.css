@@ -14,8 +14,11 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    /* Same cap as the body: 1440 less the two 48px gutters the page applies. */
+    /* Same cap as the body: 1440 less the two 48px gutters the outlet applies. */
     max-width: 1344px;
+    /* Centres itself: the outlet stretches its children rather than centring
+       them, because the pages below size themselves. */
+    margin: 0 auto;
     background: var(--header-bg);
 }
 

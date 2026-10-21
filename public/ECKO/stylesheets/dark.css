@@ -469,7 +469,7 @@
     /* What's This explainer: three feature cards on the modal surface, each
        with an Accent-free Surface/Elevated icon plate. */
     --modal-explain-bg: #13172F;
-    --modal-explain-radius: 12px;
+    --modal-explain-radius: 5px;
     --modal-explain-title-f-s: 17px;
     --modal-explain-title-f-w: 700;
     --modal-explain-title-l-h: 24px;
@@ -488,7 +488,7 @@
     --modal-explain-card-title-f-c: #FFFFFF;
     --modal-explain-card-text-f-s: 13px;
     --modal-explain-card-text-f-w: 500;
-    --modal-explain-card-text-l-h: 22px;
+    --modal-explain-card-text-l-h: 18px;
     --modal-explain-card-text-f-c: #AEB0BB;
     --modal-explain-icon-bg: #4B57A7;
     --modal-explain-icon-radius: 12px;
@@ -531,8 +531,6 @@
     --modal-deal-name-f-s: 17px;
     --modal-deal-name-f-w: 700;
     --modal-deal-name-f-c: #FFFFFF;
-    --modal-deal-back-f-s: 13px;
-    --modal-deal-back-f-c: #AEB0BB;
     --modal-terms-bg: #13172F;
     --modal-terms-surface-bg: rgba(17, 19, 41, 0.85);
     --modal-terms-radius: 8px;
@@ -719,24 +717,17 @@
     --page-toolbar-title-l-h: 24px;
     --page-toolbar-title-f-c: #FFFFFF;
     --page-toolbar-back-f-s: 13px;
-    --page-toolbar-back-f-w: 700;
-    --page-toolbar-back-l-h: 18px;
+    --page-toolbar-back-f-w: 500;
+    --page-toolbar-back-l-h: 22px;
     --page-toolbar-back-f-c: #AEB0BB;
 
     --history-title-f-s: 17px;
     --history-title-f-w: 700;
     --history-title-f-c: #FFFFFF;
 
-    --history-back-f-s: 13px;
-    --history-back-f-w: 700;
-    --history-back-f-c: #AEB0BB;
-    --history-back-l-h: 18px;
+    --page-toolbar-back-hover-f-c: #FFFFFF;
     --history-back-icon-src: url('/ECKO/icons/dark/arrow-left.svg');
     --history-back-icon-hover-f-c: #FFFFFF;
-
-    --history-back-hover-f-s: 13px;
-    --history-back-hover-f-w: 700;
-    --history-back-hover-f-c: #FFFFFF;
 
     /* Column strip sits on the page, closed by a single bottom rule. */
     --history-table-radius: 0;
