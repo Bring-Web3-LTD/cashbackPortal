@@ -15,6 +15,7 @@ import { injectSupportUrl } from '../../utils/supportUrl'
 import { getInitials } from '../../utils/getInitials'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 
 const isBigCashback = (symbol: string, amount: number) => {
     switch (symbol) {
@@ -70,8 +71,9 @@ export const useRetailerCardDesktop = ({
     id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
     campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
 }: Args) => {
-    const { platform, cryptoSymbols, userId, flowId, iconsPath, supportUrl, isHub } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, flowId, iconsPath, supportUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, isTester } = useWalletAddress()
+    const { identity, isIdentified } = useRequestIdentity()
     const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
     const [redirectLink, setRedirectLink] = useState('')
@@ -92,21 +94,16 @@ export const useRetailerCardDesktop = ({
         [name, label, section, search],
     )
 
-    // Needs a wallet, except in the hub, where the backend credits the session cookie.
-    const canActivate = Boolean(walletAddress) || Boolean(isHub)
-
     const activateDeal = async () => {
-        if (!canActivate) return
+        if (!isIdentified) return
 
         const body: Parameters<typeof activate>[0] = {
             platform,
             itemId: id,
             flowId,
-            tokenSymbol: cryptoSymbols[0]
+            tokenSymbol: cryptoSymbols[0],
+            ...identity,
         }
-        if (walletAddress) body.walletAddress = walletAddress
-        // A userId overrides the session server-side, so the hub sends none.
-        if (!isHub) body.userId = userId
 
         if (search?.value) body['search'] = search.value
 
@@ -123,7 +120,7 @@ export const useRetailerCardDesktop = ({
     }
 
     const handleClick = () => {
-        if (!canActivate) {
+        if (!isIdentified) {
             setLoginModalState('open')
             return
         }

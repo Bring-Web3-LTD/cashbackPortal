@@ -12,7 +12,7 @@ import fetchTerms from '../../utils/fetchTerms'
 import formatCashback from '../../utils/formatCashback'
 import injectCashback from '../../utils/injectCashback'
 import { injectSupportUrl } from '../../utils/supportUrl'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import type { RetailersMetadata } from '../../hooks/useRetailers'
 
@@ -34,8 +34,8 @@ export const useCardsList = ({
     hasNextPage,
     onFetchNextPage,
 }: CardsListProps) => {
-    const { platform, cryptoSymbols, userId, flowId, supportUrl, isHub } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { platform, cryptoSymbols, flowId, supportUrl } = useRouteLoaderData('root') as LoaderData
+    const { identity, isIdentified } = useRequestIdentity()
     const { sendAnalyticsEvent } = useAnalytics()
 
     const sentinelRef = useRef<HTMLDivElement>(null)
@@ -118,23 +118,18 @@ export const useCardsList = ({
     }, [activeRetailer, metadata?.retailerTermsBasePath, topGeneralTerms, generalTerms, supportUrl])
 
     // Pre-activate on modal open to fetch the redirect URL so "Go to shop" can be a target="_blank" anchor.
-    // Needs a wallet, except in the hub, where the backend credits the session cookie.
     useEffect(() => {
         setRedirectLink('')
-        if (!activeRetailer || (!walletAddress && !isHub)) return
+        if (!activeRetailer || !isIdentified) return
 
-        const body: Parameters<typeof activate>[0] = {
+        let cancelled = false
+        activate({
             platform,
             itemId: activeRetailer.id,
             flowId,
             tokenSymbol: cryptoSymbols[0],
-        }
-        if (walletAddress) body.walletAddress = walletAddress
-        // A userId overrides the session server-side, so the hub sends none.
-        if (!isHub) body.userId = userId
-
-        let cancelled = false
-        activate(body)
+            ...identity,
+        })
             .then((res) => {
                 if (!cancelled && res?.url) setRedirectLink(res.url)
             })
@@ -145,7 +140,7 @@ export const useCardsList = ({
         return () => {
             cancelled = true
         }
-    }, [activeRetailer, walletAddress, isHub, platform, userId, flowId, cryptoSymbols])
+    }, [activeRetailer, isIdentified, identity, platform, flowId, cryptoSymbols])
 
     // ── Handlers ──────────────────────────────────────────────────────
     const handleCardClick = (retailer: Retailer) => {

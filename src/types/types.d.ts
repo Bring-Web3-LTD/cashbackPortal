@@ -139,7 +139,7 @@ interface Link {
 }
 
 interface BackendRequestBody {
-    // Both absent for a hub user, who earns under the session cookie instead.
+    /** Absent in hub mode, where the session cookie identifies the user. */
     userId?: string
     walletAddress?: string | null
     platform: string

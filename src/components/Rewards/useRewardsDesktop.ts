@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState, KeyboardEvent, MouseEvent } f
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { formatCurrency } from '../../pages/History/helpers'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useClaim } from '../../hooks/useClaim'
 
@@ -61,8 +61,8 @@ const useCardFit = () => {
 export const useRewardsDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, autoclaim, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { cryptoSymbols, autoclaim, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { isIdentified } = useRequestIdentity()
     // The signature round-trip and the status modal it drives live in one
     // place, because the What's This modal offers the same action.
     const { claim, claimDisabled, loading } = useClaim()
@@ -94,7 +94,7 @@ export const useRewardsDesktop = () => {
     // showing only what the two reward cards above it count.
     // Needs a wallet, except in the hub, where the balance comes from the session cookie.
     const openHistory = (rewardsOnly = false) =>
-        walletAddress || isHub ? navigate('/history', { state: { rewardsOnly } }) : setLoginOpen(true)
+        isIdentified ? navigate('/history', { state: { rewardsOnly } }) : setLoginOpen(true)
 
     // Anchored to the claim trigger's rect: the card clips its overflow and
     // its container-type makes it a containing block, so the tooltip cannot
