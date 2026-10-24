@@ -13,7 +13,7 @@ import { useWalletAddress } from './useWalletAddress'
 type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
 
 export const useBalance = (): UseQueryResult<BalanceResponse> => {
-    const { platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, isHub } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
 
     return useQuery({
@@ -23,7 +23,8 @@ export const useBalance = (): UseQueryResult<BalanceResponse> => {
             return await fetchCache(body)
         },
         queryKey: ['balance', walletAddress],
-        enabled: !!walletAddress,
+        // A hub user has no wallet; the backend answers from the session cookie.
+        enabled: Boolean(isHub) || !!walletAddress,
     })
 }
 
