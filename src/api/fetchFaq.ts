@@ -1,4 +1,5 @@
-import { API_URL_PLATFORMS, API_KEY } from "../config"
+import { API_URL_PLATFORMS } from "../config"
+import { apiFetch } from "./request"
 
 interface Body extends BackendRequestBody {
     walletAddress: string | undefined
@@ -34,14 +35,7 @@ const fetchFaq = async (body: Body): Promise<Response> => {
         body.walletAddress = 'null'
     }
 
-    const res = await fetch(`${API_URL_PLATFORMS}faq`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-            "x-api-key": API_KEY,
-            "Content-Type": "application/json",
-        },
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}faq`, { method: "POST", json: body })
     const data = await res.json()
     return data
 }
