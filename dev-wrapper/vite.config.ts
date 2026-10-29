@@ -54,7 +54,7 @@ const figmaImageProxy = (token: string | undefined) => ({
 
 const aws = async <T>(...args: string[]): Promise<T> => {
     const { stdout } = await promisify(execFile)('aws', [
-        ...args, '--region', 'eu-central-1', '--output', 'json',
+        ...args, '--output', 'json',
     ], { timeout: 15000, maxBuffer: 10 * 1024 * 1024 })
     return JSON.parse(stdout) as T
 }
@@ -81,11 +81,12 @@ const envNamesList = () => ({
                     .sort((a, b) => a.localeCompare(b))
                 res.end(JSON.stringify(names))
             } catch (err) {
-                // execFile's message is just the command; the AWS reason is on stderr
+                // execFile's message is just the command; the AWS reason is on stderr.
+                // Terminal only: stderr can carry the account id / IAM ARN
                 const error = (err as { stderr?: string }).stderr?.trim() || (err instanceof Error ? err.message : String(err))
                 server.config.logger.warn(`[env-names] envName list unavailable (AWS CLI / credentials?): ${error}`)
                 res.statusCode = 502
-                res.end(JSON.stringify({ error }))
+                res.end(JSON.stringify({ error: 'env list unavailable' }))
             }
         })
     },

@@ -12,12 +12,11 @@ export const STANDALONE = !pageParams.has('token') && (
 )
 // The Bring portal key, used only for the standalone /check/portal call
 export const STANDALONE_API_KEY = import.meta.env.VITE_STANDALONE_API_KEY || ''
-// envName (localStorage, or ?envName= outside prod) → api.bringweb3.io/{envName}/v1/,
+// envName (?envName= or localStorage) → api.bringweb3.io/{envName}/v1/,
 // as in the extension. Stage segment only, so the host stays Bring's.
 const readEnvName = (): string => {
     try {
-        const envName = (import.meta.env.VITE_ENV !== 'prod' && pageParams.get('envName'))
-            || localStorage.getItem('envName') || ''
+        const envName = pageParams.get('envName') || localStorage.getItem('envName') || ''
         return /^[\w-]+$/.test(envName) ? envName : ''
     } catch {
         return ''
