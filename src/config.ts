@@ -12,9 +12,26 @@ export const STANDALONE = !pageParams.has('token') && (
 )
 // The Bring portal key, used only for the standalone /check/portal call
 export const STANDALONE_API_KEY = import.meta.env.VITE_STANDALONE_API_KEY || ''
+// Env override (TODO#632): `localStorage.envName = 'dev'` in the iframe points any
+// build at https://api.bringweb3.io/dev/v1/, same mapping as the Chrome extension.
+// Outside prod, `?envName=` wins over storage (the dev wrapper forwards its own).
+// Only a bare stage segment is accepted, so the host (and the JWT) stays Bring's;
+// anything else, or blocked storage, falls back to the build-time URL.
+const readEnvName = (): string => {
+    try {
+        const envName = (import.meta.env.VITE_ENV !== 'prod' && pageParams.get('envName'))
+            || localStorage.getItem('envName') || ''
+        return /^[\w-]+$/.test(envName) ? envName : ''
+    } catch {
+        return ''
+    }
+}
+const ENV_NAME = readEnvName()
 // Standalone mode calls its own API host (api.rewrds.xyz in prod), so the
 // session cookies stay first-party; falls back to VITE_API_URL when unset
-const API_URL = (STANDALONE && import.meta.env.VITE_STANDALONE_API_URL) || import.meta.env.VITE_API_URL
+const API_URL = ENV_NAME
+    ? `https://api.bringweb3.io/${ENV_NAME}/v1/`
+    : (STANDALONE && import.meta.env.VITE_STANDALONE_API_URL) || import.meta.env.VITE_API_URL
 
 export const API_KEY = import.meta.env.VITE_API_KEY || ''
 export const API_URL_PLATFORMS = `${API_URL}platforms/`

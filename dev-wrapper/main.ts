@@ -72,8 +72,17 @@ const stageOf = (url?: string): string => {
 const defaultStage = stageOf(API_BASE)
 
 const apiStage = defaultStage
+// Env override (TODO#632): the API path field (kept in localStorage `envName`)
+// points check/portal at that stage for every provider and is forwarded to the
+// portal as `?envName=` (honoured outside prod only), so one value switches both.
+const ENV_NAME_RE = /^[\w-]+$/
+let envName = localStorage.getItem('envName') || ''
+if (!ENV_NAME_RE.test(envName)) envName = ''
 // Resolved against the currently selected wallet provider at call time.
-const getApiUrl = (): string | undefined => PROVIDER_API[activeProvider]?.url || API_BASE
+const getProviderApiUrl = (): string | undefined => PROVIDER_API[activeProvider]?.url || API_BASE
+const getApiUrl = (): string | undefined => envName
+    ? `https://api.bringweb3.io/${envName}/v1/extension/check/portal`
+    : getProviderApiUrl()
 const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key || API_KEY
 
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
@@ -96,7 +105,7 @@ const walletLabelEl = $<HTMLSpanElement>('walletLabel')
 const extensionEl = $<HTMLInputElement>('extensionId')
 const walletNameEl = $<HTMLInputElement>('walletName')
 const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
-const apiStageInfoEl = $<HTMLElement>('apiStageInfo')
+const apiStageInfoEl = $<HTMLInputElement>('apiStageInfo')
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const frameEl = $<HTMLElement>('frame')
@@ -116,7 +125,8 @@ extensionEl.value = DEFAULT_EXT_ID
 // first bootstrap logs the portal in.
 walletEl.value = ''
 themeEl.value = DEFAULT_THEME === 'dark' || DEFAULT_THEME === 'light' ? DEFAULT_THEME : ''
-apiStageInfoEl.textContent = apiStage || '(default)'
+apiStageInfoEl.value = envName
+apiStageInfoEl.placeholder = apiStage || '(default)'
 
 const layoutEl = $<HTMLElement>('layout')
 const toggleBtn = $<HTMLButtonElement>('toggleSidebar')
@@ -954,7 +964,23 @@ const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProv
 walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
 // Now that the active provider is known, show its API stage.
-apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
+apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
+// Commit on Enter/blur: new env = new stage = brand-new portal session.
+apiStageInfoEl.addEventListener('change', () => {
+    const next = apiStageInfoEl.value.trim()
+    if (next && !ENV_NAME_RE.test(next)) {
+        apiStageInfoEl.value = envName
+        return setStatus(`Invalid envName "${next}": letters, digits, _ and - only`, true)
+    }
+    if (next === envName) return
+    envName = next
+    apiStageInfoEl.value = envName
+    if (envName) localStorage.setItem('envName', envName)
+    else localStorage.removeItem('envName')
+    appendLog('info', `envName → ${envName || '(build default)'}`)
+    isFirstLoad = true
+    void refresh()
+})
 
 const pickAdapter = (): MockWallet => {
     switch (activeProvider) {
@@ -1058,7 +1084,7 @@ walletProviderEl.addEventListener('change', async () => {
     syncIdentityUi()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
-    apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
+    apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
     isFirstLoad = true
     void refresh()
 })
@@ -1345,6 +1371,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
 function applyDevParams(u: URL) {
     if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
     if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+    if (envName) u.searchParams.set('envName', envName)
     for (const [name, value] of overrides) u.searchParams.set(name, String(value))
 }
 

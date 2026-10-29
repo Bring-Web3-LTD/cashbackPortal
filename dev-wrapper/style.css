@@ -46,7 +46,10 @@ html, body {
     color: #8a93a3;
 }
 
-.api-info code {
+.api-info code,
+.controls .api-info input {
+    width: 9em;
+    border: 0;
     background: #1a1f27;
     padding: 1px 5px;
     border-radius: 4px;
