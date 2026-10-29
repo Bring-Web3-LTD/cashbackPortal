@@ -60,7 +60,7 @@
             </button>
             <aside class="controls">
                 <div class="api-row">
-                    <label class="api-info">API path: <input id="apiStageInfo" type="text" spellcheck="false"
+                    <label class="api-info">API path: <input id="apiStageInfo" type="text" spellcheck="false" aria-describedby="envNameError"
                             title="envName override, Enter to apply"></label>
                     <button id="refresh" type="button" class="secondary refresh-icon" aria-label="Refresh"
                         title="Re-run the check/portal bootstrap with the current params and wallet state">
@@ -71,6 +71,7 @@
                         </svg>
                     </button>
                 </div>
+                <p id="envNameError" class="api-error" role="alert"></p>
 
                 <fieldset>
                     <legend>Bootstrap</legend>
@@ -214,7 +215,7 @@
                         <p class="hint">No token yet.</p>
                     </div>
                 </details>
-                <p id="status" class="status"></p>
+                <p id="status" class="status" role="status"></p>
             </aside>
 
             <section class="frame" id="frame">

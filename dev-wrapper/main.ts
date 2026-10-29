@@ -104,6 +104,12 @@ const extensionEl = $<HTMLInputElement>('extensionId')
 const walletNameEl = $<HTMLInputElement>('walletName')
 const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
 const apiStageInfoEl = $<HTMLInputElement>('apiStageInfo')
+const envNameErrorEl = $<HTMLElement>('envNameError')
+// Empty msg clears: red border via aria-invalid, text under the field
+const setEnvNameError = (msg: string) => {
+    apiStageInfoEl.setAttribute('aria-invalid', String(!!msg))
+    envNameErrorEl.textContent = msg
+}
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const frameEl = $<HTMLElement>('frame')
@@ -966,10 +972,8 @@ apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
 // New stage = new session: full iframe reload
 apiStageInfoEl.addEventListener('change', () => {
     const next = apiStageInfoEl.value.trim()
-    if (next && !ENV_NAME_RE.test(next)) {
-        apiStageInfoEl.value = envName
-        return setStatus(`Invalid envName "${next}": letters, digits, _ and - only`, true)
-    }
+    if (next && !ENV_NAME_RE.test(next)) return setEnvNameError(`Invalid envName "${next}": letters, digits, _ and - only`)
+    setEnvNameError('')
     if (next === envName) return
     envName = next
     apiStageInfoEl.value = envName
@@ -1331,6 +1335,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     } catch (err) {
         if (requestId !== pendingId) return null
         setStatus(`Network error: ${(err as Error).message}`, true)
+        if (envName) setEnvNameError(`Env "${envName}" doesn't exist`)
         return null
     }
 
@@ -1338,8 +1343,11 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
 
     if (!res.ok) {
         setStatus(`HTTP ${res.status} ${res.statusText}`, true)
+        if (envName) setEnvNameError(`Env "${envName}" doesn't exist`)
         return null
     }
+    // Don't wipe a format error still sitting in the field
+    if (apiStageInfoEl.value.trim() === envName) setEnvNameError('')
 
     let data: PortalApiResponse
     try {

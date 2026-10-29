@@ -58,6 +58,12 @@ html, body {
     font-weight: 700;
 }
 
+/* box-shadow, not border: no layout shift */
+.controls .api-info input[aria-invalid="true"] { box-shadow: 0 0 0 1px #ff7196; }
+
+.api-error { margin: 0; font-size: 10px; color: #ff7196; }
+.api-error:not(:empty) { margin: -8px 0 12px; }
+
 .wallet-btn {
     background: #3d5aeb;
     color: #fff;
