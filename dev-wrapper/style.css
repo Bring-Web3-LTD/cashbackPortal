@@ -40,29 +40,75 @@ html, body {
     font-size: 11px;
 }
 
-.api-info {
-    margin: -6px 0 12px;
-    font-size: 10px;
+/* envName combobox: input + chevron + listbox */
+.env-combo { position: relative; flex: 1; min-width: 0; }
+.controls .env-combo label { margin: 0 0 4px; font-size: 11px; color: #8a93a3; }
+.env-combo-field { position: relative; }
+
+.controls .env-combo input {
+    width: 100%;
+    height: 30px;
+    padding-right: 28px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+    color: #3ddc84;
+}
+.controls .env-combo input::placeholder { color: #6b7380; }
+.controls .env-combo input[aria-invalid="true"] { border-color: #ff7196; }
+
+.controls .env-combo-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 28px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    background: none;
     color: #8a93a3;
 }
+.controls .env-combo-toggle:hover { background: none; color: #e7e9ee; }
+.env-combo-toggle svg { transition: transform 0.15s ease; }
+.env-combo input[aria-expanded="true"] + .env-combo-toggle svg { transform: rotate(180deg); }
 
-.api-info code,
-.controls .api-info input {
-    width: 9em;
-    border: 0;
-    background: #1a1f27;
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: 10px;
-    color: #3ddc84;
-    font-weight: 700;
+.env-combo-list {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    background: #15191f;
+    border: 1px solid #2a313c;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
+.env-combo-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+    color: #e7e9ee;
+    cursor: pointer;
+}
+.env-combo-list li.active,
+.env-combo-list li[role="option"]:hover { background: #262d3a; }
+.env-combo-list li[aria-selected="true"] { color: #3ddc84; }
+.env-combo-list li[aria-selected="true"]::after { content: '✓'; margin-left: auto; }
+.env-combo-list li.default { font-family: inherit; color: #b7bdc9; }
+.env-combo-list li.default span { color: #6b7380; }
+.env-combo-list li.empty { font-family: inherit; color: #6b7380; cursor: default; }
 
-/* box-shadow, not border: no layout shift */
-.controls .api-info input[aria-invalid="true"] { box-shadow: 0 0 0 1px #ff7196; }
-
-.api-error { margin: 0; font-size: 10px; color: #ff7196; }
-.api-error:not(:empty) { margin: -8px 0 12px; }
+.api-error { margin: 0; font-size: 11px; color: #ff7196; }
+.api-error:not(:empty) { margin: -6px 0 12px; }
 
 .wallet-btn {
     background: #3d5aeb;
@@ -733,13 +779,11 @@ html, body {
    EVERYTHING below — Bootstrap params and wallet state alike. */
 .api-row {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 8px;
-    margin: -6px 0 12px;
+    margin: 0 0 12px;
 }
-
-.api-row .api-info { margin: 0; }
 
 .api-row .refresh-icon {
     width: auto;
@@ -747,7 +791,8 @@ html, body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 7px;
+    height: 30px; /* matches .env-combo input */
+    padding: 0 8px;
     color: #b7bdc9;
 }
 

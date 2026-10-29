@@ -969,6 +969,107 @@ walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
 // Now that the active provider is known, show its API stage.
 apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
+// envName combobox (ARIA combobox pattern). Picking an option commits it; typed
+// text still commits on Enter/blur via the change handler below.
+const envNamesEl = $<HTMLUListElement>('envNames')
+let envNames: string[] | null = null // null = still loading
+let envActive = -1
+
+const envOptionEls = () => [...envNamesEl.querySelectorAll<HTMLLIElement>('[role="option"]')]
+
+function setEnvActive(i: number) {
+    const opts = envOptionEls()
+    envActive = opts.length ? (i + opts.length) % opts.length : -1
+    opts.forEach((el, j) => el.classList.toggle('active', j === envActive))
+    const el = opts[envActive]
+    if (el) {
+        apiStageInfoEl.setAttribute('aria-activedescendant', el.id)
+        el.scrollIntoView({ block: 'nearest' })
+    } else {
+        apiStageInfoEl.removeAttribute('aria-activedescendant')
+    }
+}
+
+function openEnvNames(filter = '') {
+    const q = filter.trim().toLowerCase()
+    const option = (value: string, i: number) => {
+        const li = document.createElement('li')
+        li.id = `envName-opt-${i}`
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(value === envName))
+        li.dataset.value = value
+        if (value) {
+            li.textContent = value
+        } else {
+            li.className = 'default'
+            li.append('Build default ', Object.assign(document.createElement('span'), { textContent: apiStageInfoEl.placeholder }))
+        }
+        return li
+    }
+    const names = (envNames ?? []).filter((n) => n.toLowerCase().includes(q))
+    const items = [option('', 0), ...names.map((n, i) => option(n, i + 1))]
+    if (!names.length) {
+        const empty = document.createElement('li')
+        empty.className = 'empty'
+        empty.textContent = envNames === null ? 'Loading envs…' : q ? 'No match' : 'No envs (AWS CLI unavailable)'
+        items.push(empty)
+    }
+    envNamesEl.replaceChildren(...items)
+    envNamesEl.hidden = false
+    apiStageInfoEl.setAttribute('aria-expanded', 'true')
+    setEnvActive(-1)
+}
+
+function closeEnvNames() {
+    envNamesEl.hidden = true
+    apiStageInfoEl.setAttribute('aria-expanded', 'false')
+    setEnvActive(-1)
+}
+
+const pickEnvName = (value: string) => {
+    apiStageInfoEl.value = value
+    closeEnvNames()
+    apiStageInfoEl.dispatchEvent(new Event('change'))
+}
+
+// Dev server only (vite.config.ts); hosted builds just get no suggestions
+fetch('/__env-names')
+    .then((r) => (r.ok ? r.json() : []))
+    .then((names: string[]) => { envNames = names })
+    .catch(() => { envNames = [] })
+    .finally(() => { if (!envNamesEl.hidden) openEnvNames(apiStageInfoEl.value) })
+
+apiStageInfoEl.addEventListener('input', () => openEnvNames(apiStageInfoEl.value))
+apiStageInfoEl.addEventListener('blur', closeEnvNames)
+apiStageInfoEl.addEventListener('keydown', (e) => {
+    const open = !envNamesEl.hidden
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        if (!open) openEnvNames()
+        setEnvActive(envActive + (e.key === 'ArrowDown' ? 1 : -1))
+    } else if (e.key === 'Enter' && open && envActive >= 0) {
+        e.preventDefault()
+        pickEnvName(envOptionEls()[envActive].dataset.value ?? '')
+    } else if (e.key === 'Escape' && open) {
+        e.preventDefault()
+        e.stopPropagation() // visual-diff overlay also listens for Esc
+        closeEnvNames()
+    }
+})
+apiStageInfoEl.addEventListener('click', () => { if (envNamesEl.hidden) openEnvNames() })
+// mousedown + preventDefault keeps focus in the input, so blur doesn't close first
+const envNamesToggleEl = $<HTMLButtonElement>('envNamesToggle')
+envNamesToggleEl.addEventListener('mousedown', (e) => e.preventDefault())
+envNamesToggleEl.addEventListener('click', () => {
+    if (envNamesEl.hidden) openEnvNames()
+    else closeEnvNames()
+    apiStageInfoEl.focus()
+})
+envNamesEl.addEventListener('mousedown', (e) => e.preventDefault())
+envNamesEl.addEventListener('click', (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLLIElement>('[role="option"]')
+    if (li) pickEnvName(li.dataset.value ?? '')
+})
 // New stage = new session: full iframe reload
 apiStageInfoEl.addEventListener('change', () => {
     const next = apiStageInfoEl.value.trim()
