@@ -16,7 +16,6 @@ const Rewards = ({ onClaim }: RewardsProps) => {
         pendingSymbol,
         canOpenClaim,
         belowMinimum,
-        noClaim,
         labels,
         goToHistory,
         goToFaq,
@@ -52,16 +51,14 @@ const Rewards = ({ onClaim }: RewardsProps) => {
                                     <span className={styles.amount}>{claimableDisplay}
                                         {claimableSymbol ? ` ${claimableSymbol}` : null}
                                     </span>
-                                    {noClaim ? null : (
-                                        <button
-                                            type="button"
-                                            className={`${styles.claimBtn} ${belowMinimum ? styles.claimBtnDisabled : ''}`}
-                                            onClick={onClaim}
-                                            disabled={!canOpenClaim}
-                                        >
-                                            {labels.claim}
-                                        </button>
-                                    )}
+                                    <button
+                                        type="button"
+                                        className={`${styles.claimBtn} ${belowMinimum ? styles.claimBtnDisabled : ''}`}
+                                        onClick={onClaim}
+                                        disabled={!canOpenClaim}
+                                    >
+                                        {labels.claim}
+                                    </button>
                                 </>
                             )}
                         </div>
@@ -113,14 +110,6 @@ const Rewards = ({ onClaim }: RewardsProps) => {
                     </div>
                 </div>
             </div>
-
-            {/* The platform pays out itself: explain that instead of a claim. */}
-            {noClaim && !isLoading ? (
-                <div className={styles.noClaim} role="note">
-                    <p className={styles.noClaimTitle}>{labels.noClaimTitle}</p>
-                    <p className={styles.noClaimText}>{labels.noClaimText}</p>
-                </div>
-            ) : null}
 
             <div className={styles.helperRow}>
                 <button

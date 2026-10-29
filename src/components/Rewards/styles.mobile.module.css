@@ -164,27 +164,6 @@
 }
 
 /* ── Helper pill buttons row ── */
-/* noClaim: explains the payout in place of the claim button. */
-.noClaim {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 100%;
-}
-
-.noClaimTitle,
-.noClaimText {
-    margin: 0;
-    font-family: 'Prompt', system-ui, sans-serif;
-    font-size: var(--balance-label-f-s, 12px);
-    line-height: var(--balance-label-l-h, 16px);
-    color: var(--balance-label-f-c, #7685A0);
-}
-
-.noClaimTitle {
-    font-weight: 600;
-}
-
 .helperRow {
     display: flex;
     gap: 8px;

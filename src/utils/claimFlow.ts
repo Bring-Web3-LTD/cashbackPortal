@@ -6,6 +6,8 @@ export type ClaimModalState =
     | 'minimum'
     /** No wallet paired yet — shows the balance card + pairing steps. */
     | 'instructions'
+    /** noClaim platform — claiming is coming soon, nothing to start. */
+    | 'comingSoon'
 
 export const shortenWalletAddress = (
     value: string | null | undefined,
