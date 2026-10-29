@@ -2,7 +2,7 @@
  * Logic hook for the status modal. Resolves every state's copy and wraps the
  * close so the host hears about it — so the view is pure UI.
  *
- * One hook for all six states rather than one per card: they are variants of
+ * One hook for all seven states rather than one per card: they are variants of
  * the same dialog, and the view picks between them on `status`.
  */
 import { useTranslation } from 'react-i18next'
@@ -46,6 +46,9 @@ export const useStatusModal = ({ closeFn, address, usdValue, messageKey }: Args)
             claimCurrentValue: usdValue ? t('claimGuideCurrentValue', { value: usdValue }) : '',
             claimTitle: t('claimGuideTitle'),
             claimCta: t('claimGuideCta'),
+            comingSoonTitle: t('noClaimTitle'),
+            comingSoonMsg: t('noClaimText'),
+            noClaimBtn: t('noClaimBtn', 'Keep Earning'),
         },
     }
 }

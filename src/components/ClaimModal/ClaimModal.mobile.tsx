@@ -1,5 +1,5 @@
 /** Mobile claim flow modal (confirm / minimum / processing / success /
- * failure). Pure UI — logic in useClaimModal. */
+ * failure / instructions / comingSoon). Pure UI — logic in useClaimModal. */
 import { createPortal } from 'react-dom'
 import Icon from '../Icon/Icon'
 import { useClaimModal, ClaimModalProps } from './useClaimModal'
@@ -60,19 +60,21 @@ const ClaimModal = (props: ClaimModalProps) => {
             onClick={onClose}
         >
             <section
-                className={`${styles.panel} ${state === 'instructions' ? styles.panelSheet : ''}`}
+                className={`${styles.panel} ${state === 'instructions' || state === 'comingSoon' ? styles.panelSheet : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="mobile-claim-modal-title"
                 onClick={(e) => e.stopPropagation()}
             >
-                    {state === 'instructions' && (
-                        <>
-                            <header className={styles.sheetHeader}>
-                                <span className={styles.sheetHeaderSpacer} aria-hidden="true" />
-                                <h2 id="mobile-claim-modal-title" className={styles.sheetHeaderTitle}>
-                                    {title}
-                                </h2>
+                    {(state === 'instructions' || state === 'comingSoon') && (
+                        <header className={styles.sheetHeader}>
+                            <span className={styles.sheetHeaderSpacer} aria-hidden="true" />
+                            <h2 id="mobile-claim-modal-title" className={styles.sheetHeaderTitle}>
+                                {title}
+                            </h2>
+                            {/* The coming-soon sheet is drawn without an X
+                                (Figma 3214:9281): Got It and the backdrop close it. */}
+                            {state === 'instructions' ? (
                                 <button
                                     type="button"
                                     className={styles.sheetHeaderClose}
@@ -81,8 +83,35 @@ const ClaimModal = (props: ClaimModalProps) => {
                                 >
                                     <Icon name="x-close.svg" className={styles.sheetHeaderCloseIcon} alt="" />
                                 </button>
-                            </header>
+                            ) : (
+                                <span className={styles.sheetHeaderSpacer} aria-hidden="true" />
+                            )}
+                        </header>
+                    )}
 
+                    {/* noClaim platform: claiming is coming soon, nothing to
+                        start (Figma 3214:9279). */}
+                    {state === 'comingSoon' && (
+                        <>
+                            <div className={styles.comingSoonBody}>
+                                <div className={styles.failureIconWrap}>
+                                    <Icon name="coming-soon.svg" className={styles.comingSoonIcon} alt="" />
+                                </div>
+                                <div className={styles.failureText}>
+                                    <h3 className={styles.failureTitle}>{labels.comingSoonTitle}</h3>
+                                    <p className={`${styles.failureMsg} ${styles.comingSoonMsg}`}>{labels.comingSoonMsg}</p>
+                                </div>
+                            </div>
+                            <footer className={styles.comingSoonFooter}>
+                                <button type="button" className={styles.btnPrimaryWide} onClick={onClose}>
+                                    {labels.gotIt}
+                                </button>
+                            </footer>
+                        </>
+                    )}
+
+                    {state === 'instructions' && (
+                        <>
                             <div className={styles.instructionsBody}>
                                 <div className={styles.balanceCard}>
                                     <div className={styles.balanceTop}>

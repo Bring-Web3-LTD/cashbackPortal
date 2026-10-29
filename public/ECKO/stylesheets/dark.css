@@ -412,6 +412,13 @@
     --dashboard-card-btn-disabled-bg: rgba(17, 19, 41, 0.85);
     --dashboard-card-btn-disabled-f-c: #66686E;
     --dashboard-card-btn-disabled-l-h: 24px;
+    /* Claim is Button Compact type Primary (Figma 4312:2950): Accent/Primary
+       fill, no outline, Text/Primary label. Details keeps the Secondary look. */
+    --dashboard-claim-btn-bg: #FF00B8;
+    --dashboard-claim-btn-hover-bg: #E600A5;
+    --dashboard-claim-btn-border-w: 0;
+    --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-c: #FFFFFF;
 
     /* History card drops its hairline on hover and on disabled. */
     --dashboard-history-radius: 12px;
@@ -573,6 +580,8 @@
     --modal-status-title-loading-f-c: #FFFFFF;
     --modal-status-title-success-f-c: #FFFFFF;
     --modal-status-title-failure-f-c: #FF5C71;
+    /* Claiming coming soon (Figma 4504:3181): title in Status/Claimed. */
+    --modal-status-title-coming-soon-f-c: #FFD300;
 
     --modal-status-msg-f-s: 15px;
     --modal-status-msg-f-w: 400;

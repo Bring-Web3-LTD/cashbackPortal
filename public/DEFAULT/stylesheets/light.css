@@ -308,6 +308,13 @@
     --dashboard-card-btn-f-c: #111827;
     --dashboard-card-btn-disabled-bg: rgba(17, 24, 39, 0.05);
     --dashboard-card-btn-disabled-f-c: #9CA3AF;
+    /* Claim pill: same look as the card button here; a platform may give it
+       its accent (ECKO, CSPR). */
+    --dashboard-claim-btn-bg: rgba(17, 24, 39, 0.05);
+    --dashboard-claim-btn-hover-bg: rgba(17, 24, 39, 0.1);
+    --dashboard-claim-btn-border-w: 1px;
+    --dashboard-claim-btn-border-c: #D1D5DB;
+    --dashboard-claim-btn-f-c: #111827;
     --dashboard-history-f-c: #6B7280;
     --dashboard-switcher-radius: 12px;
     --dashboard-tab-f-s: 13px;
@@ -451,6 +458,7 @@
     --modal-status-title-l-h: 38px;
     --modal-status-title-success-f-c: #1F2937;
     --modal-status-title-failure-f-c: #FF1351;
+    --modal-status-title-coming-soon-f-c: #1F2937;
 
     --modal-status-msg-f-s: 16px;
     --modal-status-msg-f-w: 400;
