@@ -1,6 +1,7 @@
 /**
  * Claim and pairing outcomes: processing, success, failure, paired, pair
- * failed, and the guide to installing a wallet.
+ * failed, the guide to installing a wallet, and the coming-soon note that
+ * stands in for a claim on noClaim platforms.
  * Pure UI — logic in useStatusModal.
  */
 import styles from './styles.module.css'
@@ -9,7 +10,7 @@ import Modal from '../../Modal/Modal'
 import Icon from '../../Icon/Icon'
 import { useStatusModal, type StatusLabels } from './useStatusModal'
 
-export type StatusModalState = 'success' | 'failure' | 'loading' | 'paired' | 'pairFailed' | 'claim'
+export type StatusModalState = 'success' | 'failure' | 'loading' | 'paired' | 'pairFailed' | 'claim' | 'comingSoon'
 
 interface ClaimInfo {
     amount?: string
@@ -90,6 +91,24 @@ const Failure = ({ closeFn, labels }: StatusProps) => (
             onClick={() => closeFn()}
             className={styles.btn}
         >{labels.close}</button>
+    </div>
+)
+
+/* noClaim platforms: the claim button opens this instead of a claim. */
+const ComingSoon = ({ closeFn, labels }: StatusProps) => (
+    <div className={styles.card}>
+        <Icon className={styles.icon} name="coming-soon.svg" alt="" />
+        <div className={`${styles.title} ${styles.title_coming_soon}`}>
+            {labels.comingSoonTitle}
+        </div>
+        <div className={`${styles.msg} ${styles.msg_coming_soon}`}>
+            {labels.comingSoonMsg}
+        </div>
+        <button
+            id="status-modal-coming-soon-btn"
+            onClick={() => closeFn()}
+            className={`${styles.btn} ${styles.btn_coming_soon}`}
+        >{labels.noClaimBtn}</button>
     </div>
 )
 
@@ -217,7 +236,9 @@ const StatusModal = ({ open, closeFn, status, amount, address, usdValue, claimUr
                                 <PairFailed closeFn={close} labels={labels} onRetry={onRetry} />
                                 : status === 'claim' ?
                                     <Claim amount={amount} claimUrl={claimUrl} steps={claimSteps} closeFn={close} labels={labels} />
-                                    : null
+                                    : status === 'comingSoon' ?
+                                        <ComingSoon closeFn={close} labels={labels} />
+                                        : null
             }
         </Modal>
     )

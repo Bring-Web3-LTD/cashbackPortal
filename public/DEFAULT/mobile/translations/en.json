@@ -1,5 +1,4 @@
 {
-    "_comment": "noClaimTitle and noClaimText are placeholder copy until Product supplies the text (TODO#686). Replace them and remove this _comment key.",
     "title": "Cashback",
     "back": "Back",
     "rewards": "Rewards",
@@ -38,8 +37,8 @@
     "more": "More",
     "claimable": "Claimable",
     "approved": "Approved",
-    "noClaimTitle": "Saved for you",
-    "noClaimText": "Approved rewards are saved for you. There is nothing to claim here.",
+    "noClaimTitle": "Claiming is coming soon",
+    "noClaimText": "Until then, your Gold is here and you are invited to keep earning.",
     "statusApproved": "Approved",
     "cashbackEarned": "Cashback earned",
     "currentValue": "Current value",

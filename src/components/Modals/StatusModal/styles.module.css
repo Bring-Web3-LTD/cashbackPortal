@@ -179,6 +179,11 @@
     color: var(--modal-status-title-failure-f-c);
 }
 
+/* Drawn in the platform's accent; falls back to the success title's colour. */
+.title_coming_soon {
+    color: var(--modal-status-title-coming-soon-f-c, var(--modal-status-title-success-f-c));
+}
+
 .msg {
     text-align: center;
     margin-top: 12px;
@@ -268,6 +273,30 @@
 
 .btn_strong {
     font-weight: var(--modal-status-btn-strong-f-w, 700);
+}
+
+/* Coming-soon copy is drawn 285 wide, which sets where its two lines break. */
+.msg_coming_soon {
+    max-width: 285px;
+}
+
+/* The coming-soon button is the design's secondary (header) button - same
+   surface, outline and radius as Need Help? - at the status button's type
+   size. It hugs its label: min 100, 24 each side. */
+.btn_coming_soon {
+    width: auto;
+    padding: 0 24px;
+    background: var(--header-btn-bg);
+    border-width: var(--header-btn-border-w);
+    border-color: var(--header-btn-border-c);
+    border-radius: var(--header-btn-radius);
+}
+
+.btn_coming_soon:hover {
+    background: var(--header-btn-hover-bg, var(--header-btn-bg));
+    border-width: var(--header-btn-hover-border-w, var(--header-btn-border-w));
+    border-color: var(--header-btn-hover-border-c, var(--header-btn-border-c));
+    border-radius: var(--header-btn-radius);
 }
 
 /* Claim guide. Unlike the other states this fills the shell top to bottom, so

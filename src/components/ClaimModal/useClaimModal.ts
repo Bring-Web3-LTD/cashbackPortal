@@ -79,6 +79,7 @@ export const useClaimModal = ({
         failure: t('claimFailedHeader'),
         processing: t('claimingHeader'),
         instructions: t('claimTitle'),
+        comingSoon: t('claimTitle'),
     }
     const title = state ? titles[state] : ''
 
@@ -114,6 +115,9 @@ export const useClaimModal = ({
         currentValue: `${t('currentValue')} ${formatCurrency(totalEstimatedUsd ?? 0)}`,
         claimYourToken: t('claimYourToken', { symbol: tokenSymbol }),
         downloadWallet: t('downloadWallet'),
+        comingSoonTitle: t('noClaimTitle'),
+        comingSoonMsg: t('noClaimText'),
+        gotIt: t('gotIt', 'Got it'),
     }
 
     const claimSteps = [
