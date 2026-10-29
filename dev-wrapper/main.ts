@@ -72,9 +72,7 @@ const stageOf = (url?: string): string => {
 const defaultStage = stageOf(API_BASE)
 
 const apiStage = defaultStage
-// Env override (TODO#632): the API path field (kept in localStorage `envName`)
-// points check/portal at that stage for every provider and is forwarded to the
-// portal as `?envName=` (honoured outside prod only), so one value switches both.
+// envName (localStorage): check/portal stage for all providers, forwarded as ?envName=
 const ENV_NAME_RE = /^[\w-]+$/
 let envName = localStorage.getItem('envName') || ''
 if (!ENV_NAME_RE.test(envName)) envName = ''
@@ -965,7 +963,7 @@ walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
 // Now that the active provider is known, show its API stage.
 apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
-// Commit on Enter/blur: new env = new stage = brand-new portal session.
+// New stage = new session: full iframe reload
 apiStageInfoEl.addEventListener('change', () => {
     const next = apiStageInfoEl.value.trim()
     if (next && !ENV_NAME_RE.test(next)) {

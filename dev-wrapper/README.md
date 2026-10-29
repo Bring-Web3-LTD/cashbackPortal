@@ -152,7 +152,7 @@ On `rewrds.xyz` the portal runs with no wrapper: it calls `check/portal` itself 
 
 The portal still sits in the wrapper's iframe there, so cookies and `window.parent` behave like an embed. **Open top-level ↗** opens the same URL as the whole page, which is the real case.
 
-## Env override (`envName`, TODO#632)
+## Env override (`envName`)
 
 Any portal build, prod included, can be pointed at another backend stage from the browser, the same way the Chrome extension does it. In DevTools, switch the console context to the portal iframe, then reload the **whole tab** (F5):
 
