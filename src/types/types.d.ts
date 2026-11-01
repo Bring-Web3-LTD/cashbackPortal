@@ -58,6 +58,10 @@ interface LoaderData {
     couponsEnabled?: boolean
     firstTimeUser?: boolean
     canPairWallet?: boolean
+    /** `platformType: 'rewards'` on `surface: 'extension'` from the token: the
+     *  portal runs inside the extension with no wallet, and the extension
+     *  kit's userId is the identity (see WalletProvider). */
+    isCab: boolean
     /** Coupon partner iframe. Null when coupons are off or outside the US. */
     couponsIframeSrc?: string | null
     /** Where the claim guide sends a hub user to install the wallet. */
