@@ -1,7 +1,8 @@
 /**
  * Who the backend should credit for a request. Wallet mode sends the wallet
  * address and the browser id; hub mode sends neither, so the backend falls
- * back to the session cookie.
+ * back to the session cookie; the CAB sends the userId the extension kit
+ * created at install, and nothing until the kit has answered with it.
  */
 import { useMemo } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
@@ -10,17 +11,22 @@ import { useWalletAddress } from './useWalletAddress'
 type Identity = Pick<BackendRequestBody, 'userId' | 'walletAddress'>
 
 export const useRequestIdentity = () => {
-    const { userId, isHub } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { userId, isHub, isCab } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, kitUserId } = useWalletAddress()
 
     const identity = useMemo<Identity>(
-        () => (isHub ? {} : { userId, walletAddress: walletAddress ?? undefined }),
-        [isHub, userId, walletAddress],
+        () => isCab
+            ? (kitUserId ? { userId: kitUserId } : {})
+            : isHub
+                ? {}
+                : { userId, walletAddress: walletAddress ?? undefined },
+        [isCab, kitUserId, isHub, userId, walletAddress],
     )
 
     return {
         identity,
-        /** Hub users are identified by their session, wallet users by their address. */
-        isIdentified: Boolean(isHub || walletAddress),
+        /** Hub users are identified by their session, CAB users by the kit's
+         *  userId once it has arrived, wallet users by their address. */
+        isIdentified: isCab ? Boolean(kitUserId) : Boolean(isHub || walletAddress),
     }
 }

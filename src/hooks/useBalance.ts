@@ -15,12 +15,14 @@ type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
 
 export const useBalance = (): UseQueryResult<BalanceResponse> => {
     const { platform, flowId } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
     const { identity, isIdentified } = useRequestIdentity()
 
     return useQuery({
         queryFn: () => fetchCache({ platform, flowId, ...identity }),
-        queryKey: ['balance', walletAddress],
+        // Keyed by whichever identity the balance belongs to; the kit's userId
+        // arrives after mount, and the key must move with it.
+        queryKey: ['balance', walletAddress, kitUserId],
         enabled: isIdentified,
     })
 }
