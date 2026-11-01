@@ -1,7 +1,7 @@
 import { API_URL_PLATFORMS, STANDALONE_API_KEY } from "../config"
 
 // Standalone mode only: the session token a wrapper would otherwise have put on
-// the iframe URL. The Bring portal key decides the platform (and isHub).
+// the iframe URL. The portal key decides the platform (and isHub).
 const checkPortal = async (flowId: string | null): Promise<string> => {
     // Without a key API Gateway 403s with no CORS headers, which the browser
     // only reports as "Failed to fetch"

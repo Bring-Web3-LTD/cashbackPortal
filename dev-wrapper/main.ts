@@ -52,9 +52,9 @@ const PROVIDER_API: Record<string, { url?: string; key?: string }> = {
     casper: { url: env.VITE_PORTAL_API_CASPER, key: env.VITE_PORTAL_API_KEY_CASPER },
     ecko: { url: env.VITE_PORTAL_API_ECKO, key: env.VITE_PORTAL_API_KEY_ECKO },
     ready: { url: env.VITE_PORTAL_API_READY, key: env.VITE_PORTAL_API_KEY_READY },
-    // Bring portal key (platform 13, BRING theme, claimType noClaim) — the
-    // in-repo stand-in for the Bring wrapper app.
-    bring: { url: env.VITE_PORTAL_API_BRING, key: env.VITE_PORTAL_API_KEY_BRING },
+    // SolflareRewards portal key (platform 13, SOLFLAREREWARDS theme, claimType noClaim) — the
+    // in-repo stand-in for the standalone portal on rewrds.xyz.
+    solflareRewards: { url: env.VITE_PORTAL_API_SOLFLAREREWARDS, key: env.VITE_PORTAL_API_KEY_SOLFLAREREWARDS },
 }
 
 // The API URL has the shape `https://host/<stage>/v1/extension/check/portal`.
@@ -79,7 +79,7 @@ const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key ||
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
-// Email the Bring provider signs in with when the field is left empty.
+// Email the SolflareRewards provider signs in with when the field is left empty.
 const DEFAULT_EMAIL = ((env.VITE_PORTAL_EMAIL as string | undefined) ?? '').trim()
 const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
 const DEFAULT_VIEW_MODE = ((env.VITE_PORTAL_VIEW_MODE as string | undefined) ?? '').trim().toLowerCase()
@@ -840,20 +840,20 @@ clearMsgLogBtn.addEventListener('click', () => {
 const shortAddress = (addr: string) =>
     addr.length > 10 ? `${addr.slice(0, 4)}…${addr.slice(-4)}` : addr
 
-// Bring users sign in by email, not with a wallet. Until the email login
+// SolflareRewards users sign in by email, not with a wallet. Until the email login
 // (TODO#702) and the email-session JWT (TODO#661) exist, the mock session
 // stands in behind a "Sign in" button.
-const isBring = () => walletProviderEl.value === 'bring'
+const isSolflareRewards = () => walletProviderEl.value === 'solflareRewards'
 
 function setWalletButton(address: string | null) {
     if (address) {
         walletBtn.dataset.state = 'connected'
-        walletBtn.textContent = isBring() ? address : shortAddress(address)
-        walletBtn.title = `${address} — click to ${isBring() ? 'sign out' : 'disconnect'}`
+        walletBtn.textContent = isSolflareRewards() ? address : shortAddress(address)
+        walletBtn.title = `${address} — click to ${isSolflareRewards() ? 'sign out' : 'disconnect'}`
     } else {
         walletBtn.dataset.state = 'disconnected'
-        walletBtn.textContent = isBring() ? 'Sign in' : 'Connect wallet'
-        walletBtn.title = isBring() ? 'Click to sign in with email (mock session for now)' : 'Click to connect mock wallet'
+        walletBtn.textContent = isSolflareRewards() ? 'Sign in' : 'Connect wallet'
+        walletBtn.title = isSolflareRewards() ? 'Click to sign in with email (mock session for now)' : 'Click to connect mock wallet'
     }
 }
 
@@ -861,7 +861,7 @@ setWalletButton(walletEl.value.trim() || null)
 
 walletEl.addEventListener('input', () => {
     // Typing an email is not signing in; only the Sign in button does that.
-    if (isBring()) return
+    if (isSolflareRewards()) return
     setWalletButton(walletEl.value.trim() || null)
 })
 
@@ -872,7 +872,7 @@ const wallet = createMockWallet({
 // `wallet` above is the in-page mock. The bridge always talks to a single
 // `MockWallet` reference, so we wrap a proxy that forwards to whichever
 // adapter the user picks in the sidebar (mock | nightly | ...).
-type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready' | 'bring'
+type WalletProviderId = 'mock' | 'nightly' | 'solflare' | 'yoroi' | 'gero' | 'casper' | 'ecko' | 'ready' | 'solflareRewards'
 const WALLET_PROVIDER_KEY = 'bring-dev-wrapper:wallet-provider'
 
 const mockAdapter = wallet
@@ -931,26 +931,28 @@ const getReadyAdapter = (): MockWallet => {
     if (!readyAdapter) readyAdapter = createReadyWallet()
     return readyAdapter
 }
-// Bring: the identity is an email, not a wallet. The "address" this adapter
+// SolflareRewards: the identity is an email, not a wallet. The "address" this adapter
 // hands the bridge is the email; bootstrap() sends it as `email`, plus a
-// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (Bring is noClaim).
-let bringEmail: string | null = null
-const defaultBringEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
-const bringAdapter: MockWallet = {
-    getAddress: () => bringEmail,
+// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (SolflareRewards is noClaim).
+let solflareRewardsEmail: string | null = null
+const defaultSolflareRewardsEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
+const solflareRewardsAdapter: MockWallet = {
+    getAddress: () => solflareRewardsEmail,
     async connect(override) {
-        bringEmail = override || defaultBringEmail()
-        return bringEmail
+        solflareRewardsEmail = override || defaultSolflareRewardsEmail()
+        return solflareRewardsEmail
     },
     async signMessage() {
-        throw new Error('Bring has no wallet to sign with')
+        throw new Error('SolflareRewards has no wallet to sign with')
     },
     async disconnect() {
-        bringEmail = null
+        solflareRewardsEmail = null
     },
 }
 
-const initialProvider = (localStorage.getItem(WALLET_PROVIDER_KEY) as WalletProviderId | null) ?? 'mock'
+// 'bring' was renamed to 'solflareRewards' (TODO#736): keep a saved selection working
+const savedProvider = localStorage.getItem(WALLET_PROVIDER_KEY)
+const initialProvider = ((savedProvider === 'bring' ? 'solflareRewards' : savedProvider) as WalletProviderId | null) ?? 'mock'
 walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
 // Now that the active provider is known, show its API stage.
@@ -965,7 +967,7 @@ const pickAdapter = (): MockWallet => {
         case 'casper': return getCasperAdapter()
         case 'ecko': return getEckoAdapter()
         case 'ready': return getReadyAdapter()
-        case 'bring': return bringAdapter
+        case 'solflareRewards': return solflareRewardsAdapter
         default: return mockAdapter
     }
 }
@@ -978,16 +980,16 @@ const walletProxy: MockWallet = {
 }
 
 // What the connect buttons pass the adapter: the typed address (or the default)
-// for the mock, the typed email for Bring, nothing for extensions, which own
+// for the mock, the typed email for SolflareRewards, nothing for extensions, which own
 // the key.
 const connectOverride = (): string | undefined => {
     if (activeProvider === 'mock') return walletEl.value.trim() || DEFAULT_WALLET || undefined
-    if (isBring()) return walletEl.value.trim() || undefined
+    if (isSolflareRewards()) return walletEl.value.trim() || undefined
     return undefined
 }
 
 const applyProviderUi = () => {
-    // Bring always runs standalone: the wallet controls feed check/portal,
+    // SolflareRewards always runs standalone: the wallet controls feed check/portal,
     // which the wrapper does not call there, so they are disabled
     const standalone = isStandalone()
     standaloneRowEl.hidden = !standalone
@@ -1000,8 +1002,8 @@ const applyProviderUi = () => {
     // No sign-in to simulate: on rewrds.xyz the portal signs in by itself (#702)
     walletBtn.hidden = standalone
     setWalletButton(walletBtn.dataset.state === 'connected' ? walletEl.value.trim() || null : null)
-    walletLabelEl.textContent = isBring() ? 'Email' : 'Wallet address'
-    if (isBring()) {
+    walletLabelEl.textContent = isSolflareRewards() ? 'Email' : 'Wallet address'
+    if (isSolflareRewards()) {
         walletEl.readOnly = false
         walletEl.type = 'email'
         walletEl.placeholder = DEFAULT_EMAIL || 'you@example.com (empty = random dev email)'
@@ -1021,13 +1023,13 @@ const applyProviderUi = () => {
             : 'Click to connect mock wallet')
 }
 // Standalone mode (TODO#701): on rewrds.xyz the portal runs with no wrapper and
-// fetches its own session. For Bring (the only standalone platform for now) the
+// fetches its own session. For SolflareRewards (the only standalone platform for now) the
 // wrapper skips check/portal and loads the local portal with `?standalone=true`
 // (honoured outside prod only) and no token, so the portal's own bootstrap runs.
 const standaloneRowEl = $<HTMLElement>('standaloneRow')
 const hintWrapperEl = $<HTMLElement>('hintWrapper')
 const hintStandaloneEl = $<HTMLElement>('hintStandalone')
-const isStandalone = () => activeProvider === 'bring'
+const isStandalone = () => activeProvider === 'solflareRewards'
 
 function standaloneSrc(): string | null {
     if (!LOCAL_PORTAL_URL) return null
@@ -1085,8 +1087,8 @@ const bridge = createPortalBridge({
     onAddressChange: (address) => {
         walletEl.value = address ?? ''
         setWalletButton(address)
-        // The Bring identity is an email: log the event, not the address.
-        if (address) appendLog('info', isBring() ? 'Bring signed in' : `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
+        // The SolflareRewards identity is an email: log the event, not the address.
+        if (address) appendLog('info', isSolflareRewards() ? 'SolflareRewards signed in' : `${activeProvider === 'mock' ? 'Mock' : activeProvider} wallet connected: ${address}`)
     },
 })
 
@@ -1096,7 +1098,7 @@ const bridge = createPortalBridge({
 //  - external: the extension owns the address, so we can't fill it in up front;
 //    instead connect once the portal iframe has loaded, which prompts the
 //    extension if it's available ("if possible").
-//  - Bring: nothing; it runs standalone and the portal fetches its own session.
+//  - SolflareRewards: nothing; it runs standalone and the portal fetches its own session.
 if (startConnected) {
     if (activeProvider === 'mock') {
         if (DEFAULT_WALLET.trim()) {
@@ -1104,7 +1106,7 @@ if (startConnected) {
             setWalletButton(DEFAULT_WALLET.trim())
             void mockAdapter.connect(DEFAULT_WALLET.trim())
         }
-    } else if (activeProvider === 'bring') {
+    } else if (activeProvider === 'solflareRewards') {
         // Standalone: the portal fetches its own session, no wallet to bring up
     } else {
         iframeEl.addEventListener('load', () => { void bridge.connect(connectOverride()) }, { once: true })
@@ -1268,12 +1270,12 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
-    // Bring signs in by email: the identity is an email, never a wallet. The
+    // SolflareRewards signs in by email: the identity is an email, never a wallet. The
     // backend takes no email yet (portal entry from the email session is
     // TODO#661), and the portal treats a session without a walletAddress as
     // signed out. Until then the session carries a stand-in address derived
     // from the email, so the same email always gets the same rewards.
-    const email = isBring() ? walletAddress : null
+    const email = isSolflareRewards() ? walletAddress : null
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
         walletAddress: email ? await standInAddress(email) : walletAddress,
@@ -1290,7 +1292,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         devicePlatform: getDevicePlatform(),
     }
 
-    if (email) appendLog('info', `Bring → stand-in address ${body.walletAddress} (until TODO#661)`)
+    if (email) appendLog('info', `SolflareRewards → stand-in address ${body.walletAddress} (until TODO#661)`)
     const requestId = ++pendingId
     setStatus('Calling check/portal…')
 
@@ -1454,9 +1456,9 @@ for (const el of [walletNameEl, walletEmojiEl]) {
 // Wallet input edits go through the bridge so the mock wallet's internal state
 // stays in sync and the same SESSION_UPDATE flow is used.
 walletEl.addEventListener('change', () => {
-    // Bring's field is an email: leaving it is not signing in, only the Sign
+    // SolflareRewards' field is an email: leaving it is not signing in, only the Sign
     // in button does that.
-    if (isBring()) return
+    if (isSolflareRewards()) return
     const v = walletEl.value.trim()
     if (v) void bridge.connect(v)
     else void bridge.disconnect()

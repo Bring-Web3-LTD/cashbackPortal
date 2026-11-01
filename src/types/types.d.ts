@@ -39,6 +39,8 @@ interface LoaderData {
     isCountryAvailable: boolean
     iconsPath: string
     defaultIconsPath: string
+    /** Icons of the platform a `<PLATFORM>REWARDS` platform inherits from. */
+    baseIconsPath?: string
     flowId: string
     userId: string
     isTester: boolean

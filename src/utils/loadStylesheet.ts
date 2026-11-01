@@ -2,8 +2,9 @@
  * Append (or replace) the portal's theme stylesheets in <head>.
  *
  * Desktop and mobile are fully separate cascades:
- *   - desktop mode → DEFAULT/stylesheets + platform/stylesheets
- *   - mobile  mode → DEFAULT/mobile/stylesheets + platform/mobile/stylesheets
+ *   - desktop mode → DEFAULT/stylesheets + [base/stylesheets] + platform/stylesheets
+ *   - mobile  mode → DEFAULT/mobile/stylesheets + [base/mobile/stylesheets] + platform/mobile/stylesheets
+ * where `base` is the platform a `<PLATFORM>REWARDS` platform inherits from.
    Calling again with a different `theme` swaps the tags so the
  * UI re-paints (used by `SESSION_UPDATE` re-syncs).
  */
@@ -25,11 +26,17 @@ export const normalizePlatform = (platform: string): string => {
     return SAFE_PLATFORM.test(upper) ? upper : 'DEFAULT'
 }
 
+// A `<PLATFORM>REWARDS` platform uses `<PLATFORM>`'s assets (styles, icons,
+// translations) unless it ships its own.
+export const basePlatform = (platform: string): string | null =>
+    /^(.+)REWARDS$/.exec(platform)?.[1] ?? null
+
 export const loadStylesheet = (theme: string, platform: string, mode: StylesheetMode = 'desktop') => {
     const safeTheme = normalizeTheme(theme)
     const safePlatform = normalizePlatform(platform)
+    const base = basePlatform(safePlatform)
 
-    const set = (id: string, href: string) => {
+    const set = (id: string, href: string, beforeId?: string) => {
         const existing = document.getElementById(id) as HTMLLinkElement | null
         if (existing) {
             if (existing.href.endsWith(href)) return
@@ -40,34 +47,32 @@ export const loadStylesheet = (theme: string, platform: string, mode: Stylesheet
         link.id = id
         link.rel = 'stylesheet'
         link.href = href
-        document.head.appendChild(link)
+        // insertBefore(link, null) appends
+        document.head.insertBefore(link, (beforeId && document.getElementById(beforeId)) || null)
     }
 
     const remove = (id: string) => document.getElementById(id)?.remove()
+    const setOrRemove = (id: string, href: string | null, beforeId?: string) => (href ? set(id, href, beforeId) : remove(id))
 
     if (mode === 'mobile') {
         // Mobile is fully self-contained — load ONLY the mobile sheets and tear
         // down any desktop sheet so no desktop variable or global rule leaks in.
         remove('bring-portal-theme-default')
+        remove('bring-portal-theme-base')
         remove('bring-portal-theme-platform')
 
         set('bring-portal-theme-default-mobile', `/DEFAULT/mobile/stylesheets/${safeTheme}.css`)
-        if (safePlatform !== 'DEFAULT') {
-            set('bring-portal-theme-platform-mobile', `/${safePlatform}/mobile/stylesheets/${safeTheme}.css`)
-        } else {
-            remove('bring-portal-theme-platform-mobile')
-        }
+        setOrRemove('bring-portal-theme-base-mobile', base && `/${base}/mobile/stylesheets/${safeTheme}.css`, 'bring-portal-theme-platform-mobile')
+        setOrRemove('bring-portal-theme-platform-mobile', safePlatform !== 'DEFAULT' ? `/${safePlatform}/mobile/stylesheets/${safeTheme}.css` : null)
         return
     }
 
     // Desktop: load the desktop sheets and tear down any mobile sheet.
     remove('bring-portal-theme-default-mobile')
+    remove('bring-portal-theme-base-mobile')
     remove('bring-portal-theme-platform-mobile')
 
     set('bring-portal-theme-default', `/DEFAULT/stylesheets/${safeTheme}.css`)
-    if (safePlatform !== 'DEFAULT') {
-        set('bring-portal-theme-platform', `/${safePlatform}/stylesheets/${safeTheme}.css`)
-    } else {
-        remove('bring-portal-theme-platform')
-    }
+    setOrRemove('bring-portal-theme-base', base && `/${base}/stylesheets/${safeTheme}.css`, 'bring-portal-theme-platform')
+    setOrRemove('bring-portal-theme-platform', safePlatform !== 'DEFAULT' ? `/${safePlatform}/stylesheets/${safeTheme}.css` : null)
 }
