@@ -11,16 +11,18 @@ import { useWalletAddress } from './useWalletAddress'
 type Identity = Pick<BackendRequestBody, 'userId' | 'walletAddress'>
 
 export const useRequestIdentity = () => {
-    const { userId, isHub, isCab } = useRouteLoaderData('root') as LoaderData
+    const { userId, isHub, isCab, hubWalletBalance } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, kitUserId } = useWalletAddress()
 
     const identity = useMemo<Identity>(
         () => isCab
             ? (kitUserId ? { userId: kitUserId } : {})
             : isHub
-                ? {}
+                // Dev override: stand in for the session cookie with the wallet
+                // the wrapper connected, so a hub balance loads locally.
+                ? (hubWalletBalance && walletAddress ? { walletAddress } : {})
                 : { userId, walletAddress: walletAddress ?? undefined },
-        [isCab, kitUserId, isHub, userId, walletAddress],
+        [isCab, kitUserId, isHub, hubWalletBalance, userId, walletAddress],
     )
 
     return {

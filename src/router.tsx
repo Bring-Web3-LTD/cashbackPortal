@@ -118,6 +118,7 @@ const rootLoader = async () => {
             couponsEnabled: readFlag('couponsEnabled', res.info.couponsEnabled),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),
+            hubWalletBalance: readOverride('hubWalletBalance'),
         }
     }
 
@@ -187,6 +188,7 @@ const rootLoader = async () => {
             couponsEnabled: readFlag('couponsEnabled'),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),
+            hubWalletBalance: readOverride('hubWalletBalance'),
         }
     }
 

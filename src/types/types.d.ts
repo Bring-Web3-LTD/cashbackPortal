@@ -58,6 +58,9 @@ interface LoaderData {
     couponsEnabled?: boolean
     firstTimeUser?: boolean
     canPairWallet?: boolean
+    /** Dev override only (never from the backend): in hub mode send the wallet
+     *  address instead of nothing, so the balance loads with no session cookie. */
+    hubWalletBalance?: boolean
     /** `platformType: 'rewards'` on `surface: 'extension'` from the token: the
      *  portal runs inside the extension with no wallet, and the extension
      *  kit's userId is the identity (see WalletProvider). */
