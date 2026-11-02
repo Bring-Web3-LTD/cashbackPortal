@@ -10,6 +10,7 @@ import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
 import { selectVariant } from './utils/ABTest/platform-variants';
+import { enableSessionCookies } from './api/request';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
@@ -94,6 +95,10 @@ const rootLoader = async () => {
         const userId = getUserId(res.info.platform)
         const variant = selectVariant(userId, platform)
 
+        // The hub identifies its user by the session cookie, not by a wallet.
+        const isHub = readFlag('isHub', res.info.isHub)
+        if (isHub) enableSessionCookies()
+
         return {
             ...res.info,
             iconsPath: `${iconsBase}/${theme}`,
@@ -106,7 +111,7 @@ const rootLoader = async () => {
             useMobilePortal,
             flowId,
             variant,
-            isHub: readFlag('isHub', res.info.isHub),
+            isHub,
             couponsEnabled: readFlag('couponsEnabled', res.info.couponsEnabled),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),
@@ -156,6 +161,9 @@ const rootLoader = async () => {
         const userId = getUserId(dev.platform)
         const variant = selectVariant(userId, dev.platform)
 
+        const isHub = readFlag('isHub')
+        if (isHub) enableSessionCookies()
+
         return {
             ...dev,
             iconsPath: `${iconsBase}/${theme}`,
@@ -169,7 +177,7 @@ const rootLoader = async () => {
             useMobilePortal,
             extensionId: urlExtensionId,
             variant,
-            isHub: readFlag('isHub'),
+            isHub,
             couponsEnabled: readFlag('couponsEnabled'),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),

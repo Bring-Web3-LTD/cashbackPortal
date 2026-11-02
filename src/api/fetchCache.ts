@@ -1,4 +1,5 @@
-import { API_URL_PLATFORMS, API_KEY } from "../config"
+import { API_URL_PLATFORMS } from "../config"
+import { apiFetch, setSignedIn } from "./request"
 
 interface Body extends BackendRequestBody {
     type?: "default" | "aggregated"
@@ -25,14 +26,16 @@ interface Response {
 const fetchCache = async (body: Body): Promise<Response> => {
     body.type = "aggregated"
 
-    const res = await fetch(`${API_URL_PLATFORMS}cache`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-            "x-api-key": API_KEY,
-            "Content-Type": "application/json",
-        },
-    })
+    const res = await apiFetch(`${API_URL_PLATFORMS}cache`, { method: "POST", json: body })
+
+    // Without a wallet the backend answers from the session cookie: a 400
+    // ("Missing walletAddress") means it found none, a 200 means it did.
+    if (!body.walletAddress && (res.ok || res.status === 400)) setSignedIn(res.ok)
+
+    // An error body has none of the balance fields; returned as data it would
+    // render as an empty, first-time account. Let the query fail instead.
+    if (!res.ok) throw new Error(`cache ${res.status}`)
+
     const data = await res.json()
     return data
 }

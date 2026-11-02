@@ -9,21 +9,19 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import fetchCache from '../api/fetchCache'
 import { useWalletAddress } from './useWalletAddress'
+import { useRequestIdentity } from './useRequestIdentity'
 
 type BalanceResponse = Awaited<ReturnType<typeof fetchCache>>
 
 export const useBalance = (): UseQueryResult<BalanceResponse> => {
-    const { platform, userId, flowId } = useRouteLoaderData('root') as LoaderData
+    const { platform, flowId } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
+    const { identity, isIdentified } = useRequestIdentity()
 
     return useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = { platform, userId, flowId }
-            if (walletAddress) body.walletAddress = walletAddress
-            return await fetchCache(body)
-        },
+        queryFn: () => fetchCache({ platform, flowId, ...identity }),
         queryKey: ['balance', walletAddress],
-        enabled: !!walletAddress,
+        enabled: isIdentified,
     })
 }
 
