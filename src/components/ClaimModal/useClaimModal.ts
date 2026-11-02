@@ -117,7 +117,8 @@ export const useClaimModal = ({
         downloadWallet: t('downloadWallet'),
         comingSoonTitle: t('noClaimTitle'),
         comingSoonMsg: t('noClaimText'),
-        gotIt: t('gotIt', 'Got it'),
+        // Own key, not the shared gotIt: the mobile sheet's Figma says "Got It".
+        noClaimBtn: t('noClaimBtn', 'Got It'),
     }
 
     const claimSteps = [

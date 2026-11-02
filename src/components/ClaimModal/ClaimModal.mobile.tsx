@@ -104,7 +104,7 @@ const ClaimModal = (props: ClaimModalProps) => {
                             </div>
                             <footer className={styles.comingSoonFooter}>
                                 <button type="button" className={styles.btnPrimaryWide} onClick={onClose}>
-                                    {labels.gotIt}
+                                    {labels.noClaimBtn}
                                 </button>
                             </footer>
                         </>
