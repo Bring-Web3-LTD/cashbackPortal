@@ -1,12 +1,10 @@
 import styles from './styles.oldMobile.module.css'
 import { Link, useRouteLoaderData, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import fetchCache from '../../api/fetchCache'
 import { createDescription, formatCurrency, formatDate, formatStatus } from './helpers'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useTranslation } from 'react-i18next'
-import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useBalance } from '../../hooks/useBalance'
 import Icon from '../../components/Icon/Icon'
 import { getInitials } from '../../utils/getInitials'
 
@@ -136,25 +134,10 @@ const HistoryMobile = () => {
     const { sendAnalyticsEvent } = useAnalytics()
     const { t } = useTranslation()
 
-    const { platform, iconsPath, defaultIconsPath, userId, flowId } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { iconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
-    const { data } = useQuery({
-        queryFn: async () => {
-            const body: Parameters<typeof fetchCache>[0] = {
-                platform,
-                userId,
-                flowId
-            }
-
-            if (walletAddress) body.walletAddress = walletAddress
-
-            return await fetchCache(body)
-        },
-        queryKey: ["balance", walletAddress],
-        enabled: !!walletAddress,
-    })
+    const { data } = useBalance()
 
     const balance = data?.data
 
@@ -192,7 +175,11 @@ const HistoryMobile = () => {
         return deals.map(deal => ({
             tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
-            status: formatStatus(deal.status, deal.eligibleDate),
+            // /cache calls every approved reward claimable, but on a noClaim
+            // platform there is nothing to claim: it is saved for the user.
+            status: noClaim && deal.status === 'claimable'
+                ? t('statusApproved')
+                : formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerDisplayName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,

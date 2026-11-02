@@ -28,7 +28,14 @@ export interface DashboardProps {
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, couponsEnabled, isHub, noClaim, canPairWallet: canPairOverride } = useRouteLoaderData('root') as LoaderData
+    const {
+        cryptoSymbols,
+        couponsEnabled,
+        isHub,
+        noClaim,
+        firstTimeUser: firstTimeOverride,
+        canPairWallet: canPairOverride,
+    } = useRouteLoaderData('root') as LoaderData
     const { data } = useBalance()
 
     const eligible = selectEligible(data)
@@ -40,7 +47,8 @@ export const useDashboard = () => {
         coupons: t('coupons'),
         cashback: t('cashback'),
         pending: t('pending'),
-        // A noClaim platform pays out itself: approved rewards are saved.
+        // A noClaim platform pays out itself: approved rewards are saved. The
+        // tile still opens the claim flow, which shows the coming-soon sheet.
         claim: noClaim ? t('approved') : t('claim'),
         whatsThis: t('whatsThis'),
         pairWallet: t('pairWallet'),
@@ -49,12 +57,12 @@ export const useDashboard = () => {
     }
 
     return {
-        firstTimeUser: selectFirstTimeUser(data),
+        // Dev wrapper override first, like the desktop dashboard; /cache otherwise.
+        firstTimeUser: firstTimeOverride ?? selectFirstTimeUser(data),
         couponsEnabled: !!couponsEnabled,
         isHub: !!isHub,
         // Per-platform backend switch (/cache canPairWallet).
         showPairWallet: canPairOverride ?? selectCanPairWallet(data),
-        noClaim: !!noClaim,
         pending: {
             amount: pending?.tokenAmountDisplay ?? '0.00',
             symbol: pending?.tokenSymbol ?? fallbackSymbol,

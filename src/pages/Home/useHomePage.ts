@@ -127,8 +127,12 @@ export const useHomePage = () => {
     }
 
     const handleOpenClaim = () => {
-        // The platform pays out itself; the backend refuses the claim too.
-        if (noClaim) return
+        // The platform pays out itself (the backend refuses the claim too), so
+        // the button explains that claiming is coming soon.
+        if (noClaim) {
+            setClaimState('comingSoon')
+            return
+        }
         // No wallet to sign with — show the install steps instead of the flow.
         // A hub user never has one, whatever the token's walletAddress says (an
         // email session carries a synthetic one); same rule as the desktop

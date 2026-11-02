@@ -31,7 +31,7 @@ export interface ClaimContextType {
 export const ClaimContext = createContext<ClaimContextType | undefined>(undefined)
 
 export const ClaimProvider = ({ children }: { children: ReactNode }) => {
-    const { platform, cryptoSymbols, userId, flowId, isHub, chromeStoreUrl } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, userId, flowId, isHub, noClaim, chromeStoreUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { sendAnalyticsEvent } = useAnalytics()
     const queryClient = useQueryClient()
@@ -66,12 +66,15 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     const eligibleTokenAmount = eligible?.tokenAmountDisplay ?? '0.00'
     const eligibleTotalEstimatedUsd = formatCurrency(eligible?.totalEstimatedUsd ?? 0)
 
-    const claimDisabled =
+    // On a noClaim platform the button only opens the coming-soon dialog, so
+    // no balance or threshold holds it back.
+    const claimDisabled = !noClaim && (
         isLoading ||
         !eligible ||
         typeof eligible.minimumClaimThreshold !== 'number' ||
         eligible.tokenAmount < eligible.minimumClaimThreshold ||
         loading
+    )
 
     useEffect(() => {
         const handleMessage = async (event: MessageEvent) => {
@@ -164,11 +167,13 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
         message({ messageToSign, amount: claimAmount, action: 'SIGN_MESSAGE', tokenSymbol: currentCryptoSymbol })
     }
 
-    // No wallet to sign with in the hub, so claiming there opens the guide to
-    // installing one rather than starting a signature that cannot finish.
+    // The platform pays out itself (and the backend refuses claims), so the
+    // button explains that claiming is coming soon. Otherwise, no wallet to
+    // sign with in the hub, so claiming there opens the guide to installing
+    // one rather than starting a signature that cannot finish.
     const claim = () => {
-        if (!isHub) return signMessage()
-        setClaimStatus('claim')
+        if (!noClaim && !isHub) return signMessage()
+        setClaimStatus(noClaim ? 'comingSoon' : 'claim')
         setStatusOpen(true)
     }
 

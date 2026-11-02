@@ -46,10 +46,6 @@ export const useRewards = () => {
         rewards: t('rewards'),
         // A noClaim platform pays out itself: approved rewards are saved.
         claimable: noClaim ? t('approved') : t('claimable'),
-        // Placeholder copy in public/BRING/mobile/translations/en.json until
-        // Product supplies the text (TODO#686).
-        noClaimTitle: t('noClaimTitle'),
-        noClaimText: t('noClaimText'),
         claim: t('claim'),
         pending: t('pending'),
         viewRewards: t('viewRewards'),
@@ -65,7 +61,6 @@ export const useRewards = () => {
         pendingSymbol,
         canOpenClaim,
         belowMinimum,
-        noClaim,
         labels,
         goToHistory: () => navigate('/history'),
         goToFaq: () => navigate('/faq'),
