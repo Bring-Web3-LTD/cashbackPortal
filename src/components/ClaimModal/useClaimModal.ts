@@ -79,6 +79,7 @@ export const useClaimModal = ({
         failure: t('claimFailedHeader'),
         processing: t('claimingHeader'),
         instructions: t('claimTitle'),
+        comingSoon: t('claimTitle'),
     }
     const title = state ? titles[state] : ''
 
@@ -114,6 +115,10 @@ export const useClaimModal = ({
         currentValue: `${t('currentValue')} ${formatCurrency(totalEstimatedUsd ?? 0)}`,
         claimYourToken: t('claimYourToken', { symbol: tokenSymbol }),
         downloadWallet: t('downloadWallet'),
+        comingSoonTitle: t('noClaimTitle'),
+        comingSoonMsg: t('noClaimText'),
+        // Own key, not the shared gotIt: the mobile sheet's Figma says "Got It".
+        noClaimBtn: t('noClaimBtn', 'Got It'),
     }
 
     const claimSteps = [

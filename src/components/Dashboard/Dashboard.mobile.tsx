@@ -12,7 +12,6 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
         couponsEnabled,
         isHub,
         showPairWallet,
-        noClaim,
         pending,
         claim,
         labels,
@@ -20,19 +19,6 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
         goToMore,
         goToWhatsThis,
     } = useDashboard()
-
-    const claimTile = (
-        <>
-            <span className={styles.tileLabel}>{labels.claim}</span>
-            <span className={styles.tileValue}>
-                <span className={styles.amountRow}>
-                    <span className={styles.amount}>{claim.amount}</span>
-                    <span className={styles.symbol}>{claim.symbol}</span>
-                </span>
-                <span className={styles.usd}>{claim.usd}</span>
-            </span>
-        </>
-    )
 
     return (
         <section className={styles.root} aria-label={labels.rewards}>
@@ -94,15 +80,16 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
                             <span className={styles.usd}>{pending.usd}</span>
                         </span>
                     </button>
-                    {/* Nothing to claim on a noClaim platform, so the tile is
-                        a plain readout rather than a dead button. */}
-                    {noClaim ? (
-                        <div className={`${styles.tile} ${styles.tileClaim} ${styles.tileReadout}`}>{claimTile}</div>
-                    ) : (
-                        <button type="button" className={`${styles.tile} ${styles.tileClaim}`} onClick={onClaim}>
-                            {claimTile}
-                        </button>
-                    )}
+                    <button type="button" className={`${styles.tile} ${styles.tileClaim}`} onClick={onClaim}>
+                        <span className={styles.tileLabel}>{labels.claim}</span>
+                        <span className={styles.tileValue}>
+                            <span className={styles.amountRow}>
+                                <span className={styles.amount}>{claim.amount}</span>
+                                <span className={styles.symbol}>{claim.symbol}</span>
+                            </span>
+                            <span className={styles.usd}>{claim.usd}</span>
+                        </span>
+                    </button>
                 </>
             )}
 

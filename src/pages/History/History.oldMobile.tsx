@@ -134,7 +134,7 @@ const HistoryMobile = () => {
     const { sendAnalyticsEvent } = useAnalytics()
     const { t } = useTranslation()
 
-    const { iconsPath, defaultIconsPath } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
     const { data } = useBalance()
@@ -175,7 +175,11 @@ const HistoryMobile = () => {
         return deals.map(deal => ({
             tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
-            status: formatStatus(deal.status, deal.eligibleDate),
+            // /cache calls every approved reward claimable, but on a noClaim
+            // platform there is nothing to claim: it is saved for the user.
+            status: noClaim && deal.status === 'claimable'
+                ? t('statusApproved')
+                : formatStatus(deal.status, deal.eligibleDate),
             retailerName: deal.retailerDisplayName,
             imgSrc: `${retailerIconBasePath}${deal.retailerIconPath}`,
             imgBg: deal.retailerBackgroundColor,

@@ -46,8 +46,8 @@ interface LoaderData {
     showTerms: boolean
     autoclaim: boolean
     /** `claimType: 'noClaim'` from the token: the platform pays out itself, so
-     *  approved rewards are shown as saved, never as claimable, with no claim
-     *  action anywhere. */
+     *  approved rewards are shown as Approved, never as claimable, and the
+     *  Claim button opens a "coming soon" dialog instead of a claim. */
     noClaim: boolean
     // Dashboard state. `isHub` and `couponsEnabled` come from /verify,
     // `firstTimeUser` / `canPairWallet` from /cache. The dev wrapper can pin
