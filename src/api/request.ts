@@ -47,6 +47,11 @@ export const useSignedIn = () => useSyncExternalStore(subscribe, () => signedIn)
 // ── Refresh ────────────────────────────────────────────────────────────
 // One in-flight refresh at a time: every 401 that lands while it runs awaits
 // the same promise rather than spending the refresh token again.
+// Resolves to whether the original call is worth sending again: yes after a
+// fresh cookie, and yes after a 401 too, since the backend clears both cookies
+// with it and the retry then goes through anonymously, as for a signed-out
+// user. Anything else (network, 5xx) is a fault of the call, not of the
+// session: no retry.
 let refreshing: Promise<boolean> | undefined
 
 const refreshSession = (platform: string): Promise<boolean> =>
@@ -58,10 +63,9 @@ const refreshSession = (platform: string): Promise<boolean> =>
     })
         .then((res) => {
             if (res.ok) setSignedIn(true)
-            // Only a 401 says the session is over; anything else is a fault
-            // of the call, not of the session.
+            // Only a 401 says the session is over.
             if (res.status === 401) setSignedIn(false)
-            return res.ok
+            return res.ok || res.status === 401
         })
         .catch(() => false)
         .finally(() => { refreshing = undefined }))

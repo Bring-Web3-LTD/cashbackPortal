@@ -27,6 +27,10 @@ interface Response {
 const fetchRetailers = async (body: Body): Promise<Response> => {
     const res = await apiFetch(`${API_URL_PLATFORMS}retailers`, { method: "POST", mode: "cors", json: body })
 
+    // An error body ({ message, status }) has no retailers; rendered as data it
+    // crashes the list. Let the query fail instead.
+    if (!res.ok) throw new Error(`retailers ${res.status}`)
+
     const data = await res.json()
 
     return data
