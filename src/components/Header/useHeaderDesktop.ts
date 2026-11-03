@@ -21,7 +21,7 @@ export interface Action {
 
 export const useHeaderDesktop = () => {
     const { t } = useTranslation()
-    const { platform, isHub, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
+    const { platform, isHub, iconsPath, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const [menuOpen, setMenuOpen] = useState(false)
     const [explainOpen, setExplainOpen] = useState(false)
@@ -59,6 +59,9 @@ export const useHeaderDesktop = () => {
 
     return {
         isHub,
+        // The hub is the generic Rewards site: a logo only from the platform's
+        // own folder (never one inherited from its base), else none.
+        hubLogoSrc: `${iconsPath}/wallet-logo.png`,
         scrolled,
         helpRef,
         menuOpen,

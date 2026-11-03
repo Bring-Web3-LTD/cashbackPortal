@@ -17,7 +17,8 @@ export interface HistoryRow {
     tokenAmount: string
     date: string
     imgSrc: string
-    imgSrcFallback?: string
+    /** Tried in order when `imgSrc` fails to load. */
+    imgSrcFallbacks?: string[]
     description: string[][]
     totalEstimatedUsd?: string | number
     imgBg?: string
@@ -41,7 +42,7 @@ export const useHistoryDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { sendAnalyticsEvent } = useAnalytics()
-    const { iconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath, baseIconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
     const [activeRow, setActiveRow] = useState(-1)
     const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
 
@@ -71,7 +72,7 @@ export const useHistoryDesktop = () => {
             tokenAmount: `${res[key].tokenAmount} ${key}`,
             date: formatShortDate(res[key].date),
             imgSrc: `${iconsPath}/gift.svg`,
-            imgSrcFallback: `${defaultIconsPath}/gift.svg`,
+            imgSrcFallbacks: [...(baseIconsPath ? [`${baseIconsPath}/gift.svg`] : []), `${defaultIconsPath}/gift.svg`],
             tokenSymbol: key,
             status: formatStatus('claimed'),
         }))

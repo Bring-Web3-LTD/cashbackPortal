@@ -13,13 +13,14 @@ interface IconProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
 
 /**
  * Renders an `<img>` for a portal icon, with automatic fallback to the
- * DEFAULT platform's icon folder when the active platform doesn't ship
- * the requested asset.
+ * base platform's (for `<PLATFORM>REWARDS`) and then the DEFAULT platform's
+ * icon folder when the active platform doesn't ship the requested asset.
  *
  * Resolution chain (each step only fires after the previous 404s):
  *   1. /{PLATFORM}/icons/{theme}/{name}
  *   2. /{PLATFORM}/icons/{theme}/{fallbackName}     (if provided)
- *   3. /DEFAULT/icons/{theme}/{fallbackName ?? name}
+ *   3. /{BASE}/icons/{theme}/{name}, then {fallbackName}   (if a base exists)
+ *   4. /DEFAULT/icons/{theme}/{fallbackName ?? name}
  */
 const Icon = ({ name, fallbackName, onError, alt = '', ...rest }: IconProps) => {
     const loaderData = useRouteLoaderData('root') as LoaderData
@@ -47,12 +48,16 @@ const Icon = ({ name, fallbackName, onError, alt = '', ...rest }: IconProps) => 
         (liveTheme && loaderData.defaultIconsPath?.replace(/\/(light|dark)$/, `/${liveTheme}`)) ??
         loaderData.defaultIconsPath ??
         themedIconsPath?.replace(/^\/[^/]+\//, '/DEFAULT/')
+    const baseIconsPath = liveTheme
+        ? loaderData.baseIconsPath?.replace(/\/(light|dark)$/, `/${liveTheme}`)
+        : loaderData.baseIconsPath
 
     // Build a deduped resolution chain so we never request the same URL twice
     // in a row (e.g. when `name === fallbackName` or platform === DEFAULT).
     const candidates = Array.from(new Set([
         `${themedIconsPath}/${name}`,
         ...(fallbackName ? [`${themedIconsPath}/${fallbackName}`] : []),
+        ...(baseIconsPath ? [`${baseIconsPath}/${name}`, ...(fallbackName ? [`${baseIconsPath}/${fallbackName}`] : [])] : []),
         `${defaultIconsPath}/${fallbackName ?? name}`,
         `${defaultIconsPath}/${name}`,
     ].filter(Boolean)))
@@ -61,7 +66,7 @@ const Icon = ({ name, fallbackName, onError, alt = '', ...rest }: IconProps) => 
 
     useEffect(() => {
         setStep(0)
-    }, [name, fallbackName, themedIconsPath, defaultIconsPath])
+    }, [name, fallbackName, themedIconsPath, baseIconsPath, defaultIconsPath])
 
     return (
         <img

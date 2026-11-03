@@ -1,17 +1,17 @@
 /**
- * Desktop header: title (with the wallet mark in the hub) and the help
+ * Desktop header: title (with the platform's own logo in the hub, if any) and the help
  * actions, which collapse into an overflow menu when the bar narrows.
  * Pure UI — logic in useHeaderDesktop.
  */
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
-import Icon from '../Icon/Icon'
 import ExplainModal from '../Modals/ExplainModal/ExplainModal'
 import { useHeaderDesktop, type Action } from './useHeaderDesktop'
 
 const Header = () => {
     const {
         isHub,
+        hubLogoSrc,
         scrolled,
         helpRef,
         menuOpen,
@@ -58,12 +58,11 @@ const Header = () => {
         ].filter(Boolean).join(' ')}>
             {isHub ? (
                 <div className={styles.brand}>
-                    {/* Platforms ship a raster mark; DEFAULT carries the generic SVG. */}
-                    <Icon
+                    <img
                         className={styles.wallet_logo}
-                        name="wallet-logo.png"
-                        fallbackName="wallet-logo.svg"
+                        src={hubLogoSrc}
                         alt=""
+                        onError={(e) => { e.currentTarget.hidden = true }}
                     />
                     {title}
                 </div>

@@ -1,5 +1,7 @@
+import { basePlatform } from "./utils/loadStylesheet"
+
 // Standalone mode (TODO#701): on these hosts, with no `token` in the URL, the
-// portal runs top-level as the Bring portal with no wrapper and fetches its own
+// portal runs top-level as a Rewards portal with no wrapper and fetches its own
 // session from /check/portal. Outside prod, `?standalone=true` forces it (the
 // dev wrapper's Standalone toggle), so localhost needs no entry in the list.
 const STANDALONE_HOSTS: string[] = import.meta.env.VITE_STANDALONE_HOSTS
@@ -10,7 +12,7 @@ export const STANDALONE = !pageParams.has('token') && (
     STANDALONE_HOSTS.includes(window.location.hostname)
     || (import.meta.env.VITE_ENV !== 'prod' && pageParams.get('standalone') === 'true')
 )
-// The Bring portal key, used only for the standalone /check/portal call
+// The Rewards portal key, used only for the standalone /check/portal call
 export const STANDALONE_API_KEY = import.meta.env.VITE_STANDALONE_API_KEY || ''
 // Standalone mode calls its own API host (api.rewrds.xyz in prod), so the
 // session cookies stay first-party; falls back to VITE_API_URL when unset
@@ -44,9 +46,12 @@ export const MOBILE_PORTAL_MAX_WIDTH: number = import.meta.env.VITE_MOBILE_PORTA
     : 360
 
 // Per-platform overrides of the shared threshold — Solflare's mobile design is
-// drawn at 375. Platforms not listed use MOBILE_PORTAL_MAX_WIDTH.
+// drawn at 375. Platforms not listed use their base platform's (`<PLATFORM>REWARDS`
+// → `<PLATFORM>`), then MOBILE_PORTAL_MAX_WIDTH.
 const MOBILE_PORTAL_MAX_WIDTHS: Record<string, number> = { SOLFLARE: 375 }
 
 /** Viewport cap (and layout width) of the mobile portal for `platform`. */
-export const mobilePortalMaxWidth = (platform: string | null | undefined): number =>
-    MOBILE_PORTAL_MAX_WIDTHS[(platform || '').toUpperCase()] ?? MOBILE_PORTAL_MAX_WIDTH
+export const mobilePortalMaxWidth = (platform: string | null | undefined): number => {
+    const upper = (platform || '').toUpperCase()
+    return MOBILE_PORTAL_MAX_WIDTHS[upper] ?? MOBILE_PORTAL_MAX_WIDTHS[basePlatform(upper) ?? ''] ?? MOBILE_PORTAL_MAX_WIDTH
+}

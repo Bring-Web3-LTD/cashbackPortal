@@ -3,12 +3,13 @@ import Layout from './layout/Layout';
 import { HomeDispatcher, HistoryDispatcher, PendingDispatcher, FaqDispatcher, WhatsThisDispatcher } from './dispatchers';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import i18n from 'i18next';
+import { loadPlatformNamespace } from './utils/i18n';
 import fetchToken from './api/fetchToken';
 import checkPortal from './api/checkPortal';
 import { DEV_MODE, ENV, STANDALONE, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
-import { loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
+import { basePlatform, loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
 import { selectVariant } from './utils/ABTest/platform-variants';
 import { enableSessionCookies } from './api/request';
 
@@ -72,16 +73,12 @@ const rootLoader = async () => {
         setCurrencyFormat(platform)
         // Make sure the platform translation bundle is fetched before we
         // switch to it as the default namespace; missing keys fall back
-        // to DEFAULT (configured via `fallbackNS` in utils/i18n.ts).
-        const activeNs = useMobilePortal ? `${platform}_MOBILE` : platform
-        await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', platform] : [platform])
-        i18n.setDefaultNamespace(activeNs)
+        // to the base platform, then DEFAULT (see utils/i18n.ts).
+        await loadPlatformNamespace(platform, useMobilePortal)
 
-        // Standalone mode is the whole page, not an iframe: brand the tab too
-        if (STANDALONE) {
-            document.title = i18n.t('title', 'Rewards')
-            document.querySelector('link[rel="icon"]')?.setAttribute('href', `/${stylePlatform}/favicon.png`)
-        }
+        // Standalone mode is the whole page, not an iframe: name the tab too
+        // (the generic Rewards favicon, rewards-logo.png, comes from index.html)
+        if (STANDALONE) document.title = i18n.t('title', 'Rewards')
 
         if (ENV === 'prod') {
             delete res.info.isTester
@@ -91,6 +88,8 @@ const rootLoader = async () => {
 
         const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
+        const baseStylePlatform = basePlatform(stylePlatform)
+        const baseIconsBase = baseStylePlatform && (useMobilePortal ? `/${baseStylePlatform}/mobile/icons` : `/${baseStylePlatform}/icons`)
 
         const userId = getUserId(res.info.platform)
         const variant = selectVariant(userId, platform)
@@ -103,6 +102,7 @@ const rootLoader = async () => {
             ...res.info,
             iconsPath: `${iconsBase}/${theme}`,
             defaultIconsPath: `${defaultIconsBase}/${theme}`,
+            baseIconsPath: baseIconsBase ? `${baseIconsBase}/${theme}` : undefined,
             userId,
             extensionId,
             showTerms,
@@ -150,12 +150,12 @@ const rootLoader = async () => {
         if (useMobilePortal) document.documentElement.style.setProperty('--mobile-portal-max-w', `${maxWidth}px`)
         loadStylesheet(theme, stylePlatform, useMobilePortal ? 'mobile' : 'desktop')
         setCurrencyFormat(devPlatform)
-        const activeNs = useMobilePortal ? `${devPlatform}_MOBILE` : devPlatform
-        await i18n.loadNamespaces(useMobilePortal ? [activeNs, 'DEFAULT_MOBILE', devPlatform] : [devPlatform])
-        i18n.setDefaultNamespace(activeNs)
+        await loadPlatformNamespace(devPlatform, useMobilePortal)
 
         const iconsBase = useMobilePortal ? `/${stylePlatform}/mobile/icons` : `/${stylePlatform}/icons`
         const defaultIconsBase = useMobilePortal ? `/DEFAULT/mobile/icons` : `/DEFAULT/icons`
+        const baseStylePlatform = basePlatform(stylePlatform)
+        const baseIconsBase = baseStylePlatform && (useMobilePortal ? `/${baseStylePlatform}/mobile/icons` : `/${baseStylePlatform}/icons`)
 
 
         const userId = getUserId(dev.platform)
@@ -168,6 +168,7 @@ const rootLoader = async () => {
             ...dev,
             iconsPath: `${iconsBase}/${theme}`,
             defaultIconsPath: `${defaultIconsBase}/${theme}`,
+            baseIconsPath: baseIconsBase ? `${baseIconsBase}/${theme}` : undefined,
             userId,
             isTester: false,
             flowId,

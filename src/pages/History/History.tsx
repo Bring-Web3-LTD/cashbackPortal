@@ -12,7 +12,7 @@ interface RowProps extends HistoryRow {
     claimsLabel: string
 }
 
-const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallbacks, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     // The claims aggregate: one row standing for every claim of a token. It is
     // the row with no retailer behind it — not every row whose status reads
@@ -41,8 +41,9 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallback, status, 
                                 alt="logo"
                                 onError={(e) => {
                                     const img = e.currentTarget
-                                    if (imgSrcFallback && img.getAttribute('src') !== imgSrcFallback) {
-                                        img.src = imgSrcFallback
+                                    const next = imgSrcFallbacks?.[imgSrcFallbacks.indexOf(img.getAttribute('src') ?? '') + 1]
+                                    if (next) {
+                                        img.src = next
                                         return
                                     }
                                     setFallbackLogo(getInitials(name))

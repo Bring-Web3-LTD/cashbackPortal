@@ -12,7 +12,8 @@ interface HistoryMobile {
     status: string
     tokenAmount: string;
     imgSrc: string
-    imgSrcFallback?: string
+    /** Tried in order when `imgSrc` fails to load. */
+    imgSrcFallbacks?: string[]
     description: string[][];
     totalEstimatedUsd?: string | number
     imgBg?: string
@@ -34,7 +35,7 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallbacks, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     const { t } = useTranslation()
     // The claims aggregate: the row with no retailer behind it, not every row
@@ -62,8 +63,9 @@ const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallback, status, tokenAmount, 
                                 alt="logo"
                                 onError={(e) => {
                                     const img = e.currentTarget
-                                    if (imgSrcFallback && img.getAttribute('src') !== imgSrcFallback) {
-                                        img.src = imgSrcFallback
+                                    const next = imgSrcFallbacks?.[imgSrcFallbacks.indexOf(img.getAttribute('src') ?? '') + 1]
+                                    if (next) {
+                                        img.src = next
                                         return
                                     }
                                     setFallbackLogo(getInitials(name))
@@ -134,7 +136,7 @@ const HistoryMobile = () => {
     const { sendAnalyticsEvent } = useAnalytics()
     const { t } = useTranslation()
 
-    const { iconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { iconsPath, baseIconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
     const navigate = useNavigate()
 
     const { data } = useBalance()
@@ -162,7 +164,7 @@ const HistoryMobile = () => {
             ...res[key]
             , tokenAmount: `${res[key].tokenAmount} ${key}`,
             imgSrc: `${iconsPath}/gift.svg`,
-            imgSrcFallback: `${defaultIconsPath}/gift.svg`,
+            imgSrcFallbacks: [...(baseIconsPath ? [`${baseIconsPath}/gift.svg`] : []), `${defaultIconsPath}/gift.svg`],
             tokenSymbol: key,
             status: formatStatus('claimed'),
         }))
