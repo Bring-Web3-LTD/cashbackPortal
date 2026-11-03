@@ -37,7 +37,7 @@ const safeIframeSrc = (src?: string | null): string | undefined => {
 
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji } = useWalletAddress()
     const queryClient = useQueryClient()
 
@@ -133,8 +133,11 @@ export const useHomePage = () => {
             setClaimState('comingSoon')
             return
         }
-        // No wallet paired yet — show the pairing steps instead of the flow.
-        if (!walletAddress) {
+        // No wallet to sign with — show the install steps instead of the flow.
+        // A hub user never has one, whatever the token's walletAddress says (an
+        // email session carries a synthetic one); same rule as the desktop
+        // ClaimContext.
+        if (isHub || !walletAddress) {
             setClaimState('instructions')
             return
         }
@@ -153,7 +156,7 @@ export const useHomePage = () => {
     }
 
     const handleConfirmClaim = async () => {
-        if (!walletAddress || !eligible) return
+        if (isHub || !walletAddress || !eligible) return
         // Snapshot the amount being claimed before the balance refetches to 0.
         setClaimedDisplay(liveClaimDisplay)
         setClaimState('processing')
@@ -199,7 +202,7 @@ export const useHomePage = () => {
 
             if (event.data.action !== 'SIGNATURE') return
             awaitingSignatureRef.current = false
-            if (!walletAddress || !eligible) {
+            if (isHub || !walletAddress || !eligible) {
                 setClaimState('failure')
                 return
             }
@@ -237,6 +240,7 @@ export const useHomePage = () => {
         currentCryptoSymbol,
         eligible,
         flowId,
+        isHub,
         platform,
         queryClient,
         userId,

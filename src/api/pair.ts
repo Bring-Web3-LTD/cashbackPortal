@@ -14,7 +14,8 @@
  * `{ nonce, signature, flowId, platform }`. Failures answer with `{ reason }`
  * rather than `{ message }`.
  */
-import { API_URL_AUTH, API_KEY } from '../config'
+import { API_URL_AUTH } from '../config'
+import { apiFetch } from './request'
 
 /**
  * Failure reasons the pairing endpoints return, by the step that can emit them.
@@ -71,14 +72,7 @@ interface AuthBody {
 
 const authPost = async <T>(path: string, body: AuthBody): Promise<PairResult<T>> => {
     try {
-        const res = await fetch(`${API_URL_AUTH}${path}`, {
-            method: 'POST',
-            headers: {
-                'x-api-key': API_KEY,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        })
+        const res = await apiFetch(`${API_URL_AUTH}${path}`, { method: 'POST', json: body })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) {
             return {

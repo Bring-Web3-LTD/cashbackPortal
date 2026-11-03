@@ -1,4 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
+import { useRouteLoaderData } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import fetchToken from '../api/fetchToken';
 import { ENV, STANDALONE } from '../config';
 import { loadStylesheet } from '../utils/loadStylesheet';
@@ -54,6 +56,8 @@ export function WalletProvider({
     // mobile stylesheet tags aren't stripped by a default 'desktop' call.
     mode?: StylesheetMode,
 }) {
+    const { isHub } = useRouteLoaderData('root') as LoaderData
+    const queryClient = useQueryClient()
     const [walletAddress, setWalletAddress] = useState<string | null>(initialWalletAddress);
     const [isTester, setIsTester] = useState(initIsTester)
     // Wallet identity is seeded from the loader (JWT or dev URL params) and
@@ -104,6 +108,9 @@ export function WalletProvider({
                 else if (ENV === 'development') {
                     setWalletAddress(data.walletAddress || null)
                 }
+                // Hub users are told apart by their session cookie, which the
+                // balance query key cannot see. Wallet users are keyed by address.
+                if (isHub) queryClient.resetQueries({ queryKey: ['balance'] })
             }
         };
 
@@ -112,7 +119,7 @@ export function WalletProvider({
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [mode])
+    }, [mode, isHub, queryClient])
 
     return (
         <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc }}>
