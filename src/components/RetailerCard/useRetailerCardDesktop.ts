@@ -179,6 +179,9 @@ export const useRetailerCardDesktop = ({
         modalOpen: modalState !== 'close',
         closeModal: () => {
             setModalState('close')
+            // Dismissing the card also drops a pending "reopen once identified"
+            // (the CAB sets it on open while the kit has not answered yet).
+            setReopenAfterConnect(false)
             sendAnalyticsEvent('popup_close', {
                 category: 'user_action',
                 action: 'click',
