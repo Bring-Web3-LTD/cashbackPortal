@@ -840,9 +840,9 @@ clearMsgLogBtn.addEventListener('click', () => {
 const shortAddress = (addr: string) =>
     addr.length > 10 ? `${addr.slice(0, 4)}…${addr.slice(-4)}` : addr
 
-// SolflareRewards users sign in by email, not with a wallet. Until the email login
-// (TODO#702) and the email-session JWT (TODO#661) exist, the mock session
-// stands in behind a "Sign in" button.
+// SolflareRewards users sign in by email, not with a wallet: the standalone
+// portal shows its own sign-in screen, so this button only labels the mock
+// session as a sign-in.
 const isSolflareRewards = () => walletProviderEl.value === 'solflareRewards'
 
 function setWalletButton(address: string | null) {
@@ -932,8 +932,8 @@ const getReadyAdapter = (): MockWallet => {
     return readyAdapter
 }
 // SolflareRewards: the identity is an email, not a wallet. The "address" this adapter
-// hands the bridge is the email; bootstrap() sends it as `email`, plus a
-// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (SolflareRewards is noClaim).
+// hands the bridge is the email; bootstrap() sends it as `email` with no
+// `walletAddress`. There is no wallet, so nothing to sign (SolflareRewards is noClaim).
 let solflareRewardsEmail: string | null = null
 const defaultSolflareRewardsEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
 const solflareRewardsAdapter: MockWallet = {
@@ -1255,13 +1255,6 @@ function buildIframeSrc(returnedUrl: string, token: string): string {
     }
 }
 
-/** Deterministic 0x address for an email: the first 20 bytes of its SHA-256. */
-async function standInAddress(email: string): Promise<string> {
-    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email.toLowerCase()))
-    const hex = Array.from(new Uint8Array(hash), (b) => b.toString(16).padStart(2, '0')).join('')
-    return `0x${hex.slice(0, 40)}`
-}
-
 async function bootstrap(walletAddress: string | null): Promise<PortalApiResponse | null> {
     const apiUrl = getApiUrl()
     const apiKey = getApiKey()
@@ -1270,15 +1263,12 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
-    // SolflareRewards signs in by email: the identity is an email, never a wallet. The
-    // backend takes no email yet (portal entry from the email session is
-    // TODO#661), and the portal treats a session without a walletAddress as
-    // signed out. Until then the session carries a stand-in address derived
-    // from the email, so the same email always gets the same rewards.
+    // SolflareRewards signs in by email: the identity is an email, never a
+    // wallet, and the backend takes it from the session cookies, not the body.
     const email = isSolflareRewards() ? walletAddress : null
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
-        walletAddress: email ? await standInAddress(email) : walletAddress,
+        walletAddress: email ? null : walletAddress,
         email: email || undefined,
         // Optional wallet identity — /check/portal embeds these in the JWT,
         // surfaced in the Mobile Portal claim screen.
@@ -1292,7 +1282,6 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         devicePlatform: getDevicePlatform(),
     }
 
-    if (email) appendLog('info', `SolflareRewards → stand-in address ${body.walletAddress} (until TODO#661)`)
     const requestId = ++pendingId
     setStatus('Calling check/portal…')
 
