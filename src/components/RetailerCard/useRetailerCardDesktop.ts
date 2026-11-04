@@ -71,8 +71,8 @@ export const useRetailerCardDesktop = ({
     id, name, displayName, section, maxCashback, cashbackSymbol, cashbackCurrency,
     campaignId, termsUrl, campaignUrl, topGeneralTerms, generalTerms, search, isDemo,
 }: Args) => {
-    const { platform, cryptoSymbols, flowId, iconsPath, supportUrl } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress, isTester } = useWalletAddress()
+    const { platform, cryptoSymbols, flowId, iconsPath, supportUrl, isCab } = useRouteLoaderData('root') as LoaderData
+    const { isTester } = useWalletAddress()
     const { identity, isIdentified } = useRequestIdentity()
     const { sendAnalyticsEvent } = useAnalytics()
     const [fallbackLogo, setFallbackLogo] = useState('')
@@ -80,8 +80,9 @@ export const useRetailerCardDesktop = ({
     const [popupData, setPopupData] = useState<{ iframeUrl?: string, token?: string, domain?: string }>({})
     const [modalState, setModalState] = useState('close')
     const [loginModalState, setLoginModalState] = useState('close')
-    // Set when the user hits "connect" from this card's login modal, so the
-    // card can re-open itself once the wallet address lands.
+    // Set when the user hits "connect" from this card's login modal, or opens
+    // the card in the CAB before the kit has answered, so the card can
+    // re-open itself once the identity lands.
     const [reopenAfterConnect, setReopenAfterConnect] = useState(false)
     const [terms, setTerms] = useState('')
 
@@ -121,6 +122,13 @@ export const useRetailerCardDesktop = ({
 
     const handleClick = () => {
         if (!isIdentified) {
+            // The CAB has no wallet to connect: open the card with its shop
+            // button still loading, and activate once the kit's userId lands.
+            if (isCab) {
+                setModalState('loading')
+                setReopenAfterConnect(true)
+                return
+            }
             setLoginModalState('open')
             return
         }
@@ -135,11 +143,11 @@ export const useRetailerCardDesktop = ({
     }
 
     useEffect(() => {
-        if (!reopenAfterConnect || !walletAddress) return
+        if (!reopenAfterConnect || !isIdentified) return
         setReopenAfterConnect(false)
         handleClick()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reopenAfterConnect, walletAddress])
+    }, [reopenAfterConnect, isIdentified])
 
     useEffect(() => {
         if (!termsUrl || terms.length || modalState === 'close') return
@@ -171,6 +179,9 @@ export const useRetailerCardDesktop = ({
         modalOpen: modalState !== 'close',
         closeModal: () => {
             setModalState('close')
+            // Dismissing the card also drops a pending "reopen once identified"
+            // (the CAB sets it on open while the kit has not answered yet).
+            setReopenAfterConnect(false)
             sendAnalyticsEvent('popup_close', {
                 category: 'user_action',
                 action: 'click',

@@ -613,7 +613,9 @@ statusPreviewEl.addEventListener('change', () => {
 // verify, firstTimeUser / canPairWallet from cache); the checkbox is seeded from whatever it
 // returned. Ticking it away from that value pins an override on the portal
 // URL for testing; ticking it back to the backend value clears the override.
-const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet'] as const
+// `hubWalletBalance` is wrapper-only: with it the hub portal sends the
+// connected wallet instead of relying on a session cookie, so a balance loads.
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet', 'hubWalletBalance'] as const
 type DashboardFlag = typeof DASHBOARD_FLAGS[number]
 
 // The portal owns these. A box is only an *override* while the developer has
