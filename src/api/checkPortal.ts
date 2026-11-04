@@ -8,6 +8,9 @@ const checkPortal = async (flowId: string | null): Promise<string> => {
     if (!STANDALONE_API_KEY) throw Error('Standalone mode needs VITE_STANDALONE_API_KEY')
     const res = await fetch(`${API_URL_PLATFORMS}check/portal`, {
         method: "POST",
+        // The session lives in HttpOnly cookies: send them, so a signed-in user
+        // gets the JWT of their email identity rather than an anonymous one
+        credentials: "include",
         headers: {
             "x-api-key": STANDALONE_API_KEY,
             "Content-Type": "application/json",

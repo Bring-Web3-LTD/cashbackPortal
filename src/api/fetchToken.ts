@@ -39,6 +39,9 @@ interface Response {
         chromeStoreUrl?: string
         /** Support site, picked by the backend from the wrapper's origin. */
         supportUrl?: string
+        /** `email`: a verified email session issued this token and `walletAddress`
+         *  is that identity, not a wallet to show. `wallet` (or absent) otherwise. */
+        loginType?: 'email' | 'wallet'
     }
 }
 
