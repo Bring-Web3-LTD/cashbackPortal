@@ -1,0 +1,16 @@
+/* Design: 1px rules in --ac-border filling the row, 16px either side of a
+   13/18 label in --ac-muted. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ac-muted);
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--ac-border);
+}

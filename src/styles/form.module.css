@@ -1,0 +1,202 @@
+/* Form primitives shared by the register page and the remind-later modal */
+
+.title {
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+
+  @media (max-width: 640px) {
+    /* Design metric: 34px box on the 28px title (1.2 rounds to 33.6 and the
+       block below drifts). 7.2vw keeps the same ratio while the font clamp
+       scales between phone and desktop sizes. */
+    line-height: clamp(34px, 7.2vw, 48px);
+  }
+}
+
+.subtitle {
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--ac-muted);
+  margin: -4px 0 20px;
+
+  @media (max-width: 640px) {
+    font-size: 15px;
+    line-height: 21px;
+    margin: -12px 0 12px;
+  }
+}
+
+/* The user's own address echoed back inside a subtitle. Amber against the
+   muted grey of the surrounding sentence; weight is inherited (the modal's
+   success copy bolds it, the code step does not). */
+.email {
+  color: var(--ac-accent);
+}
+
+/* Trailing arrow on primary buttons ("Send code →"), from arrow-right.svg.
+   Masked rather than <img> so the glyph still inherits the button's colour:
+   the art stays a plain file, but a platform theme that changes button text
+   colour gets a matching arrow for free. Figma's Primary Button keeps the
+   arrow a fixed 14x12 with an 8px gap at every breakpoint (desktop and mobile
+   frames alike) — so px, not em. The JSX space before the span is ~3.9px, the
+   margin tops it up to the component's 8px; the arrow sits ~0.5px below the
+   label's baseline in the design. */
+.btnArrow {
+  display: inline-block;
+  width: 14px;
+  height: 12px;
+  margin-left: 4px;
+  vertical-align: -0.5px;
+  background: currentColor;
+  -webkit-mask: url('/shared/icons/arrow-right.svg') no-repeat center / contain;
+  mask: url('/shared/icons/arrow-right.svg') no-repeat center / contain;
+}
+
+.input {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #fff;
+  background: var(--ac-surface);
+  /* The 1px stroke is drawn as an inset shadow, not a border: Figma paints
+     strokes INSIDE the box without displacing content, while a CSS border
+     would push the text to 17px from the edge instead of the design's 16px. */
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--ac-border);
+  border-radius: 0;
+  height: 54px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s;
+
+  &::placeholder {
+    color: var(--ac-muted);
+  }
+  /* Per design there is no focus state: the field keeps its idle ring (or
+     the error ring) while focused. */
+  &:focus {
+    outline: none;
+  }
+
+  /* Chrome autofill paints its own opaque background (dark blue on a dark
+     page) over --ac-surface - QA flagged the field going navy. The 1000px
+     inset shadow repaints the surface colour on top of it, stacked under the
+     1px ring so the stroke stays visible. */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff;
+    caret-color: #fff;
+    box-shadow:
+      inset 0 0 0 1px var(--ac-border),
+      inset 0 0 0 1000px var(--ac-surface);
+  }
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+    height: 48px;
+  }
+}
+
+.inputError {
+  box-shadow: inset 0 0 0 1px var(--ac-red);
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    box-shadow:
+      inset 0 0 0 1px var(--ac-red),
+      inset 0 0 0 1000px var(--ac-surface);
+  }
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #000;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  height: 54px;
+  padding: 0 19px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #e0e0e0;
+  }
+  /* Sol buttons State=Disabled (4:261/4:263): the default white button with
+     the whole component at 50% opacity — fill, label and arrow dim together. */
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+    height: 48px;
+  }
+}
+
+/* Design: ErrorMessage, Inter 500 12/15 in --ac-red under the code row */
+.error {
+  color: var(--ac-red);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  margin: -4px 0 0;
+}
+
+.notice {
+  color: var(--ac-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  margin: -4px 0 0;
+}
+
+.link {
+  font-family: inherit;
+  /* Figma's shared Link/Underline style: 13/18 weight 600, 1px underline
+     offset 2px, both breakpoints. */
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--ac-muted);
+  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  /* Figma's dev-mode export also emits `text-underline-position: from-font`,
+     but Chrome then ADDS Inter's own underline drop (~1.4px at 13px) to the
+     2px offset, drawing the line a pixel-plus lower than the Figma canvas.
+     Left unset, the 2px counts from the baseline - where Figma draws it. */
+  background: none;
+  border: none;
+  /* The UA button padding (1px 6px) would add 2px back on top of the
+     line-height above, so the box has to be reset explicitly. */
+  padding: 0;
+  cursor: pointer;
+  align-self: center;
+
+  &:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+  &:disabled {
+    cursor: default;
+  }
+}

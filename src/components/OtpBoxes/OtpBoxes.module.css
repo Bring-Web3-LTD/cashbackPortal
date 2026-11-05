@@ -1,0 +1,46 @@
+.row {
+  display: flex;
+  /* The OTP component specs a constant 12px gap at every breakpoint; the
+     boxes flex-shrink below their 48/64px cap when the row can't fit. */
+  gap: 12px;
+  justify-content: center;
+}
+
+.box {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 64px;
+  box-sizing: border-box;
+  aspect-ratio: 1;
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  background: var(--ac-surface);
+  border: 1px solid var(--ac-border);
+  border-radius: 0;
+  padding: 0;
+  caret-color: #fff;
+  transition: border-color 0.15s;
+
+  /* The OTP component specs only Empty/Filled/Error — no focus state (same
+     as the email input). The caret and the select-on-focus highlight are the
+     only cues for the active box. */
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 20px;
+    max-width: 48px;
+  }
+}
+
+.filled {
+  border-color: #fff;
+}
+
+.error {
+  border-color: var(--ac-red);
+}
