@@ -19,7 +19,7 @@ export default function FlowLayout({
     <main className={styles.page}>
       <header className={styles.header}>
         {onBack && (
-          <button type="button" className={styles.back} onClick={onBack}>
+          <button type="button" className={styles.back} onClick={onBack} aria-label={backLabel}>
             <span className={styles.backIcon} aria-hidden="true" />
             <span className={styles.backText}>{backLabel}</span>
           </button>
