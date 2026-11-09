@@ -1,3 +1,5 @@
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
 import { defineConfig, loadEnv } from 'vite'
 
 // Dev-only wrapper that simulates a partner site embedding the Cashback
@@ -50,6 +52,46 @@ const figmaImageProxy = (token: string | undefined) => ({
     },
 })
 
+const aws = async <T>(...args: string[]): Promise<T> => {
+    const { stdout } = await promisify(execFile)('aws', [
+        ...args, '--output', 'json',
+    ], { timeout: 15000, maxBuffer: 10 * 1024 * 1024 })
+    return JSON.parse(stdout) as T
+}
+// DELETE_FAILED / ROLLBACK_COMPLETE stacks leave a dead mapping behind
+const LIVE_STACK = /^(CREATE|UPDATE|UPDATE_ROLLBACK|IMPORT)_COMPLETE$/
+
+// envName suggestions: base paths on api.bringweb3.io whose `{stage}-stack` is live,
+// via the dev's own AWS CLI credentials
+const envNamesList = () => ({
+    name: 'env-names',
+    configureServer(server: import('vite').ViteDevServer) {
+        server.middlewares.use('/__env-names', async (_req, res) => {
+            res.setHeader('Content-Type', 'application/json')
+            try {
+                const [mappings, stacks] = await Promise.all([
+                    aws<[string, string][]>('apigateway', 'get-base-path-mappings', '--domain-name', 'api.bringweb3.io',
+                        '--query', 'items[].[basePath,stage]'),
+                    aws<[string, string][]>('cloudformation', 'describe-stacks', '--query', 'Stacks[].[StackName,StackStatus]'),
+                ])
+                const live = new Set(stacks.filter(([, status]) => LIVE_STACK.test(status)).map(([name]) => name))
+                const names = mappings
+                    .filter(([, stage]) => live.has(`${stage}-stack`))
+                    .map(([basePath]) => basePath)
+                    .sort((a, b) => a.localeCompare(b))
+                res.end(JSON.stringify(names))
+            } catch (err) {
+                // execFile's message is just the command; the AWS reason is on stderr.
+                // Terminal only: stderr can carry the account id / IAM ARN
+                const error = (err as { stderr?: string }).stderr?.trim() || (err instanceof Error ? err.message : String(err))
+                server.config.logger.warn(`[env-names] envName list unavailable (AWS CLI / credentials?): ${error}`)
+                res.statusCode = 502
+                res.end(JSON.stringify({ error: 'env list unavailable' }))
+            }
+        })
+    },
+})
+
 export default defineConfig(({ mode }) => {
     // Load all env vars from .env / .env.local (the empty prefix means we get
     // non-VITE_ vars too, which we need for the server-only FIGMA_TOKEN).
@@ -57,7 +99,7 @@ export default defineConfig(({ mode }) => {
     const figmaToken = env.FIGMA_TOKEN || process.env.FIGMA_TOKEN
 
     return {
-        plugins: [figmaImageProxy(figmaToken)],
+        plugins: [figmaImageProxy(figmaToken), envNamesList()],
         server: {
             port: 5174,
             host: true,

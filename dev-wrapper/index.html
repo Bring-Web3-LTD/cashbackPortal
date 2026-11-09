@@ -60,7 +60,21 @@
             </button>
             <aside class="controls">
                 <div class="api-row">
-                    <p class="api-info">API path: <code id="apiStageInfo">—</code></p>
+                    <div class="env-combo">
+                        <label for="apiStageInfo">API path</label>
+                        <div class="env-combo-field">
+                            <input id="apiStageInfo" type="text" spellcheck="false" autocomplete="off"
+                                role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="envNames"
+                                aria-describedby="envNameError" title="envName override, Enter to apply">
+                            <button id="envNamesToggle" type="button" class="env-combo-toggle" tabindex="-1" aria-label="Show envs">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </button>
+                        </div>
+                        <ul id="envNames" class="env-combo-list" role="listbox" aria-label="Envs" hidden></ul>
+                    </div>
                     <button id="refresh" type="button" class="secondary refresh-icon" aria-label="Refresh"
                         title="Re-run the check/portal bootstrap with the current params and wallet state">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
@@ -70,6 +84,7 @@
                         </svg>
                     </button>
                 </div>
+                <p id="envNameError" class="api-error" role="alert"></p>
 
                 <fieldset>
                     <legend>Bootstrap</legend>
@@ -213,7 +228,7 @@
                         <p class="hint">No token yet.</p>
                     </div>
                 </details>
-                <p id="status" class="status"></p>
+                <p id="status" class="status" role="status"></p>
             </aside>
 
             <section class="frame" id="frame">
