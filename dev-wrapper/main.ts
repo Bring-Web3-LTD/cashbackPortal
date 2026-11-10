@@ -86,6 +86,8 @@ const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key ||
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
 const LOCAL_PORTAL_URL = (env.VITE_PORTAL_LOCAL_URL as string | undefined) ?? ''
 const DEFAULT_WALLET = (env.VITE_PORTAL_WALLET as string | undefined) ?? ''
+// CAB: the userId the wrapper hands the portal in place of the extension kit.
+const CAB_USER_ID = ((env.VITE_PORTAL_CAB_USER_ID as string | undefined) ?? '').trim() || 'dev-kit-user-0001'
 // Email the SolflareRewards provider signs in with when the field is left empty.
 const DEFAULT_EMAIL = ((env.VITE_PORTAL_EMAIL as string | undefined) ?? '').trim()
 const DEFAULT_THEME = ((env.VITE_PORTAL_THEME as string | undefined) ?? '').trim().toLowerCase()
@@ -627,7 +629,11 @@ statusPreviewEl.addEventListener('change', () => {
 // verify, firstTimeUser / canPairWallet from cache); the checkbox is seeded from whatever it
 // returned. Ticking it away from that value pins an override on the portal
 // URL for testing; ticking it back to the backend value clears the override.
-const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet'] as const
+// `hubWalletBalance` is wrapper-only: with it the hub portal sends the
+// connected wallet instead of relying on a session cookie, so a balance loads.
+// `isCab` pins the CAB mode on any provider; the wrapper then plays the
+// extension kit and answers the portal's identity request (see applyPortalFlags).
+const DASHBOARD_FLAGS = ['firstTimeUser', 'couponsEnabled', 'isHub', 'canPairWallet', 'hubWalletBalance', 'isCab'] as const
 type DashboardFlag = typeof DASHBOARD_FLAGS[number]
 
 // The portal owns these. A box is only an *override* while the developer has
@@ -715,6 +721,11 @@ function applyPortalFlags(flags: Record<string, boolean>) {
         backendFlags[name] = value
         if (!overrides.has(name)) el.checked = value
     }
+    // CAB: the kit answers the portal's GET_USER_ID with the userId it created
+    // at install. That request is posted inside the iframe, so the wrapper
+    // cannot hear it; PORTAL_FLAGS proves the portal is up and listening, so
+    // answer unasked here. The portal keeps the first userId it gets.
+    if (overrides.get('isCab')) postToPortal({ action: 'USER_ID', userId: CAB_USER_ID }, 'kit userId')
 }
 
 const startConnectedEl = $<HTMLInputElement>('startConnected')

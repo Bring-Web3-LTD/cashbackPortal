@@ -19,9 +19,18 @@ interface WalletContextType {
      *  walletName/Emoji it does NOT keep the stale value, so the UI can
      *  fall back to its connect placeholder). */
     couponsIframeSrc?: string;
+    /** CAB only: the userId the extension kit created at install, which
+     *  stands in for the wallet. Null until the kit has answered. */
+    kitUserId: string | null;
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+// How often, and how long, the portal keeps asking the kit for its userId
+// while there is no answer: the content script may attach after the portal
+// has already asked.
+const KIT_ASK_INTERVAL_MS = 1000
+const KIT_ASK_ATTEMPTS = 5
 
 // Only https may reach the coupons <iframe src> - an iframe src is an
 // injection sink (a javascript: URL would run in the portal's origin), so
@@ -56,9 +65,38 @@ export function WalletProvider({
     // mobile stylesheet tags aren't stripped by a default 'desktop' call.
     mode?: StylesheetMode,
 }) {
-    const { isHub } = useRouteLoaderData('root') as LoaderData
+    const { isHub, isCab, extensionId } = useRouteLoaderData('root') as LoaderData
     const queryClient = useQueryClient()
     const [walletAddress, setWalletAddress] = useState<string | null>(initialWalletAddress);
+    const [kitUserId, setKitUserId] = useState<string | null>(null)
+
+    // CAB: the identity lives in the extension. Ask its content script, which
+    // runs in this very window, and take the first answer. The answer may
+    // also come from the host page (the dev wrapper stands in for the kit).
+    useEffect(() => {
+        if (!isCab) return
+        const ask = () => window.postMessage({ from: 'bringweb3', action: 'GET_USER_ID', extensionId }, window.location.origin)
+        let attempts = 0
+        const timer = setInterval(() => {
+            if (++attempts >= KIT_ASK_ATTEMPTS) clearInterval(timer)
+            ask()
+        }, KIT_ASK_INTERVAL_MS)
+        ask()
+
+        const onUserId = (event: MessageEvent) => {
+            if (event.source !== window && event.source !== window.parent) return
+            const data = event.data
+            if (!data || typeof data !== 'object' || data.to !== 'bringweb3' || data.action !== 'USER_ID') return
+            if (typeof data.userId !== 'string' || !data.userId) return
+            clearInterval(timer)
+            setKitUserId(data.userId)
+        }
+        window.addEventListener('message', onUserId)
+        return () => {
+            clearInterval(timer)
+            window.removeEventListener('message', onUserId)
+        }
+    }, [isCab, extensionId])
     const [isTester, setIsTester] = useState(initIsTester)
     // Wallet identity is seeded from the loader (JWT or dev URL params) and
     // refreshed on SESSION_UPDATE whenever the new token carries it, so a
@@ -122,7 +160,7 @@ export function WalletProvider({
     }, [mode, isHub, queryClient])
 
     return (
-        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc }}>
+        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc, kitUserId }}>
             {children}
         </WalletContext.Provider>
     );

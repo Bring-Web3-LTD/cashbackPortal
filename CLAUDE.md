@@ -21,6 +21,7 @@ Personal data this app handles (wallet addresses are pseudonymous personal data 
 | `flowId` (UUID) | memory, analytics payload | per-session correlation |
 | session JWT | URL query param, memory | auth with Bring backend |
 | page URL / path / title | analytics `page_view` | usage analytics |
+| kit `userId` (CAB only) | memory (`WalletProvider`), asked from the extension kit on load (`GET_USER_ID` / `USER_ID` messages); sent instead of `walletAddress` in `activate` and `cache` bodies | identify a CAB user, who has no wallet |
 | session cookies `rh_id`, `rh_refresh` | HttpOnly, set and cleared by the Bring backend at sign-in / refresh / logout; the portal only sends them (`credentials: 'include'`), and only in hub mode via `src/api/request.ts` | identify a hub user who has no wallet |
 
 Rules:
