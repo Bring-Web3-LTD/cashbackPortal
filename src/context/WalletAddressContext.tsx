@@ -71,8 +71,10 @@ export function WalletProvider({
     const [kitUserId, setKitUserId] = useState<string | null>(null)
 
     // CAB: the identity lives in the extension. Ask its content script, which
-    // runs in this very window, and take the first answer. The answer may
-    // also come from the host page (the dev wrapper stands in for the kit).
+    // runs in this very window, and take the first answer. Outside prod the
+    // answer may also come from the host page (the dev wrapper stands in for
+    // the kit); in prod the host is whatever page frames the portal, and a
+    // userId is verified by nobody, so it may not pick the identity.
     useEffect(() => {
         if (!isCab) return
         const ask = () => window.postMessage({ from: 'bringweb3', action: 'GET_USER_ID', extensionId }, window.location.origin)
@@ -84,11 +86,15 @@ export function WalletProvider({
         ask()
 
         const onUserId = (event: MessageEvent) => {
-            if (event.source !== window && event.source !== window.parent) return
+            const fromKit = event.source === window && event.origin === window.location.origin
+            const fromDevWrapper = ENV !== 'prod' && event.source === window.parent
+            if (!fromKit && !fromDevWrapper) return
             const data = event.data
             if (!data || typeof data !== 'object' || data.to !== 'bringweb3' || data.action !== 'USER_ID') return
             if (typeof data.userId !== 'string' || !data.userId) return
+            // First answer wins: the identity never changes for the visit
             clearInterval(timer)
+            window.removeEventListener('message', onUserId)
             setKitUserId(data.userId)
         }
         window.addEventListener('message', onUserId)
