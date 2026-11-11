@@ -52,14 +52,17 @@ export const useSignedIn = () => useSyncExternalStore(subscribe, () => signedIn)
 // with it and the retry then goes through anonymously, as for a signed-out
 // user. Anything else (network, 5xx) is a fault of the call, not of the
 // session: no retry.
+// `platform` is how a multi-platform key is matched; the standalone portal key
+// names one platform, so its first call (check/portal, before the platform is
+// known) refreshes without it.
 let refreshing: Promise<boolean> | undefined
 
-const refreshSession = (platform: string): Promise<boolean> =>
+export const refreshSession = (platform?: string): Promise<boolean> =>
     (refreshing ??= fetch(`${API_URL_AUTH}session/refresh`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ platform }),
+        body: JSON.stringify(platform ? { platform } : {}),
     })
         .then((res) => {
             if (res.ok) setSignedIn(true)
