@@ -13,6 +13,7 @@ import { useRetailers } from '../../hooks/useRetailers'
 import { useCategories } from './useCategories'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useBalance } from '../../hooks/useBalance'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 import { ENV } from '../../config'
 import type { PortalView } from '../../components/Dashboard/Dashboard'
@@ -23,8 +24,15 @@ export const useHomeDesktop = () => {
     const { isCountryAvailable, couponsEnabled } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams()
-    const { isTester, couponsIframeSrc } = useWalletAddress()
+    const { isTester, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
     const skeletonPreview = useSkeletonPreview()
+
+    // /cache answers under the resolved identity (session or kit userId), so
+    // its coupons URL carries the identity the token's one may lack.
+    const balanceCouponsSrc = useBalance().data?.couponsIframeSrc
+    useEffect(() => {
+        adoptCouponsIframeSrc(balanceCouponsSrc)
+    }, [balanceCouponsSrc, couponsIframeSrc, adoptCouponsIframeSrc])
 
     // Seeded from navigation state so the switcher still works on the pages
     // that show the dashboard but not the browse area.
