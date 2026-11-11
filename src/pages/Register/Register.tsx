@@ -86,6 +86,7 @@ export default function Register() {
           type="email"
           autoComplete="email"
           placeholder={l.emailPlaceholder}
+          aria-label={l.emailPlaceholder}
           value={r.email}
           onChange={(e) => r.updateEmail(e.target.value)}
           required
