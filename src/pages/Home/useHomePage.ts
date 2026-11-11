@@ -14,6 +14,7 @@ import { useCategories, selectCategories, selectSearchTerms } from './useCategor
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
 import { useBalance, selectEligible } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useClaimPreview } from '../../hooks/useDevPreview'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
@@ -121,7 +122,10 @@ export const useHomePage = () => {
         setSearchChip(null)
     }
 
+    const claimPreview = useClaimPreview()
     const handleOpenClaim = () => {
+        // Dev preview only enables the look; there is no balance to claim.
+        if (claimPreview) return
         // The platform pays out itself (the backend refuses the claim too), so
         // the button explains that claiming is coming soon.
         if (noClaim) {
