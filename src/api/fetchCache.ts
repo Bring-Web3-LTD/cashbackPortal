@@ -21,6 +21,8 @@ interface Response {
     tokenIconBasePath: string
     retailerIconBasePath: string
     data: Data
+    /** Coupons iframe URL carrying the identity this balance belongs to. */
+    couponsIframeSrc?: string | null
 }
 
 const fetchCache = async (body: Body): Promise<Response> => {
