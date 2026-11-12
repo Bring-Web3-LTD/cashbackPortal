@@ -8,11 +8,16 @@
     box-sizing: border-box;
 }
 
+/* Figma: the 65px tab switcher sets the 69px bar; without it the 62px
+   tiles do, and the More button stretches to match them. */
+.root:has(.tile):not(:has(.tabs)) {
+    height: 66px;
+}
+
 .tabs {
     flex: 0 0 90px;
-    /* Flex items default to `min-width: auto`, so the longest label's
-       min-content overrides the 90px basis — the Coupons tab came out 92.14px
-       because the inactive "Cashback" label carries 10px of side padding. */
+    /* Flex items default to `min-width: auto`, so a long label's min-content
+       could override the 90px basis. */
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -41,7 +46,8 @@
 
     flex-shrink: 0;
     height: 16px;
-    padding: 0 10px;
+    /* Figma dev note: switcher side padding 10 -> 1. */
+    padding: 0 1px;
     box-sizing: border-box;
     border: none;
     border-radius: var(--dashboard-tab-radius, 10px);
@@ -137,9 +143,10 @@
     font-size: var(--dashboard-name-f-s, 10px);
     font-weight: var(--dashboard-name-f-w, 400);
     line-height: var(--dashboard-name-l-h, 12px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* Figma: fill width, auto height — a long name wraps and the tile's
+       overflow clip cuts it, rather than an ellipsis. */
+    text-align: left;
+    overflow-wrap: anywhere;
 }
 
 /* $ value badge, pinned to the label row (Figma: ignores auto layout). */

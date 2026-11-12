@@ -31,7 +31,8 @@ const toTile = (token: Token | undefined, fallbackSymbol: string, showUsd: boole
     amount: token?.tokenAmountDisplay ?? '0.00',
     symbol: token?.tokenSymbol ?? fallbackSymbol,
     name: token?.displayName ?? null,
-    usd: showUsd && token?.totalEstimatedUsd ? formatCurrency(token.totalEstimatedUsd) : null,
+    // Figma shows the badge at $0.00 too, so visibility is `showUsd` alone.
+    usd: showUsd ? formatCurrency(token?.totalEstimatedUsd ?? 0) : null,
 })
 
 export const useDashboard = () => {
