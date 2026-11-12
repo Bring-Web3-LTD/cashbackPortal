@@ -98,6 +98,8 @@ const rootLoader = async () => {
         const isHub = readFlag('isHub', res.info.isHub)
         // Standalone has no wrapper either: its sign-in sets the same cookies.
         if (isHub || STANDALONE) enableSessionCookies()
+        // The CAB (a rewards platform inside the extension) by the kit's userId.
+        const isCab = readFlag('isCab', res.info.platformType === 'rewards' && res.info.surface === 'extension')
 
         return {
             ...res.info,
@@ -113,9 +115,11 @@ const rootLoader = async () => {
             flowId,
             variant,
             isHub,
+            isCab,
             couponsEnabled: readFlag('couponsEnabled', res.info.couponsEnabled),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),
+            hubWalletBalance: readOverride('hubWalletBalance'),
         }
     }
 
@@ -164,6 +168,7 @@ const rootLoader = async () => {
 
         const isHub = readFlag('isHub')
         if (isHub) enableSessionCookies()
+        const isCab = readFlag('isCab', params.get('platformType') === 'rewards' && params.get('surface') === 'extension')
 
         return {
             ...dev,
@@ -180,9 +185,11 @@ const rootLoader = async () => {
             extensionId: urlExtensionId,
             variant,
             isHub,
+            isCab,
             couponsEnabled: readFlag('couponsEnabled'),
             firstTimeUser: readOverride('firstTimeUser'),
             canPairWallet: readOverride('canPairWallet'),
+            hubWalletBalance: readOverride('hubWalletBalance'),
         }
     }
 

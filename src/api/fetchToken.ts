@@ -20,6 +20,11 @@ interface Response {
         /** How the platform pays out. On `noClaim` the platform pays its users
          *  outside the portal, so there is no claim action at all. */
         claimType?: 'manualClaim' | 'autoClaim' | 'noClaim' | null
+        /** What the platform is and where the portal runs. `rewards` on
+         *  `extension` is the CAB: no wallet, the extension kit's userId is
+         *  the identity. */
+        platformType?: 'integrated' | 'rewards' | null
+        surface?: 'extension' | 'webpage' | null
         theme?: string
         terms?: boolean
         extensionId?: string
