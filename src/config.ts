@@ -36,6 +36,8 @@ export const API_URL_PLATFORMS = `${API_URL}platforms/`
 export const API_URL_PORTAL = `${API_URL}portal/`
 // bringAuth lambda — /v1/auth/* (email OTP + wallet↔email pairing).
 export const API_URL_AUTH = `${API_URL}auth/`
+// apiHandler — /v1/users/* (Rewards Hub funnel analytics from the sign-in screen).
+export const API_URL_USERS = `${API_URL}users/`
 export const DEV_MODE = import.meta.env.VITE_ENV === 'development'
 export const TEST_ID = import.meta.env.VITE_TEST_ID || ''
 export const ENV = import.meta.env.VITE_ENV || 'development'
