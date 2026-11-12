@@ -25,6 +25,16 @@ export interface DashboardProps {
     onPairWallet: () => void
 }
 
+// Claim always shows the $ badge. Pending only when the Coupons/Cashback tabs
+// are not taking the room.
+const toTile = (token: Token | undefined, fallbackSymbol: string, showUsd: boolean) => ({
+    amount: token?.tokenAmountDisplay ?? '0.00',
+    symbol: token?.tokenSymbol ?? fallbackSymbol,
+    name: token?.displayName ?? null,
+    // Figma shows the badge at $0.00 too, so visibility is `showUsd` alone.
+    usd: showUsd ? formatCurrency(token?.totalEstimatedUsd ?? 0) : null,
+})
+
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -63,16 +73,8 @@ export const useDashboard = () => {
         isHub: !!isHub,
         // Per-platform backend switch (/cache canPairWallet).
         showPairWallet: canPairOverride ?? selectCanPairWallet(data),
-        pending: {
-            amount: pending?.tokenAmountDisplay ?? '0.00',
-            symbol: pending?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(pending?.totalEstimatedUsd ?? 0),
-        },
-        claim: {
-            amount: eligible?.tokenAmountDisplay ?? '0.00',
-            symbol: eligible?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(eligible?.totalEstimatedUsd ?? 0),
-        },
+        pending: toTile(pending, fallbackSymbol, !couponsEnabled),
+        claim: toTile(eligible, fallbackSymbol, true),
         labels,
         goToPending: () => navigate('/pending'),
         goToMore: () => navigate('/history'),

@@ -79,6 +79,8 @@ interface Token {
     tokenSymbol: string
     tokenAmount: number
     tokenName: string
+    // User-friendly asset name, e.g. "Tether Gold". `null` when not configured.
+    displayName?: string | null
     minimumClaimThreshold: number
     tokenIconPath: string
     tokenInUsd: number

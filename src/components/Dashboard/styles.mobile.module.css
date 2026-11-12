@@ -3,16 +3,21 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    height: 65px;
+    height: 69px;
     padding: 2px 0;
     box-sizing: border-box;
 }
 
+/* Figma: the 65px tab switcher sets the 69px bar; without it the 62px
+   tiles do, and the More button stretches to match them. */
+.root:has(.tile):not(:has(.tabs)) {
+    height: 66px;
+}
+
 .tabs {
     flex: 0 0 90px;
-    /* Flex items default to `min-width: auto`, so the longest label's
-       min-content overrides the 90px basis — the Coupons tab came out 92.14px
-       because the inactive "Cashback" label carries 10px of side padding. */
+    /* Flex items default to `min-width: auto`, so a long label's min-content
+       could override the 90px basis. */
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -41,7 +46,8 @@
 
     flex-shrink: 0;
     height: 16px;
-    padding: 0 10px;
+    /* Figma dev note: switcher side padding 10 -> 1. */
+    padding: 0 1px;
     box-sizing: border-box;
     border: none;
     border-radius: var(--dashboard-tab-radius, 10px);
@@ -71,14 +77,13 @@
        98.5 / 90.5 instead of the 94.5 each that Figma draws. */
     flex: 1 0 20px;
     min-width: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
-    height: 100%;
-    /* Figma insets `pending` by 10/6, but its 1px stroke is drawn INSIDE the
-       frame and doesn't push the content — a CSS border does. Subtract it. */
-    padding: 5px 9px;
+    height: 62px;
+    padding: 6px;
     box-sizing: border-box;
     overflow: hidden;
     background: var(--dashboard-tile-bg, rgba(177, 180, 187, 0.15));
@@ -87,8 +92,10 @@
     cursor: pointer;
 }
 
-/* The label + value are 50px against 49px of inner height. Figma clips the
-   overflow; flex would shrink both boxes and lift the $-line by a pixel. */
+.tile:active {
+    background: var(--dashboard-tile-active-bg, rgba(177, 180, 187, 0.08));
+}
+
 .tileLabel {
     flex-shrink: 0;
     color: var(--dashboard-label-f-c, #7A7D83);
@@ -123,15 +130,35 @@
 
 .symbol {
     height: 15px;
-    font-size: var(--dashboard-symbol-f-s, 10px);
+    color: var(--dashboard-symbol-f-c, #B1B4BB);
+    font-size: var(--dashboard-symbol-f-s, 9px);
     font-weight: var(--dashboard-symbol-f-w, 400);
     line-height: var(--dashboard-symbol-l-h, 12px);
     white-space: nowrap;
 }
 
+.name {
+    max-width: 100%;
+    color: var(--dashboard-name-f-c, #F5F8FF);
+    font-size: var(--dashboard-name-f-s, 10px);
+    font-weight: var(--dashboard-name-f-w, 400);
+    line-height: var(--dashboard-name-l-h, 12px);
+    /* Figma: fill width, auto height — a long name wraps and the tile's
+       overflow clip cuts it, rather than an ellipsis. */
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+/* $ value badge, pinned to the label row (Figma: ignores auto layout). */
 .usd {
-    color: var(--dashboard-accent, #FFEF46);
-    font-size: var(--dashboard-usd-f-s, 10px);
+    position: absolute;
+    top: 6px;
+    right: 4.5px;
+    padding: 2px 4px;
+    border-radius: var(--dashboard-usd-radius, 4px);
+    background: var(--dashboard-usd-bg, #12151A);
+    color: var(--dashboard-usd-f-c, #B1B4BB);
+    font-size: var(--dashboard-usd-f-s, 9px);
     font-weight: var(--dashboard-usd-f-w, 400);
     line-height: var(--dashboard-usd-l-h, 12px);
     white-space: nowrap;
