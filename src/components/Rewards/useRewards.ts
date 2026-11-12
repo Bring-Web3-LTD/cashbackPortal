@@ -7,6 +7,7 @@ import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useClaimPreview } from '../../hooks/useDevPreview'
 import { buildSupportUrl } from '../../utils/supportUrl'
 
 export interface RewardsProps {
@@ -33,7 +34,8 @@ export const useRewards = () => {
     const pendingDisplay = pending?.tokenAmountDisplay ?? '0.00'
     const pendingSymbol = pending?.tokenSymbol ?? fallbackSymbol
 
-    const canOpenClaim = !!eligible && eligible.tokenAmount > 0
+    // Dev preview shows the button enabled with no balance (look only).
+    const canOpenClaim = useClaimPreview() || (!!eligible && eligible.tokenAmount > 0)
 
     // Below minimum claim threshold → claim still opens (minimum overlay) but
     // the button shows disabled coloring per design.

@@ -17,6 +17,7 @@ import message from '../utils/message'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { useWalletAddress } from '../hooks/useWalletAddress'
 import { useBalance, selectEligible } from '../hooks/useBalance'
+import { useClaimPreview } from '../hooks/useDevPreview'
 import { formatCurrency } from '../pages/History/helpers'
 import { ENV } from '../config'
 
@@ -55,6 +56,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
 
     const { data: balance, isLoading } = useBalance()
     const eligible = selectEligible(balance)
+    const claimPreview = useClaimPreview()
 
     const currentCryptoSymbol = eligible?.tokenSymbol || cryptoSymbols[0]
     // Only read once claiming is allowed, which means there is a balance row.
@@ -68,7 +70,7 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
 
     // On a noClaim platform the button only opens the coming-soon dialog, so
     // no balance or threshold holds it back.
-    const claimDisabled = !noClaim && (
+    const claimDisabled = !claimPreview && !noClaim && (
         isLoading ||
         !eligible ||
         typeof eligible.minimumClaimThreshold !== 'number' ||
@@ -172,6 +174,8 @@ export const ClaimProvider = ({ children }: { children: ReactNode }) => {
     // sign with in the hub, so claiming there opens the guide to installing
     // one rather than starting a signature that cannot finish.
     const claim = () => {
+        // Dev preview only enables the look; there is no balance to sign for.
+        if (claimPreview) return
         if (!noClaim && !isHub) return signMessage()
         setClaimStatus(noClaim ? 'comingSoon' : 'claim')
         setStatusOpen(true)
