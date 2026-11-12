@@ -10,10 +10,10 @@ import { campaignId } from './campaignId'
 // rejects the event, so none is sent.
 type RhEventType = 'page_view' | 'close'
 
-// How the user closed the flow: the X button, the header Back button, or
-// leaving the site entirely (tab/window close, refresh, or any navigation that
-// unloads the page - the browser can't tell these apart).
-export type CloseTrigger = 'xButton' | 'backButton' | 'siteLeave'
+// How the user closed the flow: leaving the site (tab/window close, refresh,
+// or any navigation that unloads the page - the browser can't tell these
+// apart). The screen has no in-page close control.
+type CloseTrigger = 'siteLeave'
 
 // Fire-and-forget: never blocks the UI, network errors are swallowed.
 // keepalive lets close survive the page being closed. Unlike the landing
@@ -54,12 +54,6 @@ export function trackPageView() {
   lastViewedHref = window.location.href
   completed = false
   send('page_view')
-}
-
-// Fired by the in-page controls (X button, Back button).
-export function trackClose(trigger: CloseTrigger) {
-  if (completed) return
-  send('close', trigger)
 }
 
 // The page being unloaded while the sign-in screen is open is also an exit: a
