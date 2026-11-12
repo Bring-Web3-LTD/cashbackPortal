@@ -22,12 +22,12 @@ export interface Action {
 export const useHeaderDesktop = () => {
     const { t } = useTranslation()
     const { platform, isHub, iconsPath, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
     const [menuOpen, setMenuOpen] = useState(false)
     const [explainOpen, setExplainOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const helpRef = useRef<HTMLDivElement>(null)
-    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress ?? kitUserId)
 
     // The fade only belongs there once rows are actually passing underneath.
     useEffect(() => {

@@ -26,7 +26,7 @@ interface Props {
 
 const TermsMarkdown = ({ terms, className }: Props) => {
     const { platform } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
 
     // Memoized so react-markdown doesn't re-render the whole terms tree each render.
     const components: Components = useMemo(() => ({
@@ -39,7 +39,7 @@ const TermsMarkdown = ({ terms, className }: Props) => {
             }
 
             trackedUrl.searchParams.set('platform', platform.toUpperCase())
-            trackedUrl.searchParams.set('address', walletAddress || 'null')
+            trackedUrl.searchParams.set('address', walletAddress || kitUserId || 'null')
             trackedUrl.searchParams.set('env', ENV)
 
             return (
@@ -53,7 +53,7 @@ const TermsMarkdown = ({ terms, className }: Props) => {
                 </a>
             )
         },
-    }), [platform, walletAddress])
+    }), [platform, walletAddress, kitUserId])
 
     return (
         <Markdown

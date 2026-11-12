@@ -16,10 +16,10 @@ const supportBase = (supportUrl?: string): URL => {
 }
 
 /** "Missing a reward?" / "Need help?" link with the user's context. */
-export const buildSupportUrl = (supportUrl: string | undefined, platform: string, walletAddress?: string | null): string => {
+export const buildSupportUrl = (supportUrl: string | undefined, platform: string, identity?: string | null): string => {
     const url = supportBase(supportUrl)
     url.searchParams.set('platform', platform)
-    url.searchParams.set('address', walletAddress ?? '')
+    url.searchParams.set('address', identity ?? '')
     url.searchParams.set('env', ENV)
     return url.toString()
 }
