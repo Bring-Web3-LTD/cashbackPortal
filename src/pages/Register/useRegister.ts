@@ -6,7 +6,7 @@ import { requestGoogleCode } from '../../utils/google'
 import { flowId } from '../../utils/flow'
 import { clickId } from '../../utils/clickId'
 import { campaignId } from '../../utils/campaignId'
-import { markFunnelCompleted, trackClose, trackPageView } from '../../utils/rhAnalytics'
+import { markFunnelCompleted, trackPageView } from '../../utils/rhAnalytics'
 
 export type Step = 'email' | 'code'
 
@@ -193,26 +193,20 @@ export default function useRegister() {
     setError('')
   }
 
-  // Header back: code step returns to the email step. On the email step there
-  // is nowhere to go yet (no page before sign-in), so it only reports the
-  // close, like the X button.
+  // Header back: code step returns to the email step. The email step has
+  // nothing before it, so no back button there.
   const goBack =
     step === 'code'
       ? () => {
           setError('')
           setStep('email')
         }
-      : () => {
-          trackClose('backButton')
-        }
-
-  const close = () => {}
+      : undefined
 
   const resendCountdown = `${Math.floor(resendIn / 60)}:${String(resendIn % 60).padStart(2, '0')}`
 
   const labels = {
     back: t('signInBack', 'Back'),
-    close: t('signInClose', 'Close'),
     emailTitle: t('signInEmailTitle', 'Enter your email'),
     emailSubtitle: t('signInEmailSubtitle', "We'll send a verification code to your inbox."),
     google: t('signInWithGoogle', 'Sign in with Google'),
@@ -250,6 +244,5 @@ export default function useRegister() {
     continueWithGoogle,
     resend,
     goBack,
-    close,
   }
 }

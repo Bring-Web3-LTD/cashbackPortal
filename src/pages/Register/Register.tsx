@@ -108,12 +108,7 @@ export default function Register() {
   }
 
   return (
-    <FlowLayout
-      onBack={r.goBack}
-      onClose={r.close}
-      backLabel={l.back}
-      closeLabel={l.close}
-    >
+    <FlowLayout onBack={r.goBack} backLabel={l.back}>
       {body}
     </FlowLayout>
   )
