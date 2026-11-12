@@ -14,8 +14,9 @@ import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useClaim } from '../../hooks/useClaim'
 
-// Floors from the Figma master (Summary Card v2 - CORE). The name and the
-// badge hug their text, so their widths are measured rather than assumed.
+// Floors from the Figma master (Summary Card v2 - CORE). The name, the badge
+// and the button hug their text, so their widths are measured rather than
+// assumed.
 const VALUES_MIN_WIDTH = 120
 const ROW_GAP = 8
 const CTA_GAP = 20
@@ -31,10 +32,12 @@ const useCardFit = (hasName: boolean) => {
     const amountRef = useRef<HTMLSpanElement>(null)
     const nameRef = useRef<HTMLSpanElement>(null)
     const badgeRef = useRef<HTMLSpanElement>(null)
+    const actionRef = useRef<HTMLButtonElement>(null)
     // Survive their part unmounting, so its width is still known when deciding
     // whether it can come back.
     const nameWidth = useRef(0)
     const badgeWidth = useRef(0)
+    const actionWidth = useRef(CTA_MIN_WIDTH)
     const [fit, setFit] = useState({ action: true, name: true, badge: true })
 
     useEffect(() => {
@@ -44,14 +47,16 @@ const useCardFit = (hasName: boolean) => {
         const observer = new ResizeObserver(([entry]) => {
             if (nameRef.current) nameWidth.current = nameRef.current.offsetWidth
             if (badgeRef.current) badgeWidth.current = badgeRef.current.offsetWidth
+            if (actionRef.current) actionWidth.current = actionRef.current.offsetWidth
 
             // contentRect excludes the card's padding, so the 20/20 are already out.
             const available = entry.contentRect.width
             const amount = amountRef.current?.offsetWidth ?? 0
             const name = hasName ? nameWidth.current + ROW_GAP : 0
             const badge = badgeWidth.current + ROW_GAP
+            const action = Math.max(CTA_MIN_WIDTH, actionWidth.current)
             const fits = (row: number) =>
-                available >= Math.max(VALUES_MIN_WIDTH, row) + CTA_GAP + CTA_MIN_WIDTH
+                available >= Math.max(VALUES_MIN_WIDTH, row) + CTA_GAP + action
 
             setFit({
                 badge: fits(name + amount + badge),
@@ -64,7 +69,7 @@ const useCardFit = (hasName: boolean) => {
         return () => observer.disconnect()
     }, [hasName])
 
-    return { ref, amountRef, nameRef, badgeRef, fit }
+    return { ref, amountRef, nameRef, badgeRef, actionRef, fit }
 }
 
 const toCard = (token: Token | undefined, fallbackSymbol: string) => ({
@@ -99,8 +104,8 @@ export const useRewardsDesktop = () => {
     const claimableCard = useCardFit(claimableValues.name !== null)
     // The tooltip points at the pill, but the pill is disabled and so takes no
     // pointer events - the card is what hears the hover. Measure the pill
-    // through a ref rather than from the event's target.
-    const claimBtnRef = useRef<HTMLButtonElement>(null)
+    // through the fit's ref rather than from the event's target.
+    const claimBtnRef = claimableCard.actionRef
 
     const [loginOpen, setLoginOpen] = useState(false)
 
