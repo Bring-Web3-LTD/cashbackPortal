@@ -1,12 +1,33 @@
 /**
  * Desktop dashboard balance block: Pending and Claimable cards, each shedding
- * its badge then its button as it narrows, plus the link to the full ledger.
- * Pure UI — logic in useRewardsDesktop.
+ * its $ badge, then its asset name, then its button as it narrows, plus the
+ * link to the full ledger. Pure UI — logic in useRewardsDesktop.
  */
 import styles from './styles.module.css'
 import { Oval } from 'react-loader-spinner'
 import LoginModal from '../Modals/LoginModal/LoginModal'
 import { useRewardsDesktop } from './useRewardsDesktop'
+
+type CardFit = ReturnType<typeof useRewardsDesktop>['pendingCard']
+type CardValues = ReturnType<typeof useRewardsDesktop>['pendingValues']
+
+/** Label over the asset row: name, token amount, $ badge on one baseline. */
+const Values = ({ card, label, values }: { card: CardFit; label: string; values: CardValues }) => (
+    <div className={styles.values}>
+        <div className={styles.card_label}>{label}</div>
+        <div className={styles.asset_row}>
+            {card.fit.name && values.name ? (
+                <span ref={card.nameRef} className={styles.asset_name}>{values.name}</span>
+            ) : null}
+            <span ref={card.amountRef} className={styles.amount}>
+                {values.amount} {values.symbol}
+            </span>
+            {card.fit.badge ? (
+                <span ref={card.badgeRef} className={styles.badge}>{values.usd}</span>
+            ) : null}
+        </div>
+    </div>
+)
 
 const Rewards = () => {
     const {
@@ -16,12 +37,9 @@ const Rewards = () => {
         loading,
         pendingCard,
         claimableCard,
+        pendingValues,
+        claimableValues,
         claimBtnRef,
-        currentCryptoSymbol,
-        pendingTokenAmount,
-        pendingTotalEstimatedUsd,
-        eligibleTokenAmount,
-        eligibleTotalEstimatedUsd,
         cardAction,
         openHistory,
         tooltipAt,
@@ -39,18 +57,7 @@ const Rewards = () => {
                 className={styles.card}
                 {...cardAction(!pendingCard.fit.action, () => openHistory(true))}
             >
-                <div className={styles.left_cluster}>
-                    <div className={styles.values}>
-                        <div className={styles.card_label}>{labels.pending}</div>
-                        <div ref={pendingCard.amountRef} className={styles.amount_row}>
-                            <span>{pendingTokenAmount}</span>
-                            <span>{currentCryptoSymbol}</span>
-                        </div>
-                    </div>
-                    {pendingCard.fit.badge ? (
-                        <div ref={pendingCard.badgeRef} className={styles.badge}>{pendingTotalEstimatedUsd}</div>
-                    ) : null}
-                </div>
+                <Values card={pendingCard} label={labels.pending} values={pendingValues} />
                 {pendingCard.fit.action ? (
                     <button
                         id="rewards-view-btn"
@@ -68,18 +75,7 @@ const Rewards = () => {
                     {...cardAction(!claimableCard.fit.action, claim, claimDisabled)}
                     {...tooltipHandlers}
                 >
-                    <div className={styles.left_cluster}>
-                        <div className={styles.values}>
-                            <div className={styles.card_label}>{labels.claimable}</div>
-                            <div ref={claimableCard.amountRef} className={styles.amount_row}>
-                                <span>{eligibleTokenAmount}</span>
-                                <span>{currentCryptoSymbol}</span>
-                            </div>
-                        </div>
-                        {claimableCard.fit.badge ? (
-                            <div ref={claimableCard.badgeRef} className={styles.badge}>{eligibleTotalEstimatedUsd}</div>
-                        ) : null}
-                    </div>
+                    <Values card={claimableCard} label={labels.claimable} values={claimableValues} />
                     {claimableCard.fit.action ? (
                     <button
                         id="rewards-claim-btn"
@@ -95,8 +91,8 @@ const Rewards = () => {
                             <span className={styles.loader}>
                                 <Oval
                                     visible={true}
-                                    height="20"
-                                    width="20"
+                                    height="12"
+                                    width="12"
                                     color="currentColor"
                                     secondaryColor='grey'
                                     strokeWidth={6}

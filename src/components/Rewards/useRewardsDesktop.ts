@@ -14,49 +14,67 @@ import { useRequestIdentity } from '../../hooks/useRequestIdentity'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useClaim } from '../../hooks/useClaim'
 
-// Floors from the design. The badge hugs its text, so its width is measured
-// rather than assumed — a shorter value moves the hide point down.
-const VALUES_MIN_WIDTH = 122
-const BADGE_GAP = 13
+// Floors from the Figma master (Summary Card v2 - CORE). The name and the
+// badge hug their text, so their widths are measured rather than assumed.
+const VALUES_MIN_WIDTH = 120
+const ROW_GAP = 8
 const CTA_GAP = 20
-const CTA_MIN_WIDTH = 80
+const CTA_MIN_WIDTH = 70
 
 /**
- * Drops a summary card's parts once they no longer fit: the badge first, then
- * the CTA. Flexbox does the shrinking; this only decides what stays mounted.
+ * Drops a summary card's parts once they no longer fit, in the design's order:
+ * the $ badge, then the asset name, then the CTA. The token amount never
+ * drops. Flexbox does the shrinking; this only decides what stays mounted.
  */
-const useCardFit = () => {
+const useCardFit = (hasName: boolean) => {
     const ref = useRef<HTMLDivElement>(null)
-    const amountRef = useRef<HTMLDivElement>(null)
-    const badgeRef = useRef<HTMLDivElement>(null)
-    // Survives the badge unmounting, so its width is still known when deciding
+    const amountRef = useRef<HTMLSpanElement>(null)
+    const nameRef = useRef<HTMLSpanElement>(null)
+    const badgeRef = useRef<HTMLSpanElement>(null)
+    // Survive their part unmounting, so its width is still known when deciding
     // whether it can come back.
+    const nameWidth = useRef(0)
     const badgeWidth = useRef(0)
-    const [fit, setFit] = useState({ action: true, badge: true })
+    const [fit, setFit] = useState({ action: true, name: true, badge: true })
 
     useEffect(() => {
         const el = ref.current
         if (!el) return
 
         const observer = new ResizeObserver(([entry]) => {
+            if (nameRef.current) nameWidth.current = nameRef.current.offsetWidth
             if (badgeRef.current) badgeWidth.current = badgeRef.current.offsetWidth
 
-            // contentRect excludes the card's padding, so the 22/18 are already out.
+            // contentRect excludes the card's padding, so the 20/20 are already out.
             const available = entry.contentRect.width
-            const left = Math.max(VALUES_MIN_WIDTH, amountRef.current?.scrollWidth ?? 0)
+            const amount = amountRef.current?.offsetWidth ?? 0
+            const name = hasName ? nameWidth.current + ROW_GAP : 0
+            const badge = badgeWidth.current + ROW_GAP
+            const fits = (row: number) =>
+                available >= Math.max(VALUES_MIN_WIDTH, row) + CTA_GAP + CTA_MIN_WIDTH
 
             setFit({
-                action: available >= left + CTA_GAP + CTA_MIN_WIDTH,
-                badge: available >= left + BADGE_GAP + badgeWidth.current + CTA_GAP + CTA_MIN_WIDTH,
+                badge: fits(name + amount + badge),
+                name: fits(name + amount),
+                action: fits(amount),
             })
         })
 
         observer.observe(el)
         return () => observer.disconnect()
-    }, [])
+    }, [hasName])
 
-    return { ref, amountRef, badgeRef, fit }
+    return { ref, amountRef, nameRef, badgeRef, fit }
 }
+
+const toCard = (token: Token | undefined, fallbackSymbol: string) => ({
+    // Rounding the raw number renders 0.006 as "0.01", which reads as
+    // claimable when it is under the minimum.
+    amount: token?.tokenAmountDisplay ?? '0.00',
+    symbol: token?.tokenSymbol || fallbackSymbol,
+    name: token?.displayName ?? null,
+    usd: formatCurrency(token?.totalEstimatedUsd ?? 0),
+})
 
 export const useRewardsDesktop = () => {
     const { t } = useTranslation()
@@ -74,15 +92,11 @@ export const useRewardsDesktop = () => {
     const currentCryptoSymbol = eligible?.tokenSymbol || cryptoSymbols[0]
     const minimumClaimThreshold = eligible?.minimumClaimThreshold ?? -1
 
-    // Rounding the raw number renders 0.006 as "0.01", which reads as
-    // claimable when it is under the minimum.
-    const eligibleTokenAmount = eligible?.tokenAmountDisplay ?? '0.00'
-    const eligibleTotalEstimatedUsd = formatCurrency(eligible?.totalEstimatedUsd ?? 0)
-    const pendingTokenAmount = pending?.tokenAmountDisplay ?? '0.00'
-    const pendingTotalEstimatedUsd = formatCurrency(pending?.totalEstimatedUsd ?? 0)
+    const pendingValues = toCard(pending, currentCryptoSymbol)
+    const claimableValues = toCard(eligible, currentCryptoSymbol)
 
-    const pendingCard = useCardFit()
-    const claimableCard = useCardFit()
+    const pendingCard = useCardFit(pendingValues.name !== null)
+    const claimableCard = useCardFit(claimableValues.name !== null)
     // The tooltip points at the pill, but the pill is disabled and so takes no
     // pointer events - the card is what hears the hover. Measure the pill
     // through a ref rather than from the event's target.
@@ -170,12 +184,9 @@ export const useRewardsDesktop = () => {
         loading,
         pendingCard,
         claimableCard,
+        pendingValues,
+        claimableValues,
         claimBtnRef,
-        currentCryptoSymbol,
-        pendingTokenAmount,
-        pendingTotalEstimatedUsd,
-        eligibleTokenAmount,
-        eligibleTotalEstimatedUsd,
         cardAction,
         openHistory,
         tooltipAt,
