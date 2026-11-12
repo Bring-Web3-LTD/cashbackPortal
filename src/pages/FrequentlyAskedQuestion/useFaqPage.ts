@@ -14,7 +14,7 @@ export const useFaqPage = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { platform, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
     const { data, isLoading } = useFaq()
     // Keyed by id: itemOrder repeats across the shared and platform rows.
     const [openId, setOpenId] = useState<string | null>(null)
@@ -27,7 +27,7 @@ export const useFaqPage = () => {
     const indentationMark = data?.indentationMark ?? ''
 
     // Same destination as the More page's "Missing Reward" action.
-    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress ?? kitUserId)
 
     const labels = {
         title: t('faq'),
