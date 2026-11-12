@@ -160,38 +160,57 @@
     --dashboard-card-border-c: #3F3F3F;
     --dashboard-card-radius: 12px;
     --dashboard-card-hover-bg: #242424;
-    --dashboard-card-label-f-s: 15px;
-    --dashboard-card-label-f-w: 400;
-    --dashboard-card-label-l-h: 22px;
+    /* Summary Card v2 (Figma 6284:387): label, then asset name + token amount
+       + $ badge on one baseline. */
+    --dashboard-card-label-f-s: 13px;
+    --dashboard-card-label-f-w: 700;
+    --dashboard-card-label-l-h: 16px;
     --dashboard-card-label-f-c: #8C8C8C;
-    --dashboard-card-amount-f-s: 20px;
+    --dashboard-card-name-f-s: 18px;
+    --dashboard-card-name-f-w: 600;
+    --dashboard-card-name-l-h: 18px;
+    --dashboard-card-name-f-c: #FBFBFB;
+    --dashboard-card-amount-f-s: 13px;
     --dashboard-card-amount-f-w: 700;
-    --dashboard-card-amount-l-h: 24px;
-    --dashboard-card-amount-f-c: #FBFBFB;
-    --dashboard-card-label-disabled-f-w: 400;
-    --dashboard-card-label-disabled-l-h: 22px;
+    --dashboard-card-amount-l-h: 16px;
+    --dashboard-card-amount-f-c: #8C8C8C;
+    --dashboard-card-label-disabled-f-w: 700;
+    --dashboard-card-label-disabled-l-h: 16px;
     --dashboard-card-label-disabled-f-c: #3F3F3F;
 
     /* The $ conversion badge sits on the card without a lift of its own. */
     --dashboard-badge-bg: #242424;
     --dashboard-badge-radius: 20px;
-    --dashboard-badge-f-s: 15px;
-    --dashboard-badge-f-w: 500;
-    --dashboard-badge-l-h: 22px;
+    --dashboard-badge-f-s: 13px;
+    --dashboard-badge-f-w: 700;
+    --dashboard-badge-l-h: 16px;
     --dashboard-badge-f-c: #8C8C8C;
 
+    /* Card action is Button - CORE Size=Small. Details is Secondary:
+       Surface/Card with a Border/Default outline. */
     --rewards-card-btn-radius: 80px;
-    --dashboard-card-btn-bg: #3F3F3F;
-    --dashboard-card-btn-border-w: 0;
-    --dashboard-card-btn-border-c: transparent;
-    --dashboard-card-btn-f-s: 16px;
+    --dashboard-card-btn-bg: #242424;
+    --dashboard-card-btn-border-w: 1px;
+    --dashboard-card-btn-border-c: #3F3F3F;
+    --dashboard-card-btn-f-s: 12px;
     --dashboard-card-btn-f-w: 500;
-    --dashboard-card-btn-l-h: 22px;
+    --dashboard-card-btn-l-h: 15px;
     --dashboard-card-btn-f-c: #FBFBFB;
     --dashboard-card-btn-hover-bg: #505050;
-    --dashboard-card-btn-disabled-bg: #3F3F3F;
+    --dashboard-card-btn-disabled-bg: #242424;
     --dashboard-card-btn-disabled-f-c: #8C8C8C;
-    --dashboard-card-btn-disabled-l-h: 22px;
+    --dashboard-card-btn-disabled-l-h: 16px;
+    /* Claim is Primary: Accent/Primary fill, no outline, Text/On-accent
+       label. Same colours and states as the big primary button. */
+    --dashboard-claim-btn-bg: #F36A3D;
+    --dashboard-claim-btn-hover-bg: #D95A30;
+    --dashboard-claim-btn-border-w: 0;
+    --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-w: 600;
+    --dashboard-claim-btn-l-h: 16px;
+    --dashboard-claim-btn-f-c: #FFFFFF;
+    --dashboard-claim-btn-disabled-bg: #3F3F3F;
+    --dashboard-claim-btn-disabled-f-c: #8C8C8C;
 
     --dashboard-history-radius: 12px;
     --dashboard-history-f-s: 16px;
