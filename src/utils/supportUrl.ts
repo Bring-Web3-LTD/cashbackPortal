@@ -15,9 +15,12 @@ const supportBase = (supportUrl?: string): URL => {
     return new URL(DEFAULT_SUPPORT_URL)
 }
 
-/** Whether a link points at this session's support site, or at the Bring one a terms doc may still name. */
+// Bring's support sites: the current one and the one older terms docs still name
+const SUPPORT_HOSTS = ['support.bring.network', 'support.bringweb3.io']
+
+/** Whether a link points at this session's support site or at one of Bring's. */
 export const isSupportUrl = (url: URL, supportUrl?: string): boolean =>
-    url.hostname === supportBase(supportUrl).hostname || url.hostname === new URL(DEFAULT_SUPPORT_URL).hostname
+    url.hostname === supportBase(supportUrl).hostname || SUPPORT_HOSTS.includes(url.hostname)
 
 /** "Missing a reward?" / "Need help?" link with the user's context. */
 export const buildSupportUrl = (supportUrl: string | undefined, platform: string, identity?: string | null): string => {
