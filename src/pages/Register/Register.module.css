@@ -1,0 +1,117 @@
+.form {
+  width: min(480px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+}
+
+/* Wider column for the 8-box OTP step */
+.formWide {
+  width: min(596px, 100%);
+}
+
+/* Match the Verify button to the code row's actual width: N boxes (64px)
+   plus the 12px gaps between them - N comes from --code-count. The design's
+   40px row->button is already exactly the two 20px flex gaps around the
+   collapsed feedback line, so no extra margin on desktop. On mobile the
+   feedback line keeps its height, and the extra 20 on top of the flex gap
+   restores the frame's 40px message->button; the button simply spans the
+   350px container. */
+.codeAction {
+  box-sizing: border-box;
+  width: min(100%, calc(var(--code-count) * 64px + (var(--code-count) - 1) * 12px));
+  margin-inline: auto;
+
+  @media (max-width: 640px) {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+/* Design has 24px between the Verify button and Resend, against the form's
+   20px gap. */
+.resend {
+  margin-top: 4px;
+}
+
+.resendCounting {
+  color: #6b7078;
+  opacity: 0.6;
+}
+
+/* The code-step feedback line (error / resend notice), always mounted so the
+   row and buttons hold their position in every state — the mobile frames
+   (4:423/4:451) reserve its space via a hidden ErrorMessage node: message
+   centred 12px under the row (the form's 20px gap - 8), then 40px to the
+   button. The desktop error frame has no message text and specs a constant
+   40px row->button, so there the line is collapsed to 0 height and overflows
+   into that gap at the established 16px offset — layout-neutral either way.
+   The margin-bottom refunds the -4px so the flex gaps still sum to 40. */
+.codeFeedback {
+  height: 0;
+  margin: -4px 0 4px;
+
+  @media (max-width: 640px) {
+    height: auto;
+    margin: -8px 0 0;
+    text-align: center;
+  }
+}
+
+/* Controls cap at 400 in this 480px column (the width the GIS-rendered button
+   was pinned to, kept as the design's): div/input/button are controls, h1/p
+   copy, .narrow the error <p>. */
+.emailForm > :is(div, input, button),
+.emailForm > .narrow {
+  width: min(400px, 100%);
+  align-self: center;
+}
+
+/* The mobile frames put different spacing between the subtitle and what
+   follows: 30px on the email step, 40px on the code step. The shared
+   subtitle's mobile margin-bottom (12px + the form's 20px gap = 32px) is
+   overridden per step; desktop keeps the shared 20px (= 40px gap) both. */
+.emailSubtitle {
+  @media (max-width: 640px) {
+    margin-bottom: 10px;
+  }
+}
+
+.codeSubtitle {
+  @media (max-width: 640px) {
+    margin-bottom: 20px;
+  }
+}
+
+.success {
+  width: min(657px, 100%);
+}
+
+/* One asset for both breakpoints (414x318 transparent PNG: offer card +
+   receipt, already rotated and rounded in the art). `height: auto` with no
+   aspect-ratio and no object-fit is what keeps it undistorted - the image
+   always draws at its natural 414:318 ratio, whatever width it lands on. It
+   caps at its native 414px on desktop and shrinks with the 350px block on
+   mobile; the form's 20px gap is the design's image->title spacing. */
+.coupon {
+  display: block;
+  width: min(414px, 100%);
+  height: auto;
+  align-self: center;
+}
+
+/* The shared subtitle carries a 20px bottom margin (spacing to the input on
+   the other steps). Here it's the last element, so that margin inflates the
+   centred block (368px instead of the design's 354px) and shifts every line
+   up ~7px. Also the success screen specs 14/20 on mobile where the shared
+   class is 15/21. */
+.successSubtitle {
+  margin: -4px 0 0;
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: -4px 0 0;
+  }
+}

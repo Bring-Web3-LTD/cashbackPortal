@@ -1,10 +1,12 @@
 import { useLocation, useRouteLoaderData } from 'react-router-dom';
 import { AnalyticsProvider } from '../context/AnalyticsContext';
-import { MAINTENANCE_MODE } from '../config';
+import { MAINTENANCE_MODE, STANDALONE } from '../config';
 import '../utils/i18n'
+import { useSignedIn } from '../api/request';
 import { WalletProvider } from '../context/WalletAddressContext';
 import { ClaimProvider } from '../context/ClaimContext';
 import Maintenance from '../pages/Maintenance/Maintenance';
+import Register from '../pages/Register/Register';
 import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
 import LegalBar from '../components/LegalBar/LegalBar';
@@ -20,12 +22,20 @@ const Layout = () => {
     const data = useRouteLoaderData('root') as LoaderData;
 
     const { platform } = data;
+    const signedIn = useSignedIn();
 
     if (MAINTENANCE_MODE) {
         return (
             <Maintenance />
         );
 
+    }
+
+    // No identity, no portal: standalone users sign in by email, and the token
+    // says whether a verified session issued it. A session that dies later (the
+    // refresh answered 401) brings the same screen back.
+    if (STANDALONE && (data.loginType !== 'email' || signedIn === false)) {
+        return <Register />;
     }
 
     return (

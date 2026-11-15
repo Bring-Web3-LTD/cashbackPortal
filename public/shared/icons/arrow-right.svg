@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 12" fill="none">
+  <!-- Trailing arrow on primary buttons. Drawn rather than typed: the designs
+       use U+2192, which sits outside the Latin subsets webfonts ship, so a text
+       arrow falls back to a system font and changes shape per platform.
+       Path data is verbatim from the designer's export (minus its no-op
+       clipPath): a 12x10 vector with a 1.5 round stroke inside a 14x12 frame,
+       so the tight viewBox masks onto .btnArrow's 14x12 (em-scaled) box
+       without shrinking the glyph.
+       Stroked in white (the export says black) so the shape works as a CSS
+       mask under either alpha- or luminance-based mask-mode; the visible
+       colour comes from `currentColor` on .btnArrow in styles/form.module.css. -->
+  <path
+    d="M1 6H13M8 11L13 6L8 1"
+    stroke="#fff"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

@@ -57,7 +57,7 @@ yarn install
 | `VITE_PORTAL_EXTENSION_ID` | Default value for the Extension ID input. |
 | `VITE_PORTAL_LOCAL_URL` | If set, the wrapper rewrites the iframe origin to this URL while keeping the `?token=…` query — lets you iterate on the local portal while still using a real dev token. Leave empty to use the API's `iframeUrl` as-is. |
 | `VITE_PORTAL_WALLET` | Optional default wallet address used by the mock wallet on auto-connect. Leave empty for a random throwaway address. |
-| `VITE_PORTAL_EMAIL` | Optional email the **SolflareRewards** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). SolflareRewards signs in by email, not wallet. Until TODO#661, `check/portal` gets `email` plus a deterministic stand-in `walletAddress` derived from that email (SHA-256, same email → same address and rewards). |
+| `VITE_PORTAL_EMAIL` | Optional email the **SolflareRewards** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). SolflareRewards signs in by email, not wallet: `check/portal` gets `email` and no `walletAddress`. |
 | `VITE_PORTAL_CAB_USER_ID` | userId the wrapper hands the portal when the **CAB** dashboard flag is on. The flag pins `isCab` on the portal URL (any provider / key) and the wrapper stands in for the extension kit: it posts `USER_ID` once the portal reports `PORTAL_FLAGS`, so no `GET_USER_ID` round-trip and no kit needed. Unset = `dev-kit-user-0001`. For real backend behaviour use the EckoRewards key on the Ecko provider. |
 | `VITE_VISUAL_DIFF` | Start state of the [visual-diff overlay](#visual-diff-overlay). The overlay is **always available**; `1`/`true` starts it expanded, anything else (or unset) starts it collapsed. |
 | `FIGMA_TOKEN` | Server-side Figma personal access token (never exposed to the browser). Lets the overlay's **Figma** field render a frame straight from a Figma link via the dev `/__figma-image` proxy. Create one at <https://www.figma.com/developers/api#access-tokens>. |
@@ -152,6 +152,23 @@ Open <http://localhost:5174>.
 On `rewrds.xyz` the portal runs with no wrapper: it calls `check/portal` itself and has no `token` on its URL. The **SolflareRewards** provider always runs that way (the only standalone platform for now; the header says so and the wallet inputs are disabled): the wrapper makes no `check/portal` call and loads `VITE_PORTAL_LOCAL_URL` with `?standalone=true` (honoured outside prod only). The portal needs `VITE_STANDALONE_API_KEY` (the platform 13 portal key) in its own `.env.local`, and optionally `VITE_STANDALONE_API_URL`.
 
 The portal still sits in the wrapper's iframe there, so cookies and `window.parent` behave like an embed. **Open top-level ↗** opens the same URL as the whole page, which is the real case.
+
+## Env override (`envName`)
+
+Any portal build, prod included, can be pointed at another backend stage from the browser, the same way the Chrome extension does it. In DevTools, switch the console context to the portal iframe, then reload the **whole tab** (F5):
+
+```js
+localStorage.setItem('envName', 'dev') // API → https://api.bringweb3.io/dev/v1/
+localStorage.removeItem('envName')     // back to the build-time VITE_API_URL
+```
+
+Don't `location.reload()` from the iframe context: the session token in the iframe URL lives 20s, so a bare iframe reload re-verifies an expired token. A tab reload makes the host page call `check/portal` again and hand the iframe a fresh one. The target stage must be able to verify that token, accept the portal's API key and know the token's platform.
+
+The value is read once on load and is only the stage segment (letters, digits, `_`, `-`). Anything else is ignored, so the host is always `api.bringweb3.io`. It wins over `VITE_STANDALONE_API_URL` too. The portal never writes the key. The API key is still the build's `VITE_API_KEY`, so the target stage must accept it.
+
+**In the wrapper**, no console needed: pick a stage from the **API path** dropdown or type one into the field at the top of the sidebar and press Enter (clear it to go back to the build default; the placeholder shows that default). The value is kept in the wrapper's own `localStorage.envName`, and the iframe reloads with a fresh session, no page reload. The wrapper then calls `https://api.bringweb3.io/{envName}/v1/extension/check/portal` for every provider (keys unchanged) and passes `?envName=` to the portal, so the token and the portal's API calls hit the same stage. The portal honours `?envName=` on every build, prod included.
+
+The dropdown lists the base paths on `api.bringweb3.io` (`aws apigateway get-base-path-mappings`) whose `{stage}-stack` is live (`aws cloudformation describe-stacks`, so half-deleted envs are hidden), run by the dev server with your AWS CLI v2 credentials (default profile/region, or `AWS_PROFILE` / `AWS_REGION`); the IAM user needs `apigateway:GET` and `cloudformation:DescribeStacks`. No AWS access or the hosted wrapper: no suggestions, typing still works, and the dev server terminal prints why (`[env-names] …`). `dev`, `sandbox` and `staging` sit on their own domains, so they aren't envNames.
 
 ## Visual diff overlay
 

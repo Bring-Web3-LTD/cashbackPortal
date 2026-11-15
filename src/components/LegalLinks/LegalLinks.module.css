@@ -1,0 +1,18 @@
+/* Design: legal-links under the submit button (1:2 / 4:380), Inter 400
+   13/18 in white on desktop and mobile alike, only the Terms of Use
+   underlined. Sits the form's plain 20px gap under the button. */
+.legal {
+  font-size: 13px;
+  line-height: 18px;
+  color: #fff;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-position: from-font;
+    /* The frames set a 5px auto-layout gap before the link; the JSX space is
+       only ~3.4px at 13px, and the shortfall shows as a ~1px ghost on the
+       centred line. The margin tops the space up to the component's 5px. */
+    margin-left: 1.6px;
+  }
+}
