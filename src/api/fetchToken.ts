@@ -63,7 +63,8 @@ const fetchToken = async (body: Body): Promise<Response> => {
             throw Error('There was an error while loading the page')
         }
 
-        if (data.info.walletAddress === 'null') {
+        // No wallet arrives as the string 'null', or as '' on a CAB token
+        if (!data.info.walletAddress || data.info.walletAddress === 'null') {
             data.info.walletAddress = null
         }
 
