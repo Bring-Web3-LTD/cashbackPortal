@@ -62,7 +62,7 @@ export function WalletProvider({
     mode = 'desktop',
 }: {
     children: ReactNode,
-    initialWalletAddress: string,
+    initialWalletAddress: string | null,
     initIsTester: boolean,
     initialWalletName?: string,
     initialWalletEmoji?: string,

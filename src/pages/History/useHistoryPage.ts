@@ -18,11 +18,11 @@ export const useHistoryPage = (only?: 'pending') => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { platform, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
     const { rows, isLoading } = useHistory()
     const [openId, setOpenId] = useState<string | null>(null)
 
-    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress ?? kitUserId)
 
     const labels = {
         title: t(only === 'pending' ? 'pendingTitle' : 'more'),
