@@ -679,19 +679,22 @@ const postToPortal = (data: Record<string, unknown>, label: string) => {
     }
 }
 
-// Forces every loading placeholder on. Live, not a URL param: the point is to
-// hold a skeleton against the design without waiting on a response. Re-sent
-// whenever the portal reloads, since the flag lives in the portal's memory.
-const skeletonPreviewEl = $<HTMLInputElement>('skeletonPreview')
-
-function pushSkeletonMode() {
-    postToPortal({ action: 'PORTAL_SKELETON', on: skeletonPreviewEl.checked }, 'skeleton mode')
+// Portal preview toggles. Live, not a URL param: the point is to hold a state
+// against the design without waiting on a response. Re-sent whenever the
+// portal reloads, since the flag lives in the portal's memory.
+//  - Skeleton mode forces every loading placeholder on.
+//  - Claim enabled preview shows the Claim button enabled with no balance
+//    (look only: a click does nothing).
+const wirePreviewToggle = (id: string, action: string, label: string) => {
+    const el = $<HTMLInputElement>(id)
+    const push = () => postToPortal({ action, on: el.checked }, label)
+    el.addEventListener('change', push)
+    iframeEl.addEventListener('load', () => {
+        if (el.checked) push()
+    })
 }
-
-skeletonPreviewEl.addEventListener('change', pushSkeletonMode)
-iframeEl.addEventListener('load', () => {
-    if (skeletonPreviewEl.checked) pushSkeletonMode()
-})
+wirePreviewToggle('skeletonPreview', 'PORTAL_SKELETON', 'skeleton mode')
+wirePreviewToggle('claimPreview', 'PORTAL_CLAIM_PREVIEW', 'claim preview')
 
 const pairScreensEl = $<HTMLDivElement>('pairScreens')
 for (const [screen, label] of PAIR_SCREENS) {
