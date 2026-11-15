@@ -72,8 +72,15 @@ const stageOf = (url?: string): string => {
 const defaultStage = stageOf(API_BASE)
 
 const apiStage = defaultStage
+// envName (localStorage): check/portal stage for all providers, forwarded as ?envName=
+const ENV_NAME_RE = /^[\w-]+$/
+let envName = localStorage.getItem('envName') || ''
+if (!ENV_NAME_RE.test(envName)) envName = ''
 // Resolved against the currently selected wallet provider at call time.
-const getApiUrl = (): string | undefined => PROVIDER_API[activeProvider]?.url || API_BASE
+const getProviderApiUrl = (): string | undefined => PROVIDER_API[activeProvider]?.url || API_BASE
+const getApiUrl = (): string | undefined => envName
+    ? `https://api.bringweb3.io/${envName}/v1/extension/check/portal`
+    : getProviderApiUrl()
 const getApiKey = (): string | undefined => PROVIDER_API[activeProvider]?.key || API_KEY
 
 const DEFAULT_EXT_ID = (env.VITE_PORTAL_EXTENSION_ID as string | undefined) ?? ''
@@ -98,7 +105,13 @@ const walletLabelEl = $<HTMLSpanElement>('walletLabel')
 const extensionEl = $<HTMLInputElement>('extensionId')
 const walletNameEl = $<HTMLInputElement>('walletName')
 const walletEmojiEl = $<HTMLInputElement>('walletEmoji')
-const apiStageInfoEl = $<HTMLElement>('apiStageInfo')
+const apiStageInfoEl = $<HTMLInputElement>('apiStageInfo')
+const envNameErrorEl = $<HTMLElement>('envNameError')
+// Empty msg clears: red border via aria-invalid, text under the field
+const setEnvNameError = (msg: string) => {
+    apiStageInfoEl.setAttribute('aria-invalid', String(!!msg))
+    envNameErrorEl.textContent = msg
+}
 const refreshBtn = $<HTMLButtonElement>('refresh')
 const iframeEl = $<HTMLIFrameElement>('portal')
 const frameEl = $<HTMLElement>('frame')
@@ -118,7 +131,8 @@ extensionEl.value = DEFAULT_EXT_ID
 // first bootstrap logs the portal in.
 walletEl.value = ''
 themeEl.value = DEFAULT_THEME === 'dark' || DEFAULT_THEME === 'light' ? DEFAULT_THEME : ''
-apiStageInfoEl.textContent = apiStage || '(default)'
+apiStageInfoEl.value = envName
+apiStageInfoEl.placeholder = apiStage || '(default)'
 
 const layoutEl = $<HTMLElement>('layout')
 const toggleBtn = $<HTMLButtonElement>('toggleSidebar')
@@ -851,9 +865,9 @@ clearMsgLogBtn.addEventListener('click', () => {
 const shortAddress = (addr: string) =>
     addr.length > 10 ? `${addr.slice(0, 4)}…${addr.slice(-4)}` : addr
 
-// SolflareRewards users sign in by email, not with a wallet. Until the email login
-// (TODO#702) and the email-session JWT (TODO#661) exist, the mock session
-// stands in behind a "Sign in" button.
+// SolflareRewards users sign in by email, not with a wallet: the standalone
+// portal shows its own sign-in screen, so this button only labels the mock
+// session as a sign-in.
 const isSolflareRewards = () => walletProviderEl.value === 'solflareRewards'
 
 function setWalletButton(address: string | null) {
@@ -943,8 +957,8 @@ const getReadyAdapter = (): MockWallet => {
     return readyAdapter
 }
 // SolflareRewards: the identity is an email, not a wallet. The "address" this adapter
-// hands the bridge is the email; bootstrap() sends it as `email`, plus a
-// deterministic stand-in `walletAddress` until TODO#661. There is no wallet, so nothing to sign (SolflareRewards is noClaim).
+// hands the bridge is the email; bootstrap() sends it as `email` with no
+// `walletAddress`. There is no wallet, so nothing to sign (SolflareRewards is noClaim).
 let solflareRewardsEmail: string | null = null
 const defaultSolflareRewardsEmail = () => DEFAULT_EMAIL || `dev+${crypto.randomUUID().slice(0, 8)}@bring.network`
 const solflareRewardsAdapter: MockWallet = {
@@ -967,7 +981,122 @@ const initialProvider = ((savedProvider === 'bring' ? 'solflareRewards' : savedP
 walletProviderEl.value = initialProvider
 let activeProvider: WalletProviderId = initialProvider
 // Now that the active provider is known, show its API stage.
-apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
+apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
+// envName combobox (ARIA combobox pattern). Picking an option commits it; typed
+// text still commits on Enter/blur via the change handler below.
+const envNamesEl = $<HTMLUListElement>('envNames')
+let envNames: string[] | null = null // null = still loading
+let envActive = -1
+
+const envOptionEls = () => [...envNamesEl.querySelectorAll<HTMLLIElement>('[role="option"]')]
+
+function setEnvActive(i: number) {
+    const opts = envOptionEls()
+    envActive = opts.length ? (i + opts.length) % opts.length : -1
+    opts.forEach((el, j) => el.classList.toggle('active', j === envActive))
+    const el = opts[envActive]
+    if (el) {
+        apiStageInfoEl.setAttribute('aria-activedescendant', el.id)
+        el.scrollIntoView({ block: 'nearest' })
+    } else {
+        apiStageInfoEl.removeAttribute('aria-activedescendant')
+    }
+}
+
+function openEnvNames(filter = '') {
+    const q = filter.trim().toLowerCase()
+    const option = (value: string, i: number) => {
+        const li = document.createElement('li')
+        li.id = `envName-opt-${i}`
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(value === envName))
+        li.dataset.value = value
+        if (value) {
+            li.textContent = value
+        } else {
+            li.className = 'default'
+            li.append('Build default ', Object.assign(document.createElement('span'), { textContent: apiStageInfoEl.placeholder }))
+        }
+        return li
+    }
+    const names = (envNames ?? []).filter((n) => n.toLowerCase().includes(q))
+    const items = [option('', 0), ...names.map((n, i) => option(n, i + 1))]
+    if (!names.length) {
+        const empty = document.createElement('li')
+        empty.className = 'empty'
+        empty.textContent = envNames === null ? 'Loading envs…' : q ? 'No match' : 'No envs (AWS CLI unavailable)'
+        items.push(empty)
+    }
+    envNamesEl.replaceChildren(...items)
+    envNamesEl.hidden = false
+    apiStageInfoEl.setAttribute('aria-expanded', 'true')
+    setEnvActive(-1)
+}
+
+function closeEnvNames() {
+    envNamesEl.hidden = true
+    apiStageInfoEl.setAttribute('aria-expanded', 'false')
+    setEnvActive(-1)
+}
+
+const pickEnvName = (value: string) => {
+    apiStageInfoEl.value = value
+    closeEnvNames()
+    apiStageInfoEl.dispatchEvent(new Event('change'))
+}
+
+// Dev server only (vite.config.ts); hosted builds just get no suggestions
+fetch('/__env-names')
+    .then((r) => (r.ok ? r.json() : []))
+    .then((names: string[]) => { envNames = names })
+    .catch(() => { envNames = [] })
+    .finally(() => { if (!envNamesEl.hidden) openEnvNames(apiStageInfoEl.value) })
+
+apiStageInfoEl.addEventListener('input', () => openEnvNames(apiStageInfoEl.value))
+apiStageInfoEl.addEventListener('blur', closeEnvNames)
+apiStageInfoEl.addEventListener('keydown', (e) => {
+    const open = !envNamesEl.hidden
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        if (!open) openEnvNames()
+        setEnvActive(envActive + (e.key === 'ArrowDown' ? 1 : -1))
+    } else if (e.key === 'Enter' && open && envActive >= 0) {
+        e.preventDefault()
+        pickEnvName(envOptionEls()[envActive].dataset.value ?? '')
+    } else if (e.key === 'Escape' && open) {
+        e.preventDefault()
+        e.stopPropagation() // visual-diff overlay also listens for Esc
+        closeEnvNames()
+    }
+})
+apiStageInfoEl.addEventListener('click', () => { if (envNamesEl.hidden) openEnvNames() })
+// mousedown + preventDefault keeps focus in the input, so blur doesn't close first
+const envNamesToggleEl = $<HTMLButtonElement>('envNamesToggle')
+envNamesToggleEl.addEventListener('mousedown', (e) => e.preventDefault())
+envNamesToggleEl.addEventListener('click', () => {
+    if (envNamesEl.hidden) openEnvNames()
+    else closeEnvNames()
+    apiStageInfoEl.focus()
+})
+envNamesEl.addEventListener('mousedown', (e) => e.preventDefault())
+envNamesEl.addEventListener('click', (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLLIElement>('[role="option"]')
+    if (li) pickEnvName(li.dataset.value ?? '')
+})
+// New stage = new session: full iframe reload
+apiStageInfoEl.addEventListener('change', () => {
+    const next = apiStageInfoEl.value.trim()
+    if (next && !ENV_NAME_RE.test(next)) return setEnvNameError(`Invalid envName "${next}": letters, digits, _ and - only`)
+    setEnvNameError('')
+    if (next === envName) return
+    envName = next
+    apiStageInfoEl.value = envName
+    if (envName) localStorage.setItem('envName', envName)
+    else localStorage.removeItem('envName')
+    appendLog('info', `envName → ${envName || '(build default)'}`)
+    isFirstLoad = true
+    void refresh()
+})
 
 const pickAdapter = (): MockWallet => {
     switch (activeProvider) {
@@ -1071,7 +1200,7 @@ walletProviderEl.addEventListener('change', async () => {
     syncIdentityUi()
     // Switching provider = new platform/API key = brand-new portal session:
     // reflect the (possibly different) stage and force a full iframe reload.
-    apiStageInfoEl.textContent = stageOf(getApiUrl()) || '(default)'
+    apiStageInfoEl.placeholder = stageOf(getProviderApiUrl()) || '(default)'
     isFirstLoad = true
     void refresh()
 })
@@ -1266,13 +1395,6 @@ function buildIframeSrc(returnedUrl: string, token: string): string {
     }
 }
 
-/** Deterministic 0x address for an email: the first 20 bytes of its SHA-256. */
-async function standInAddress(email: string): Promise<string> {
-    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(email.toLowerCase()))
-    const hex = Array.from(new Uint8Array(hash), (b) => b.toString(16).padStart(2, '0')).join('')
-    return `0x${hex.slice(0, 40)}`
-}
-
 async function bootstrap(walletAddress: string | null): Promise<PortalApiResponse | null> {
     const apiUrl = getApiUrl()
     const apiKey = getApiKey()
@@ -1281,15 +1403,12 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         return null
     }
 
-    // SolflareRewards signs in by email: the identity is an email, never a wallet. The
-    // backend takes no email yet (portal entry from the email session is
-    // TODO#661), and the portal treats a session without a walletAddress as
-    // signed out. Until then the session carries a stand-in address derived
-    // from the email, so the same email always gets the same rewards.
+    // SolflareRewards signs in by email: the identity is an email, never a
+    // wallet, and the backend takes it from the session cookies, not the body.
     const email = isSolflareRewards() ? walletAddress : null
     const body = {
         extensionId: extensionEl.value.trim() || undefined,
-        walletAddress: email ? await standInAddress(email) : walletAddress,
+        walletAddress: email ? null : walletAddress,
         email: email || undefined,
         // Optional wallet identity — /check/portal embeds these in the JWT,
         // surfaced in the Mobile Portal claim screen.
@@ -1303,7 +1422,6 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
         devicePlatform: getDevicePlatform(),
     }
 
-    if (email) appendLog('info', `SolflareRewards → stand-in address ${body.walletAddress} (until TODO#661)`)
     const requestId = ++pendingId
     setStatus('Calling check/portal…')
 
@@ -1320,6 +1438,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
     } catch (err) {
         if (requestId !== pendingId) return null
         setStatus(`Network error: ${(err as Error).message}`, true)
+        if (envName) setEnvNameError(`Env "${envName}" doesn't exist`)
         return null
     }
 
@@ -1327,8 +1446,11 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
 
     if (!res.ok) {
         setStatus(`HTTP ${res.status} ${res.statusText}`, true)
+        if (envName) setEnvNameError(`Env "${envName}" doesn't exist`)
         return null
     }
+    // Don't wipe a format error still sitting in the field
+    if (apiStageInfoEl.value.trim() === envName) setEnvNameError('')
 
     let data: PortalApiResponse
     try {
@@ -1358,6 +1480,7 @@ async function bootstrap(walletAddress: string | null): Promise<PortalApiRespons
 function applyDevParams(u: URL) {
     if (styleAsEl.value) u.searchParams.set('styleAs', styleAsEl.value)
     if (statusPreviewEl.checked) u.searchParams.set('test', 'status')
+    if (envName) u.searchParams.set('envName', envName)
     for (const [name, value] of overrides) u.searchParams.set(name, String(value))
 }
 
