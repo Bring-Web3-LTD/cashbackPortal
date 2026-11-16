@@ -167,3 +167,9 @@
     border: 0;
     background: var(--coupons-frame-bg, #fff);
 }
+
+/* Holds the frame's place until the coupons URL arrives (it can come late,
+   from /cache). Same fill as the other home skeletons. */
+.coupons_skeleton {
+    background: var(--retailer-card-skeleton-bg, var(--retailer-card-amount-bg));
+}

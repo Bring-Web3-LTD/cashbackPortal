@@ -107,14 +107,19 @@ const Home = () => {
                 : null}
             <main className={styles.main}>
                 <Dashboard view={view} onViewChange={setView} />
-                {showCoupons ? (
+                {showCoupons ? (couponsIframeSrc ? (
                     <iframe
                         id="coupons-frame"
                         className={styles.coupons_frame}
                         src={couponsIframeSrc}
                         title={labels.couponsTab}
                     />
-                ) : (<>
+                ) : (
+                    <div
+                        className={`${styles.coupons_frame} ${styles.coupons_skeleton} skeleton_shimmer`}
+                        aria-hidden="true"
+                    />
+                )) : (<>
                 <div className={styles.filters_section}>
                     {searchLoading ? (
                         <div className={styles.search_section} aria-hidden="true">

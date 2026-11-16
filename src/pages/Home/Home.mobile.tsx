@@ -101,13 +101,18 @@ const MobileHome = () => {
                     onClaim={handleOpenClaim}
                     onPairWallet={handleOpenPair}
                 />
-                {mode === 'coupons' ? (
+                {mode === 'coupons' ? (couponsIframeSrc ? (
                     <iframe
                         className={styles.couponsFrame}
                         src={couponsIframeSrc}
                         title={labels.coupons}
                     />
                 ) : (
+                    <div
+                        className={`${styles.couponsFrame} ${styles.couponsSkeleton}`}
+                        aria-hidden="true"
+                    />
+                )) : (
                     <>
                         {renderFilterRow()}
                         <MobileCardsList
