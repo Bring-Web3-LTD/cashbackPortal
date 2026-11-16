@@ -26,11 +26,13 @@ const SEARCH_MIN_CHARS = 2
 
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, cryptoSymbols, noClaim, isHub, couponsEnabled } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
     const queryClient = useQueryClient()
 
-    const [mode, setMode] = useState<DashboardMode>('cashback')
+    // The hub opens on Coupons; every other portal, and a hub without the
+    // Coupons tab, opens on Cashback. Same rule as the desktop home.
+    const [mode, setMode] = useState<DashboardMode>(isHub && couponsEnabled ? 'coupons' : 'cashback')
     const [category, setCategory] = useState<CategoriesItem | null>(null)
     const [searchOpen, setSearchOpen] = useState(false)
     // Text currently typed in the input — drives the autocomplete dropdown only.

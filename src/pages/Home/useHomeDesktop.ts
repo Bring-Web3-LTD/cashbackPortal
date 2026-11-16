@@ -5,7 +5,7 @@
  *
  * Named for the surface because `useHomePage` is the mobile home's hook.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'framer-motion'
@@ -21,7 +21,7 @@ import type { StatusModalState } from '../../components/Modals/StatusModal/Statu
 
 export const useHomeDesktop = () => {
     const { t } = useTranslation()
-    const { isCountryAvailable, couponsEnabled } = useRouteLoaderData('root') as LoaderData
+    const { isCountryAvailable, couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams()
     const { isTester, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
@@ -37,14 +37,21 @@ export const useHomeDesktop = () => {
     // Seeded from navigation state so the switcher still works on the pages
     // that show the dashboard but not the browse area.
     const routedView = (useLocation().state as { view?: PortalView } | null)?.view
-    const [view, setView] = useState<PortalView>(routedView ?? 'cashback')
+    // The hub opens on Coupons; every other portal, and a hub without the
+    // Coupons tab, opens on Cashback.
+    const [view, setView] = useState<PortalView>(routedView ?? (isHub && couponsEnabled ? 'coupons' : 'cashback'))
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)
     const [isDemo, setIsDemo] = useState(false)
     const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
 
-    const paginationRef = useRef<HTMLDivElement>(null)
+    // The sentinel only exists in the Cashback view, so it mounts after the
+    // first render on a Hub (which opens on Coupons) and remounts on every
+    // switch back. useInView subscribes when its ref object changes, not when
+    // `.current` does, so the ref is rebuilt from the mounted element.
+    const [paginationEl, setPaginationEl] = useState<HTMLDivElement | null>(null)
+    const paginationRef = useMemo(() => ({ current: paginationEl }), [paginationEl])
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch, isLoading: isLoadingCategories } = useCategories()
@@ -82,9 +89,11 @@ export const useHomeDesktop = () => {
         setIsDemo,
         view,
         setView,
-        showCoupons: Boolean(couponsEnabled && couponsIframeSrc && view === 'coupons'),
+        showCoupons: Boolean(couponsEnabled && view === 'coupons'),
+        // Can arrive late, through /cache: the view shows a skeleton until then.
         couponsIframeSrc,
-        paginationRef,
+        // Callback ref for the pagination sentinel.
+        paginationRef: setPaginationEl,
         search,
         category,
         changeSearch: (searchTerm: ReactSelectOptionType) => {
