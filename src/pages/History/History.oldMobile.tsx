@@ -26,7 +26,6 @@ interface RowProps extends HistoryMobile {
 }
 
 interface ClaimToken {
-    tokenAmount: number
     description: string[][]
     tokenSymbol: string
 }
@@ -143,26 +142,25 @@ const HistoryMobile = () => {
 
     const balance = data?.data
 
-    const createClaims = (claims: Claim[] | undefined): HistoryMobile[] => {
+    const createClaims = (claims: Claim[] | undefined, totals: ClaimsTotal[] | undefined): HistoryMobile[] => {
         if (!claims) return []
         const res: ClaimsRes = {}
 
         claims.map(claim => {
-            const { tokenSymbol, tokenAmount, date, txid } = claim
-            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [] }
+            const { tokenSymbol, tokenAmount, tokenAmountDisplay, date, txid } = claim
+            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, description: [] }
             
-            const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
+            const descriptionItem: string[] = [formatDate(date), `${tokenAmountDisplay ?? tokenAmount} ${tokenSymbol}`]
             if (txid) {
                 descriptionItem.push(txid)
             }
             
             res[tokenSymbol].description.push(descriptionItem)
-            res[tokenSymbol].tokenAmount += tokenAmount
         })
 
         const arr = Object.keys(res).map(key => ({
             ...res[key]
-            , tokenAmount: `${res[key].tokenAmount} ${key}`,
+            , tokenAmount: `${totals?.find(total => total.tokenSymbol === key)?.tokenAmountDisplay ?? ''} ${key}`,
             imgSrc: `${iconsPath}/gift.svg`,
             imgSrcFallbacks: [...(baseIconsPath ? [`${baseIconsPath}/gift.svg`] : []), `${defaultIconsPath}/gift.svg`],
             tokenSymbol: key,
@@ -175,7 +173,7 @@ const HistoryMobile = () => {
     const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryMobile[] => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
-            tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
+            tokenAmount: `${deal.tokenAmountDisplay ?? deal.tokenAmount} ${deal.tokenSymbol}`,
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
             // /cache calls every approved reward claimable, but on a noClaim
             // platform there is nothing to claim: it is saved for the user.
@@ -189,7 +187,7 @@ const HistoryMobile = () => {
         }))
     }
     const [imgExists, setImgExists] = useState(true)
-    const history = createClaims(balance?.movements.claims).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
+    const history = createClaims(balance?.movements.claims, balance?.movements.claimsTotal).concat(createDeals(balance?.movements.deals, data?.retailerIconBasePath))
 
     return (
         <div className={styles.container}>

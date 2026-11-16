@@ -26,7 +26,6 @@ export interface HistoryRow {
 }
 
 interface ClaimToken {
-    tokenAmount: number
     description: string[][]
     tokenSymbol: string
     /** Most recent claim in the group — the row stands for all of them. */
@@ -51,25 +50,24 @@ export const useHistoryDesktop = () => {
     const balance = data?.data
 
     /** Every claim of a token collapses into one row carrying the total. */
-    const createClaims = (claims: Claim[] | undefined): HistoryRow[] => {
+    const createClaims = (claims: Claim[] | undefined, totals: ClaimsTotal[] | undefined): HistoryRow[] => {
         if (!claims) return []
         const res: { [key: string]: ClaimToken } = {}
 
         claims.forEach(claim => {
-            const { tokenSymbol, tokenAmount, date, txid } = claim
-            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, tokenAmount: 0, description: [], date }
+            const { tokenSymbol, tokenAmount, tokenAmountDisplay, date, txid } = claim
+            if (!res[tokenSymbol]) res[tokenSymbol] = { tokenSymbol, description: [], date }
             if (new Date(date) > new Date(res[tokenSymbol].date)) res[tokenSymbol].date = date
 
-            const descriptionItem: string[] = [formatDate(date), `${tokenAmount} ${tokenSymbol}`]
+            const descriptionItem: string[] = [formatDate(date), `${tokenAmountDisplay ?? tokenAmount} ${tokenSymbol}`]
             if (txid) descriptionItem.push(txid)
 
             res[tokenSymbol].description.push(descriptionItem)
-            res[tokenSymbol].tokenAmount += tokenAmount
         })
 
         return Object.keys(res).map(key => ({
             ...res[key],
-            tokenAmount: `${res[key].tokenAmount} ${key}`,
+            tokenAmount: `${totals?.find(total => total.tokenSymbol === key)?.tokenAmountDisplay ?? ''} ${key}`,
             date: formatShortDate(res[key].date),
             imgSrc: `${iconsPath}/gift.svg`,
             imgSrcFallbacks: [...(baseIconsPath ? [`${baseIconsPath}/gift.svg`] : []), `${defaultIconsPath}/gift.svg`],
@@ -81,7 +79,7 @@ export const useHistoryDesktop = () => {
     const createDeals = (deals: Deal[] | undefined, retailerIconBasePath: string | undefined): HistoryRow[] => {
         if (!deals || !retailerIconBasePath) return []
         return deals.map(deal => ({
-            tokenAmount: `${deal.tokenAmount} ${deal.tokenSymbol}`,
+            tokenAmount: `${deal.tokenAmountDisplay ?? deal.tokenAmount} ${deal.tokenSymbol}`,
             // The purchase date, which is what the row is about.
             date: formatShortDate(deal.date ?? deal.startDate),
             totalEstimatedUsd: formatCurrency(deal.totalEstimatedUsd),
@@ -106,7 +104,7 @@ export const useHistoryDesktop = () => {
         ? balance?.movements.deals?.filter(deal => !SETTLED_STATUSES.includes(deal.status))
         : balance?.movements.deals
     // The claims aggregate is a settled row by definition, so it goes too.
-    const rows = (rewardsOnly ? [] : createClaims(balance?.movements.claims))
+    const rows = (rewardsOnly ? [] : createClaims(balance?.movements.claims, balance?.movements.claimsTotal))
         .concat(createDeals(deals, data?.retailerIconBasePath))
 
     return {

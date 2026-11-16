@@ -87,17 +87,13 @@ export const useHistory = (): UseHistoryResult => {
 
     const rows: MobileHistoryRow[] = []
 
-    // ── Claims: aggregate per tokenSymbol into one "Total Claims" row. ──
-    const claimsBySymbol: Record<
-        string,
-        { tokenAmount: number; description: string[][] }
-    > = {}
+    // ── Claims: one "Total Claims" row per tokenSymbol; the backend sends the sum. ──
+    const claimsBySymbol: Record<string, { description: string[][] }> = {}
     balance?.movements?.claims?.forEach((claim) => {
         const key = claim.tokenSymbol
         if (!claimsBySymbol[key]) {
-            claimsBySymbol[key] = { tokenAmount: 0, description: [] }
+            claimsBySymbol[key] = { description: [] }
         }
-        claimsBySymbol[key].tokenAmount += claim.tokenAmount
         const desc: string[] = [
             formatDate(claim.date),
             `${claim.tokenAmountDisplay ?? claim.tokenAmount} ${claim.tokenSymbol}`,
@@ -113,9 +109,9 @@ export const useHistory = (): UseHistoryResult => {
             date: '',
             iconSrc: '',
             isClaim: true,
-            // Summed floats — 0.015 + 0.006 is 0.020999999999999998 raw, which
-            // overflows the pill. Trim the binary noise, keep real precision.
-            amountDisplay: String(Number(agg.tokenAmount.toFixed(8))),
+            amountDisplay:
+                balance?.movements?.claimsTotal?.find((total) => total.tokenSymbol === symbol)
+                    ?.tokenAmountDisplay ?? '',
             tokenSymbol: symbol,
             status: statusLabel('claimed'),
             rawStatus: 'claimed',
