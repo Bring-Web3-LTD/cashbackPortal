@@ -34,20 +34,12 @@
 
 /* Fixed height from the design (107px desktop / 80px mobile) rather than
    padding around the content: Figma's Header is a fixed-height frame with its
-   children centred, so deriving the height from the close button's size left
-   the back label and X 15px high. */
+   children centred. */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   min-height: 107px;
   padding: 0 48px;
-
-  /* The X hugs the right edge even when the back button isn't rendered
-     (success screen) and space-between has only one child to place. */
-  & > :last-child {
-    margin-left: auto;
-  }
 
   @media (max-width: 640px) {
     min-height: 80px;
