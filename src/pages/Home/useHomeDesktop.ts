@@ -5,7 +5,7 @@
  *
  * Named for the surface because `useHomePage` is the mobile home's hook.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'framer-motion'
@@ -46,7 +46,12 @@ export const useHomeDesktop = () => {
     const [isDemo, setIsDemo] = useState(false)
     const [testStatus, setTestStatus] = useState<StatusModalState | null>(null)
 
-    const paginationRef = useRef<HTMLDivElement>(null)
+    // The sentinel only exists in the Cashback view, so it mounts after the
+    // first render on a Hub (which opens on Coupons) and remounts on every
+    // switch back. useInView subscribes when its ref object changes, not when
+    // `.current` does, so the ref is rebuilt from the mounted element.
+    const [paginationEl, setPaginationEl] = useState<HTMLDivElement | null>(null)
+    const paginationRef = useMemo(() => ({ current: paginationEl }), [paginationEl])
     const isVisible = useInView(paginationRef)
 
     const { data: categoriesSearch, isLoading: isLoadingCategories } = useCategories()
@@ -87,7 +92,8 @@ export const useHomeDesktop = () => {
         showCoupons: Boolean(couponsEnabled && view === 'coupons'),
         // Can arrive late, through /cache: the view shows a skeleton until then.
         couponsIframeSrc,
-        paginationRef,
+        // Callback ref for the pagination sentinel.
+        paginationRef: setPaginationEl,
         search,
         category,
         changeSearch: (searchTerm: ReactSelectOptionType) => {
