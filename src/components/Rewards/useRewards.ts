@@ -18,7 +18,7 @@ export interface RewardsProps {
 export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { platform, cryptoSymbols, noClaim, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
+    const { platform, cryptoSymbols, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
     const { walletAddress } = useWalletAddress()
     const { data, isLoading } = useBalance()
 
@@ -46,8 +46,7 @@ export const useRewards = () => {
 
     const labels = {
         rewards: t('rewards'),
-        // A noClaim platform pays out itself: approved rewards are saved.
-        claimable: noClaim ? t('approved') : t('claimable'),
+        claimable: t('claimable'),
         claim: t('claim'),
         pending: t('pending'),
         viewRewards: t('viewRewards'),

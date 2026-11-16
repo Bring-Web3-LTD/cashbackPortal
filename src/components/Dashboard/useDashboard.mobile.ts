@@ -56,7 +56,6 @@ export const useDashboard = () => {
         cryptoSymbols,
         couponsEnabled,
         isHub,
-        noClaim,
         firstTimeUser: firstTimeOverride,
         canPairWallet: canPairOverride,
     } = useRouteLoaderData('root') as LoaderData
@@ -71,9 +70,9 @@ export const useDashboard = () => {
         coupons: t('coupons'),
         cashback: t('cashback'),
         pending: t('pending'),
-        // A noClaim platform pays out itself: approved rewards are saved. The
-        // tile still opens the claim flow, which shows the coming-soon sheet.
-        claim: noClaim ? t('approved') : t('claim'),
+        // On a noClaim platform the tile opens the claim flow, which shows
+        // the coming-soon sheet.
+        claim: t('claim'),
         whatsThis: t('whatsThis'),
         pairWallet: t('pairWallet'),
         smartCashback: t('smartCashback'),

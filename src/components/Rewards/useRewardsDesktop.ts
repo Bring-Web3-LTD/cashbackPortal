@@ -84,7 +84,7 @@ const toCard = (token: Token | undefined, fallbackSymbol: string) => ({
 export const useRewardsDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, autoclaim, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, autoclaim } = useRouteLoaderData('root') as LoaderData
     const { isIdentified } = useRequestIdentity()
     // The signature round-trip and the status modal it drives live in one
     // place, because the What's This modal offers the same action.
@@ -170,9 +170,9 @@ export const useRewardsDesktop = () => {
 
     const labels = {
         pending: t('pending'),
-        // A noClaim platform pays out itself: approved rewards are saved. The
-        // Claim button stays and opens the coming-soon dialog (ClaimContext).
-        claimable: noClaim ? t('approved') : t('claimable'),
+        // On a noClaim platform the Claim button opens the coming-soon dialog
+        // (ClaimContext).
+        claimable: t('claimable'),
         details: t('details'),
         claim: t('claim'),
         historyCard: t('historyCard'),
