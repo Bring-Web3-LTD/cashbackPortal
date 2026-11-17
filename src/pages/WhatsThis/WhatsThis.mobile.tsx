@@ -21,7 +21,7 @@ const MobileWhatsThis = () => {
                 <MobileHeader title={labels.title} onClose={close} titleClassName={styles.headerTitle} />
                 <main className={styles.content}>
                     <div className={styles.block}>
-                        <p className={styles.intro}>{labels.intro}</p>
+                        {labels.intro && <p className={styles.intro}>{labels.intro}</p>}
                         <div className={styles.cards}>
                             {cards.map((card) => (
                                 <div key={card.icon} className={styles.card}>
