@@ -14,6 +14,7 @@ import { useCategories, selectCategories, selectSearchTerms } from './useCategor
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
 import { useBalance, selectEligible } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { useClaimPreview } from '../../hooks/useDevPreview'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
 import claimSubmit from '../../api/claim/submit'
@@ -23,22 +24,10 @@ import { ClaimModalState } from '../../utils/claimFlow'
 // too much to be useful.
 const SEARCH_MIN_CHARS = 2
 
-// Only https may reach the coupons <iframe src> — an iframe src is an
-// injection sink (a javascript: URL would run in the portal's origin), so
-// allowlist the scheme even though the value arrives via the verified JWT.
-const safeIframeSrc = (src?: string | null): string | undefined => {
-    if (!src) return undefined
-    try {
-        return new URL(src).protocol === 'https:' ? src : undefined
-    } catch {
-        return undefined
-    }
-}
-
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols, couponsIframeSrc, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress, walletName, walletEmoji } = useWalletAddress()
+    const { platform, userId, flowId, cryptoSymbols, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
+    const { walletAddress, walletName, walletEmoji, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
     const queryClient = useQueryClient()
 
     const [mode, setMode] = useState<DashboardMode>('cashback')
@@ -66,6 +55,13 @@ export const useHomePage = () => {
     const categories = selectCategories(filters)
     const searchTerms = selectSearchTerms(filters)
     const { data: balance } = useBalance()
+
+    // /cache answers under the resolved identity (session or kit userId), so
+    // its coupons URL carries the identity the token's one may lack.
+    const balanceCouponsSrc = balance?.couponsIframeSrc
+    useEffect(() => {
+        adoptCouponsIframeSrc(balanceCouponsSrc)
+    }, [balanceCouponsSrc, couponsIframeSrc, adoptCouponsIframeSrc])
     const eligible = selectEligible(balance)
     const currentCryptoSymbol = eligible?.tokenSymbol ?? cryptoSymbols?.[0] ?? ''
     const claimAmount = eligible?.tokenAmount ?? 0
@@ -126,7 +122,10 @@ export const useHomePage = () => {
         setSearchChip(null)
     }
 
+    const claimPreview = useClaimPreview()
     const handleOpenClaim = () => {
+        // Dev preview only enables the look; there is no balance to claim.
+        if (claimPreview) return
         // The platform pays out itself (the backend refuses the claim too), so
         // the button explains that claiming is coming soon.
         if (noClaim) {
@@ -253,7 +252,7 @@ export const useHomePage = () => {
         mode,
         setMode,
         // coupons — the partner iframe replaces the offers list in this mode
-        couponsIframeSrc: safeIframeSrc(couponsIframeSrc),
+        couponsIframeSrc,
         // filter row
         category,
         setCategory,

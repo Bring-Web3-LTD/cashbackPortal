@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useState, useCallback, ReactNode, useEffect } from 'react';
 import { useRouteLoaderData } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import fetchToken from '../api/fetchToken';
@@ -19,6 +19,9 @@ interface WalletContextType {
      *  walletName/Emoji it does NOT keep the stale value, so the UI can
      *  fall back to its connect placeholder). */
     couponsIframeSrc?: string;
+    /** Takes a coupons URL that carries an identity in place of one that does
+     *  not; a URL that already carries one is kept. */
+    adoptCouponsIframeSrc: (src?: string | null) => void;
 }
 
 export const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -36,6 +39,9 @@ const safeIframeSrc = (src?: string | null): string | undefined => {
         return undefined
     }
 }
+
+// The identity rides in the clickId AppCard echoes back on a redemption.
+const hasIdentity = (src: string): boolean => new URL(src).searchParams.has('external_id')
 
 export function WalletProvider({
     children,
@@ -66,6 +72,11 @@ export function WalletProvider({
     const [walletName, setWalletName] = useState<string | undefined>(initialWalletName)
     const [walletEmoji, setWalletEmoji] = useState<string | undefined>(initialWalletEmoji)
     const [couponsIframeSrc, setCouponsIframeSrc] = useState<string | undefined>(() => safeIframeSrc(initialCouponsIframeSrc))
+    const adoptCouponsIframeSrc = useCallback((src?: string | null) => {
+        const next = safeIframeSrc(src)
+        if (!next) return
+        setCouponsIframeSrc(current => current && hasIdentity(current) ? current : next)
+    }, [])
 
     useEffect(() => {
         // Standalone mode has no host page, and window.parent is the portal
@@ -122,7 +133,7 @@ export function WalletProvider({
     }, [mode, isHub, queryClient])
 
     return (
-        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc }}>
+        <WalletContext.Provider value={{ isTester, walletAddress, setWalletAddress, walletName, walletEmoji, couponsIframeSrc, adoptCouponsIframeSrc }}>
             {children}
         </WalletContext.Provider>
     );

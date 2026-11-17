@@ -227,31 +227,37 @@
     --dashboard-card-border-c: #EDEEF0;
     --dashboard-card-hover-border-c: #B9BBBF;
     --dashboard-card-radius: 12px;
-    --dashboard-card-label-f-c: #1A1919;
-    --dashboard-card-label-f-s: 15px;
-    --dashboard-card-label-f-w: 400;
-    --dashboard-card-label-l-h: 22px;
+    /* Summary Card v2 (Figma 453:320): label, then asset name + token amount
+       + $ badge on one baseline. */
+    --dashboard-card-label-f-c: #72737A;
+    --dashboard-card-label-f-s: 13px;
+    --dashboard-card-label-f-w: 700;
+    --dashboard-card-label-l-h: 18px;
     --dashboard-card-label-disabled-f-c: #D2D3D9;
-    --dashboard-card-label-disabled-f-w: 400;
-    --dashboard-card-label-disabled-l-h: 22px;
-    --dashboard-card-amount-f-c: #1A1919;
-    --dashboard-card-amount-f-s: 20px;
+    --dashboard-card-label-disabled-f-w: 700;
+    --dashboard-card-label-disabled-l-h: 18px;
+    --dashboard-card-name-f-c: #1A1919;
+    --dashboard-card-name-f-s: 17px;
+    --dashboard-card-name-f-w: 700;
+    --dashboard-card-name-l-h: 22px;
+    --dashboard-card-amount-f-c: #72737A;
+    --dashboard-card-amount-f-s: 13px;
     --dashboard-card-amount-f-w: 700;
-    --dashboard-card-amount-l-h: 26px;
-    /* Shared base for both card actions — Button_d Secondary, which is what
-       Claim keeps. Type is shared; only the colours split below. */
-    --dashboard-card-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --dashboard-card-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --dashboard-card-btn-border-w: 0;
-    --dashboard-card-btn-border-c: transparent;
+    --dashboard-card-amount-l-h: 18px;
+    /* Card action is Button - CORE Size=Small. Shared base is the Secondary
+       look: Surface/Card with a Text/Muted outline, Accent/Secondary label. */
+    --dashboard-card-btn-bg: #FFFFFF;
+    --dashboard-card-btn-hover-bg: #FFFFFF;
+    --dashboard-card-btn-border-w: 1px;
+    --dashboard-card-btn-border-c: #84868C;
     --dashboard-card-btn-f-c: #0A2EBF;
-    --dashboard-card-btn-f-s: 18px;
-    --dashboard-card-btn-f-w: 700;
-    --dashboard-card-btn-l-h: 24px;
+    --dashboard-card-btn-f-s: 12px;
+    --dashboard-card-btn-f-w: 500;
+    --dashboard-card-btn-l-h: 15px;
     /* The card's own disabled state keeps the fill and only greys the label. */
-    --dashboard-card-btn-disabled-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-card-btn-disabled-bg: #FFFFFF;
     --dashboard-card-btn-disabled-f-c: #D2D3D9;
-    --dashboard-card-btn-disabled-l-h: 24px;
+    --dashboard-card-btn-disabled-l-h: 18px;
 
     /* Claim (claimable card) — the primary button's colouring: solid accent
        fill, white label, and the same fill at 50% when disabled. */
@@ -259,26 +265,28 @@
     --dashboard-claim-btn-hover-bg: #CC000F;
     --dashboard-claim-btn-border-w: 0;
     --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-w: 700;
+    --dashboard-claim-btn-l-h: 18px;
     --dashboard-claim-btn-f-c: #FFFFFF;
     --dashboard-claim-btn-disabled-bg: rgba(204, 0, 15, 0.5);
     --dashboard-claim-btn-disabled-f-c: #D2D3D9;
 
     /* Details (pending card) — the secondary colouring, which is also what
        Figma draws. */
-    --dashboard-details-btn-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --dashboard-details-btn-hover-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
-    --dashboard-details-btn-border-w: 0;
-    --dashboard-details-btn-border-c: transparent;
+    --dashboard-details-btn-bg: #FFFFFF;
+    --dashboard-details-btn-hover-bg: #FFFFFF;
+    --dashboard-details-btn-border-w: 1px;
+    --dashboard-details-btn-border-c: #84868C;
     --dashboard-details-btn-f-c: #0A2EBF;
-    --dashboard-details-btn-disabled-bg: linear-gradient(180deg, #F5F5F7 0%, #F0F0F2 100%);
+    --dashboard-details-btn-disabled-bg: #FFFFFF;
     --dashboard-details-btn-disabled-f-c: #D2D3D9;
 
     --dashboard-badge-bg: #EDEEF0;
     --dashboard-badge-f-c: #72737A;
-    --dashboard-badge-f-s: 15px;
+    --dashboard-badge-f-s: 12px;
     --dashboard-badge-f-w: 500;
-    --dashboard-badge-l-h: 20px;
-    --dashboard-badge-radius: 80px;
+    --dashboard-badge-l-h: 16px;
+    --dashboard-badge-radius: 6px;
 
     /* History entry point. Its label is secondary text, not the accent, and it
        drops to muted when disabled. */

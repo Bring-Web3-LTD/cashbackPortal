@@ -57,7 +57,7 @@ yarn install
 | `VITE_PORTAL_EXTENSION_ID` | Default value for the Extension ID input. |
 | `VITE_PORTAL_LOCAL_URL` | If set, the wrapper rewrites the iframe origin to this URL while keeping the `?token=…` query — lets you iterate on the local portal while still using a real dev token. Leave empty to use the API's `iframeUrl` as-is. |
 | `VITE_PORTAL_WALLET` | Optional default wallet address used by the mock wallet on auto-connect. Leave empty for a random throwaway address. |
-| `VITE_PORTAL_EMAIL` | Optional email the **SolflareRewards** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). SolflareRewards signs in by email, not wallet. Until TODO#661, `check/portal` gets `email` plus a deterministic stand-in `walletAddress` derived from that email (SHA-256, same email → same address and rewards). |
+| `VITE_PORTAL_EMAIL` | Optional email the **SolflareRewards** provider signs in with when the Email field is empty (else a random `dev+xxxx@bring.network`). SolflareRewards signs in by email, not wallet: `check/portal` gets `email` and no `walletAddress`. |
 | `VITE_VISUAL_DIFF` | Start state of the [visual-diff overlay](#visual-diff-overlay). The overlay is **always available**; `1`/`true` starts it expanded, anything else (or unset) starts it collapsed. |
 | `FIGMA_TOKEN` | Server-side Figma personal access token (never exposed to the browser). Lets the overlay's **Figma** field render a frame straight from a Figma link via the dev `/__figma-image` proxy. Create one at <https://www.figma.com/developers/api#access-tokens>. |
 

@@ -72,6 +72,8 @@ interface LoaderData {
     privacy?: string
     /** Support site from the token; see utils/supportUrl for the fallback. */
     supportUrl?: string
+    /** `email` when a verified email session issued the token (standalone sign-in). */
+    loginType?: 'email' | 'wallet'
 }
 
 

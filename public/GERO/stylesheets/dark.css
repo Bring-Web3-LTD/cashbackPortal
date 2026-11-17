@@ -88,39 +88,58 @@
     --dashboard-card-border-c: #262931;
     --dashboard-card-radius: 10px;
     --dashboard-card-hover-bg: #141414;
-    --dashboard-card-label-f-s: 15px;
-    --dashboard-card-label-f-w: 400;
+    /* Summary Card v2 (Figma 3104:387): label, then asset name + token amount
+       + $ badge on one baseline. */
+    --dashboard-card-label-f-s: 14px;
+    --dashboard-card-label-f-w: 600;
     --dashboard-card-label-l-h: 20px;
-    --dashboard-card-label-f-c: #00DFF3;
+    --dashboard-card-label-f-c: #A8ADBF;
     /* NOT IN FIGMA — the disabled card is drawn identical to the default, so
-       this mutes the accent label to Text/Muted until the designer says. */
+       this mutes the label to Text/Muted until the designer says. */
     --dashboard-card-label-disabled-f-c: #556263;
-    --dashboard-card-label-disabled-f-w: 400;
+    --dashboard-card-label-disabled-f-w: 600;
     --dashboard-card-label-disabled-l-h: 20px;
-    --dashboard-card-amount-f-s: 20px;
-    --dashboard-card-amount-f-w: 700;
-    --dashboard-card-amount-l-h: 24px;
-    --dashboard-card-amount-f-c: #FFFFFF;
+    --dashboard-card-name-f-s: 18px;
+    --dashboard-card-name-f-w: 700;
+    --dashboard-card-name-l-h: 24px;
+    --dashboard-card-name-f-c: #FFFFFF;
+    --dashboard-card-amount-f-s: 13px;
+    --dashboard-card-amount-f-w: 600;
+    --dashboard-card-amount-l-h: 18px;
+    --dashboard-card-amount-f-c: #A8ADBF;
 
     --dashboard-badge-bg: #1A1A1A;
-    --dashboard-badge-radius: 20px;
-    --dashboard-badge-f-s: 15px;
-    --dashboard-badge-f-w: 400;
-    --dashboard-badge-l-h: 20px;
+    --dashboard-badge-radius: 8px;
+    --dashboard-badge-f-s: 13px;
+    --dashboard-badge-f-w: 600;
+    --dashboard-badge-l-h: 18px;
     --dashboard-badge-f-c: #A8ADBF;
 
+    /* Card action is Button - CORE Size=Small. Details is Secondary:
+       Button/Header-bg with a Text/Muted outline. */
     --dashboard-card-btn-bg: rgba(255, 255, 255, 0.08);
-    --dashboard-card-btn-border-w: 0;
-    --dashboard-card-btn-border-c: transparent;
-    --dashboard-card-btn-f-s: 16px;
+    --dashboard-card-btn-border-w: 1px;
+    --dashboard-card-btn-border-c: #556263;
+    --dashboard-card-btn-f-s: 12px;
     --dashboard-card-btn-f-w: 400;
-    --dashboard-card-btn-l-h: 24px;
-    --dashboard-card-btn-disabled-l-h: 24px;
+    --dashboard-card-btn-l-h: 15px;
+    --dashboard-card-btn-disabled-l-h: 18px;
     --dashboard-card-btn-disabled-bg: rgba(255, 255, 255, 0.08);
     --dashboard-card-btn-disabled-f-c: #556263;
     --dashboard-card-btn-hover-bg: rgba(255, 255, 255, 0.12);
     --dashboard-card-btn-f-c: #FFFFFF;
     --rewards-card-btn-radius: 100px;
+    /* Claim is Primary: Accent/Primary fill, no outline, Text/On-accent
+       label. Same colours and states as the big primary button. */
+    --dashboard-claim-btn-bg: #00DFF3;
+    --dashboard-claim-btn-hover-bg: #00C8DB;
+    --dashboard-claim-btn-border-w: 0;
+    --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-w: 700;
+    --dashboard-claim-btn-l-h: 18px;
+    --dashboard-claim-btn-f-c: #000000;
+    --dashboard-claim-btn-disabled-bg: rgba(0, 223, 243, 0.3);
+    --dashboard-claim-btn-disabled-f-c: #000000;
 
     --dashboard-history-radius: 10px;
     --dashboard-history-f-s: 16px;

@@ -1,0 +1,116 @@
+.page {
+  /* The landing pages' "AppCard OTP" theme, scoped to this screen so the
+     portal's own theme variables stay untouched. */
+  color-scheme: dark;
+  --sans: 'Segoe UI Variable Display', 'Segoe UI', system-ui, Roboto, sans-serif;
+  --ac-surface: #0f1113;
+  --ac-border: #55555d;
+  --ac-muted: #888888;
+  --ac-red: #ef4444;
+  /* Highlight for the user's own email echoed back in subtitles */
+  --ac-accent: #e5a93b;
+
+  /* dvh, not svh: svh is the toolbars-visible height, so collapsing them
+     mid-scroll would open a strip of app-shell background under the page */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', var(--sans);
+
+  /* Every text node in the OTP designs specs letter-spacing 0, but :root sets
+     0.15px globally — enough to widen a line by several px and stop it landing
+     on the design. Reset it for the whole flow rather than per element (the
+     homepage keeps the global value and its own overrides). */
+  letter-spacing: 0;
+  /* Inter loads as a variable font with an optical-size axis (opsz 14..32),
+     and browsers auto-select the tighter Display cut at title sizes; Figma
+     renders the default text cut (opsz 14), so titles came out visibly
+     tighter-tracked than the design. Pin the text cut to match. */
+  font-optical-sizing: none;
+  text-align: center;
+}
+
+/* Fixed height from the design (107px desktop / 80px mobile) rather than
+   padding around the content: Figma's Header is a fixed-height frame with its
+   children centred, so deriving the height from the close button's size left
+   the back label and X 15px high. */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 107px;
+  padding: 0 48px;
+
+  /* The X hugs the right edge even when the back button isn't rendered
+     (success screen) and space-between has only one child to place. */
+  & > :last-child {
+    margin-left: auto;
+  }
+
+  @media (max-width: 640px) {
+    min-height: 80px;
+    padding: 0 20px;
+  }
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .backText {
+      display: none;
+    }
+  }
+}
+
+/* Back arrow from arrow-left.svg, masked so it inherits the button's colour
+   (same technique as form.module.css's .btnArrow). */
+.backIcon {
+  width: 24px;
+  height: 24px;
+  background: currentColor;
+  -webkit-mask: url('/shared/icons/arrow-left.svg') no-repeat center / contain;
+  mask: url('/shared/icons/arrow-left.svg') no-repeat center / contain;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  /* `safe` so a viewport shorter than the form clips off the BOTTOM and stays
+     reachable, instead of centring the overflow off the top edge. */
+  justify-content: safe center;
+  align-items: center;
+  /* The frames (1:2 / 4:380) dropped the footer-legal element and centre the
+     form in a ContentWrapper padded 80px (desktop) / 120px (mobile) at the
+     bottom instead. */
+  padding: 0 20px 80px;
+
+  @media (max-width: 640px) {
+    padding-bottom: 120px;
+    overflow-y: auto;
+  }
+}
+
+/* The landing pages reset paragraph margins globally; the portal does not. */
+.page p {
+  margin: 0;
+}

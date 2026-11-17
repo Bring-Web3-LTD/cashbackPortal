@@ -96,7 +96,8 @@ const rootLoader = async () => {
 
         // The hub identifies its user by the session cookie, not by a wallet.
         const isHub = readFlag('isHub', res.info.isHub)
-        if (isHub) enableSessionCookies()
+        // Standalone has no wrapper either: its sign-in sets the same cookies.
+        if (isHub || STANDALONE) enableSessionCookies()
 
         return {
             ...res.info,
