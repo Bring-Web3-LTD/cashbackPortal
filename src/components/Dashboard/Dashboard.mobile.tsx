@@ -72,7 +72,7 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
                 <>
                     <button type="button" className={styles.tile} onClick={goToPending}>
                         <span className={styles.tileLabel}>{labels.pending}</span>
-                        {pending.usd ? <span className={styles.usd}>{pending.usd}</span> : null}
+                        <span className={styles.usd}>{pending.usd}</span>
                         <span className={styles.tileValue}>
                             <span className={styles.amountRow}>
                                 <span className={styles.amount}>{pending.amount}</span>
@@ -83,7 +83,7 @@ const Dashboard = ({ mode, onModeChange, onClaim, onPairWallet }: DashboardProps
                     </button>
                     <button type="button" className={`${styles.tile} ${styles.tileClaim}`} onClick={onClaim}>
                         <span className={styles.tileLabel}>{labels.claim}</span>
-                        {claim.usd ? <span className={styles.usd}>{claim.usd}</span> : null}
+                        <span className={styles.usd}>{claim.usd}</span>
                         <span className={styles.tileValue}>
                             <span className={styles.amountRow}>
                                 <span className={styles.amount}>{claim.amount}</span>

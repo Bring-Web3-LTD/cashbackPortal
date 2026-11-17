@@ -164,6 +164,14 @@
     white-space: nowrap;
 }
 
+/* Figma dev note: under 375px there is no badge, unless the tab switcher is
+   absent and the tiles have its room. */
+@media (max-width: 374px) {
+    .root:has(.tabs) .usd {
+        display: none;
+    }
+}
+
 .pill {
     flex: 1 0 0;
     min-width: 0;
