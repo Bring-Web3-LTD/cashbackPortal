@@ -6,6 +6,7 @@ import rehypeRaw from 'rehype-raw'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { ENV } from '../../config'
+import { isSupportUrl } from '../../utils/supportUrl'
 
 const rehypePlugins = [rehypeRaw]
 
@@ -25,27 +26,30 @@ interface Props {
 }
 
 const TermsMarkdown = ({ terms, className }: Props) => {
-    const { platform } = useRouteLoaderData('root') as LoaderData
+    const { platform, supportUrl } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, kitUserId } = useWalletAddress()
 
     // Memoized so react-markdown doesn't re-render the whole terms tree each render.
     const components: Components = useMemo(() => ({
         a: ({ href, children, ...props }) => {
             // Terms are remote, so an href can pass the scheme test and still throw in the URL constructor ("http://" does) — degrade to a plain link instead of taking the route down.
-            const trackedUrl = href && /^https?:\/\//.test(href) ? tryParseUrl(href) : null
+            const url = href && /^https?:\/\//.test(href) ? tryParseUrl(href) : null
 
-            if (!trackedUrl) {
+            if (!url) {
                 return <a href={href} {...props}>{children}</a>
             }
 
-            trackedUrl.searchParams.set('platform', platform.toUpperCase())
-            trackedUrl.searchParams.set('address', walletAddress || kitUserId || 'null')
-            trackedUrl.searchParams.set('env', ENV)
+            // Only the support site gets the user's context; the identity must not reach any other destination.
+            if (isSupportUrl(url, supportUrl)) {
+                url.searchParams.set('platform', platform.toUpperCase())
+                url.searchParams.set('address', walletAddress || kitUserId || 'null')
+                url.searchParams.set('env', ENV)
+            }
 
             return (
                 <a
                     {...props}
-                    href={trackedUrl.toString()}
+                    href={url.toString()}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -53,7 +57,7 @@ const TermsMarkdown = ({ terms, className }: Props) => {
                 </a>
             )
         },
-    }), [platform, walletAddress, kitUserId])
+    }), [platform, supportUrl, walletAddress, kitUserId])
 
     return (
         <Markdown

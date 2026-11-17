@@ -32,7 +32,7 @@ interface CryptoToken {
 }
 
 interface LoaderData {
-    walletAddress: string
+    walletAddress: string | null
     platform: string
     cryptoSymbols: string[]
     cryptoTokens?: CryptoToken[]
