@@ -142,9 +142,18 @@ interface Deal {
     tokenAmountDisplay?: string
 }
 
+interface ClaimsTotal {
+    tokenSymbol: string
+    tokenAmount: number
+    // Backend-formatted display string for the summed amount.
+    tokenAmountDisplay: string
+}
+
 interface Movements {
     claims: Claim[]
     deals: Deal[]
+    // One entry per token: the sum of its claims, summed and formatted by the backend.
+    claimsTotal?: ClaimsTotal[]
 }
 
 interface Link {

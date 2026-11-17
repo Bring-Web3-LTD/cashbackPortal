@@ -66,3 +66,10 @@
     border: 0;
     display: block;
 }
+
+/* Holds the frame's place until the coupons URL arrives (it can come late,
+   from /cache). Same fill as the cards-list skeleton tiles. */
+.couponsSkeleton {
+    background: var(--skeleton-tile-bg, #1D2133);
+    border-radius: var(--retailer-card-radius);
+}
