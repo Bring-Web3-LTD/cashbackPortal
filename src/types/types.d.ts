@@ -48,7 +48,7 @@ interface LoaderData {
     showTerms: boolean
     autoclaim: boolean
     /** `claimType: 'noClaim'` from the token: the platform pays out itself, so
-     *  approved rewards are shown as Approved, never as claimable, and the
+     *  history shows approved rewards as Approved, never as claimable, and the
      *  Claim button opens a "coming soon" dialog instead of a claim. */
     noClaim: boolean
     // Dashboard state. `isHub` and `couponsEnabled` come from /verify,

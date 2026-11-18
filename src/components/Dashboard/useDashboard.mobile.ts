@@ -12,8 +12,6 @@ import {
     selectFirstTimeUser,
     selectCanPairWallet,
 } from '../../hooks/useBalance'
-import { formatCurrency } from '../../pages/History/helpers'
-
 export type DashboardMode = 'cashback' | 'coupons'
 
 export interface DashboardProps {
@@ -25,6 +23,32 @@ export interface DashboardProps {
     onPairWallet: () => void
 }
 
+/**
+ * $ badge text, per the Figma dev note: three digits and the dot moves
+ * ($1.25, $12.3, $123); from $1,000 the K takes one of them ($1.2K, $12K);
+ * under $1 two decimals ($0.25); under a cent "<$0.01". Zero stays $0.00,
+ * which Figma draws too. The thresholds sit on the rounding edge so a value
+ * never rounds into one more digit ($999.5 is $1.0K, not $1,000).
+ */
+const formatUsdBadge = (usd: number) => {
+    if (usd > 0 && usd < 0.01) return '<$0.01'
+    const digits: Intl.NumberFormatOptions =
+        usd < 1
+            ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+            : usd < 999.5
+              ? { minimumSignificantDigits: 3, maximumSignificantDigits: 3 }
+              : { notation: 'compact', minimumSignificantDigits: 2, maximumSignificantDigits: 2 }
+    return Math.max(0, usd).toLocaleString('en-US', { style: 'currency', currency: 'USD', ...digits })
+}
+
+// Both tiles show the $ badge (Figma dev note).
+const toTile = (token: Token | undefined, fallbackSymbol: string) => ({
+    amount: token?.tokenAmountDisplay ?? '0.00',
+    symbol: token?.tokenSymbol ?? fallbackSymbol,
+    name: token?.displayName ?? null,
+    usd: formatUsdBadge(token?.totalEstimatedUsd ?? 0),
+})
+
 export const useDashboard = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -32,7 +56,6 @@ export const useDashboard = () => {
         cryptoSymbols,
         couponsEnabled,
         isHub,
-        noClaim,
         firstTimeUser: firstTimeOverride,
         canPairWallet: canPairOverride,
     } = useRouteLoaderData('root') as LoaderData
@@ -47,9 +70,9 @@ export const useDashboard = () => {
         coupons: t('coupons'),
         cashback: t('cashback'),
         pending: t('pending'),
-        // A noClaim platform pays out itself: approved rewards are saved. The
-        // tile still opens the claim flow, which shows the coming-soon sheet.
-        claim: noClaim ? t('approved') : t('claim'),
+        // On a noClaim platform the tile opens the claim flow, which shows
+        // the coming-soon sheet.
+        claim: t('claim'),
         whatsThis: t('whatsThis'),
         pairWallet: t('pairWallet'),
         smartCashback: t('smartCashback'),
@@ -63,16 +86,8 @@ export const useDashboard = () => {
         isHub: !!isHub,
         // Per-platform backend switch (/cache canPairWallet).
         showPairWallet: canPairOverride ?? selectCanPairWallet(data),
-        pending: {
-            amount: pending?.tokenAmountDisplay ?? '0.00',
-            symbol: pending?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(pending?.totalEstimatedUsd ?? 0),
-        },
-        claim: {
-            amount: eligible?.tokenAmountDisplay ?? '0.00',
-            symbol: eligible?.tokenSymbol ?? fallbackSymbol,
-            usd: formatCurrency(eligible?.totalEstimatedUsd ?? 0),
-        },
+        pending: toTile(pending, fallbackSymbol),
+        claim: toTile(eligible, fallbackSymbol),
         labels,
         goToPending: () => navigate('/pending'),
         goToMore: () => navigate('/history'),
