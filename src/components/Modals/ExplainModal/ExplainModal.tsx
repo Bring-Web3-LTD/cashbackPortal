@@ -1,5 +1,5 @@
 /**
- * What's This: three cards explaining the portal, then a "Got it" dismiss.
+ * What's This: cards explaining the portal, then a "Got it" dismiss.
  * Pure UI — logic in useExplainModal.
  */
 import styles from './styles.module.css'
@@ -32,9 +32,11 @@ const ExplainModal = ({ open, closeFn }: Props) => {
                     <div className={styles.header_area}>
                         <div className={styles.title}>{labels.title}</div>
                     </div>
-                    <div className={styles.subtitle_row}>
-                        <p className={styles.subtitle}>{labels.subtitle}</p>
-                    </div>
+                    {labels.subtitle && (
+                        <div className={styles.subtitle_row}>
+                            <p className={styles.subtitle}>{labels.subtitle}</p>
+                        </div>
+                    )}
                 </div>
                 {/* The cards and the CTA sit closer to each other than to the
                     intro above them, so they share a block of their own. */}
