@@ -1,0 +1,119 @@
+/* Rewards Hub "Geo Block" frames (Figma 4027-12627 desktop, 4027-12667 mobile).
+   The colors are the design's own, in both themes: the overlay always dims the
+   page to the same dark tone. */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    /* The page behind does not scroll, so a card taller than the viewport (short
+       iframe, 200% zoom) scrolls here instead */
+    overflow-y: auto;
+    background: rgba(9, 12, 17, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overscroll-behavior: contain;
+    /* The container is focused only so screen readers announce it; the links keep their focus ring */
+    outline: none;
+}
+
+/* margin: auto centers it when it fits and starts it at the top when it does not */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin: auto;
+}
+
+.legal {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* At least 24x24 targets (44x44 on the mobile portal below): the only controls left to a blocked user */
+.link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0 0.25rem;
+    color: #b1b4bb;
+    font-size: 0.875rem;
+    text-decoration: underline;
+}
+
+.mobile .link {
+    min-width: 44px;
+    min-height: 44px;
+}
+
+.link:focus-visible {
+    outline: 2px solid #f5f8ff;
+    outline-offset: 2px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 30rem;
+    padding: 2.5rem;
+    box-sizing: border-box;
+    border: 1px solid rgba(245, 248, 255, 0.16);
+    border-radius: 1rem;
+    background: #1b1e24;
+    text-align: center;
+}
+
+.icon {
+    width: 3rem;
+    height: 3rem;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.title {
+    margin: 0;
+    color: #f5f8ff;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.body {
+    margin: 0;
+    color: #b1b4bb;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.mobile .card {
+    max-width: 20.4375rem;
+    gap: 1.25rem;
+    padding: 2rem 1.5rem;
+}
+
+.mobile .icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.mobile .title {
+    font-size: 1.25rem;
+}
+
+.mobile .body {
+    font-size: 0.9375rem;
+}

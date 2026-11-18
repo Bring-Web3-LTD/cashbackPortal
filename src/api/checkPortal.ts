@@ -1,5 +1,6 @@
 import { API_URL_PLATFORMS, STANDALONE_API_KEY } from "../config"
 import { refreshSession } from "./request"
+import { campaignId } from "../utils/campaignId"
 
 // Standalone mode only: the session token a wrapper would otherwise have put on
 // the iframe URL. The portal key decides the platform (and isHub).
@@ -16,7 +17,9 @@ const checkPortal = async (flowId: string | null): Promise<string> => {
             "x-api-key": STANDALONE_API_KEY,
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ flowId: flowId || undefined })
+        // campaignId: a preview campaign (a partner review link) skips the
+        // platform's deactivated geos (TODO#802)
+        body: JSON.stringify({ flowId: flowId || undefined, campaignId: campaignId || undefined })
     })
     let res = await send()
     // 401: the ID cookie's token expired (hourly) while the cookie itself lives
