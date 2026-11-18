@@ -84,7 +84,7 @@ const toCard = (token: Token | undefined, fallbackSymbol: string) => ({
 export const useRewardsDesktop = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { cryptoSymbols, autoclaim, noClaim } = useRouteLoaderData('root') as LoaderData
+    const { cryptoSymbols, autoclaim, noClaim, isCab } = useRouteLoaderData('root') as LoaderData
     const { isIdentified } = useRequestIdentity()
     // The signature round-trip and the status modal it drives live in one
     // place, because the What's This modal offers the same action.
@@ -111,9 +111,11 @@ export const useRewardsDesktop = () => {
 
     // The bottom card opens the ledger; the details button opens the same page
     // showing only what the two reward cards above it count.
-    // Needs a wallet, except in the hub, where the balance comes from the session cookie.
+    // Needs a wallet, except in the hub, where the balance comes from the
+    // session cookie, and in the CAB, which has no wallet to connect: the
+    // ledger opens and fills once the kit's userId has arrived.
     const openHistory = (rewardsOnly = false) =>
-        isIdentified ? navigate('/history', { state: { rewardsOnly } }) : setLoginOpen(true)
+        isIdentified || isCab ? navigate('/history', { state: { rewardsOnly } }) : setLoginOpen(true)
 
     // Anchored to the claim trigger's rect: the card clips its overflow and
     // its container-type makes it a containing block, so the tooltip cannot

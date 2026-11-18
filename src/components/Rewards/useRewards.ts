@@ -19,10 +19,10 @@ export const useRewards = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { platform, cryptoSymbols, noClaim, supportUrl: supportBase } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
     const { data, isLoading } = useBalance()
 
-    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress)
+    const supportUrl = buildSupportUrl(supportBase, platform, walletAddress ?? kitUserId)
 
     const eligible = selectEligible(data)
     const pending = selectPending(data)
