@@ -17,7 +17,6 @@ import { useHomeDesktop } from './useHomeDesktop'
 
 const Home = () => {
     const {
-        isCountryAvailable,
         isTester,
         isDemo,
         setIsDemo,
@@ -44,16 +43,6 @@ const Home = () => {
         setTestStatus,
         labels,
     } = useHomeDesktop()
-
-    if (isCountryAvailable === false) {
-        return (
-            <div className={styles.not_available_container}>
-                <h1 className={styles.not_available}>
-                    This service is not available in your country for now.
-                </h1>
-            </div>
-        )
-    }
 
     return (
         <div className={styles.container}>
