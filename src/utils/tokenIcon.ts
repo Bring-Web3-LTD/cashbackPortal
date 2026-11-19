@@ -15,6 +15,7 @@ export interface TokenIcon {
 const TOKEN_ICONS: Record<string, { file: string, bg?: string, clipPath?: string }> = {
     USDC: { file: 'USDC.svg' },
     PAXG: { file: 'PAXG.svg' },
+    KDA: { file: 'KDA.svg' },
 }
 
 /** `undefined` for a token with no exported symbol; the caller keeps its own icon. */
