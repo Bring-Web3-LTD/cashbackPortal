@@ -659,6 +659,9 @@
     --history-table-row-hover-bg: #16181D;
     --history-table-row-active-bg: #090C11;
     --history-claimed-icon-bg: #282B30;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #66686E;
     --history-logo-border-w: 1px;
     --history-logo-border-c: #DCE0E9;
     --history-logo-fallback-bg: #090C11;

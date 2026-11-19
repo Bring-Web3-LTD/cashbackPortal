@@ -80,7 +80,7 @@
   "historyColAmount": "Amount in Token",
   "historyColStatus": "Status",
   "historyColDetails": "Details",
-  "historyTotalClaims": "Total claims",
+  "historyTotalClaims": "Total {{token}} claim",
   "emptyHistory": "No rewards yet",
   "chromeStoreLink": "https://chromewebstore.google.com/detail/eckowallet/bofddndhbegljegmpmnlbhcejofmjgbn"
 }

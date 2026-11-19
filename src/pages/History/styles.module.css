@@ -269,6 +269,22 @@
     border-color: var(--history-claimed-icon-border-c, transparent);
 }
 
+/* The totals row shows its token's symbol. The file keeps the size Figma draws
+   it at, so a full symbol fills the disc (the ring crops its edge) and a bare
+   mark sits centred in it; neither is scaled to the box. */
+.img_container_token {
+    border-width: var(--history-token-icon-border-w, 0);
+    border-color: var(--history-token-icon-border-c, transparent);
+    background: var(--history-token-icon-bg, transparent);
+}
+
+.img_token {
+    flex-shrink: 0;
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 0;
+}
+
 /* Two initials are set smaller than one, so both fit the same disc. */
 .fallback_logo {
     display: flex;
