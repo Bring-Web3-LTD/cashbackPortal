@@ -16,6 +16,7 @@ const TOKEN_ICONS: Record<string, { file: string, bg?: string, clipPath?: string
     USDC: { file: 'USDC.svg' },
     PAXG: { file: 'PAXG.svg' },
     KDA: { file: 'KDA.svg' },
+    CSPR: { file: 'CSPR.png' },
     // The Cardano PNG is a blue disc on a white square. Figma crops the square
     // away and fills the rest of the 40px disc with the same blue.
     ADA: { file: 'ADA.png', bg: '#0033AD', clipPath: 'inset(3px 3px 3px 4px round 20px)' },
