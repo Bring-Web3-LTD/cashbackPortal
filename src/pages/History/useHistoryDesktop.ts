@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useBalance } from '../../hooks/useBalance'
 import { createDescription, formatCurrency, formatDate, formatShortDate, formatStatus } from './helpers'
+import { tokenIcon, type TokenIcon } from '../../utils/tokenIcon'
 
 export interface HistoryRow {
     status: string
@@ -23,6 +24,10 @@ export interface HistoryRow {
     totalEstimatedUsd?: string | number
     imgBg?: string
     retailerName?: string
+    /** The claims aggregate only: its "Total <token> claim" name. */
+    claimLabel?: string
+    /** The claims aggregate only: the token's symbol, when one is shipped. */
+    token?: TokenIcon
 }
 
 interface ClaimToken {
@@ -69,6 +74,9 @@ export const useHistoryDesktop = () => {
             ...res[key],
             tokenAmount: `${totals?.find(total => total.tokenSymbol === key)?.tokenAmountDisplay ?? ''} ${key}`,
             date: formatShortDate(res[key].date),
+            claimLabel: t('historyTotalClaims', { token: key }),
+            token: tokenIcon(key),
+            // The gift stands in for a token with no symbol of its own.
             imgSrc: `${iconsPath}/gift.svg`,
             imgSrcFallbacks: [...(baseIconsPath ? [`${baseIconsPath}/gift.svg`] : []), `${defaultIconsPath}/gift.svg`],
             tokenSymbol: key,
@@ -139,7 +147,6 @@ export const useHistoryDesktop = () => {
             colAmount: t('historyColAmount'),
             colStatus: t('historyColStatus'),
             colDetails: t('historyColDetails'),
-            totalClaims: t('historyTotalClaims'),
             emptyHistory: t('emptyHistory'),
         },
     }

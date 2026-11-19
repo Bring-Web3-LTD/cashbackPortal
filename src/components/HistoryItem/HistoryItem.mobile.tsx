@@ -28,11 +28,18 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
                 disabled={!expandable}
             >
                 <span
-                    className={`${styles.avatar} ${row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
-                    style={!row.isClaim && !fallbackLogo && row.iconBg ? { background: row.iconBg } : undefined}
+                    className={`${styles.avatar} ${row.token ? styles.avatarToken : row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
+                    style={row.token?.bg ? { background: row.token.bg } : !row.isClaim && !fallbackLogo && row.iconBg ? { background: row.iconBg } : undefined}
                     aria-hidden="true"
                 >
-                    {row.isClaim ? (
+                    {row.token ? (
+                        <img
+                            className={styles.avatarTokenImg}
+                            style={{ clipPath: row.token.clipPath }}
+                            src={row.token.src}
+                            alt=""
+                        />
+                    ) : row.isClaim ? (
                         <Icon name="gift-solid.svg" className={styles.avatarImg} alt="" />
                     ) : !imgFailed && row.iconSrc ? (
                         <img
