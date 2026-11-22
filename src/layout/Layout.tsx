@@ -11,6 +11,7 @@ import DesktopOutlet from './DesktopOutlet';
 import MobileOutlet from './MobileOutlet';
 import LegalBar from '../components/LegalBar/LegalBar';
 import BackToTop from '../components/BackToTop/BackToTop';
+import GeoBlockOverlay from '../components/GeoBlockOverlay/GeoBlockOverlay';
 import styles from './Layout.module.css';
 
 /**
@@ -31,14 +32,24 @@ const Layout = () => {
 
     }
 
+    // Not live in the user's country (TODO#802): the page still renders behind
+    // the overlay, inert, so nothing behind it can be clicked, focused or read
+    const geoBlocked = data.isCountryAvailable === false;
+    const withGeoBlock = (page: JSX.Element) => geoBlocked
+        ? <>
+            <div className={styles.geoBlocked} {...{ inert: '' }}>{page}</div>
+            <GeoBlockOverlay mobile={data.useMobilePortal} />
+        </>
+        : page;
+
     // No identity, no portal: standalone users sign in by email, and the token
     // says whether a verified session issued it. A session that dies later (the
     // refresh answered 401) brings the same screen back.
     if (STANDALONE && (data.loginType !== 'email' || signedIn === false)) {
-        return <Register />;
+        return withGeoBlock(<Register />);
     }
 
-    return (
+    return withGeoBlock(
         <WalletProvider
             initialWalletAddress={data.walletAddress}
             initIsTester={data.isTester}

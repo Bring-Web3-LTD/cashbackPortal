@@ -1,5 +1,10 @@
 /* Screen column: outlet, then the legal bar as the last child. The 500px floor
    lives here so the bar spans the full scrollable width, not just the viewport. */
+/* Wraps the page behind the geo-block overlay without adding a layout box. */
+.geoBlocked {
+    display: contents;
+}
+
 .screen {
     display: flex;
     flex-direction: column;

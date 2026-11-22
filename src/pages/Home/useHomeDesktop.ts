@@ -21,7 +21,7 @@ import type { StatusModalState } from '../../components/Modals/StatusModal/Statu
 
 export const useHomeDesktop = () => {
     const { t } = useTranslation()
-    const { isCountryAvailable, couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
+    const { couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams()
     const { isTester, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
@@ -83,7 +83,6 @@ export const useHomeDesktop = () => {
     const retailersMetadata = retailers?.pages[retailers.pages.length - 1]
 
     return {
-        isCountryAvailable,
         isTester,
         isDemo,
         setIsDemo,

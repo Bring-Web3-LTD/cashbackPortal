@@ -115,19 +115,6 @@
     color: var(--filter-btn-hover-f-c, var(--filter-btn-f-c));
 }
 
-.not_available_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    max-width: 100%;
-}
-
-.not_available {
-    color: var(--title-f-c);
-}
-
 .test_label {
     display: flex;
     justify-content: center;
