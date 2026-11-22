@@ -60,10 +60,10 @@ export const MOBILE_PORTAL_MAX_WIDTH: number = import.meta.env.VITE_MOBILE_PORTA
     ? Number(import.meta.env.VITE_MOBILE_PORTAL_MAX_WIDTH)
     : 360
 
-// Per-platform overrides of the shared threshold — Solflare's mobile design is
-// drawn at 375. Platforms not listed use their base platform's (`<PLATFORM>REWARDS`
-// → `<PLATFORM>`), then MOBILE_PORTAL_MAX_WIDTH.
-const MOBILE_PORTAL_MAX_WIDTHS: Record<string, number> = { SOLFLARE: 375 }
+// Per-platform overrides of the shared threshold — Solflare covers phones up
+// to 440 (iPhone Pro Max). Platforms not listed use their base platform's
+// (`<PLATFORM>REWARDS` → `<PLATFORM>`), then MOBILE_PORTAL_MAX_WIDTH.
+const MOBILE_PORTAL_MAX_WIDTHS: Record<string, number> = { SOLFLARE: 440 }
 
 /** Viewport cap (and layout width) of the mobile portal for `platform`. */
 export const mobilePortalMaxWidth = (platform: string | null | undefined): number => {
