@@ -13,6 +13,8 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
     const { row, isOpen } = props
     const { panelId, buttonId, imgFailed, fallbackLogo, onImgError, expandable, handleClick } =
         useHistoryItem(props)
+    // A symbol that fails to load gives way to the gift, like a token with none.
+    const token = imgFailed ? undefined : row.token
 
     return (
         <div
@@ -28,11 +30,19 @@ const HistoryItem: FC<HistoryItemProps> = (props) => {
                 disabled={!expandable}
             >
                 <span
-                    className={`${styles.avatar} ${row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
-                    style={!row.isClaim && !fallbackLogo && row.iconBg ? { background: row.iconBg } : undefined}
+                    className={`${styles.avatar} ${token ? styles.avatarToken : row.isClaim ? styles.avatarClaim : ''} ${fallbackLogo ? styles.avatarHasFallback : ''}`}
+                    style={token?.bg ? { background: token.bg } : !row.isClaim && !fallbackLogo && row.iconBg ? { background: row.iconBg } : undefined}
                     aria-hidden="true"
                 >
-                    {row.isClaim ? (
+                    {token ? (
+                        <img
+                            className={styles.avatarTokenImg}
+                            style={{ clipPath: token.clipPath }}
+                            src={token.src}
+                            alt=""
+                            onError={onImgError}
+                        />
+                    ) : row.isClaim ? (
                         <Icon name="gift-solid.svg" className={styles.avatarImg} alt="" />
                     ) : !imgFailed && row.iconSrc ? (
                         <img

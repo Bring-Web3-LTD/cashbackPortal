@@ -142,11 +142,11 @@
     --primary-btn-radius: 40px;
     --primary-btn-border-w: 0;
     --primary-btn-border-c: transparent;
-    --primary-btn-bg: #FF00B8;
-    --primary-btn-hover-bg: #E600A5;
-    --primary-btn-pressed-bg: #CC0092;
+    --primary-btn-bg: #4B57A7;
+    --primary-btn-hover-bg: #4B57A7;
+    --primary-btn-pressed-bg: #4B57A7;
     /* Disabled fades the accent rather than swapping it for a grey. */
-    --primary-btn-disabled-bg: rgba(255, 0, 184, 0.5);
+    --primary-btn-disabled-bg: rgba(75, 87, 167, 0.5);
     --primary-btn-disabled-f-c: #FFFFFF;
 
     --pending-btn-f-c: #FFFFFF;
@@ -289,9 +289,7 @@
     --modal-popup-terms-l-h: 22px;
     --modal-popup-terms-f-c: #66686E;
     --modal-popup-terms-link-f-c: #FFFFFF;
-    /* The modal CTA is Button_d type Tertiary, not the magenta primary - and
-       its disabled state fades that indigo, so it must not fall through to
-       --primary-btn-disabled-bg, which is the accent at 50%. */
+    /* The modal CTA is Button_d type Primary: indigo, same as --primary-btn. */
     --modal-primary-btn-bg: #4B57A7;
     --modal-primary-btn-hover-bg: #4B57A7;
     --modal-primary-btn-disabled-bg: rgba(75, 87, 167, 0.5);
@@ -778,6 +776,10 @@
     --history-logo-fallback-f-w: 700;
     --history-logo-fallback-l-h: 16px;
     --history-claimed-icon-bg: transparent;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-bg: #242838;
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #7A7D83;
     --history-details-btn-bg: transparent;
     --history-details-btn-radius: 40px;
 

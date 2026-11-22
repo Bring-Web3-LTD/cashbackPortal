@@ -9,16 +9,15 @@ import { useHistoryDesktop, type HistoryRow } from './useHistoryDesktop'
 interface RowProps extends HistoryRow {
     isActive: boolean
     toggleFn: () => void
-    claimsLabel: string
 }
 
-const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallbacks, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, claimLabel, token, imgSrc, imgSrcFallbacks, status, tokenAmount, date, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     // The claims aggregate: one row standing for every claim of a token. It is
     // the row with no retailer behind it — not every row whose status reads
     // "Claimed", which is an ordinary purchase that has been paid out.
     const isClaim = !retailerName
-    const name = retailerName || claimsLabel
+    const name = retailerName || claimLabel || ''
     return (
         <div id="history-desktop-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div
@@ -28,16 +27,16 @@ const Row = ({ isActive, toggleFn, claimsLabel, imgSrc, imgSrcFallbacks, status,
                 <div className={`${styles.cell} ${styles.cell_first}`}>
                 <div className={styles.name_container}>
                     <div
-                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''} ${isClaim ? styles.img_container_claim : ''}`}
-                        style={fallbackLogo || isClaim ? {} : { background: imgBg || 'white' }}
+                        className={`${styles.img_container} ${fallbackLogo ? styles.img_container_fallback : ''} ${token ? styles.img_container_token : isClaim ? styles.img_container_claim : ''}`}
+                        style={fallbackLogo ? {} : isClaim ? (token?.bg ? { background: token.bg } : {}) : { background: imgBg || 'white' }}
                     >
                         {fallbackLogo ?
                             <div className={`${styles.fallback_logo} ${fallbackLogo.length === 2 ? styles.fallback_logo_two_letters : ''}`}>{fallbackLogo}</div>
                             :
                             <img
-                                style={{ height: isClaim ? 'auto' : '100%' }}
-                                className={`${styles.img} ${isClaim ? styles.img_claim : ''}`}
-                                src={imgSrc}
+                                style={{ height: isClaim ? 'auto' : '100%', clipPath: token?.clipPath }}
+                                className={`${styles.img} ${token ? styles.img_token : isClaim ? styles.img_claim : ''}`}
+                                src={token?.src ?? imgSrc}
                                 alt="logo"
                                 onError={(e) => {
                                     const img = e.currentTarget
@@ -168,7 +167,6 @@ const HistoryDesktop = () => {
                                     key={`history-${i}`}
                                     isActive={isOpen(i)}
                                     toggleFn={() => toggleRow(i, item)}
-                                    claimsLabel={labels.totalClaims}
                                     {...item}
                                 />
                             )

@@ -180,7 +180,7 @@
     --dashboard-action-l-h: 24px;
     --dashboard-action-secondary-bg: #141414;
     --dashboard-action-secondary-border-w: 1px;
-    --dashboard-action-secondary-border-c: #262931;
+    --dashboard-action-secondary-border-c: #556263;
     --dashboard-action-secondary-f-s: 17px;
     --dashboard-action-secondary-f-w: 600;
     --dashboard-action-secondary-l-h: 24px;
@@ -792,6 +792,10 @@
        bolded. Claimable and pending read white; only canceled and claimed
        carry a status colour. */
     --history-claimed-icon-bg: #00DFF3;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-bg: #1A1A1A;
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #1A1A1A;
     --history-details-btn-bg: transparent;
     --history-details-btn-radius: 100px;
 
@@ -819,10 +823,10 @@
     --history-amount-f-c: #FFFFFF;
 
     /* The totals row sets every cell bold; the rest stay Regular. This colour
-       reaches only its status cell, which takes the claimed accent like the
-       rows below it - the bold weight is what marks it as a summary. */
+       reaches only its status cell, which reads white like the rest of the
+       row - the bold weight is what marks it as a summary. */
     --history-claim-row-f-w: 700;
-    --history-claim-row-f-c: #00DFF3;
+    --history-claim-row-f-c: #FFFFFF;
 
     /* Base is the claimable green; the rest override it per status. */
     --history-status-f-s: 15px;

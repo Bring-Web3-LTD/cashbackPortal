@@ -196,7 +196,7 @@
 
     --dashboard-banner-bg: #FFFFFF;
     --dashboard-banner-border-w: 1px;
-    --dashboard-banner-border-c: #EDEEF0;
+    --dashboard-banner-border-c: #0021A5;
     --dashboard-banner-radius: 12px;
     --dashboard-banner-title-f-c: #1A1919;
     --dashboard-banner-title-f-s: 20px;
@@ -855,6 +855,10 @@
     /* The total-claims glyph ships its own disc, so its container carries no
        fill and no ring of its own. */
     --history-claimed-icon-bg: transparent;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-bg: #EDEEF0;
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #EDEEF0;
     --history-claimed-icon-border-w: 0;
     --history-claimed-icon-border-c: transparent;
     /* The row's expand chevron sits on the row itself, with no fill of its own. */

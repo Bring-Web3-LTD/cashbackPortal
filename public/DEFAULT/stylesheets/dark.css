@@ -554,6 +554,9 @@
     --history-logo-fallback-f-s-two-letters: 16px;
     --history-logo-fallback-l-h: 16px;
     --history-claimed-icon-bg: #3D5AEB;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #66686E;
     --history-details-btn-bg: #2A3038;
     --history-purchase-name-f-s: 16px;
     --history-purchase-name-f-w: 500;

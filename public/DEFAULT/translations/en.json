@@ -123,7 +123,7 @@
   "historyColAmount": "Amount",
   "historyColStatus": "Status",
   "historyColDetails": "Details",
-  "historyTotalClaims": "Total claims",
+  "historyTotalClaims": "Total {{token}} claim",
   "detailsTitle": "Rewards Details",
   "geoBlockTitle": "We're sorry but this service is not yet live in your area.",
   "geoBlockBody": "Please check again in a few weeks"
