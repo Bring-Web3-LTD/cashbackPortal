@@ -294,6 +294,9 @@
     --history-avatar-radius: 4px;
     --history-avatar-bg: #1E293B;
     --history-avatar-claim-bg: #06B6D4;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #66686E;
 
     --history-name-f-s: 16px;
     --history-name-f-w: 400;

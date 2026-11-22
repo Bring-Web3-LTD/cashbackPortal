@@ -18,6 +18,8 @@ interface HistoryMobile {
     totalEstimatedUsd?: string | number
     imgBg?: string
     retailerName?: string
+    /** The claims aggregate only: the token it totals. */
+    tokenSymbol?: string
 }
 
 interface RowProps extends HistoryMobile {
@@ -34,13 +36,13 @@ interface ClaimsRes {
     [key: string]: ClaimToken
 }
 
-const Row = ({ isActive, toggleFn, imgSrc, imgSrcFallbacks, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
+const Row = ({ isActive, toggleFn, tokenSymbol, imgSrc, imgSrcFallbacks, status, tokenAmount, totalEstimatedUsd, imgBg, retailerName, description }: RowProps): JSX.Element => {
     const [fallbackLogo, setFallbackLogo] = useState('')
     const { t } = useTranslation()
     // The claims aggregate: the row with no retailer behind it, not every row
     // whose status reads "Claimed".
     const isClaim = !retailerName
-    const name = retailerName || t('historyTotalClaims')
+    const name = retailerName || t('historyTotalClaims', { token: tokenSymbol })
     return (
         <div id="history-mobile-row" className={`${styles.collapsible} ${isActive ? styles.collapsible_open : ''}`}>
             <div

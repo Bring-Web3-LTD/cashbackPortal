@@ -106,7 +106,7 @@
     "historyTitle": "History",
     "pendingTitle": "Pending",
     "rewardHistory": "Reward history",
-    "totalClaims": "Total claims",
+    "totalClaims": "Total {{token}} claim",
     "statusClaimed": "Claimed",
     "statusClaimable": "Claimable",
     "statusPending": "Pending",

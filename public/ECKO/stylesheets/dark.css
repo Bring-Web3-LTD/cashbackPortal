@@ -776,6 +776,10 @@
     --history-logo-fallback-f-w: 700;
     --history-logo-fallback-l-h: 16px;
     --history-claimed-icon-bg: transparent;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-bg: #242838;
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #7A7D83;
     --history-details-btn-bg: transparent;
     --history-details-btn-radius: 40px;
 

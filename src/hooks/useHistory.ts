@@ -17,10 +17,11 @@ import {
     formatDate,
     formatStatus,
 } from '../pages/History/helpers'
+import { tokenIcon, type TokenIcon } from '../utils/tokenIcon'
 
 export interface MobileHistoryRow {
     id: string
-    /** Display name. Claims aggregate as "Total Claims". */
+    /** Display name. Claims aggregate as "Total <token> claim". */
     retailerName: string
     /** Formatted date string ("MM/DD/YYYY"); empty for the claims aggregate. */
     date: string
@@ -30,6 +31,8 @@ export interface MobileHistoryRow {
     iconBg?: string
     /** True for the claims aggregate row — drives the gift-icon avatar styling. */
     isClaim: boolean
+    /** The claims aggregate only: the token's symbol, shown instead of the gift. */
+    token?: TokenIcon
     /** Amount display string (may contain subscripts), without symbol. */
     amountDisplay: string
     /** Token symbol (used as a stable key for claims aggregation). */
@@ -105,10 +108,11 @@ export const useHistory = (): UseHistoryResult => {
     Object.entries(claimsBySymbol).forEach(([symbol, agg]) => {
         rows.push({
             id: `claim-${symbol}`,
-            retailerName: t('totalClaims'),
+            retailerName: t('totalClaims', { token: symbol }),
             date: '',
             iconSrc: '',
             isClaim: true,
+            token: tokenIcon(symbol),
             amountDisplay:
                 balance?.movements?.claimsTotal?.find((total) => total.tokenSymbol === symbol)
                     ?.tokenAmountDisplay ?? '',

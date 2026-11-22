@@ -56,7 +56,7 @@
   "claimGuideCta": "Download Wallet",
   "back": "Back",
   "faqTitle": "FAQ",
-  "historyTotalClaims": "Total claims",
+  "historyTotalClaims": "Total {{token}} claim",
   "historyColPurchase": "Reward",
   "historyColDate": "Date",
   "historyColAmount": "Amount in Token",

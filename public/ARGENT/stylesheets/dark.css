@@ -709,6 +709,10 @@
     --history-table-row-hover-bg: #3F3F3F;
     --history-table-row-active-bg: #3F3F3F;
     --history-claimed-icon-bg: #3F3F3F;
+    /* Token symbol on the claims total row. */
+    --history-token-icon-bg: #242424;
+    --history-token-icon-border-w: 1px;
+    --history-token-icon-border-c: #242424;
     /* The row's chevron carries no fill of its own. */
     --history-details-btn-bg: transparent;
     --history-details-btn-radius: 40px;
