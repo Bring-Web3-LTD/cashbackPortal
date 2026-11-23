@@ -102,7 +102,7 @@
     transition: .2s;
 }
 
-/* The asset ships at 16; the tag draws it at 10. */
+/* The tag draws the X at 10, whatever size the platform's asset ships at. */
 .filter img {
     width: 10px;
     height: 10px;
