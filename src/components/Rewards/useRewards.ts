@@ -3,7 +3,8 @@
  * derives the claimable / pending display values + claim-button state, owns the
  * nav/support handlers, and resolves the labels — so the view stays pure UI.
  */
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { useBalance, selectEligible, selectPending } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'

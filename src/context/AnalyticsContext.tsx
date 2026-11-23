@@ -80,7 +80,8 @@ export const AnalyticsProvider: FC<Props> = ({ children, platform, location, flo
         if (effectRan.current === location) return
 
         const details: { [key: string]: string } = {
-            pageLocation: window.location.href,
+            // No query string: it holds the session token and the campaign params
+            pageLocation: window.location.origin + window.location.pathname,
             pagePath: window.location.pathname,
             pageTitle: document.title,
             parentLocation: location

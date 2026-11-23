@@ -6,7 +6,8 @@
  * three cards; Cashback (coupons disabled) is titled "Cashback", has no
  * intro, and drops the Coupons card.
  */
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 
 export const useWhatsThis = () => {

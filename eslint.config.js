@@ -23,6 +23,18 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      // In-app navigation must keep the search params
+      'no-restricted-imports': ['error', {
+        paths: [{
+          name: 'react-router-dom',
+          importNames: ['useNavigate', 'Link', 'Navigate', 'NavLink'],
+          message: 'Import from src/utils/carryParams so the search params are kept.',
+        }],
+      }],
     },
+  },
+  {
+    files: ['src/utils/carryParams.ts'],
+    rules: { 'no-restricted-imports': 'off' },
   },
 )

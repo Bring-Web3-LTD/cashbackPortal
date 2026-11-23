@@ -7,7 +7,8 @@
  * two render different layouts from the same query.
  */
 import { useCallback, useEffect, useRef, useState, KeyboardEvent, MouseEvent } from 'react'
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { formatCurrency } from '../../pages/History/helpers'
 import { useRequestIdentity } from '../../hooks/useRequestIdentity'

@@ -6,7 +6,8 @@
  * Named for the surface because `useHistoryPage` is the mobile page's hook.
  */
 import { useState } from 'react'
-import { useLocation, useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useLocation, useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useBalance } from '../../hooks/useBalance'

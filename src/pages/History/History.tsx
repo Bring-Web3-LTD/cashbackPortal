@@ -1,5 +1,5 @@
 import styles from './styles.module.css'
-import { Link } from 'react-router-dom'
+import { Link } from '../../utils/carryParams'
 import { useState } from 'react'
 import Icon from '../../components/Icon/Icon'
 import Dashboard from '../../components/Dashboard/Dashboard'

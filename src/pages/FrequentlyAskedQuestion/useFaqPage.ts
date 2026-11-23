@@ -4,7 +4,8 @@
  * flag so the page view is pure UI.
  */
 import { useState } from 'react'
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { useFaq } from './useFaq'
 import { useWalletAddress } from '../../hooks/useWalletAddress'

@@ -116,6 +116,18 @@
     border-color: var(--header-btn-hover-border-c, var(--header-btn-border-c));
 }
 
+/* Text color: already meets contrast with the header in every theme */
+.btn:focus-visible,
+.menu_row:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.more:focus-visible {
+    outline: 2px solid var(--header-more-dot-c);
+    outline-offset: 2px;
+}
+
 .btn:active {
     background: var(--header-btn-pressed-bg, var(--header-btn-bg));
     color: var(--header-btn-pressed-f-c, var(--header-btn-f-c));
