@@ -1,0 +1,11 @@
+/* ECKOREWARDS (TODO#690) — inherits everything from ECKO via the
+   <PLATFORM>REWARDS fallback rule (TODO#736); only what differs lives here. */
+:root {
+    /* Claim is Button Compact type Primary (Figma 4312:2950): Accent/Primary
+       fill, no outline, Text/Primary label. Details keeps the Secondary look. */
+    --dashboard-claim-btn-bg: #FF00B8;
+    --dashboard-claim-btn-hover-bg: #E600A5;
+    --dashboard-claim-btn-border-w: 0;
+    --dashboard-claim-btn-border-c: transparent;
+    --dashboard-claim-btn-f-c: #FFFFFF;
+}

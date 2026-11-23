@@ -14,10 +14,10 @@ type FaqResponse = Awaited<ReturnType<typeof fetchFaq>>
 
 export const useFaq = (): UseQueryResult<FaqResponse> => {
     const { platform, userId, flowId, supportUrl } = useRouteLoaderData('root') as LoaderData
-    const { walletAddress } = useWalletAddress()
+    const { walletAddress, kitUserId } = useWalletAddress()
 
     return useQuery({
-        queryKey: ['faq', walletAddress, platform],
-        queryFn: () => fetchFaq({ walletAddress: walletAddress ?? undefined, platform, userId, flowId, supportUrl }),
+        queryKey: ['faq', walletAddress, kitUserId, platform],
+        queryFn: () => fetchFaq({ walletAddress: walletAddress ?? undefined, platform, userId: kitUserId ?? userId, flowId, supportUrl }),
     })
 }
