@@ -6,12 +6,13 @@ import i18n from 'i18next';
 import { loadPlatformNamespace } from './utils/i18n';
 import fetchToken from './api/fetchToken';
 import checkPortal from './api/checkPortal';
-import { DEV_MODE, ENV, STANDALONE, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
+import { DEV_MODE, ENV, STANDALONE, MAINTENANCE_MODE, MOBILE_PORTAL_PLATFORMS, SHOW_TERMS_PLATFORMS, mobilePortalMaxWidth, setCurrencyFormat } from './config';
 import { v4 } from 'uuid';
 import getUserId from './utils/getUserId';
 import { basePlatform, loadStylesheet, normalizePlatform } from './utils/loadStylesheet';
 import { selectVariant } from './utils/ABTest/platform-variants';
 import { enableSessionCookies } from './api/request';
+import { landingRedirect } from './utils/campaignId';
 
 const rootLoader = async () => {
     const params = new URLSearchParams(document.location.search)
@@ -51,6 +52,13 @@ const rootLoader = async () => {
     if (token) {
         const res = await fetchToken({ token });
         if (!res || res.status !== 200 || !res.info || !Object.keys(res.info).length) throw Error('There was an error while loading the page')
+        if (STANDALONE && !MAINTENANCE_MODE && landingRedirect
+            && res.info.loginType !== 'email' && res.info.isCountryAvailable !== false) {
+            // Router's replace() would keep this page in history on first load.
+            // Never resolves, so nothing renders before leaving.
+            window.location.replace(landingRedirect)
+            return new Promise<never>(() => {})
+        }
         const platform = res.info.platform?.toUpperCase() || 'DEFAULT'
 
         // Resolution order: token (newer) → URL (legacy) → default.

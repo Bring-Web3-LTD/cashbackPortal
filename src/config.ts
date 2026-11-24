@@ -14,6 +14,8 @@ export const STANDALONE = !pageParams.has('token') && (
 )
 // The Rewards portal key, used only for the standalone /check/portal call
 export const STANDALONE_API_KEY = import.meta.env.VITE_STANDALONE_API_KEY || ''
+// Default campaign landing page, with its ?id=. Unset: no redirect.
+export const DEFAULT_LANDING_URL: string = import.meta.env.VITE_DEFAULT_LANDING_URL || ''
 // envName (?envName= or localStorage) → api.bringweb3.io/{envName}/v1/,
 // as in the extension. Stage segment only, so the host stays Bring's.
 const readEnvName = (): string => {
