@@ -4,7 +4,7 @@
  * Pure UI — logic in useHeaderDesktop.
  */
 import styles from './styles.module.css'
-import { Link } from 'react-router-dom'
+import { Link } from '../../utils/carryParams'
 import ExplainModal from '../Modals/ExplainModal/ExplainModal'
 import { useHeaderDesktop, type Action } from './useHeaderDesktop'
 
@@ -25,14 +25,26 @@ const Header = () => {
     } = useHeaderDesktop()
 
     const renderAction = (action: Action, className: string, suffix: string) => (
-        action.to ? (
+        // External links get a plain <a>: Link would add the portal's search params.
+        action.to && action.external ? (
+            <a
+                key={action.key}
+                id={`header-${action.key}-${suffix}`}
+                href={action.to}
+                className={className}
+                onClick={closeMenu}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {action.label}
+            </a>
+        ) : action.to ? (
             <Link
                 key={action.key}
                 id={`header-${action.key}-${suffix}`}
                 to={action.to}
                 className={className}
                 onClick={closeMenu}
-                {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
                 {action.label}
             </Link>

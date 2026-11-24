@@ -3,7 +3,8 @@
  * `useMobilePortal` loader flag. Mobile pages are the `.mobile` views
  * colocated with their desktop counterparts under `src/pages/`.
  */
-import { Navigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { Navigate } from './utils/carryParams'
 import Home from './pages/Home/Home'
 import History from './pages/History'
 import FrequentlyAskedQuestion from './pages/FrequentlyAskedQuestion/FrequentlyAskedQuestion'

@@ -20,7 +20,7 @@ Personal data this app handles (wallet addresses are pseudonymous personal data 
 | `userId` (UUID) | `localStorage` key `bring_<platform>_id` via `src/utils/getUserId.ts`; analytics payload | stable per-browser id |
 | `flowId` (UUID) | memory, analytics payload | per-session correlation |
 | session JWT | URL query param, memory | auth with Bring backend |
-| page URL / path / title | analytics `page_view` | usage analytics |
+| page URL (no query string) / path / title | analytics `page_view` | usage analytics |
 | session cookies `rh_id`, `rh_refresh` | HttpOnly, set and cleared by the Bring backend at sign-in / refresh / logout; the portal only sends them (`credentials: 'include'`), and only in hub and standalone mode via `src/api/request.ts` | identify a hub user who has no wallet |
 | `email` | memory only, sent to `/v1/auth/otp/*` on the standalone sign-in screen; never stored, never in analytics | email sign-up / sign-in |
 | `rh_flow_id`, `rh_click_id`, `rh_campaign_id` | `sessionStorage` (`src/utils/flow.ts`, `clickId.ts`, `campaignId.ts`), cleared when the tab closes; sent on the sign-in calls and the funnel events `page_view` / `close` (`src/utils/rhAnalytics.ts`), the latter only with a campaign id; `rh_campaign_id` also on the standalone `/check/portal`; the default campaign's id (`VITE_DEFAULT_LANDING_URL`) is stored but never sent | tie one sign-in visit together; attribute a landing-page visitor's sign-up to the campaign and the publisher's click; let a preview campaign skip the deactivated geos (TODO#802); not redirect a visitor to the landing page twice (TODO#542) |

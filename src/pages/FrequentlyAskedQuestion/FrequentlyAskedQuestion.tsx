@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styles from './styles.module.css'
-import { Link } from 'react-router-dom'
+import { Link } from '../../utils/carryParams'
 import Icon from '../../components/Icon/Icon'
 import Dashboard from '../../components/Dashboard/Dashboard'
 import { useFaqDesktop, SKELETON_ROWS } from './useFaqDesktop'

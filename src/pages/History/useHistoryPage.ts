@@ -8,7 +8,8 @@
  * of its own.
  */
 import { useState } from 'react'
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from '../../hooks/useHistory'
 import { useWalletAddress } from '../../hooks/useWalletAddress'

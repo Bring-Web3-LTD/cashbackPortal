@@ -3,7 +3,8 @@
  * three state flags, derives the Pending / Claim values from the shared
  * balance query, and owns the nav handlers — so the view stays pure UI.
  */
-import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import {
     useBalance,
