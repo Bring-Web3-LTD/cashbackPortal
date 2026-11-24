@@ -3,14 +3,12 @@
 */
 :root {
     --bg: transparent;
-    /* Opaque: the header pins while the cards scroll under it, so a see-through
-       bar would let rows show through. Carries Background/Page. */
-    --header-bg: #000000;
-    /* NOT IN FIGMA — placeholder until the designer supplies it. Fills the
-       bar's bottom 20px band: the solid fill stops short and this dissolves
-       from the header colour to nothing, so rows fade out rather than being
-       cut off as they scroll under. */
-    --header-scroll-fade: linear-gradient(180deg, #000000 30.9%, rgba(0, 0, 0, 0) 68.75%);
+    /* Gero wants the header see-through (TODO#730), so it does not pin:
+       it scrolls away with the content, and nothing passes under it that
+       would need an opaque fill or the scroll fade. */
+    --header-position: relative;
+    --header-bg: transparent;
+    --header-scroll-fade: none;
 
     /* Heading/22-600. The desktop header reads --title-*, the mobile one
        --header-title-*. */

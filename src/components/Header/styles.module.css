@@ -3,9 +3,11 @@
 
    The only thing that pins while the cards scroll: the dashboard bar, the
    search row and the categories all leave with the content. Needs the opaque
-   --header-bg to stay readable over the rows passing under it. */
+   --header-bg to stay readable over the rows passing under it. A platform
+   whose header must stay see-through sets --header-position: relative, so the
+   bar scrolls away with the content and keeps its z-index. */
 .header {
-    position: sticky;
+    position: var(--header-position, sticky);
     top: 0;
     /* Above the cards, below the legal bar's dock (5) and the modals (10). */
     z-index: 4;

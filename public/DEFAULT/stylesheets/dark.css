@@ -16,6 +16,9 @@
     --header-menu-border-w: 1px;
     --header-menu-border-c: #2A3038;
     --header-menu-radius: 12px;
+    /* sticky pins the header over the scrolling cards; relative lets it scroll
+       away, for a theme whose --header-bg is see-through. */
+    --header-position: sticky;
     --header-bg: #1E2328;
     --header-scroll-fade: linear-gradient(180deg, #1E2328 30.9%, rgba(30, 35, 40, 0) 68.75%);
     --header-more-border-w: 1px;
