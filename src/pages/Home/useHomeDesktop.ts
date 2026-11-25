@@ -6,7 +6,7 @@
  * Named for the surface because `useHomePage` is the mobile home's hook.
  */
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useRouteLoaderData, useSearchParams } from 'react-router-dom'
+import { useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useInView } from 'framer-motion'
 import { useRetailers } from '../../hooks/useRetailers'
@@ -15,13 +15,13 @@ import { useAnalytics } from '../../hooks/useAnalytics'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
 import { useBalance } from '../../hooks/useBalance'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
+import { usePortalView } from '../../hooks/usePortalView'
 import { ENV } from '../../config'
-import type { PortalView } from '../../components/Dashboard/Dashboard'
 import type { StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
 
 export const useHomeDesktop = () => {
     const { t } = useTranslation()
-    const { couponsEnabled, isHub } = useRouteLoaderData('root') as LoaderData
+    const { couponsEnabled } = useRouteLoaderData('root') as LoaderData
     const { sendAnalyticsEvent } = useAnalytics()
     const [searchParams] = useSearchParams()
     const { isTester, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
@@ -34,12 +34,7 @@ export const useHomeDesktop = () => {
         adoptCouponsIframeSrc(balanceCouponsSrc)
     }, [balanceCouponsSrc, couponsIframeSrc, adoptCouponsIframeSrc])
 
-    // Seeded from navigation state so the switcher still works on the pages
-    // that show the dashboard but not the browse area.
-    const routedView = (useLocation().state as { view?: PortalView } | null)?.view
-    // The hub opens on Coupons; every other portal, and a hub without the
-    // Coupons tab, opens on Cashback.
-    const [view, setView] = useState<PortalView>(routedView ?? (isHub && couponsEnabled ? 'coupons' : 'cashback'))
+    const [view, setView] = usePortalView()
 
     const [search, setSearch] = useState<ReactSelectOptionType | null>(null)
     const [category, setCategory] = useState<Category | null>(null)

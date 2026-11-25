@@ -34,7 +34,7 @@ export const useFaqDesktop = () => {
         isOpen: (id: string) => openId === id,
         // Clicking the open entry closes it.
         toggle: (id: string) => setOpenId(current => current === id ? null : id),
-        goToView: (view: 'coupons' | 'cashback') => navigate('/', { state: { view } }),
+        goToView: (view: 'coupons' | 'cashback') => navigate(`/?view=${view}`),
         goBack: () => {
             sendAnalyticsEvent('topbar_back', {
                 category: 'user_action',

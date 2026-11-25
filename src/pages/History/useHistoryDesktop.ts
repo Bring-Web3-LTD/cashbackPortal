@@ -131,7 +131,7 @@ export const useHistoryDesktop = () => {
                 details: row.retailerName || 'Total claims',
             })
         },
-        goToView: (view: 'coupons' | 'cashback') => navigate('/', { state: { view } }),
+        goToView: (view: 'coupons' | 'cashback') => navigate(`/?view=${view}`),
         goBack: () => {
             sendAnalyticsEvent('topbar_back', {
                 category: 'user_action',
