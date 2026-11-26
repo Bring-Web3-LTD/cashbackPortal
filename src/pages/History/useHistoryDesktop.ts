@@ -11,6 +11,7 @@ import { useNavigate } from '../../utils/carryParams'
 import { useTranslation } from 'react-i18next'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useBalance } from '../../hooks/useBalance'
+import { usePortalView } from '../../hooks/usePortalView'
 import { createDescription, formatCurrency, formatDate, formatShortDate, formatStatus } from './helpers'
 import { tokenIcon, type TokenIcon } from '../../utils/tokenIcon'
 
@@ -50,6 +51,7 @@ export const useHistoryDesktop = () => {
     const { iconsPath, baseIconsPath, defaultIconsPath, noClaim } = useRouteLoaderData('root') as LoaderData
     const [activeRow, setActiveRow] = useState(-1)
     const rewardsOnly = Boolean((useLocation().state as { rewardsOnly?: boolean } | null)?.rewardsOnly)
+    const [view] = usePortalView()
 
     const { data } = useBalance()
 
@@ -131,7 +133,8 @@ export const useHistoryDesktop = () => {
                 details: row.retailerName || 'Total claims',
             })
         },
-        goToView: (view: 'coupons' | 'cashback') => navigate(`/?view=${view}`),
+        view,
+        goToView: (next: 'coupons' | 'cashback') => navigate(`/?view=${next}`),
         goBack: () => {
             sendAnalyticsEvent('topbar_back', {
                 category: 'user_action',
