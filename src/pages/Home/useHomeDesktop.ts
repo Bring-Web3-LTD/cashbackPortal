@@ -17,6 +17,7 @@ import { useBalance } from '../../hooks/useBalance'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
 import { usePortalView } from '../../hooks/usePortalView'
 import { ENV } from '../../config'
+import type { PortalView } from '../../components/Dashboard/Dashboard'
 import type { StatusModalState } from '../../components/Modals/StatusModal/StatusModal'
 
 export const useHomeDesktop = () => {
@@ -82,7 +83,11 @@ export const useHomeDesktop = () => {
         isDemo,
         setIsDemo,
         view,
-        setView,
+        // The two views differ in height, so the browser would clamp the scroll.
+        setView: (next: PortalView) => {
+            setView(next)
+            scrollToTop()
+        },
         showCoupons: Boolean(couponsEnabled && view === 'coupons'),
         // Can arrive late, through /cache: the view shows a skeleton until then.
         couponsIframeSrc,
