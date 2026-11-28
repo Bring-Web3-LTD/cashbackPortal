@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useFaq } from './useFaq'
 import { useAnalytics } from '../../hooks/useAnalytics'
 import { useSkeletonPreview } from '../../hooks/useSkeletonPreview'
+import { usePortalView } from '../../hooks/usePortalView'
 
 // The design draws five placeholder rows; the real count is unknown until the
 // FAQ answers.
@@ -26,6 +27,7 @@ export const useFaqDesktop = () => {
 
     const { data, isLoading } = useFaq()
     const skeletonPreview = useSkeletonPreview()
+    const [view] = usePortalView()
 
     return {
         faq: data?.faq,
@@ -34,7 +36,8 @@ export const useFaqDesktop = () => {
         isOpen: (id: string) => openId === id,
         // Clicking the open entry closes it.
         toggle: (id: string) => setOpenId(current => current === id ? null : id),
-        goToView: (view: 'coupons' | 'cashback') => navigate('/', { state: { view } }),
+        view,
+        goToView: (next: 'coupons' | 'cashback') => navigate(`/?view=${next}`),
         goBack: () => {
             sendAnalyticsEvent('topbar_back', {
                 category: 'user_action',

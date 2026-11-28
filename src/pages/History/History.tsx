@@ -121,7 +121,7 @@ const Row = ({ isActive, toggleFn, claimLabel, token, imgSrc, imgSrcFallbacks, s
 }
 
 const HistoryDesktop = () => {
-    const { rows, isOpen, toggleRow, goToView, goBack, labels } = useHistoryDesktop()
+    const { rows, isOpen, toggleRow, view, goToView, goBack, labels } = useHistoryDesktop()
     const [imgExists, setImgExists] = useState(true)
 
     return (
@@ -129,7 +129,7 @@ const HistoryDesktop = () => {
             <main className={styles.main}>
             {/* Same row as the home page; switching view leaves for it. */}
             <Dashboard
-                view="cashback"
+                view={view}
                 onViewChange={goToView}
             />
             <div className={styles.toolbar}>

@@ -63,6 +63,7 @@ const FrequentlyAskedQuestion = () => {
     showSkeleton,
     isOpen,
     toggle,
+    view,
     goToView,
     goBack,
     labels,
@@ -73,7 +74,7 @@ const FrequentlyAskedQuestion = () => {
       <main className={styles.main}>
       {/* Same row as the home page; switching view leaves for it. */}
       <Dashboard
-        view="cashback"
+        view={view}
         onViewChange={goToView}
       />
       <div className={styles.toolbar}>

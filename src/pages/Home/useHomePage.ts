@@ -8,12 +8,12 @@ import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { DashboardMode } from '../../components/Dashboard/useDashboard.mobile'
 import { CategoriesItem } from '../../components/Categories/useCategories'
 import { useCategories, selectCategories, selectSearchTerms } from './useCategories'
 import { useRetailers, selectRetailers, selectRetailersMetadata } from '../../hooks/useRetailers'
 import { useBalance, selectEligible } from '../../hooks/useBalance'
 import { useWalletAddress } from '../../hooks/useWalletAddress'
+import { usePortalView } from '../../hooks/usePortalView'
 import { useClaimPreview } from '../../hooks/useDevPreview'
 import message from '../../utils/message'
 import claimInitiate from '../../api/claim/initiate'
@@ -26,13 +26,11 @@ const SEARCH_MIN_CHARS = 2
 
 export const useHomePage = () => {
     const { t } = useTranslation()
-    const { platform, userId, flowId, cryptoSymbols, noClaim, isHub, couponsEnabled } = useRouteLoaderData('root') as LoaderData
+    const { platform, userId, flowId, cryptoSymbols, noClaim, isHub } = useRouteLoaderData('root') as LoaderData
     const { walletAddress, walletName, walletEmoji, couponsIframeSrc, adoptCouponsIframeSrc } = useWalletAddress()
     const queryClient = useQueryClient()
 
-    // The hub opens on Coupons; every other portal, and a hub without the
-    // Coupons tab, opens on Cashback. Same rule as the desktop home.
-    const [mode, setMode] = useState<DashboardMode>(isHub && couponsEnabled ? 'coupons' : 'cashback')
+    const [mode, setMode] = usePortalView()
     const [category, setCategory] = useState<CategoriesItem | null>(null)
     const [searchOpen, setSearchOpen] = useState(false)
     // Text currently typed in the input — drives the autocomplete dropdown only.
